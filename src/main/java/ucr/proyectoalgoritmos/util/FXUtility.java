@@ -3,7 +3,7 @@ package ucr.proyectoalgoritmos.util;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import ucr.lab.HelloApplication;
+import ucr.proyectoalgoritmos.HelloApplication;
 
 import java.io.IOException;
 import java.util.Optional;

@@ -1,11 +1,13 @@
-package domain;
+package ucr.proyectoalgoritmos.graph;
 
-import domain.list.ListException;
-import domain.list.SinglyLinkedList;
-import domain.queue.LinkedQueue;
-import domain.queue.QueueException;
-import domain.stack.LinkedStack;
-import domain.stack.StackException;
+
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
+import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue;
+import ucr.proyectoalgoritmos.Domain.queue.QueueException;
+import ucr.proyectoalgoritmos.Domain.stack.LinkedStack;
+import ucr.proyectoalgoritmos.Domain.stack.StackException;
+import ucr.proyectoalgoritmos.util.Utility;
 
 public class AdjacencyListGraph implements Graph {
 
@@ -58,7 +60,7 @@ public class AdjacencyListGraph implements Graph {
     }
 
     @Override
-    public boolean containsEdge(Object a, Object b) throws GraphException, ListException {
+    public boolean containsEdge(Object a, Object b) throws GraphException, ListException, ucr.proyectoalgoritmos.Domain.list.ListException {
         if(isEmpty())
             throw new GraphException("Adjacency List Graph is Empty");
         return !vertexList[indexOf(a)].edgesList.isEmpty()
@@ -66,7 +68,7 @@ public class AdjacencyListGraph implements Graph {
     }
 
     @Override
-    public void addVertex(Object element) throws GraphException, ListException {
+    public void addVertex(Object element) throws GraphException {
         if(counter>=vertexList.length)
             throw new GraphException("Adjacency List Graph is Full");
         vertexList[counter++] = new Vertex(element);
@@ -84,8 +86,8 @@ public class AdjacencyListGraph implements Graph {
 
     private int indexOf(Object element){
         for (int i = 0; i < counter; i++) {
-            if(util.Utility.compare(vertexList[i].data, element)==0)
-                return i; //retorna la pos en el arreglo de objectos vertexList
+            if(Utility.compare(vertexList[i].data, element)==0)
+                return i; //retorna la posicion en el arreglo de objectos vertexList
         }
         return -1; //significa q la data de todos los vertices no coinciden con element
     }
@@ -99,7 +101,7 @@ public class AdjacencyListGraph implements Graph {
         updateEdgesListEdgeWeight(b, a, weight);
     }
 
-    private void updateEdgesListEdgeWeight(Object a, Object b, Object weight) throws ListException {
+    private void updateEdgesListEdgeWeight(Object a, Object b, Object weight) throws ListException, ucr.proyectoalgoritmos.Domain.list.ListException {
         EdgeWeight ew = (EdgeWeight) vertexList[indexOf(a)].edgesList
                 .getNode(new EdgeWeight(b, null)).getData();
         //setteo el peso en el campo respectivo
@@ -126,7 +128,7 @@ public class AdjacencyListGraph implements Graph {
             throw new GraphException("Adjacency List Graph is Empty");
         if(containsVertex(element)){
             for (int i = 0; i < counter; i++) {
-                if(util.Utility.compare(vertexList[i].data, element)==0) {
+                if(Utility.compare(vertexList[i].data, element)==0) {
                     //ya lo encontro, ahora
                     //se debe suprimir el vertice a eliminar de todas las listas
                     //enlazadas de los otros vértices
@@ -146,7 +148,7 @@ public class AdjacencyListGraph implements Graph {
     }
 
     @Override
-    public void removeEdge(Object a, Object b) throws GraphException, ListException {
+    public void removeEdge(Object a, Object b) throws GraphException, ListException, ucr.proyectoalgoritmos.Domain.list.ListException {
         if(!containsVertex(a)||!containsVertex(b))
             throw new GraphException("There's no some of the vertexes");
         if(!vertexList[indexOf(a)].edgesList.isEmpty()) {
@@ -160,7 +162,7 @@ public class AdjacencyListGraph implements Graph {
 
     // Recorrido en profundidad
     @Override
-    public String dfs() throws GraphException, StackException, ListException {
+    public String dfs() throws GraphException, ListException, StackException {
         setVisited(false);//marca todos los vertices como no vistados
         // inicia en el vertice 0
         String info = vertexList[0].data + ", ";
@@ -184,7 +186,7 @@ public class AdjacencyListGraph implements Graph {
 
     //Recorrido en amplitud
     @Override
-    public String bfs() throws GraphException, QueueException, ListException {
+    public String bfs() throws GraphException, ListException, QueueException {
         setVisited(false);//marca todos los vertices como no visitados
         // inicia en el vertice 0
         String info = vertexList[0].data + ", ";
@@ -256,7 +258,7 @@ public class AdjacencyListGraph implements Graph {
         SinglyLinkedList edges = vertexList[indexA].edgesList;
         for (int i = 0; i < edges.size(); i++) {
             EdgeWeight currentEdge = (EdgeWeight) edges.get(i);
-            if (util.Utility.compare(currentEdge.getEdge(), b) == 0) {
+            if (Utility.compare(currentEdge.getEdge(), b) == 0) {
                 return currentEdge.getWeight();
             }
         }

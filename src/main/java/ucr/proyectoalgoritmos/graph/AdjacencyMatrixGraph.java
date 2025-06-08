@@ -1,10 +1,12 @@
-package domain;
+package ucr.proyectoalgoritmos.graph;
 
-import domain.list.ListException;
-import domain.queue.LinkedQueue;
-import domain.queue.QueueException;
-import domain.stack.LinkedStack;
-import domain.stack.StackException;
+
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue;
+import ucr.proyectoalgoritmos.Domain.queue.QueueException;
+import ucr.proyectoalgoritmos.Domain.stack.LinkedStack;
+import ucr.proyectoalgoritmos.Domain.stack.StackException;
+import ucr.proyectoalgoritmos.util.Utility;
 
 public class AdjacencyMatrixGraph implements Graph {
 
@@ -37,7 +39,7 @@ public class AdjacencyMatrixGraph implements Graph {
     }
 
     @Override
-    public int size() throws ListException {
+    public int size() {
         return counter;
     }
 
@@ -72,7 +74,7 @@ public class AdjacencyMatrixGraph implements Graph {
     public boolean containsEdge(Object a, Object b) throws GraphException, ListException {
         if(isEmpty())
             throw new GraphException("Adjacency Matrix Graph is Empty");
-        return !(util.Utility.compare(adjacencyMatrix[indexOf(a)][indexOf(b)], 0)==0);
+        return !(Utility.compare(adjacencyMatrix[indexOf(a)][indexOf(b)], 0)==0);
     }
 
     @Override
@@ -94,7 +96,7 @@ public class AdjacencyMatrixGraph implements Graph {
 
     private int indexOf(Object element){
         for (int i = 0; i < counter; i++) {
-            if(util.Utility.compare(vertexList[i].data, element)==0)
+            if(Utility.compare(vertexList[i].data, element)==0)
                 return i; //retorna la pos en el arreglo de objectos vertexList
         }
         return -1; //significa q la data de todos los vertices no coinciden con element
@@ -158,7 +160,7 @@ public class AdjacencyMatrixGraph implements Graph {
 
     // Recorrido en profundidad
     @Override
-    public String dfs() throws GraphException, StackException, ListException {
+    public String dfs() throws GraphException, ListException, StackException {
         setVisited(false);//marca todos los vertices como no vistados
         // inicia en el vertice 0
         String info = vertexList[0].data + ", ";
@@ -182,7 +184,7 @@ public class AdjacencyMatrixGraph implements Graph {
 
     //Recorrido en amplitud
     @Override
-    public String bfs() throws GraphException, QueueException, ListException {
+    public String bfs() throws GraphException, ListException, QueueException {
         setVisited(false);//marca todos los vertices como no visitados
         // inicia en el vertice 0
         String info = vertexList[0].data + ", ";
@@ -229,12 +231,12 @@ public class AdjacencyMatrixGraph implements Graph {
         //agregamos la info de las aristas y pesos
         for (int i = 0; i < counter; i++) {
             for (int j = 0; j < counter; j++) {
-                if(util.Utility.compare(adjacencyMatrix[i][j], 0)!=0) {//si existe arista
+                if(Utility.compare(adjacencyMatrix[i][j], 0)!=0) {//si existe arista
                     //si existe una arista
                     result+="\nThere is edge between the vertexes: "+vertexList[i].data+"...."
                             +vertexList[j].data;
                     //si existe peso que lo muestre
-                    if(util.Utility.compare(adjacencyMatrix[i][j], 1)!=0){
+                    if(Utility.compare(adjacencyMatrix[i][j], 1)!=0){
                         //si matriz[fila][col] !=1 existe un peso agregado
                         result+="_____WEIGHT: "+adjacencyMatrix[i][j];
                     }

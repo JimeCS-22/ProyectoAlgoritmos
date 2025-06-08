@@ -1,5 +1,7 @@
 package ucr.proyectoalgoritmos.Domain.list;
 
+import ucr.proyectoalgoritmos.util.Utility;
+
 public class SinglyLinkedList implements List{
     private Node first; //apuntador al inicio de la lista
 
@@ -38,7 +40,7 @@ public class SinglyLinkedList implements List{
         }
         Node aux = first;
         while(aux!=null){
-            if(util.Utility.compare(aux.data, element)==0){
+            if(Utility.compare(aux.data, element)==0){
                 return true;
             }
             aux = aux.next; //lo movemos al sgte nodo
@@ -93,17 +95,17 @@ public class SinglyLinkedList implements List{
             throw new ListException("Singly Linked List is Empty");
         }
         //Caso 1. El elemento a suprimir esta al inicio
-        if(util.Utility.compare(first.data, element)==0){
+        if(Utility.compare(first.data, element)==0){
             first = first.next; //saltamos el primer nodo
         }else{  //Caso 2. El elemento a suprimir puede estar al medio o final
             Node prev = first; //dejo un apuntador al nodo anterior
             Node aux = first.next;
-            while(aux!=null && !(util.Utility.compare(aux.data, element)==0)){
+            while(aux!=null && !(Utility.compare(aux.data, element)==0)){
                 prev = aux;
                 aux = aux.next;
             }
             //se sale cuando alcanza nulo o cuando encuentra el elemento
-            if(aux!=null && util.Utility.compare(aux.data, element)==0){
+            if(aux!=null && Utility.compare(aux.data, element)==0){
                 //ya lo encontro, procedo a desenlazar el nodo
                 prev.next = aux.next;
             }
@@ -127,7 +129,7 @@ public class SinglyLinkedList implements List{
         }
         for (int i = 0; i <= size() ; i++) {
             for (int j = i+1; j <= size() ; j++) {
-                if(util.Utility.compare(getNode(j).data, getNode(i).data)<0){
+                if(Utility.compare(getNode(j).data, getNode(i).data)<0){
                     Object aux = getNode(i).data;
                     getNode(i).data = getNode(j).data;
                     getNode(j).data = aux;
@@ -144,7 +146,7 @@ public class SinglyLinkedList implements List{
         Node aux = first;
         int index=0; //la lista inicia en 1
         while(aux!=null){
-            if(util.Utility.compare(aux.data, element)==0){
+            if(Utility.compare(aux.data, element)==0){
                 return index;
             }
             index++; //incremento el indice
@@ -180,13 +182,13 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
-        if(util.Utility.compare(first.data, element)==0){
+        if(Utility.compare(first.data, element)==0){
             return "It's the first, it has no previous";
         }
         Node aux = first;
         //mientras no llegue al ult nodo
         while(aux.next!=null){
-            if(util.Utility.compare(aux.next.data, element)==0){
+            if(Utility.compare(aux.next.data, element)==0){
                 return aux.data; //retornamos la data del nodo actual
             }
             aux=aux.next;
@@ -210,7 +212,7 @@ public class SinglyLinkedList implements List{
         Node aux = first;
         int i = 0; // pos del primer nodo
         while(aux!=null){
-            if(util.Utility.compare(i, index)==0) {  //ya encontro el indice
+            if(Utility.compare(i, index)==0) {  //ya encontro el indice
                 return aux;
             }
             i++; //incremento la var local
@@ -224,7 +226,7 @@ public class SinglyLinkedList implements List{
         }
         Node aux = first;
         while(aux!=null){
-            if(util.Utility.compare(aux.data, element)==0) {  //ya encontro el elemento
+            if(Utility.compare(aux.data, element)==0) {  //ya encontro el elemento
                 return aux;
             }
             aux = aux.next; //muevo aux al sgte nodo
@@ -256,12 +258,16 @@ public class SinglyLinkedList implements List{
         Node aux = first;
         int i = 0;
         while(aux != null){
-            if(util.Utility.compare(i, index) == 0) {
+            if(Utility.compare(i, index) == 0) {
                 return aux.data;
             }
             i++;
             aux = aux.next;
         }
         return null;
+    }
+
+    public Node getFirstNode() {
+        return this.first;
     }
 }

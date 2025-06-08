@@ -1,12 +1,14 @@
-package domain;
+package ucr.proyectoalgoritmos.graph;
 
-import domain.list.ListException;
-import domain.list.Node;
-import domain.list.SinglyLinkedList;
-import domain.queue.LinkedQueue;
-import domain.queue.QueueException;
-import domain.stack.LinkedStack;
-import domain.stack.StackException;
+
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
+import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue;
+import ucr.proyectoalgoritmos.Domain.list.Node;
+import ucr.proyectoalgoritmos.Domain.queue.QueueException;
+import ucr.proyectoalgoritmos.Domain.stack.LinkedStack;
+import ucr.proyectoalgoritmos.Domain.stack.StackException;
+import ucr.proyectoalgoritmos.util.Utility;
 
 public class SinglyLinkedListGraph implements Graph {
     private SinglyLinkedList vertexList; //lista enlazada de vértices
@@ -74,7 +76,7 @@ public class SinglyLinkedListGraph implements Graph {
         if (isEmpty()) return -1;
         for (int i = 1; i <= vertexList.size(); i++) {
             Vertex vertex = (Vertex) vertexList.getNode(i).data;
-            if (util.Utility.compare(vertex.data, element) == 0) {
+            if (Utility.compare(vertex.data, element) == 0) {
                 return i;
             }
         }
@@ -151,7 +153,7 @@ public class SinglyLinkedListGraph implements Graph {
                 }
                 break;
             case "addWeight":
-                domain.list.Node edgeNode = vertex.edgesList.getNode(new EdgeWeight(b, null));
+                Node edgeNode = vertex.edgesList.getNode(new EdgeWeight(b, null));
                 if (edgeNode != null) {
                     ((EdgeWeight) edgeNode.getData()).setWeight(weight);
                 }
@@ -164,7 +166,7 @@ public class SinglyLinkedListGraph implements Graph {
     }
 
     @Override
-    public String dfs() throws GraphException, StackException, ListException {
+    public String dfs() throws GraphException, ListException, StackException {
         if (isEmpty()) throw new GraphException("Singly Linked List Graph is Empty for DFS");
         setVisited(false);
         Vertex vertex = (Vertex) vertexList.getNode(1).data;
@@ -221,7 +223,7 @@ public class SinglyLinkedListGraph implements Graph {
         Vertex vertex1 = (Vertex) vertexList.getNode(index).data;
         for (int i = 1; i <= vertexList.size(); i++) {
             Vertex vertex2 = (Vertex) vertexList.getNode(i).data;
-            if (util.Utility.compare(vertex1.data, vertex2.data) != 0 &&
+            if (Utility.compare(vertex1.data, vertex2.data) != 0 &&
                     !vertex2.edgesList.isEmpty() && vertex2.edgesList
                     .contains(new EdgeWeight(vertex1.data, null))
                     && !vertex2.isVisited())
@@ -243,7 +245,7 @@ public class SinglyLinkedListGraph implements Graph {
                 if (vertex.edgesList != null && !vertex.edgesList.isEmpty()) {
                     result += "        EDGES AND WEIGHTS: ";
                     // CAMBIO AQUI: Usa getFirstNode() para obtener el objeto Node
-                    domain.list.Node currentEdgeNode = vertex.edgesList.getFirstNode(); // AHORA ES CORRECTO
+                    Node currentEdgeNode = vertex.edgesList.getFirstNode(); // AHORA ES CORRECTO
                     while (currentEdgeNode != null) {
                         EdgeWeight ew = (EdgeWeight) currentEdgeNode.getData();
                         result += "[" + ew.getEdge() + ", " + ew.getWeight() + "] ";
@@ -282,7 +284,7 @@ public class SinglyLinkedListGraph implements Graph {
         Vertex vertexA = (Vertex) vertexList.getNode(indexA).data;
 
         if (vertexA != null && vertexA.edgesList != null) {
-            domain.list.Node edgeNode = vertexA.edgesList.getNode(new EdgeWeight(b, null));
+            Node edgeNode = vertexA.edgesList.getNode(new EdgeWeight(b, null));
             if (edgeNode != null) {
                 return ((EdgeWeight) edgeNode.getData()).getWeight();
             }

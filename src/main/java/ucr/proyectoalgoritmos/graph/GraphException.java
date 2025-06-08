@@ -1,4 +1,4 @@
-package domain;
+package ucr.proyectoalgoritmos.graph;
 
 public class GraphException extends Exception {
 

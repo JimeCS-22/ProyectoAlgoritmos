@@ -1,8 +1,9 @@
-package domain;
+package ucr.proyectoalgoritmos.graph;
 
-import domain.list.ListException;
-import domain.queue.QueueException;
-import domain.stack.StackException;
+
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.queue.QueueException;
+import ucr.proyectoalgoritmos.Domain.stack.StackException;
 
 public interface Graph {
     // devuelve el número de vértices que tiene el grafo

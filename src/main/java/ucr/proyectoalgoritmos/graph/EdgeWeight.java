@@ -1,4 +1,6 @@
-package domain;
+package ucr.proyectoalgoritmos.graph;
+
+import ucr.proyectoalgoritmos.util.Utility;
 
 import java.util.Objects; // Import for Objects.hash
 
@@ -42,7 +44,7 @@ public class EdgeWeight {
         if (o == null || getClass() != o.getClass()) return false;
         EdgeWeight that = (EdgeWeight) o;
         // Assuming util.Utility.compare is available and correctly compares Objects
-        return util.Utility.compare(this.edge, that.edge) == 0;
+        return Utility.compare(this.edge, that.edge) == 0;
         // If util.Utility.compare is not available or suitable, use Objects.equals
         // return Objects.equals(this.edge, that.edge);
     }

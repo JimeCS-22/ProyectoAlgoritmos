@@ -1,6 +1,6 @@
 package ucr.proyectoalgoritmos.util;
 
-import domain.EdgeWeight;
+import ucr.proyectoalgoritmos.graph.EdgeWeight;
 
 import java.text.DecimalFormat;
 import java.util.Random;

@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package ucr.proyectoalgoritmos.Domain.queue;
+
+import ucr.proyectoalgoritmos.util.Utility;
+
 /**
  *
  * @author Profesor Lic. Gilberth Chaves A.
@@ -48,7 +51,7 @@ public class LinkedQueue implements Queue {
         int pos1=1;
         int pos2=-1; //si es -1 no existe
         while(!isEmpty()){
-            if(util.Utility.compare(front(), element)==0){
+            if(Utility.compare(front(), element)==0){
                 pos2 = pos1;
             }
             aux.enQueue(deQueue());
@@ -130,7 +133,7 @@ public class LinkedQueue implements Queue {
         LinkedQueue aux = new LinkedQueue();
         boolean finded = false;
         while(!isEmpty()){
-            if(util.Utility.compare(front(), element)==0){
+            if(Utility.compare(front(), element)==0){
                 finded = true;
             }
             aux.enQueue(deQueue());

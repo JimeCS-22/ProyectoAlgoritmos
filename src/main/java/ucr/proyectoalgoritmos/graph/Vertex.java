@@ -1,6 +1,8 @@
-package domain;
+package ucr.proyectoalgoritmos.graph;
 
-import domain.list.SinglyLinkedList; // Asegúrate de que esta ruta sea correcta para tu clase SinglyLinkedList
+ // Asegúrate de que esta ruta sea correcta para tu clase SinglyLinkedList
+
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 
 public class Vertex {
     public Object data; // Los datos almacenados en el vértice (ej. nombre del personaje histórico)

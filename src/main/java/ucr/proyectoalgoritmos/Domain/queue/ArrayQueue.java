@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package ucr.proyectoalgoritmos.Domain.queue;
+
+import ucr.proyectoalgoritmos.util.Utility;
+
 /**
  *
  * @author Profesor Lic. Gilberth Chaves A.
@@ -62,7 +65,7 @@ public class ArrayQueue implements Queue{
         int index1=0;
         int index2=-1; //si es -1 no existe
         while(!isEmpty()){
-            if(util.Utility.compare(front(), element)==0){
+            if(Utility.compare(front(), element)==0){
                 index2 = index1;
             }
             aux.enQueue(deQueue());
@@ -129,7 +132,7 @@ public class ArrayQueue implements Queue{
         ArrayQueue aux = new ArrayQueue(size());
         boolean finded = false; //encontrado
         while(!isEmpty()){
-            if(util.Utility.compare(front(), element)==0){
+            if(Utility.compare(front(), element)==0){
                 finded = true;
             }
             aux.enQueue(deQueue());
