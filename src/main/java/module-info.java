@@ -5,4 +5,6 @@ module ucr.proyectoalgoritmos {
 
     opens ucr.proyectoalgoritmos to javafx.fxml;
     exports ucr.proyectoalgoritmos;
+    exports ucr.proyectoalgoritmos.Controller;
+    opens ucr.proyectoalgoritmos.Controller to javafx.fxml;
 }
