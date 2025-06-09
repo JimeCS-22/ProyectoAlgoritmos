@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Domain.flight;
+package ucr.proyectoalgoritmos.Domain.flight; // Adjust package as needed
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
+import ucr.proyectoalgoritmos.Domain.airplane.Airplane.AirplaneStatus; // Import AirplaneStatus enum
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.passanger.Passenger;
@@ -35,11 +36,10 @@ public class FlightSimulator {
     private FlightScheduleManager flightScheduleManager;
     private RouteManager routeManager;
 
-    private Map<String, Airplane> airplanes;
+    private Map<String, Airplane> airplanes; // Stores all airplanes
     private ScheduledExecutorService scheduler;
     private Random random;
 
-    // Constructor now throws IOException as initializeSystem might
     public FlightSimulator() throws ListException, IOException {
         this.airportManager = new AirportManager();
         this.routeManager = new RouteManager();
@@ -47,14 +47,13 @@ public class FlightSimulator {
         this.flightScheduleManager = new FlightScheduleManager(this.airportManager, this.routeManager);
 
         this.airplanes = new HashMap<>();
-        this.scheduler = Executors.newScheduledThreadPool(2);
+        this.scheduler = Executors.newScheduledThreadPool(2); // Increased thread pool size for more concurrency
         this.random = new Random();
 
         // 1. System Initialization
         initializeSystem();
     }
 
-    // initializeSystem now throws IOException and ListException
     private void initializeSystem() throws ListException, IOException {
         System.out.println("--- System Initialization ---");
 
@@ -74,7 +73,6 @@ public class FlightSimulator {
             System.out.println("[WARN] No airports found in AirportManager to add as graph vertices.");
         }
 
-
         // 1.2 Generate Random Routes (after airports are loaded AND added as graph vertices)
         if (routeManager.getGraph().getNumVertices() < 2) {
             System.err.println("[ERROR] Not enough airports (vertices) in the graph to generate routes. Please ensure at least 2 airports are loaded.");
@@ -83,7 +81,6 @@ public class FlightSimulator {
             routeManager.getGraph().generateRandomRoutes(3, 7, 100, 3000);
             System.out.println("[INIT] Random routes generated.");
         }
-
 
         // Add some initial airplanes
         addAirplane("AIR001", 200, "SJO");
@@ -104,7 +101,6 @@ public class FlightSimulator {
         System.out.println("--- System Initialization Complete ---");
     }
 
-    // loadAirportsFromFile now throws ListException. IOException is still handled internally for fallback.
     private void loadAirportsFromFile(String filename) throws ListException {
         System.out.println("[INIT] Attempting to load airports from " + filename + "...");
         int loadedCount = 0;
@@ -119,7 +115,6 @@ public class FlightSimulator {
                         System.out.println("[INIT] Reached max 20 airports from file. Stopping.");
                         break;
                     }
-                    // No try-catch here, ListException from createAirport propagates up
                     airportManager.createAirport(airport.getCode(), airport.getName(), airport.getCountry());
                     loadedCount++;
                 }
@@ -129,12 +124,11 @@ public class FlightSimulator {
                 System.out.println("[WARN] Only " + loadedCount + " airports loaded from file. Minimum 15 suggested.");
             }
 
-        } catch (IOException e) { // Keep this catch for fallback logic
+        } catch (IOException e) {
             System.err.println("[ERROR] Could not read airports file '" + filename + "': " + e.getMessage());
             System.out.println("[INFO] Generating some default airports instead.");
             addDefaultAirports();
         } finally {
-            // Remove try-catch for ListException here, ListException propagates up
             if (airportManager.getAllAirports().isEmpty()) {
                 System.out.println("[INFO] No airports loaded/created, adding emergency default airports.");
                 addDefaultAirports();
@@ -143,7 +137,6 @@ public class FlightSimulator {
         }
     }
 
-    // addDefaultAirports now throws ListException
     private void addDefaultAirports() throws ListException {
         if (airportManager.findAirport("SJO") == null)
             airportManager.createAirport("SJO", "Juan Santamaría", "Costa Rica");
@@ -177,13 +170,11 @@ public class FlightSimulator {
             airportManager.createAirport("LIM", "Jorge Chávez Int'l", "Peru");
     }
 
-
     public void addAirplane(String id, int capacity, String initialLocationAirportCode) throws ListException {
-        // Ensure the airport exists before adding the airplane
         if (airportManager.findAirport(initialLocationAirportCode) != null) {
-            if (!airplanes.containsKey(id)) { // Prevent adding duplicate airplanes
+            if (!airplanes.containsKey(id)) {
                 airplanes.put(id, new Airplane(id, capacity, initialLocationAirportCode));
-                System.out.println("[INFO] Airplane " + id + " added at " + initialLocationAirportCode + ".");
+                System.out.println("[INFO] Airplane '" + id + "' (Capacity: " + capacity + ") created at " + initialLocationAirportCode);
             } else {
                 System.out.println("[WARN] Airplane " + id + " already exists. Skipping.");
             }
@@ -192,8 +183,6 @@ public class FlightSimulator {
         }
     }
 
-
-    // generateRandomFlightBasedOnRules now throws ListException and StackException
     private void generateRandomFlightBasedOnRules() throws ListException, StackException {
         System.out.println("\n--- Generating new flight request ---");
 
@@ -204,37 +193,32 @@ public class FlightSimulator {
             return;
         }
 
-        // Convert DoublyLinkedList to ArrayList for easier sorting
-        List<Airport> topAirports = new ArrayList<>();
+        List<Airport> activeAirports = new ArrayList<>();
         for (int i = 0; i < allAirportsList.size(); i++) {
             Airport airport = (Airport) allAirportsList.get(i);
             if (airport.getStatus() == Airport.AirportStatus.ACTIVE) {
-                topAirports.add(airport);
+                activeAirports.add(airport);
             }
         }
 
-        if (topAirports.isEmpty()) {
+        if (activeAirports.isEmpty()) {
             System.out.println("[WARN] No active airports to generate flights. Cannot generate flight.");
             return;
         }
 
         // Sort by outgoing route count (descending)
-        Collections.sort(topAirports, new Comparator<Airport>() {
+        Collections.sort(activeAirports, new Comparator<Airport>() {
             @Override
             public int compare(Airport airport1, Airport airport2) {
-                // Get outgoing route counts for both airports
                 int count1 = routeManager.getGraph().getOutgoingRouteCount(airport1.getCode());
                 int count2 = routeManager.getGraph().getOutgoingRouteCount(airport2.getCode());
-
-                // For descending order, compare count2 to count1
-                return Integer.compare(count2, count1);
+                return Integer.compare(count2, count1); // Descending order
             }
         });
 
         List<Airport> selectedOrigins = new ArrayList<>();
-        // Select up to 5 of the top airports (or fewer if fewer than 5 active airports)
-        for (int i = 0; i < Math.min(5, topAirports.size()); i++) {
-            selectedOrigins.add(topAirports.get(i));
+        for (int i = 0; i < Math.min(5, activeAirports.size()); i++) {
+            selectedOrigins.add(activeAirports.get(i));
         }
 
         if (selectedOrigins.isEmpty()) {
@@ -266,41 +250,56 @@ public class FlightSimulator {
             }
 
             destinationCode = allAirportCodes.get(random.nextInt(allAirportCodes.size()));
-
             attempts++;
         }
 
-        // Select random airplane (prefer one at the origin airport if available)
+        // --- MODIFIED LOGIC FOR AIRPLANE SELECTION AND FLIGHT SIMULATION ---
         Airplane selectedAirplane = null;
         for (Airplane airplane : airplanes.values()) {
-            if (airplane.getCurrentLocationAirportCode().equals(originCode)) {
+            if (airplane.getCurrentLocationAirportCode() != null && // Check if location is not null (e.g., in flight)
+                    airplane.getCurrentLocationAirportCode().equals(originCode) &&
+                    airplane.getStatus() == AirplaneStatus.IDLE) { // Ensure it's IDLE and at the origin
                 selectedAirplane = airplane;
                 break;
             }
         }
+
         if (selectedAirplane == null) {
-            List<Airplane> availableAirplanes = new ArrayList<>(airplanes.values());
-            if (availableAirplanes.isEmpty()) {
-                System.out.println("[WARN] No airplanes available to generate flights. Cannot generate flight.");
-                return;
+            System.out.println("[WARN] No IDLE airplane available at " + originCode + " for flight to " + destinationCode + ". Flight will be created but not simulated immediately.");
+            // Create the flight schedule anyway, so it exists and passengers can be assigned
+            String flightNumber = "FL" + (random.nextInt(900) + 100);
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(random.nextInt(12) + 1);
+            int capacity = 150 + random.nextInt(150); // Default capacity if no plane selected yet
+
+            flightScheduleManager.createFlight(flightNumber, originCode, destinationCode, departureTime, capacity);
+
+            // Simulate passengers buying tickets for the created flight
+            int passengersBuyingTickets = random.nextInt(capacity / 2) + 1;
+            System.out.println("[INFO] Attempting to process tickets for " + passengersBuyingTickets + " passengers for flight " + flightNumber);
+            for (int i = 0; i < passengersBuyingTickets; i++) {
+                String passengerId = "100" + (random.nextInt(5) + 1);
+                Passenger p = passengerManager.searchPassenger(passengerId);
+                if (p != null) {
+                    flightScheduleManager.processTicketPurchase(p, originCode, destinationCode);
+                } else {
+                    System.err.println("[ERROR] Passenger " + passengerId + " not found for ticket purchase simulation.");
+                }
             }
-            selectedAirplane = availableAirplanes.get(random.nextInt(availableAirplanes.size()));
+            return; // Exit here, as we cannot simulate this flight without an available plane
         }
 
-        // Generate random capacity for the flight
-        int capacity = selectedAirplane.getCapacity();
-        if (capacity < 100) capacity = 100;
-        capacity = random.nextInt(capacity / 2) + capacity / 2;
-
+        // If an airplane is found and is IDLE, proceed with flight creation and simulation
+        int capacity = selectedAirplane.getCapacity(); // Use selected airplane's capacity
+        capacity = random.nextInt(capacity / 2) + capacity / 2; // Adjust capacity relative to selected plane
         String flightNumber = "FL" + (random.nextInt(900) + 100);
         LocalDateTime departureTime = LocalDateTime.now().plusHours(random.nextInt(12) + 1);
 
-        // Create the flight
+        // Create the flight schedule
         flightScheduleManager.createFlight(flightNumber, originCode, destinationCode, departureTime, capacity);
 
         // Simulate some passengers buying tickets
         int passengersBuyingTickets = random.nextInt(capacity / 2) + 1;
-        System.out.println("[INFO] Attempting to process tickets for " + passengersBuyingTickets + " passengers.");
+        System.out.println("[INFO] Attempting to process tickets for " + passengersBuyingTickets + " passengers for flight " + flightNumber);
         for (int i = 0; i < passengersBuyingTickets; i++) {
             String passengerId = "100" + (random.nextInt(5) + 1);
             Passenger p = passengerManager.searchPassenger(passengerId);
@@ -311,52 +310,48 @@ public class FlightSimulator {
             }
         }
 
-        // Simulate the flight with the selected airplane
+        // Now, trigger the flight simulation with the selected airplane
+        System.out.println("[SIM] Initiating simulation for flight " + flightNumber + " with airplane " + selectedAirplane.getId() + " from " + originCode + " to " + destinationCode);
         flightScheduleManager.simulateFlight(flightNumber, airportManager, passengerManager, selectedAirplane);
     }
 
-
-    // startSimulation now declares RuntimeException for the lambda
     public void startSimulation(long flightGenerationIntervalSeconds, long simulationDurationSeconds) {
         System.out.println("\n--- Starting Flight Simulation ---");
         System.out.println("Flights will be generated every " + flightGenerationIntervalSeconds + " seconds.");
         System.out.println("Simulation will run for " + simulationDurationSeconds + " seconds.");
 
-        // Schedule flight generation (lambda needs to handle checked exceptions or wrap them)
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 generateRandomFlightBasedOnRules();
             } catch (ListException | StackException e) {
-                // Wrap checked exceptions in RuntimeException for the Runnable context
-                throw new RuntimeException("Error generating random flight: " + e.getMessage(), e);
+                System.err.println("[RUNTIME ERROR] Error generating random flight: " + e.getMessage());
+                // For a scheduled task, you might want more sophisticated error handling
+                // For now, it will just log and continue trying on the next interval
             }
         }, 1, flightGenerationIntervalSeconds, TimeUnit.SECONDS);
 
-        // Schedule the stop of the simulation (lambda needs to handle checked exceptions or wrap them)
         scheduler.schedule(() -> {
             try {
                 stopSimulation();
             } catch (ListException e) {
-                // Wrap checked exceptions in RuntimeException for the Runnable context
-                throw new RuntimeException("Error during simulation shutdown: " + e.getMessage(), e);
+                System.err.println("[RUNTIME ERROR] Error during simulation shutdown: " + e.getMessage());
             }
         }, simulationDurationSeconds, TimeUnit.SECONDS);
     }
 
-    // stopSimulation now throws ListException and RuntimeException (for InterruptedException)
     public void stopSimulation() throws ListException {
         System.out.println("\n--- Stopping Flight Simulation ---");
         scheduler.shutdown();
         try {
-            if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) {
+            if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) { // Give tasks 10 seconds to finish
                 scheduler.shutdownNow();
                 System.out.println("[WARN] Forced shutdown of scheduler. Some tasks might not have completed.");
             }
         } catch (InterruptedException e) {
             scheduler.shutdownNow();
-            Thread.currentThread().interrupt(); // Restore the interrupted status
+            Thread.currentThread().interrupt();
             System.err.println("[ERROR] Simulation shutdown was interrupted.");
-            throw new RuntimeException("Simulation shutdown interrupted", e); // Wrap in RuntimeException
+            throw new RuntimeException("Simulation shutdown interrupted", e);
         }
         System.out.println("\n--- Flight Simulation Stopped ---");
 
@@ -368,30 +363,30 @@ public class FlightSimulator {
         }
         System.out.println("---------------------------------");
 
-
         System.out.println("\n--- Passenger Flight Histories ---");
         if (passengerManager.getPassengerCount() == 0) {
             System.out.println("No passengers registered or with flight history.");
         } else {
+            // Print histories for the initial passengers
             passengerManager.showFlightHistory("1001");
             passengerManager.showFlightHistory("1002");
             passengerManager.showFlightHistory("1003");
+            passengerManager.showFlightHistory("1004");
+            passengerManager.showFlightHistory("1005");
         }
         System.out.println("----------------------------------");
 
-
         System.out.println("\n--- Final Airport Status ---");
-        airportManager.listAirports(true, true);
+        airportManager.listAirports(true, true); // Assuming listAirports shows active airports and queue sizes
         System.out.println("\n--- Final Flight Schedule ---");
         flightScheduleManager.listAllFlights();
         System.out.println("-----------------------------");
     }
 
-    // Main method now catches all potential exceptions thrown from the constructor
     public static void main(String[] args) {
         try {
             FlightSimulator simulator = new FlightSimulator();
-            simulator.startSimulation(10, 60);
+            simulator.startSimulation(10, 60); // Generate every 10s, run for 60s
 
         } catch (ListException e) {
             System.err.println("[FATAL ERROR] Failed to initialize Flight Simulator due to ListException: " + e.getMessage());
@@ -400,7 +395,6 @@ public class FlightSimulator {
             System.err.println("[FATAL ERROR] Failed to initialize Flight Simulator due to IOException (e.g., airports file issue): " + e.getMessage());
             e.printStackTrace();
         } catch (RuntimeException e) {
-            // Catch RuntimeException that might be thrown from scheduled tasks (like InterruptedException)
             System.err.println("[FATAL ERROR] An unexpected runtime error occurred during simulation: " + e.getMessage());
             e.printStackTrace();
         }

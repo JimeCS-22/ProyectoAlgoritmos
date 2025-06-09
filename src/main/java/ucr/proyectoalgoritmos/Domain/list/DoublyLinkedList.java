@@ -84,14 +84,14 @@ public class DoublyLinkedList implements List {
     }
 
     @Override
-    public void remove(Object element) throws ListException {
+    public boolean remove(Object element) throws ListException {
         if (isEmpty())
             throw new ListException("Doubly Linked List is empty");
 
         // Special case: if only one node and it's the one we want to remove
         if (first == last && Utility.compare(first.data, element) == 0) {
             clear();
-            return;
+            return false;
         }
 
         // Case 1: The element to suppress is the first of the list
@@ -103,7 +103,7 @@ public class DoublyLinkedList implements List {
                 last = null; // Update last if list is now empty
             }
             count--; // Decrement count
-            return;
+            return false;
         }
         // Case 2. The element can be in the middle or at the end
         Node aux = first.next; // Start from the second node
@@ -126,6 +126,7 @@ public class DoublyLinkedList implements List {
             // Element not found
             throw new ListException("Element " + element + " does not exist in Doubly Linked List for removal.");
         }
+        return false;
     }
 
     @Override

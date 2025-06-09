@@ -21,7 +21,6 @@ public class FlightHistory { // This is the "history flight" object
         this.airplaneID = airplaneID;
     }
 
-
     public String getOriginAirportCode() { return originAirportCode; }
     public String getDestinationAirportCode() { return destinationAirportCode; }
     public int getPassengersCount() { return passengersCount; }

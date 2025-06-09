@@ -126,12 +126,7 @@ public class DirectedSinglyLinkedListGraph {
         if (index == -1) {
             return 0;
         }
-        try {
-            return adjList.get(index).size();
-        } catch (ListException e) {
-            System.err.println("Error getting outgoing route count for " + airportCode + ": " + e.getMessage());
-            return 0;
-        }
+        return adjList.get(index).size();
     }
 
     public ArrayList<String> getAllAirportCodes() {
