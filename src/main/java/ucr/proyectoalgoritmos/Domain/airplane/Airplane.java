@@ -1,8 +1,7 @@
 package ucr.proyectoalgoritmos.Domain.airplane;
 
-import ucr.proyectoalgoritmos.Domain.flight.Flight;
+import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;
 import ucr.proyectoalgoritmos.Domain.stack.LinkedStack; // Your LinkedStack
-import ucr.proyectoalgoritmos.Domain.list.ListException; // This is for list-specific errors
 import ucr.proyectoalgoritmos.Domain.stack.StackException; // This is for stack-specific errors
 
 public class Airplane {
@@ -42,12 +41,12 @@ public class Airplane {
     }
 
     // Simulate landing, empty passengers, and record flight
-    public void land(String destinationAirportCode, Flight completedFlight) throws StackException { // Accepts the history Flight object
+    public void land(String destinationAirportCode, FlightHistory completedFlightHistory) throws StackException { // Accepts the history Flight object
         this.currentLocationAirportCode = destinationAirportCode; // Update current location
         this.currentPassengers = 0; // Empty passengers
 
         // Assuming LinkedStack.push() can throw StackException if, for example, it has a capacity limit (though typically not for linked implementations)
-        this.flightHistory.push(completedFlight); // Record flight in the stack
+        this.flightHistory.push(completedFlightHistory); // Record flight in the stack
 
         System.out.println("[LANDING] Airplane " + id + " landed at " + destinationAirportCode + ". Passengers emptied. Flight recorded.");
     }
@@ -72,7 +71,7 @@ public class Airplane {
             // Now print from the tempStack (most recent flight will be popped first)
             while (!tempStack.isEmpty()) {
                 Object flightObj = tempStack.pop();
-                if (flightObj instanceof Flight) { // Ensure it's a Flight object
+                if (flightObj instanceof FlightHistory) { // Ensure it's a Flight object
                     System.out.println("  " + flightObj); // Assumes Flight has a good toString()
                 }
                 // Push back to original stack to restore its state

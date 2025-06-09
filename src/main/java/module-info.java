@@ -7,7 +7,7 @@ module ucr.proyectoalgoritmos {
     opens ucr.proyectoalgoritmos.Domain.aeropuetos to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.airplane to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.passanger to com.google.gson;
-    opens ucr.proyectoalgoritmos.Domain.flight to com.google.gson;
+    opens ucr.proyectoalgoritmos.Domain.flight;
     opens ucr.proyectoalgoritmos.Domain.list to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.queue to com.google.gson; // <--- ADD THIS NEW CRITICAL LINE!
     opens ucr.proyectoalgoritmos.route to com.google.gson;

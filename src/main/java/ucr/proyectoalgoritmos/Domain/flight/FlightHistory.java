@@ -3,7 +3,7 @@ package ucr.proyectoalgoritmos.Domain.flight; // Adjust package as needed
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Flight { // This is the "history flight" object
+public class FlightHistory { // This is the "history flight" object
     private String originAirportCode;
     private String destinationAirportCode;
     private int passengersCount;
@@ -11,8 +11,8 @@ public class Flight { // This is the "history flight" object
     private LocalDateTime arrivalTime;
     private String airplaneID;
 
-    public Flight(String originAirportCode, String destinationAirportCode, int passengersCount,
-                  LocalDateTime departureTime, LocalDateTime arrivalTime, String airplaneID) {
+    public FlightHistory(String originAirportCode, String destinationAirportCode, int passengersCount,
+                         LocalDateTime departureTime, LocalDateTime arrivalTime, String airplaneID) {
         this.originAirportCode = originAirportCode;
         this.destinationAirportCode = destinationAirportCode;
         this.passengersCount = passengersCount;

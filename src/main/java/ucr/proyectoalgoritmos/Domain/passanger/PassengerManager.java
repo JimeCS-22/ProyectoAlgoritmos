@@ -2,7 +2,7 @@ package ucr.proyectoalgoritmos.Domain.passanger; // Adjust package
 
 import ucr.proyectoalgoritmos.Domain.AVL;
 import ucr.proyectoalgoritmos.Domain.list.ListException; // For list errors in flight history
-import ucr.proyectoalgoritmos.Domain.flight.Flight; // For adding to history
+import ucr.proyectoalgoritmos.Domain.flight.FlightHistory; // For adding to history
 
 public class PassengerManager {
     private AVL passengerTree; // Stores Passenger objects
@@ -61,10 +61,10 @@ public class PassengerManager {
     }
 
     // Add a flight to a passenger's history (called after flight completion)
-    public void addFlightToPassengerHistory(String passengerId, Flight completedFlight) {
+    public void addFlightToPassengerHistory(String passengerId, FlightHistory completedFlightHistory) {
         Passenger passenger = searchPassenger(passengerId);
         if (passenger != null) {
-            passenger.addFlightToHistory(completedFlight);
+            passenger.addFlightToHistory(completedFlightHistory);
         } else {
             System.err.println("[ERROR] Passenger " + passengerId + " not found to update flight history.");
         }

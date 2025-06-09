@@ -1,7 +1,8 @@
 package ucr.proyectoalgoritmos.Domain.passanger; // Adjust package
 
+import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // To store flight history
-import ucr.proyectoalgoritmos.Domain.flight.Flight; // Using the history Flight object
+
 
 public class Passenger implements Comparable<Passenger> { // Implement Comparable for AVL Tree
     private String id; // Cédula (ID number)
@@ -27,8 +28,8 @@ public class Passenger implements Comparable<Passenger> { // Implement Comparabl
     public void setNationality(String nationality) { this.nationality = nationality; }
 
     // Add a flight to the passenger's history
-    public void addFlightToHistory(Flight flight) { // Strong type checking for Flight object
-        this.flightHistory.add(flight);
+    public void addFlightToHistory(FlightHistory flightHistory) { // Strong type checking for Flight object
+        this.flightHistory.add(flightHistory);
     }
 
     // For comparison in AVL (based on ID)

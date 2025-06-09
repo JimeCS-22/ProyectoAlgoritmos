@@ -10,11 +10,11 @@ import java.util.Arrays;
 import java.util.Random; // For random graph generation
 
 public class DirectedSinglyLinkedListGraph {
-    private Map<String, Integer> airportCodeToIndexMap;
+    private final Map<String, Integer> airportCodeToIndexMap;
     private String[] indexToAirportCodeArray; // For reverse lookup
-    private ArrayList<SinglyLinkedList> adjList; // Adjacency list: list of lists of edges (int[] {dest_idx, weight})
+    private final ArrayList<SinglyLinkedList> adjList; // Adjacency list: list of lists of edges (int[] {dest_idx, weight})
     private int numVertices;
-    private Random random;
+    private final Random random;
 
     public DirectedSinglyLinkedListGraph() {
         this.airportCodeToIndexMap = new HashMap<>();

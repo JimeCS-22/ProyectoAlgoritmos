@@ -1,14 +1,14 @@
 package ucr.proyectoalgoritmos.util;
 
-
+import ucr.proyectoalgoritmos.Domain.passanger.Passenger; // Import your Passenger class
 
 import java.text.DecimalFormat;
 import java.util.Random;
 
 public class Utility {
 
-    //static init
     static {
+        // static initialization block, currently empty
     }
 
     public static String format(double value){
@@ -29,29 +29,37 @@ public class Utility {
     }
 
     public static int compare(Object a, Object b) {
+        // Handle null cases explicitly for robustness
+        if (a == null && b == null) return 0;
+        if (a == null) return -1; // a is "less" than b if a is null
+        if (b == null) return 1;  // a is "greater" than b if b is null
+
         switch (instanceOf(a, b)){
             case "Integer":
                 Integer int1 = (Integer)a; Integer int2 = (Integer)b;
                 return int1 < int2 ? -1 : int1 > int2 ? 1 : 0; //0 == equal
             case "String":
                 String st1 = (String)a; String st2 = (String)b;
-                return st1.compareTo(st2)<0 ? -1 : st1.compareTo(st2) > 0 ? 1 : 0;
+                return st1.compareTo(st2); // compareTo already returns -1, 0, or 1
             case "Character":
                 Character c1 = (Character)a; Character c2 = (Character)b;
-                return c1.compareTo(c2)<0 ? -1 : c1.compareTo(c2)>0 ? 1 : 0;
-
-           // case "EdgeWeight":
+                return c1.compareTo(c2); // compareTo already returns -1, 0, or 1
+            case "Passenger": // --- ADDED THIS CASE ---
+                Passenger p1 = (Passenger) a;
+                Passenger p2 = (Passenger) b;
+                return p1.getId().compareTo(p2.getId()); // Compare passengers by their ID
+            // case "EdgeWeight":
             //    EdgeWeight ew1 = (EdgeWeight) a ; EdgeWeight ew2 = (EdgeWeight) b;
-              //  return compare(ew1.getEdge(), ew2.getEdge());
-
+            //    return compare(ew1.getEdge(), ew2.getEdge());
         }
-        return 2; //Unknown
+        return 2; // Unknown type comparison - indicates a problem
     }
 
     private static String instanceOf(Object a, Object b) {
         if(a instanceof Integer && b instanceof Integer) return "Integer";
         if(a instanceof String && b instanceof String) return "String";
         if(a instanceof Character && b instanceof Character) return "Character";
+        if (a instanceof Passenger && b instanceof Passenger) return "Passenger"; // --- ADDED THIS LINE ---
         //if (a instanceof EdgeWeight && b instanceof EdgeWeight) return "EdgeWeight";
         return "Unknown";
     }
@@ -102,7 +110,4 @@ public class Utility {
         int randomIndex = random.nextInt(Alphabet.length);
         return Alphabet[randomIndex];
     }
-
-
-
 }

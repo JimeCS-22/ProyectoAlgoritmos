@@ -58,7 +58,7 @@ public class FlightScheduleManager {
             throw new ListException("Flight number " + flightNumber + " already exists.");
         }
 
-        Flight2 newFlight = new Flight2(flightNumber, originCode, destinationCode, departureTime, capacity);
+        FlightSchedule newFlight = new FlightSchedule(flightNumber, originCode, destinationCode, departureTime, capacity);
         scheduledFlights.add(newFlight); // Add to the Circular Doubly Linked List
         System.out.println("[INFO] Flight created: " + newFlight.getFlightNumber() + " from " + originCode + " to " + destinationCode);
     }
@@ -73,13 +73,13 @@ public class FlightScheduleManager {
         }
 
         // Find available flight with capacity
-        Flight2 availableFlight = null;
+        FlightSchedule availableFlight = null;
 
         for (int i = 0; i < scheduledFlights.size(); i++) {
-            Flight2 flight = (Flight2) scheduledFlights.get(i);
+            FlightSchedule flight = (FlightSchedule) scheduledFlights.get(i);
             if (flight.getOriginAirportCode().equalsIgnoreCase(originCode) &&
                     flight.getDestinationAirportCode().equalsIgnoreCase(destinationCode) &&
-                    flight.getStatus() == Flight2.FlightStatus.SCHEDULED && // Use Flight.FlightStatus
+                    flight.getStatus() == FlightSchedule.FlightStatus.SCHEDULED && // Use Flight.FlightStatus
                     flight.getAvailableSeats() > 0) {
                 availableFlight = flight;
                 break; // Found one, take the first available
@@ -115,13 +115,13 @@ public class FlightScheduleManager {
         }
 
         // Find a suitable flight that is SCHEDULED and has capacity
-        Flight2 targetFlight = null;
+        FlightSchedule targetFlight = null;
 
         for (int i = 0; i < scheduledFlights.size(); i++) {
-            Flight2 flight = (Flight2) scheduledFlights.get(i);
+            FlightSchedule flight = (FlightSchedule) scheduledFlights.get(i);
             if (flight.getOriginAirportCode().equalsIgnoreCase(originCode) &&
                     flight.getDestinationAirportCode().equalsIgnoreCase(destinationCode) &&
-                    flight.getStatus() == Flight2.FlightStatus.SCHEDULED &&
+                    flight.getStatus() == FlightSchedule.FlightStatus.SCHEDULED &&
                     flight.getAvailableSeats() > 0) {
                 targetFlight = flight;
                 break;
@@ -154,7 +154,7 @@ public class FlightScheduleManager {
 
 
     // c. Show active and completed flights
-    public void listFlights(Flight2.FlightStatus statusFilter) throws ListException {
+    public void listFlights(FlightSchedule.FlightStatus statusFilter) throws ListException {
         // Removed duplicate `ucr.proyectoalgoritmos.Domain.Circular.ListException`
         if (scheduledFlights.isEmpty()) {
             System.out.println("No flights to list.");
@@ -163,7 +163,7 @@ public class FlightScheduleManager {
         System.out.println("\n--- " + (statusFilter != null ? statusFilter.name() : "All") + " Flights ---");
 
         for (int i = 0; i < scheduledFlights.size(); i++) {
-            Flight2 flight = (Flight2) scheduledFlights.get(i);
+            FlightSchedule flight = (FlightSchedule) scheduledFlights.get(i);
             if (statusFilter == null || flight.getStatus() == statusFilter) {
                 System.out.println(flight);
             }
@@ -181,12 +181,12 @@ public class FlightScheduleManager {
     // This method now also handles updating passenger history
     public void simulateFlight(String flightNumber, AirportManager airportManager, PassengerManager passengerManager, Airplane airplane) throws ListException, StackException {
         // Removed duplicate `ucr.proyectoalgoritmos.Domain.Circular.ListException`
-        Flight2 flight = findFlight(flightNumber);
+        FlightSchedule flight = findFlight(flightNumber);
         if (flight == null) {
             throw new ListException("Flight " + flightNumber + " not found for simulation.");
         }
 
-        if (flight.getStatus() != Flight2.FlightStatus.SCHEDULED) {
+        if (flight.getStatus() != FlightSchedule.FlightStatus.SCHEDULED) {
             System.out.println("[SIM] Flight " + flightNumber + " is not in SCHEDULED status. Cannot simulate.");
             return;
         }
@@ -197,7 +197,7 @@ public class FlightScheduleManager {
                 flight.getDestinationAirportCode());
 
         if (routeDuration == Integer.MAX_VALUE) {
-            flight.setStatus(Flight2.FlightStatus.CANCELLED); // Mark as cancelled if unreachable
+            flight.setStatus(FlightSchedule.FlightStatus.CANCELLED); // Mark as cancelled if unreachable
             throw new ListException("No route found from " + flight.getOriginAirportCode() + " to " + flight.getDestinationAirportCode() + ". Flight " + flightNumber + " cancelled.");
         }
 
@@ -226,7 +226,7 @@ public class FlightScheduleManager {
         airplane.boardPassengers(flight.getOccupancy()); // Transfer assigned passengers from Flight object to Airplane object
 
 
-        flight.setStatus(Flight2.FlightStatus.ACTIVE);
+        flight.setStatus(FlightSchedule.FlightStatus.ACTIVE);
         airplane.takeOff(); // Airplane takes off
 
         // --- Console Animation Logic ---
@@ -251,7 +251,7 @@ public class FlightScheduleManager {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 System.err.println("[SIM] Flight animation interrupted for " + flightNumber + ".");
-                flight.setStatus(Flight2.FlightStatus.CANCELLED);
+                flight.setStatus(FlightSchedule.FlightStatus.CANCELLED);
                 System.out.println("\n-----------------------------------------------------");
                 return;
             }
@@ -261,20 +261,20 @@ public class FlightScheduleManager {
         // --- END Console Animation Logic ---
 
         // --- 4. Flight Simulation: Upon arrival, empty the airplane's stack and restart the process. ---
-        flight.setStatus(Flight2.FlightStatus.COMPLETED);
+        flight.setStatus(FlightSchedule.FlightStatus.COMPLETED);
         System.out.println("[SIM] Flight " + flightNumber + " has landed at " + flight.getDestinationAirportCode() + "!");
 
         // Create the history Flight object for the airplane and passengers
         // Using `ucr.proyectoalgoritmos.Domain.flight.Flight` to avoid name collision with `Flight2`
-        Flight historyFlight =
-                new ucr.proyectoalgoritmos.Domain.flight.Flight( // Make sure this Flight class is what you want for history
+        FlightHistory historyFlightHistory =
+                new FlightHistory( // Make sure this Flight class is what you want for history
                         flight.getOriginAirportCode(), flight.getDestinationAirportCode(),
                         flight.getOccupancy(), flight.getDepartureTime(), LocalDateTime.now(), // Arrival time is now
                         airplane.getId());
 
         // Empty passengers from the flight and airplane
         flight.emptyPassengers(); // Clears assignedPassengers list on the current Flight object
-        airplane.land(flight.getDestinationAirportCode(), historyFlight); // Empties airplane's passenger count, adds flight to airplane's history
+        airplane.land(flight.getDestinationAirportCode(), historyFlightHistory); // Empties airplane's passenger count, adds flight to airplane's history
 
         // Update each passenger's flight history
         try {
@@ -297,7 +297,7 @@ public class FlightScheduleManager {
             SinglyLinkedList passengersOnThisFlight = flight.getAssignedPassengers(); // Get passengers *before* emptying the flight!
             for (int i = 0; i < passengersOnThisFlight.size(); i++) {
                 Passenger p = (Passenger) passengersOnThisFlight.get(i);
-                passengerManager.addFlightToPassengerHistory(p.getId(), historyFlight);
+                passengerManager.addFlightToPassengerHistory(p.getId(), historyFlightHistory);
             }
             flight.emptyPassengers(); // Now empty the flight's passenger list.
             // The above order is crucial.
@@ -310,14 +310,14 @@ public class FlightScheduleManager {
     }
 
     // Helper method to find a flight by number
-    public Flight2 findFlight(String flightNumber) throws ListException {
-        // Removed duplicate `ucr.proyectoalgoritmos.Domain.Circular.ListException`
+    public FlightSchedule findFlight(String flightNumber) throws ListException {
+        // Removed duplicate `ucr.proyecto algoritmos.Domain.Circular.ListException`
         if (scheduledFlights.isEmpty()) {
             return null;
         }
 
         for (int i = 0; i < scheduledFlights.size(); i++) {
-            Flight2 flight = (Flight2) scheduledFlights.get(i);
+            FlightSchedule flight = (FlightSchedule) scheduledFlights.get(i);
             if (flight.getFlightNumber().equalsIgnoreCase(flightNumber)) {
                 return flight;
             }
@@ -326,13 +326,13 @@ public class FlightScheduleManager {
         return null; // Not found
     }
 
-    public Flight getFlightByIndex(int index) throws ListException {
+    public FlightHistory getFlightByIndex(int index) throws ListException {
         // Removed duplicate `ucr.proyectoalgoritmos.Domain.Circular.ListException`
 
         if (index < 0 || index >= scheduledFlights.size()) {
             throw new ListException("Flight index out of bounds: " + index);
         }
-        return (Flight) scheduledFlights.get(index);
+        return (FlightHistory) scheduledFlights.get(index);
 
     }
 }
