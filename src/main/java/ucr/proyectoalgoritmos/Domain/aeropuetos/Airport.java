@@ -1,8 +1,9 @@
-package ucr.proyectoalgoritmos.Domain.aeropuetos; // Adjust package
+package ucr.proyectoalgoritmos.Domain.aeropuetos; // <--- CHANGE THIS LINE from aeropuetos to airport
 
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // Your SinglyLinkedList for departures board
 import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue; // For passenger queue at this airport
 import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.queue.QueueException;
 
 
 public class Airport implements Comparable<Airport> { // Implement Comparable for sorting/searching
@@ -23,7 +24,7 @@ public class Airport implements Comparable<Airport> { // Implement Comparable fo
     }
 
     // --- Getters ---
-    public String getCode() { return code; }
+    public String getCode() { return code; } // This method is indeed here!
     public String getName() { return name; }
     public String getCountry() { return country; }
     public AirportStatus getStatus() { return status; }
@@ -49,14 +50,14 @@ public class Airport implements Comparable<Airport> { // Implement Comparable fo
         this.departuresBoard.remove(flight);
     }
 
-    public void addPassengersToQueue(int count) throws ListException {
+    public void addPassengersToQueue(int count) throws ListException, QueueException {
         for (int i = 0; i < count; i++) {
-           passengerQueue.offer(new Object()); // Add a dummy passenger object
+            passengerQueue.offer(new Object()); // Add a dummy passenger object
         }
         System.out.println("[QUEUE] " + count + " passengers added to " + name + " queue. Total: " + passengerQueue.size());
     }
 
-    public int boardPassengers(int capacity) throws ListException {
+    public int boardPassengers(int capacity) throws ListException, QueueException {
         int boardedCount = 0;
         while (!passengerQueue.isEmpty() && boardedCount < capacity) {
             passengerQueue.poll(); // Remove a passenger from the queue

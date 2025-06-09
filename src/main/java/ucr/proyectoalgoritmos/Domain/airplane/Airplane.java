@@ -2,8 +2,8 @@ package ucr.proyectoalgoritmos.Domain.airplane;
 
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.Domain.stack.LinkedStack; // Your LinkedStack
-import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.Domain.stack.StackException;
+import ucr.proyectoalgoritmos.Domain.list.ListException; // This is for list-specific errors
+import ucr.proyectoalgoritmos.Domain.stack.StackException; // This is for stack-specific errors
 
 public class Airplane {
     private String id;
@@ -46,30 +46,44 @@ public class Airplane {
         this.currentLocationAirportCode = destinationAirportCode; // Update current location
         this.currentPassengers = 0; // Empty passengers
 
-            this.flightHistory.push(completedFlight); // Record flight in the stack
+        // Assuming LinkedStack.push() can throw StackException if, for example, it has a capacity limit (though typically not for linked implementations)
+        this.flightHistory.push(completedFlight); // Record flight in the stack
 
         System.out.println("[LANDING] Airplane " + id + " landed at " + destinationAirportCode + ". Passengers emptied. Flight recorded.");
     }
 
+
     // Method to print flight history
-    public void printFlightHistory() throws StackException {
+    public void printFlightHistory() { // Removed 'throws StackException' as it's now handled internally
         System.out.println("\n--- Flight History for Airplane " + id + " ---");
 
+        try {
             if (flightHistory.isEmpty()) {
                 System.out.println("  No flights recorded yet.");
                 return;
             }
-            LinkedStack tempStack = new LinkedStack(); // Use a temporary stack to print in correct order (FIFO style)
+
+            // Use a temporary stack to print in correct order (FIFO style from LIFO stack)
+            LinkedStack tempStack = new LinkedStack();
             while (!flightHistory.isEmpty()) {
                 tempStack.push(flightHistory.pop());
             }
+
+            // Now print from the tempStack (most recent flight will be popped first)
             while (!tempStack.isEmpty()) {
                 Object flightObj = tempStack.pop();
                 if (flightObj instanceof Flight) { // Ensure it's a Flight object
-                    System.out.println("  " + flightObj);
+                    System.out.println("  " + flightObj); // Assumes Flight has a good toString()
                 }
-                flightHistory.push(flightObj); // Push back to original stack
+                // Push back to original stack to restore its state
+                flightHistory.push(flightObj);
             }
+        } catch (StackException e) {
+            // Catch StackException for pop() or push() operations if your LinkedStack throws them
+            System.err.println("[ERROR] Error accessing flight history for airplane " + id + ": " + e.getMessage());
+        } catch (Exception e) { // Catch any other unexpected exceptions
+            System.err.println("[ERROR] An unexpected error occurred while printing flight history for airplane " + id + ": " + e.getMessage());
+        }
 
         System.out.println("-------------------------------------");
     }
