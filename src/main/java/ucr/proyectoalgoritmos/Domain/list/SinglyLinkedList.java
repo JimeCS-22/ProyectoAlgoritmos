@@ -266,4 +266,8 @@ public class SinglyLinkedList implements List{
         }
         return null;
     }
+
+    public Node getFirstNode() {
+        return this.first;
+    }
 }
