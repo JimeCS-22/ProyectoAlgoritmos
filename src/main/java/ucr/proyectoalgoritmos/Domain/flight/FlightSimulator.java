@@ -1,29 +1,18 @@
-package ucr.proyectoalgoritmos.Domain.flight; // Adjust package as needed
-
-// Corrected package imports (airport, passenger)
-// Changed 'aeropuetos' to 'airport'
+package ucr.proyectoalgoritmos.Domain.flight;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
-import ucr.proyectoalgoritmos.Domain.list.ListException; // This is the standard ListException
+import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
-// import ucr.proyectoalgoritmos.Domain.list.Node; // Node is generally internal to list classes, not directly used here, so we can remove this import
-
-// Changed 'passanger' to 'passenger'
-
 import ucr.proyectoalgoritmos.Domain.passanger.Passenger;
 import ucr.proyectoalgoritmos.Domain.passanger.PassengerManager;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
 import ucr.proyectoalgoritmos.route.RouteManager;
-// import ucr.proyectoalgoritmos.util.Utility; // Utility is not directly used in this class, typically used in comparison logic within data structures
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -70,11 +59,28 @@ public class FlightSimulator {
         // This method will now handle both file loading and fallback to defaults if the file is missing/malformed.
         loadAirportsFromFile("airports.json");
 
-        // 1.2 Generate Random Routes (after airports are loaded)
-        // Ensure there are enough airports to generate routes
-        if (airportManager.getAllAirports().size() < 2) { // Need at least 2 airports for a route
-            System.err.println("[ERROR] Not enough airports to generate routes. Please ensure at least 2 airports are loaded.");
-            // Consider throwing an exception or adding more fallback airports
+        // NEW STEP: Add all loaded airports as vertices to the graph
+        System.out.println("[INIT] Adding airports as graph vertices...");
+        try {
+            DoublyLinkedList allLoadedAirports = airportManager.getAllAirports();
+            if (allLoadedAirports != null && !allLoadedAirports.isEmpty()) {
+                for (int i = 0; i < allLoadedAirports.size(); i++) {
+                    Airport airport = (Airport) allLoadedAirports.get(i);
+                    routeManager.getGraph().addVertex(airport.getCode()); // Add each airport's code as a vertex
+                }
+                System.out.println("[INIT] All " + routeManager.getGraph().getNumVertices() + " airports added as graph vertices.");
+            } else {
+                System.out.println("[WARN] No airports found in AirportManager to add as graph vertices.");
+            }
+        } catch (ListException e) {
+            System.err.println("[ERROR] Failed to add airports as graph vertices: " + e.getMessage());
+        }
+
+
+        // 1.2 Generate Random Routes (after airports are loaded AND added as graph vertices)
+        // Ensure there are enough airports in the *graph* to generate routes
+        if (routeManager.getGraph().getNumVertices() < 2) { // Check graph's vertex count
+            System.err.println("[ERROR] Not enough airports (vertices) in the graph to generate routes. Please ensure at least 2 airports are loaded.");
         } else {
             System.out.println("[INIT] Generating random routes between airports...");
             // Adjust min/max routes and weights as desired
@@ -118,9 +124,6 @@ public class FlightSimulator {
                         break;
                     }
                     try {
-                        // Ensure AirportManager.createAirport can handle an Airport object,
-                        // or adapt it to create based on code, name, country.
-                        // Assuming createAirport(String code, String name, String country)
                         airportManager.createAirport(airport.getCode(), airport.getName(), airport.getCountry());
                         loadedCount++;
                     } catch (ListException e) {
@@ -238,8 +241,8 @@ public class FlightSimulator {
             }
 
             // Sort by outgoing route count (descending)
-           // Collections.sort(topAirports, Comparator.comparingInt(airport -> routeManager.getGraph().getOutgoingRouteCount(String.valueOf(airport.getClass()))).reversed());
-
+            // CORRECTED: Use airport.getCode() to get the airport code for the graph lookup
+            Collections.sort(topAirports, Comparator.comparingInt(airport -> routeManager.getGraph().getOutgoingRouteCount(airport.getCode())).reversed());
 
 
             List<Airport> selectedOrigins = new ArrayList<>();
@@ -260,19 +263,25 @@ public class FlightSimulator {
             // Find a random destination that is not the origin and has a route
             List<String> allAirportCodes = routeManager.getGraph().getAllAirportCodes();
             String destinationCode = null;
-            // Loop until a valid destination with a route from origin is found
+            int attempts = 0; // Safeguard against infinite loops if no valid routes
+            final int MAX_ATTEMPTS = 50; // Max attempts to find a valid destination
+
             while (destinationCode == null || destinationCode.equals(originCode) ||
                     routeManager.calculateShortestRoute(originCode, destinationCode) == Integer.MAX_VALUE) {
+
                 if (allAirportCodes.isEmpty()) { // No airports at all to pick destination from
                     System.out.println("[WARN] No destination airports available. Cannot generate flight.");
                     return;
                 }
-                destinationCode = allAirportCodes.get(random.nextInt(allAirportCodes.size()));
-                // Add a safeguard to prevent infinite loop if no valid destinations exist
-                if (allAirportCodes.size() == 1 && allAirportCodes.get(0).equals(originCode)) {
-                    System.out.println("[WARN] Only one airport available. Cannot generate flight with different origin/destination.");
-                    return; // Can't make a flight if only one airport exists
+
+                if (attempts >= MAX_ATTEMPTS) {
+                    System.out.println("[WARN] Failed to find a valid destination with a route from " + originCode + " after " + MAX_ATTEMPTS + " attempts. Cannot generate flight.");
+                    return;
                 }
+
+                destinationCode = allAirportCodes.get(random.nextInt(allAirportCodes.size()));
+
+                attempts++;
             }
 
             // Select random airplane (prefer one at the origin airport if available)
@@ -310,9 +319,8 @@ public class FlightSimulator {
             System.out.println("[INFO] Attempting to process tickets for " + passengersBuyingTickets + " passengers.");
             for (int i = 0; i < passengersBuyingTickets; i++) {
                 // Pick a random passenger (for simplicity, from existing ones)
-                // In a real system, passengers might arrive over time.
                 String passengerId = "100" + (random.nextInt(5) + 1); // Assuming 1001-1005 exist
-                Passenger p = passengerManager.searchPassenger(passengerId); // searchPassenger might throw ListException
+                Passenger p = passengerManager.searchPassenger(passengerId);
                 if (p != null) {
                     flightScheduleManager.processTicketPurchase(p, originCode, destinationCode);
                 } else {
@@ -340,7 +348,6 @@ public class FlightSimulator {
         System.out.println("Simulation will run for " + simulationDurationSeconds + " seconds.");
 
         // Schedule flight generation
-        // Initial delay of 1 second before first flight generation
         scheduler.scheduleAtFixedRate(this::generateRandomFlightBasedOnRules, 1, flightGenerationIntervalSeconds, TimeUnit.SECONDS);
 
         // Schedule the stop of the simulation
@@ -380,16 +387,12 @@ public class FlightSimulator {
 
         // Print passenger histories (optional)
         System.out.println("\n--- Passenger Flight Histories ---");
-        if (passengerManager.getPassengerCount() == 0) { // Assuming getPassengerCount() exists in PassengerManager
+        if (passengerManager.getPassengerCount() == 0) {
             System.out.println("No passengers registered or with flight history.");
         } else {
-            // Iterate through all passengers in PassengerManager (assuming it has a way to get all passengers, e.g., a list or iteration over AVL tree)
-            // For now, listing specific ones as in your original code:
             passengerManager.showFlightHistory("1001");
             passengerManager.showFlightHistory("1002");
             passengerManager.showFlightHistory("1003");
-            // You would need a method in PassengerManager to iterate through all passengers
-            // Example: passengerManager.getAllPassengers().forEach(p -> passengerManager.showFlightHistory(p.getId()));
         }
         System.out.println("----------------------------------");
 
@@ -400,30 +403,13 @@ public class FlightSimulator {
         System.out.println("\n--- Final Flight Schedule ---");
         flightScheduleManager.listAllFlights();
         System.out.println("-----------------------------");
-
-        // Remember to add data persistence save logic here if not already in stopSimulation
-        // For example:
-        // AirportPersistence.saveAirports(airportManager);
-        // FlightSchedulePersistence.saveFlights(flightScheduleManager);
-        // ... and other managers
     }
 
     // Main method to run the simulation
-    public static void main(String[] args) { // Removed InterruptedException from main throws
+    public static void main(String[] args) {
         try {
             FlightSimulator simulator = new FlightSimulator();
-
-            // Run the simulation for a specific duration (e.g., 60 seconds)
-            // Generate a flight every 10 seconds, run simulation for 60 seconds.
             simulator.startSimulation(10, 60);
-
-            // The main thread can just wait or perform other tasks.
-            // The simulation logic runs in the scheduled executor service.
-            // If main exits, the daemon threads will terminate, but it's good practice
-            // to keep the main thread alive if you want the console to remain open
-            // or interactive. For simple simulations, letting it exit is fine.
-            // A more robust way would be to use a CountDownLatch or similar
-            // if you need to wait for the scheduler to complete specific tasks.
 
         } catch (ListException e) {
             System.err.println("[FATAL ERROR] Failed to initialize Flight Simulator: " + e.getMessage());
