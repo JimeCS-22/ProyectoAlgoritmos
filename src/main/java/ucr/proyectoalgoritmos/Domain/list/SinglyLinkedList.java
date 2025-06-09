@@ -3,69 +3,79 @@ package ucr.proyectoalgoritmos.Domain.list;
 import ucr.proyectoalgoritmos.util.Utility;
 
 public class SinglyLinkedList implements List {
-    private Node first; //apuntador al inicio de la lista
+    private Node first; // Pointer to the start of the list
     private int count; // Maintain a count for O(1) size()
 
     public SinglyLinkedList() {
-        this.first = null; //la lista no existe
+        this.first = null; // The list is empty
         this.count = 0;    // Initialize count
+        System.out.println("SLL DEBUG: New list created. State: first=" + (first != null ? "not null" : "null") + ", count=" + count);
     }
 
     @Override
-    public int size() { // No ListException here, returns actual size
+    public int size() {
+        // No debug print needed here as it's a simple getter
         return this.count; // O(1) operation
     }
 
     @Override
     public void clear() {
-        this.first = null; //anulamos la lista
+        System.out.println("SLL DEBUG: clear() called. Before: count=" + count);
+        this.first = null; // Nullify the list
         this.count = 0;    // Reset count
+        System.out.println("SLL DEBUG: clear() completed. After: count=" + count);
     }
 
     @Override
     public boolean isEmpty() {
-        return this.first == null; //si es nulo está vacía
+        boolean empty = (this.first == null);
+        // CRITICAL INCONSISTENCY CHECK
+        if (empty && this.count != 0) {
+            System.err.println("SLL CRITICAL INCONSISTENCY: isEmpty() is true (first=null) but count is " + this.count + "!");
+        } else if (!empty && this.count == 0) {
+            System.err.println("SLL CRITICAL INCONSISTENCY: isEmpty() is false (first=" + first.data + ") but count is 0!");
+        }
+        return empty;
     }
 
     @Override
     public boolean contains(Object element) throws ListException {
+        // Avoid throwing ListException if list is empty for 'contains'.
+        // It's more conventional for 'contains' to simply return false if the collection is empty.
+        // The ListException check is redundant if isEmpty() is correctly implemented.
         if (isEmpty()) {
-            // It's generally better to return false for contains if empty,
-            // or let the caller handle it. Throwing here can be problematic.
-            // For now, keeping your original behavior, but consider just returning false.
-            throw new ListException("Singly Linked List is empty");
+            return false;
         }
         Node aux = first;
         while (aux != null) {
             if (Utility.compare(aux.data, element) == 0) {
                 return true;
             }
-            aux = aux.next; //lo movemos al sgte nodo
+            aux = aux.next;
         }
-        return false; //indica q el elemento no existe
+        return false;
     }
 
     @Override
     public void add(Object element) {
+        System.out.println("SLL DEBUG: add(" + element + ") called. Before: count=" + count);
         Node newNode = new Node(element);
         if (isEmpty()) {
             first = newNode;
         } else {
             Node aux = first;
-            //mientras no llegue al ult nodo
             while (aux.next != null) {
                 aux = aux.next;
             }
-            //una vez que se sale del while, quiere decir q
-            //aux esta en el ult nodo, por lo q lo podemos enlazar
-            //con el nuevo nodo
             aux.next = newNode;
         }
         count++; // Increment count on add
+        System.out.println("SLL DEBUG: add(" + element + ") completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
     }
 
     @Override
     public void addFirst(Object element) {
+        System.out.println("SLL DEBUG: addFirst(" + element + ") called. Before: count=" + count);
         Node newNode = new Node(element);
         if (isEmpty()) {
             first = newNode;
@@ -74,90 +84,124 @@ public class SinglyLinkedList implements List {
             first = newNode;
         }
         count++; // Increment count on add
+        System.out.println("SLL DEBUG: addFirst(" + element + ") completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
     }
 
     @Override
     public void addLast(Object element) {
-        add(element); // calls add(), which increments count
+        // This method already calls add(), which correctly handles count.
+        // We'll call add() which has the O(n) traversal for the last node anyway.
+        add(element);
     }
 
     @Override
     public void addInSortedList(Object element) {
-        // Method not implemented yet.
-        // If implemented, ensure count is incremented.
+        // Method not implemented yet. If implemented, ensure count is incremented and first/last pointers are handled correctly.
+        // For now, if called, it should throw an exception or be implemented.
+        throw new UnsupportedOperationException("addInSortedList not yet implemented.");
     }
 
     @Override
     public boolean remove(Object element) throws ListException {
+        System.out.println("SLL DEBUG: remove(" + element + ") called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
-        //Case 1. The element to delete is at the beginning
+
+        // Case 1: The element to delete is at the beginning
         if (Utility.compare(first.data, element) == 0) {
-            first = first.next; //jump the first node
-            count--; // Decrement count on removal
-        } else {  //Case 2. The element to delete can be in the middle or end
-            Node prev = first; //pointer to the previous node
-            Node aux = first.next;
-            while (aux != null && !(Utility.compare(aux.data, element) == 0)) {
-                prev = aux;
-                aux = aux.next;
+            Object removedData = first.data; // Store data to print in debug
+            first = first.next; // Move first to the next node
+            count--; // Decrement count
+
+            // CRITICAL FIX: If the list becomes empty after removing the first element
+            if (count == 0) {
+                first = null; // Ensure first is null when list is truly empty
             }
-            //exits when it reaches null or finds the element
-            if (aux != null && Utility.compare(aux.data, element) == 0) {
-                //found it, proceed to unlink the node
-                prev.next = aux.next;
-                count--; // Decrement count on removal
-            }
+            System.out.println("SLL DEBUG: remove(" + removedData + ") (first) completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+            return true; // Element was found and removed
         }
-        return false;
+
+        // Case 2: The element to delete is in the middle or at the end
+        Node prev = first; // Pointer to the previous node
+        Node aux = first.next; // Pointer to the current node (starts from second node)
+
+        while (aux != null && Utility.compare(aux.data, element) != 0) {
+            prev = aux;
+            aux = aux.next;
+        }
+
+        // Exits loop when it reaches null or finds the element
+        if (aux != null && Utility.compare(aux.data, element) == 0) {
+            // Element found, proceed to unlink the node
+            Object removedData = aux.data; // Store data to print in debug
+            prev.next = aux.next;
+            count--; // Decrement count
+
+            System.out.println("SLL DEBUG: remove(" + removedData + ") (middle/last) completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+            return true; // Element was found and removed
+        }
+
+        System.out.println("SLL DEBUG: remove(" + element + ") - Element not found. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+        return false; // Element not found
     }
 
     @Override
     public Object removeFirst() throws ListException {
+        System.out.println("SLL DEBUG: removeFirst() called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
         Object removedData = first.data;
         first = first.next;
-        count--; // Decrement count on removal
+        count--; // Decrement count
+
+        // CRITICAL FIX: If list becomes empty after removing the first element
+        if (count == 0) {
+            first = null; // Ensure first is null when list is truly empty
+        }
+        System.out.println("SLL DEBUG: removeFirst() completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
         return removedData;
     }
 
     @Override
     public Object removeLast() throws ListException {
+        System.out.println("SLL DEBUG: removeLast() called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
         if (size() == 1) { // If only one element
             Object removedData = first.data;
-            clear(); // Resets first to null and count to 0
+            clear(); // This correctly sets first=null and count=0
+            System.out.println("SLL DEBUG: removeLast() (single element) completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
             return removedData;
         }
         Node aux = first;
-        // Iterate until aux is the second to last node
+        // Iterate until aux.next is the last node
         while (aux.next != null && aux.next.next != null) {
             aux = aux.next;
         }
         Object removedData = aux.next.data;
         aux.next = null; // Disconnect the last node
         count--; // Decrement count on removal
+        System.out.println("SLL DEBUG: removeLast() completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
         return removedData;
     }
 
     @Override
     public void sort() throws ListException {
+        System.out.println("SLL DEBUG: sort() called. Before: " + this.toString().replace("\n", ", "));
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
-        // Bubble sort implementation for demonstration
-        // Directly swap data within nodes using getNode.
-        for (int i = 0; i < count - 1; i++) { // Outer loop: up to second to last element
-            for (int j = i + 1; j < count; j++) { // Inner loop: from i+1 to last element
-                Node nodeI = getNode(i);
-                Node nodeJ = getNode(j);
+        // Bubble sort implementation
+        for (int i = 0; i < count - 1; i++) {
+            for (int j = i + 1; j < count; j++) {
+                Node nodeI = getNode(i); // This calls get(int index) which is O(n)
+                Node nodeJ = getNode(j); // This calls get(int index) which is O(n)
 
-                // Use Utility.compare for comparison
+                // This makes the sort O(n^3). For production, consider converting to array, sorting, then re-creating.
+                // For now, it's functional.
                 if (Utility.compare(nodeJ.data, nodeI.data) < 0) {
                     // Swap data
                     Object temp = nodeI.data;
@@ -166,8 +210,8 @@ public class SinglyLinkedList implements List {
                 }
             }
         }
+        System.out.println("SLL DEBUG: sort() completed. After: " + this.toString().replace("\n", ", "));
     }
-
 
     @Override
     public int indexOf(Object element) throws ListException {
@@ -175,15 +219,15 @@ public class SinglyLinkedList implements List {
             throw new ListException("Singly Linked List is Empty");
         }
         Node aux = first;
-        int index = 0; //la lista inicia en 0 (common for indices)
+        int index = 0;
         while (aux != null) {
             if (Utility.compare(aux.data, element) == 0) {
                 return index;
             }
-            index++; //incremento el indice
-            aux = aux.next; //muevo aux al sgte nodo
+            index++;
+            aux = aux.next;
         }
-        return -1; //indica q el elemento no existe
+        return -1; // Element not found
     }
 
     @Override
@@ -200,11 +244,9 @@ public class SinglyLinkedList implements List {
             throw new ListException("Singly Linked List is Empty");
         }
         Node aux = first;
-        //mientras no llegue al ult nodo
         while (aux.next != null) {
             aux = aux.next;
         }
-        //se sale del while cuando aux esta en el ult nodo
         return aux.data;
     }
 
@@ -219,11 +261,11 @@ public class SinglyLinkedList implements List {
         Node aux = first;
         while (aux.next != null) {
             if (Utility.compare(aux.next.data, element) == 0) {
-                return aux.data; // Return data of the current node (which is previous to element)
+                return aux.data;
             }
             aux = aux.next;
         }
-        return null; // Element not found or it's the first element.
+        return null; // Element not found
     }
 
     @Override
@@ -250,20 +292,14 @@ public class SinglyLinkedList implements List {
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
-        // Validate index to be within [0, size()-1]
-        if (index < 0 || index >= count) { // Use 'count' for size check
+        if (index < 0 || index >= count) { // Use 'count' for upper bound check
             throw new ListException("Invalid index: " + index + ", Size: " + count);
         }
         Node aux = first;
-        int i = 0; // pos del primer nodo (0-indexed)
-        while (aux != null) {
-            if (i == index) {  //ya encontro el indice
-                return aux;
-            }
-            i++; //incremento la var local
-            aux = aux.next; //muevo aux al sgte nodo
+        for (int i = 0; i < index; i++) {
+            aux = aux.next;
         }
-        return null; // Should not be reached if index validation is correct
+        return aux;
     }
 
     public Node getNode(Object element) throws ListException {
@@ -272,49 +308,35 @@ public class SinglyLinkedList implements List {
         }
         Node aux = first;
         while (aux != null) {
-            if (Utility.compare(aux.data, element) == 0) {  //ya encontro el elemento
+            if (Utility.compare(aux.data, element) == 0) {
                 return aux;
             }
-            aux = aux.next; //muevo aux al sgte nodo
+            aux = aux.next;
         }
-        return null; //si llega aqui es xq no encontro el index
+        return null; // Element not found
     }
 
     @Override
     public String toString() {
-        String result = "";
+        if (isEmpty()) {
+            return "SinglyLinkedList (empty)";
+        }
+        StringBuilder result = new StringBuilder("SinglyLinkedList (size=" + count + "):");
         Node aux = first;
         while (aux != null) {
-            result += "\n" + aux.data;
+            result.append("\n  ").append(aux.data);
             aux = aux.next;
         }
-        return result;
+        return result.toString();
     }
 
-
+     // This is an override, but your List interface doesn't define it. Check your List interface.
     public Object get(int index) throws ListException {
-        if (isEmpty()) {
-            throw new ListException("Singly Linked List is Empty");
-        }
-        // Corrected: index >= count is the proper upper bound check for 0-indexed lists
-        if (index < 0 || index >= count) { // Use 'count' for size check
-            throw new ListException("Invalid index: " + index + ", Size: " + count);
-        }
-
-        Node aux = first;
-        int i = 0;
-        while (aux != null) {
-            if (i == index) {
-                return aux.data;
-            }
-            i++;
-            aux = aux.next;
-        }
-        return null; // Should not be reached if index validation is correct
+        // This method also internally uses getNode(index), but let's keep it robust
+        return getNode(index).data; // getNode already handles empty and index bounds
     }
 
     public Node getFirstNode() {
         return this.first;
     }
 }
-

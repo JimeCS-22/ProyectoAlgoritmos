@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FlightHistory { // This is the "history flight" object
+    private String flightNumber; // Added to uniquely identify the flight
     private String originAirportCode;
     private String destinationAirportCode;
     private int passengersCount;
@@ -11,8 +12,9 @@ public class FlightHistory { // This is the "history flight" object
     private LocalDateTime arrivalTime;
     private String airplaneID;
 
-    public FlightHistory(String originAirportCode, String destinationAirportCode, int passengersCount,
+    public FlightHistory(String flightNumber, String originAirportCode, String destinationAirportCode, int passengersCount,
                          LocalDateTime departureTime, LocalDateTime arrivalTime, String airplaneID) {
+        this.flightNumber = flightNumber; // Initialize the new field
         this.originAirportCode = originAirportCode;
         this.destinationAirportCode = destinationAirportCode;
         this.passengersCount = passengersCount;
@@ -21,6 +23,7 @@ public class FlightHistory { // This is the "history flight" object
         this.airplaneID = airplaneID;
     }
 
+    public String getFlightNumber() { return flightNumber; } // Getter for the new field
     public String getOriginAirportCode() { return originAirportCode; }
     public String getDestinationAirportCode() { return destinationAirportCode; }
     public int getPassengersCount() { return passengersCount; }
@@ -31,7 +34,8 @@ public class FlightHistory { // This is the "history flight" object
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return "HistoryFlight [Plane: " + airplaneID +
+        return "FlightHistory [Flight: " + flightNumber + // Included flight number in toString
+                ", Plane: " + airplaneID +
                 ", From: " + originAirportCode +
                 ", To: " + destinationAirportCode +
                 ", Paxs: " + passengersCount +

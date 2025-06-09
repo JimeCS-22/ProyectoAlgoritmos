@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // For passengers assigned to this flight
 import ucr.proyectoalgoritmos.Domain.passanger.Passenger; // For storing actual passengers
+import ucr.proyectoalgoritmos.Domain.list.ListException; // Import ListException
 
 public class FlightSchedule implements Comparable<FlightSchedule> { // Implement Comparable for sorting/searching
     private String flightNumber; // e.g., AA123
@@ -15,16 +16,17 @@ public class FlightSchedule implements Comparable<FlightSchedule> { // Implement
     private FlightStatus status; // Enum for Scheduled, Active, Completed, Cancelled
     private SinglyLinkedList assignedPassengers; // List of Passenger objects assigned to this flight
 
-    public FlightSchedule(String flightNumber, String originAirportCode, String destinationAirportCode,
+    public FlightSchedule(String flightNumber, String originAirportCode, String destinationCode,
                           LocalDateTime departureTime, int capacity) {
         this.flightNumber = flightNumber;
         this.originAirportCode = originAirportCode;
-        this.destinationAirportCode = destinationAirportCode;
+        this.destinationAirportCode = destinationCode; // Corrected parameter name
         this.departureTime = departureTime;
         this.capacity = capacity;
         this.occupancy = 0; // Starts empty
         this.status = FlightStatus.SCHEDULED; // Initial status
         this.assignedPassengers = new SinglyLinkedList(); // Initialize list of passengers
+        System.out.println("FS DEBUG: Flight " + flightNumber + " created with capacity " + capacity);
     }
 
     // --- Getters ---
@@ -36,32 +38,45 @@ public class FlightSchedule implements Comparable<FlightSchedule> { // Implement
     public int getOccupancy() { return occupancy; }
     public FlightStatus getStatus() { return status; }
     public int getAvailableSeats() { return capacity - occupancy; }
-    public SinglyLinkedList getAssignedPassengers() { return assignedPassengers; }
+    public SinglyLinkedList getAssignedPassengers() { return assignedPassengers; } // Returns the actual list
 
     // --- Setters (for updatable attributes or status changes) ---
     public void setDepartureTime(LocalDateTime departureTime) { this.departureTime = departureTime; }
-    public void setStatus(FlightStatus status) { this.status = status; }
+    public void setStatus(FlightStatus status) {
+        System.out.println("FS DEBUG: Flight " + flightNumber + " status changed from " + this.status + " to " + status);
+        this.status = status;
+    }
 
-    // b. Assign passengers to the flight
+    /**
+     * Assigns a passenger to this flight if there are available seats.
+     * @param passenger The Passenger object to assign.
+     * @return true if the passenger was successfully assigned, false otherwise (e.g., flight is full).
+     */
     public boolean assignPassenger(Passenger passenger) { // Assign one passenger
+        if (passenger == null) {
+            System.err.println("[FLIGHT " + flightNumber + "] Cannot assign a null passenger.");
+            return false;
+        }
         if (occupancy < capacity) {
             this.assignedPassengers.add(passenger); // Add passenger object to list
             occupancy++;
-            System.out.println("[FLIGHT " + flightNumber + "] Passenger " + passenger.getId() + " assigned. Occupancy: " + occupancy);
+            System.out.println("[FLIGHT " + flightNumber + "] Passenger " + passenger.getId() + " assigned. Occupancy: " + occupancy + "/" + capacity);
             return true;
         } else {
-            System.out.println("[FLIGHT " + flightNumber + "] Cannot assign passenger " + passenger.getId() + ". Flight is full.");
+            System.out.println("[FLIGHT " + flightNumber + "] Cannot assign passenger " + passenger.getId() + ". Flight is full (Occupancy: " + occupancy + "/" + capacity + ").");
             return false;
         }
     }
 
-    // Empty passengers upon flight completion
+    /**
+     * Clears all assigned passengers and resets occupancy to zero.
+     * This method is typically called upon flight completion.
+     */
     public void emptyPassengers() {
+        System.out.println("FS DEBUG: Emptying passengers for flight " + flightNumber + ". Before: " + occupancy + " passengers.");
         this.occupancy = 0;
-        try {
-            this.assignedPassengers.clear(); // Clear the list of assigned passengers
-        } catch (Exception e) { /* should not happen for clear */ }
-        System.out.println("[FLIGHT " + flightNumber + "] Passengers emptied.");
+        this.assignedPassengers.clear(); // Clear the list of assigned passengers
+        System.out.println("[FLIGHT " + flightNumber + "] Passengers emptied. After: " + occupancy + " passengers.");
     }
 
     @Override
@@ -77,9 +92,20 @@ public class FlightSchedule implements Comparable<FlightSchedule> { // Implement
                 "]";
     }
 
-    // For comparison in CircularDoublyLinkedList or other structures (e.g., by flight number)
+    /**
+     * Compares this FlightSchedule object with another based on their flight numbers.
+     * @param other The other FlightSchedule object to compare to.
+     * @return A negative integer, zero, or a positive integer as this flight number
+     * is less than, equal to, or greater than the specified flight number.
+     */
     @Override
     public int compareTo(FlightSchedule other) {
+        // Null checks for robustness
+        if (other == null) return 1; // This object is greater than null
+        if (this.flightNumber == null && other.flightNumber == null) return 0;
+        if (this.flightNumber == null) return -1; // Null flight number is "less" than a non-null one
+        if (other.flightNumber == null) return 1;
+
         return this.flightNumber.compareTo(other.flightNumber);
     }
 

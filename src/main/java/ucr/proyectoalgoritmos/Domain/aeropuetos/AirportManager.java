@@ -92,6 +92,28 @@ public class AirportManager {
         return null; // Not found
     }
 
+    /**
+     * Retrieves the numerical index of an airport within the internal airport list,
+     * based on its airport code. This index corresponds to the vertex index in the graph.
+     *
+     * @param airportCode The unique code of the airport (e.g., "SJO", "MIA").
+     * @return The 0-based index of the airport if found, or -1 if the airport code is not in the list.
+     * @throws ListException If there's an issue accessing the internal airport list.
+     */
+    public int getAirportIndex(String airportCode) throws ListException {
+        if (airportList.isEmpty()) {
+            return -1; // No airports, so cannot find an index
+        }
+        // Iterate through the DoublyLinkedList to find the index
+        for (int i = 0; i < airportList.size(); i++) {
+            Airport airport = (Airport) airportList.get(i); // Retrieve the Airport object
+            if (Utility.compare(airport.getCode(), airportCode) == 0) {
+                return i; // Return the 0-based index
+            }
+        }
+        return -1; // Airport not found
+    }
+
     public DoublyLinkedList getAllAirports() {
         return airportList;
     }

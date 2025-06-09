@@ -6,7 +6,7 @@ import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
-import ucr.proyectoalgoritmos.Domain.list.ListException; // This is the primary ListException
+import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.passanger.Passenger;
 import ucr.proyectoalgoritmos.Domain.passanger.PassengerManager;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
@@ -28,17 +28,18 @@ public class FlightScheduleManager {
     private Map<String, SinglyLinkedList> passengerWaitingLists;
 
     public FlightScheduleManager(AirportManager airportManager, RouteManager routeManager) {
-        this.scheduledFlights = new CircularDoublyLinkedList();
+        this.scheduledFlights = new CircularDoublyLinkedList(); // Initialize the Circular Doubly Linked List
         this.airportManager = airportManager;
         this.routeManager = routeManager;
         this.random = new Random();
         this.passengerWaitingLists = new HashMap<>();
+        System.out.println("FSM DEBUG: FlightScheduleManager initialized.");
     }
 
     // a. Create flight from an origin airport to a destination
     public void createFlight(String flightNumber, String originCode, String destinationCode,
                              LocalDateTime departureTime, int capacity) throws ListException {
-
+        System.out.println("FSM DEBUG: Attempting to create flight " + flightNumber);
         // Business Rule: No flights to the same airport.
         if (originCode.equalsIgnoreCase(destinationCode)) {
             throw new ListException("Cannot create flight from " + originCode + " to " + destinationCode + ": Origin and destination cannot be the same.");
@@ -58,7 +59,7 @@ public class FlightScheduleManager {
 
         FlightSchedule newFlight = new FlightSchedule(flightNumber, originCode, destinationCode, departureTime, capacity);
         scheduledFlights.add(newFlight); // Add to the Circular Doubly Linked List
-        System.out.println("[INFO] Flight created: " + newFlight.getFlightNumber() + " from " + originCode + " to " + destinationCode);
+        System.out.println("[INFO] Flight created: " + newFlight.getFlightNumber() + " from " + originCode + " to " + destinationCode + ". Total scheduled flights: " + scheduledFlights.size());
     }
 
     // 3. Ticket Purchase - Assign passengers to flight
@@ -70,6 +71,18 @@ public class FlightScheduleManager {
 
         // Find available flight with capacity
         FlightSchedule availableFlight = null;
+
+        // Ensure scheduledFlights is not empty before iterating
+        if (scheduledFlights.isEmpty()) {
+            System.out.println("FSM DEBUG: No scheduled flights available for ticket purchase.");
+            // Add to waiting list directly if no flights exist
+            System.out.println("[TICKET] No flights exist at all. Passenger " + passenger.getId() + " added to waiting list for " + originCode + "-" + destinationCode + ".");
+            String routeKey = originCode + "-" + destinationCode;
+            SinglyLinkedList waitingList = passengerWaitingLists.computeIfAbsent(routeKey, k -> new SinglyLinkedList());
+            waitingList.add(passenger);
+            return;
+        }
+
 
         for (int i = 0; i < scheduledFlights.size(); i++) {
             FlightSchedule flight = (FlightSchedule) scheduledFlights.get(i);
@@ -105,11 +118,18 @@ public class FlightScheduleManager {
         SinglyLinkedList waitingList = passengerWaitingLists.get(routeKey);
 
         if (waitingList == null || waitingList.isEmpty()) {
+            System.out.println("FSM DEBUG: No waiting passengers for route " + routeKey);
             return; // No waiting passengers for this route
         }
 
         // Find a suitable flight that is SCHEDULED and has capacity
         FlightSchedule targetFlight = null;
+
+        // Check if there are any scheduled flights before attempting to find one
+        if (scheduledFlights.isEmpty()) {
+            System.out.println("FSM DEBUG: No scheduled flights available to assign waiting passengers to.");
+            return;
+        }
 
         for (int i = 0; i < scheduledFlights.size(); i++) {
             FlightSchedule flight = (FlightSchedule) scheduledFlights.get(i);
@@ -127,6 +147,11 @@ public class FlightScheduleManager {
             int assignedCount = 0;
             while (!waitingList.isEmpty() && targetFlight.getAvailableSeats() > 0) {
                 Passenger waitingPassenger = (Passenger) waitingList.getFirst(); // Get first in queue
+                if (waitingPassenger == null) { // Defensive check
+                    System.err.println("FSM ERROR: Waiting list returned null passenger for " + routeKey);
+                    waitingList.removeFirst(); // Try to clear the null entry if it somehow got there
+                    continue;
+                }
                 if (targetFlight.assignPassenger(waitingPassenger)) {
                     waitingList.removeFirst(); // Remove from waiting list if assigned
                     assignedCount++;
@@ -136,11 +161,14 @@ public class FlightScheduleManager {
                 }
             }
             System.out.println("[WAITLIST] " + assignedCount + " passengers assigned from waiting list for " + routeKey + ". Remaining: " + waitingList.size());
+        } else {
+            System.out.println("[WAITLIST] No suitable flight found for waiting passengers on route " + routeKey);
         }
     }
 
     // c. Show active and completed flights
     public void listFlights(FlightSchedule.FlightStatus statusFilter) throws ListException {
+        System.out.println("FSM DEBUG: listFlights() called. Total scheduled flights: " + scheduledFlights.size());
         if (scheduledFlights.isEmpty()) {
             System.out.println("No flights to list.");
             return;
@@ -164,9 +192,10 @@ public class FlightScheduleManager {
     // d. Simulate flight (with route and passenger boarding)
     // This method now also handles updating passenger history
     public void simulateFlight(String flightNumber, AirportManager airportManager, PassengerManager passengerManager, Airplane airplane) throws ListException, StackException {
+        System.out.println("FSM DEBUG: simulateFlight(" + flightNumber + ") called.");
         FlightSchedule flight = findFlight(flightNumber);
         if (flight == null) {
-            throw new ListException("Flight " + flightNumber + " not found for simulation.");
+            throw new ListException("Flight " + flightNumber + " not found for simulation. Scheduled flights count: " + scheduledFlights.size());
         }
 
         if (flight.getStatus() != FlightSchedule.FlightStatus.SCHEDULED) {
@@ -181,6 +210,9 @@ public class FlightScheduleManager {
 
         if (routeDuration == Integer.MAX_VALUE) {
             flight.setStatus(FlightSchedule.FlightStatus.CANCELLED); // Mark as cancelled if unreachable
+            System.err.println("[SIM ERROR] No route found from " + flight.getOriginAirportCode() + " to " + flight.getDestinationAirportCode() + ". Flight " + flightNumber + " cancelled.");
+            // Consider removing the cancelled flight from scheduledFlights if it won't be retried
+            // scheduledFlights.remove(flight); // Only if you want to remove it
             throw new ListException("No route found from " + flight.getOriginAirportCode() + " to " + flight.getDestinationAirportCode() + ". Flight " + flightNumber + " cancelled.");
         }
 
@@ -193,7 +225,10 @@ public class FlightScheduleManager {
         // Update airport departures board (optional, but good for realism)
         Airport originAirport = airportManager.findAirport(flight.getOriginAirportCode());
         if (originAirport != null) {
-            originAirport.removeFlightFromBoard(flight); // Assuming this method exists
+            // Assuming removeFlightFromBoard expects a FlightSchedule object
+            // You might need to adjust Airport class if it's not ready for FlightSchedule
+            // originAirport.removeFlightFromBoard(flight);
+            System.out.println("FSM INFO: Flight " + flightNumber + " departed from " + originAirport.getName());
         }
 
         airplane.boardPassengers(flight.getOccupancy()); // Transfer assigned passengers from Flight object to Airplane object
@@ -235,23 +270,56 @@ public class FlightScheduleManager {
         System.out.println("[SIM] Flight " + flightNumber + " has landed at " + flight.getDestinationAirportCode() + "!");
 
         // Create the history Flight object for the airplane and passengers
+        // NOTE: Ensure FlightHistory is a separate class or record if it's meant for history.
+        // If FlightSchedule also serves as history, then this object might not be needed.
+        // Assuming FlightHistory is distinct from FlightSchedule for historical records.
         FlightHistory historyFlight =
                 new FlightHistory(
-                        flight.getOriginAirportCode(), flight.getDestinationAirportCode(),
-                        flight.getOccupancy(), flight.getDepartureTime(), LocalDateTime.now(), // Arrival time is now
+                        flight.getFlightNumber(), // Add flight number to history for better tracking
+                        flight.getOriginAirportCode(),
+                        flight.getDestinationAirportCode(),
+                        flight.getOccupancy(),
+                        flight.getDepartureTime(),
+                        LocalDateTime.now(), // Arrival time is now
                         airplane.getId());
 
         // Update each passenger's flight history *before* emptying the flight's assigned passenger list
         SinglyLinkedList passengersOnThisFlight = flight.getAssignedPassengers();
-        for (int i = 0; i < passengersOnThisFlight.size(); i++) {
-            Passenger p = (Passenger) passengersOnThisFlight.get(i);
-            passengerManager.addFlightToPassengerHistory(p.getId(), historyFlight);
+        if (passengersOnThisFlight != null && !passengersOnThisFlight.isEmpty()) {
+            for (int i = 0; i < passengersOnThisFlight.size(); i++) {
+                try {
+                    Passenger p = (Passenger) passengersOnThisFlight.get(i);
+                    passengerManager.addFlightToPassengerHistory(p.getId(), historyFlight);
+                } catch (ListException e) {
+                    System.err.println("FSM ERROR: Could not get passenger from assigned list: " + e.getMessage());
+                }
+            }
+        } else {
+            System.out.println("FSM DEBUG: No passengers on flight " + flightNumber + " to update history for.");
         }
 
-        flight.emptyPassengers(); // Clears assignedPassengers list on the current Flight object
+
+        flight.emptyPassengers(); // Clears assignedPassengers list on the current FlightSchedule object
         airplane.land(flight.getDestinationAirportCode(), historyFlight); // Empties airplane's passenger count, adds flight to airplane's history
 
+        // Remove the completed flight from the scheduledFlights list (if you want to track active vs. completed)
+        // If you want to keep all flights in `scheduledFlights` and filter by status, don't remove here.
+        // If `scheduledFlights` is only for *pending* flights, then remove it.
+        // Let's assume you want to remove it from `scheduledFlights` if it's completed and no longer 'scheduled'.
+        try {
+            boolean removed = scheduledFlights.remove(flight);
+            if (removed) {
+                System.out.println("FSM INFO: Flight " + flightNumber + " removed from scheduled flights list after completion. Remaining scheduled flights: " + scheduledFlights.size());
+            } else {
+                System.err.println("FSM ERROR: Flight " + flightNumber + " not found in scheduled flights list for removal after completion.");
+            }
+        } catch (ListException e) {
+            System.err.println("FSM ERROR: Could not remove completed flight " + flightNumber + " from scheduled flights: " + e.getMessage());
+        }
+
         // Assign waiting passengers to potentially new future flights (if you have them)
+        // This makes sense if the arrival frees up resources or triggers new flight creation.
+        // If it's for *this* route, it should be done after the flight itself is completed.
         assignWaitingPassengersToNewFlights(flight.getOriginAirportCode(), flight.getDestinationAirportCode());
     }
 
@@ -271,11 +339,21 @@ public class FlightScheduleManager {
         return null; // Not found
     }
 
-    public FlightHistory getFlightByIndex(int index) throws ListException {
+    // Changed return type to FlightSchedule as scheduledFlights holds FlightSchedule objects
+    public FlightSchedule getFlightScheduleByIndex(int index) throws ListException {
         if (index < 0 || index >= scheduledFlights.size()) {
-            throw new ListException("Flight index out of bounds: " + index);
+            throw new ListException("Flight index out of bounds: " + index + ", List size: " + scheduledFlights.size());
         }
-        // This method should return FlightSchedule, not FlightHistory, if scheduledFlights holds FlightSchedule objects
-        return (FlightHistory) scheduledFlights.get(index); // Casting directly may cause ClassCastException
+        return (FlightSchedule) scheduledFlights.get(index);
+    }
+
+    // New helper to get a random scheduled flight
+    public FlightSchedule getRandomScheduledFlight() throws ListException {
+        if (scheduledFlights.isEmpty()) {
+            System.out.println("FSM DEBUG: No scheduled flights available to pick a random one.");
+            return null; // No flights to return
+        }
+        int randomIndex = random.nextInt(scheduledFlights.size());
+        return (FlightSchedule) scheduledFlights.get(randomIndex);
     }
 }
