@@ -1,81 +1,66 @@
-package ucr.proyectoalgoritmos.Domain.passanger; // Adjust package
+package ucr.proyectoalgoritmos.Domain.passanger;
 
-import ucr.proyectoalgoritmos.Domain.AVL;
-import ucr.proyectoalgoritmos.Domain.list.ListException; // For list errors in flight history
-import ucr.proyectoalgoritmos.Domain.flight.Flight; // For adding to history
+import ucr.proyectoalgoritmos.Domain.AVL; // Assuming your AVL is in Domain
+import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;
+import ucr.proyectoalgoritmos.Domain.list.ListException; // Your ListException
 
 public class PassengerManager {
-    private AVL passengerTree; // Stores Passenger objects
+    private AVL passengers; // AVL tree to store Passenger objects
 
     public PassengerManager() {
-        this.passengerTree = new AVL(); // Initialize your AVL tree
+        this.passengers = new AVL();
     }
 
-    // a. Register new passenger
-    public void registerPassenger(String id, String name, String nationality) {
+    public void registerPassenger(String id, String name, String nationality) throws ListException {
         Passenger newPassenger = new Passenger(id, name, nationality);
         try {
-            // AVL insert operation. Assumes AVL handles duplicate Passenger objects
-            // by comparing their 'id' (via Passenger's compareTo method)
-            passengerTree.insert(newPassenger);
+            passengers.insert(newPassenger);
             System.out.println("[INFO] Passenger registered: " + newPassenger.getName() + " (ID: " + newPassenger.getId() + ")");
-        } catch (Exception e) { // Catch potential exceptions from AVL (e.g., duplicate ID)
-            System.err.println("[ERROR] Registering passenger " + id + ": " + e.getMessage());
+        } catch (ListException e) {
+            System.err.println("[ERROR] Failed to register passenger " + id + ": " + e.getMessage());
+            // Optionally, rethrow if registration must be unique and fail
         }
     }
 
-    // b. Search passenger by ID
-    public Passenger searchPassenger(String id) {
-        // AVL search method needs an object for comparison. Create a dummy Passenger.
+    public Passenger searchPassenger(String id) throws ListException {
+        // Create a "dummy" passenger object with just the ID for searching
+        // This relies on Passenger's compareTo and equals methods
+        Passenger searchKey = new Passenger(id, "", "");
         try {
-            // Ensure your Passenger class correctly implements equals() and compareTo()
-            // based on the 'id' field, and that your AVL.search() method
-            // uses these comparison methods.
-            return (Passenger) passengerTree.search(new Passenger(id, "", ""));
-        } catch (Exception e) {
-            // System.err.println("Error searching passenger " + id + ": " + e.getMessage()); // Avoid noise if not found is normal
-            return null; // Not found or error
+            return (Passenger) passengers.search(searchKey);
+        } catch (ListException e) {
+            System.err.println("[ERROR] Error searching for passenger " + id + ": " + e.getMessage());
+            return null;
         }
     }
 
-    // c. Show flight history
+    // Method to add flight history to a specific passenger
+    public void addFlightToPassengerHistory(String passengerId, FlightHistory flightRecord) throws ListException {
+        Passenger passenger = searchPassenger(passengerId); // Find the passenger
+        if (passenger != null) {
+            passenger.addFlightToHistory(flightRecord);
+            System.out.println("[HISTORY] Flight record added for passenger " + passengerId + ".");
+        } else {
+            System.err.println("[ERROR] Cannot add flight history: Passenger " + passengerId + " not found.");
+        }
+    }
+
     public void showFlightHistory(String passengerId) {
-        Passenger passenger = searchPassenger(passengerId);
-        if (passenger == null) {
-            System.out.println("[INFO] Passenger with ID " + passengerId + " not found.");
-            return;
-        }
-        System.out.println("\n--- Flight History for " + passenger.getName() + " (ID: " + passenger.getId() + ") ---");
         try {
-            if (passenger.getFlightHistory().isEmpty()) {
-                System.out.println("  No flight history recorded.");
+            Passenger passenger = searchPassenger(passengerId);
+            if (passenger != null) {
+                System.out.println("\n--- Flight History for " + passenger.getName() + " (ID: " + passenger.getId() + ") ---");
+                System.out.println(passenger.getFlightHistory()); // Uses FlightHistoryList's toString
             } else {
-                for (int i = 0; i < passenger.getFlightHistory().size(); i++) {
-                    System.out.println("  " + passenger.getFlightHistory().get(i)); // Assumes Flight has a good toString()
-                }
+                System.out.println("\n--- Flight History for " + passengerId + " ---");
+                System.out.println("  Passenger not found or no flight history recorded.");
             }
         } catch (ListException e) {
-            System.err.println("[ERROR] Accessing flight history for " + passengerId + ": " + e.getMessage());
-        }
-        System.out.println("----------------------------------------------");
-    }
-
-    // Add a flight to a passenger's history (called after flight completion)
-    public void addFlightToPassengerHistory(String passengerId, Flight completedFlight) {
-        Passenger passenger = searchPassenger(passengerId);
-        if (passenger != null) {
-            passenger.addFlightToHistory(completedFlight);
-        } else {
-            System.err.println("[ERROR] Passenger " + passengerId + " not found to update flight history.");
+            System.err.println("[ERROR] Error showing flight history for " + passengerId + ": " + e.getMessage());
         }
     }
 
-    /**
-     * Returns the total number of passengers currently registered in the system.
-     * This count is maintained by the underlying AVL tree.
-     * @return The number of passengers.
-     */
     public int getPassengerCount() {
-        return passengerTree.size(); // Assumes your AVL class has a size() method
+        return passengers.size();
     }
 }

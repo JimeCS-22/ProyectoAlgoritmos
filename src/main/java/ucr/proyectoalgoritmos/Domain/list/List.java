@@ -13,7 +13,7 @@ public interface List {
     public void addFirst(Object element); //inserta un elemento al incio de la lista
     public void addLast(Object element); //inserta un elemento al final de la lista
     public void addInSortedList(Object element); // inserta un elemento a la lista en forma ordenada
-    public void remove(Object element) throws ListException; //Suprime un elemento de la lista
+    public boolean remove(Object element) throws ListException; //Suprime un elemento de la lista
     public Object removeFirst() throws ListException; //suprime y retorna el primer elemento de la lista
     public Object removeLast() throws ListException; //suprime y retorna el ultimo elemento de la lista
     public void sort() throws ListException; //ordena la lista

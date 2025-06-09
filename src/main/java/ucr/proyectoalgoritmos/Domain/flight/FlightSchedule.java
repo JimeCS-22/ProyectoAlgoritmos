@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // For passengers assigned to this flight
 import ucr.proyectoalgoritmos.Domain.passanger.Passenger; // For storing actual passengers
 
-public class Flight2 implements Comparable<Flight2> { // Implement Comparable for sorting/searching
+public class FlightSchedule implements Comparable<FlightSchedule> { // Implement Comparable for sorting/searching
     private String flightNumber; // e.g., AA123
     private String originAirportCode;
     private String destinationAirportCode;
@@ -15,8 +15,8 @@ public class Flight2 implements Comparable<Flight2> { // Implement Comparable fo
     private FlightStatus status; // Enum for Scheduled, Active, Completed, Cancelled
     private SinglyLinkedList assignedPassengers; // List of Passenger objects assigned to this flight
 
-    public Flight2(String flightNumber, String originAirportCode, String destinationAirportCode,
-                  LocalDateTime departureTime, int capacity) {
+    public FlightSchedule(String flightNumber, String originAirportCode, String destinationAirportCode,
+                          LocalDateTime departureTime, int capacity) {
         this.flightNumber = flightNumber;
         this.originAirportCode = originAirportCode;
         this.destinationAirportCode = destinationAirportCode;
@@ -78,8 +78,8 @@ public class Flight2 implements Comparable<Flight2> { // Implement Comparable fo
     }
 
     // For comparison in CircularDoublyLinkedList or other structures (e.g., by flight number)
-
-    public int compareTo(Flight2 other) {
+    @Override
+    public int compareTo(FlightSchedule other) {
         return this.flightNumber.compareTo(other.flightNumber);
     }
 
