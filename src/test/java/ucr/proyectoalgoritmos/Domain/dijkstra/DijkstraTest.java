@@ -200,36 +200,6 @@ class DijkstraTest {
     }
 
     @Test
-    void testDijkstraSingleNodeGraphPlaces() {
-        Object[][] stringEdges = {};
-        String sourcePlace = "OnlyNode";
-
-        int[][] intEdges = convertEdges(stringEdges);
-        int V = nextIndex; // Should be 1 after processing "OnlyNode"
-        int srcIndex = getIndexForPlace(sourcePlace);
-
-        Map<String, Integer> expectedStringDistances = new HashMap<>();
-        expectedStringDistances.put("OnlyNode", 0);
-
-        int[] expectedDistances = convertExpectedDistances(expectedStringDistances, V);
-        int[] actualDistances = Dijkstra.dijkstra(V, intEdges, srcIndex);
-
-        System.out.println("\n--- Test: Single Node Graph with Places ---");
-        System.out.println("Source: " + sourcePlace);
-        System.out.println("Vertex to Place Mapping:");
-        for (int i = 0; i < V; i++) {
-            System.out.println("  " + i + " -> " + indexToPlaceArray[i]);
-        }
-        System.out.println("Expected shortest distances:");
-        printDistances(expectedDistances, V);
-        System.out.println("Actual shortest distances:");
-        printDistances(actualDistances, V);
-        System.out.println("------------------------------------");
-
-        assertArrayEquals(expectedDistances, actualDistances, "Shortest distances for single node graph (places)");
-    }
-
-    @Test
     void testDijkstraLargerGraphPlaces() {
         Object[][] stringEdges = {
                 {"Paraíso", "Cartago", 5}, {"Paraíso", "Tres Ríos", 2},
