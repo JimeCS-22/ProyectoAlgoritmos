@@ -1,5 +1,7 @@
 package ucr.proyectoalgoritmos.Domain.Circular;
 
+import ucr.proyectoalgoritmos.util.Utility;
+
 public class CircularLinkedList implements List {
 
     private Node first; //apuntador al inicio de la lista
@@ -40,11 +42,11 @@ public class CircularLinkedList implements List {
             throw new ListException("Circular Linked List is empty");
         Node aux = first;
         while(aux!=last){
-            if(util.Utility.compare(aux.data, element)==0) return true; //ya lo encontro
+            if(Utility.compare(aux.data, element)==0) return true; //ya lo encontro
             aux = aux.next; //muevo aux al nodo sgte
         }
         //se sale del while cuando aux esta en el ult nodo
-        if(util.Utility.compare(aux.data, element)==0) return true;
+        if(Utility.compare(aux.data, element)==0) return true;
         return false; //significa que no encontro el elemento
     }
 
@@ -88,19 +90,19 @@ public class CircularLinkedList implements List {
         if(isEmpty())
             throw new ListException("Circular Linked List is empty");
         //Caso 1: El elemento a suprimir es el primero de la lista
-        if(util.Utility.compare(first.data, element)==0)
+        if(Utility.compare(first.data, element)==0)
             first = first.next;
         //Caso 2. El elemento puede estar en el medio o al final
         else{
             Node prev = first; //nodo anterior
             Node aux = first.next; //nodo sgte
-            while(aux!=last && !(util.Utility.compare(aux.data, element)==0)){
+            while(aux!=last && !(Utility.compare(aux.data, element)==0)){
                 prev = aux;
                 aux = aux.next;
             }
             //se sale del while cuanda aux esta en el ult nodo
             //o cuando encuentra el elemento
-            if(util.Utility.compare(aux.data, element)==0){
+            if(Utility.compare(aux.data, element)==0){
                 //debo desenlazar  el nodo
                 prev.next = aux.next;
             }
@@ -113,7 +115,7 @@ public class CircularLinkedList implements List {
         last.next = first;
         //q pasa si solo queda un nodo
         //y es el q quiero eliminar
-        if(first==last&&util.Utility.compare(first.data, element)==0){
+        if(first==last&& Utility.compare(first.data, element)==0){
             clear(); //anulo la lista
         }
     }
@@ -156,7 +158,7 @@ public class CircularLinkedList implements List {
             throw new ListException("Circular Linked List is empty");
         for (int i = 1; i<=size(); i++) {
             for (int j = i+1; j<=size() ; j++) {
-                if(util.Utility.compare(getNode(j).data, getNode(i).data)<0){
+                if(Utility.compare(getNode(j).data, getNode(i).data)<0){
                     Object aux = getNode(i).data;
                     getNode(i).data = getNode(j).data;
                     getNode(j).data = aux;
@@ -172,12 +174,12 @@ public class CircularLinkedList implements List {
         Node aux = first;
         int index = 1; //el primer indice de la lista es 1
         while(aux!=last){
-            if(util.Utility.compare(aux.data, element)==0) return index;
+            if(Utility.compare(aux.data, element)==0) return index;
             index++;
             aux = aux.next;
         }
         //se sale cuando aux == last
-        if(util.Utility.compare(aux.data, element)==0) return index;
+        if(Utility.compare(aux.data, element)==0) return index;
         return -1; //significa q el elemento no existe en la lista
     }
 
@@ -201,11 +203,11 @@ public class CircularLinkedList implements List {
             throw new ListException("Circular Linked List is empty");
         Node aux = first;
         while(aux.next!=first){
-            if(util.Utility.compare(aux.next.data, element)==0) return aux.data;
+            if(Utility.compare(aux.next.data, element)==0) return aux.data;
             aux = aux.next;
         }
         //se sale cuando aux.next == first
-        if(util.Utility.compare(aux.next.data, element)==0) return aux.data;
+        if(Utility.compare(aux.next.data, element)==0) return aux.data;
         return "Does not exist in Circular Linked List";
     }
 
@@ -216,13 +218,13 @@ public class CircularLinkedList implements List {
         }
         Node aux = first; //dejar un rastro
         while(aux!=last){
-            if(util.Utility.compare(aux.data, element)==0){
+            if(Utility.compare(aux.data, element)==0){
                 return aux.next.data; //el elemento posterior
             }
             aux = aux.next; //lo movemos al sgte nodo
         }
         //se sale cuando aux==last
-        if(util.Utility.compare(aux.data, element)==0){
+        if(Utility.compare(aux.data, element)==0){
             return aux.next.data; //el elemento anterior
         }
         return "Does not exist in Circular Linked List";
@@ -235,14 +237,14 @@ public class CircularLinkedList implements List {
         Node aux = first;
         int i = 1; //posicion del primer nodo
         while(aux!=last){
-            if(util.Utility.compare(i, index)==0){
+            if(Utility.compare(i, index)==0){
                 return aux;
             }
             i++;
             aux = aux.next; //lo movemos al sgte nodo
         }
         //se sale cuando aux == last
-        if(util.Utility.compare(i, index)==0) return aux;
+        if(Utility.compare(i, index)==0) return aux;
         return null; //si llega aquí es porque no encontró el nodo
     }
 
@@ -258,5 +260,9 @@ public class CircularLinkedList implements List {
         //se sale cuando aux==last
         //agregamos la info del último nodo
         return result+aux.data;
+    }
+
+    public Node getFirstNode() {
+        return first;
     }
 }

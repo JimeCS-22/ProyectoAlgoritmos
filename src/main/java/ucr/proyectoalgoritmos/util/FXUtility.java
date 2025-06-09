@@ -3,7 +3,7 @@ package ucr.proyectoalgoritmos.util;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import ucr.lab.HelloApplication;
+import ucr.proyectoalgoritmos.HelloApplication;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class FXUtility {
         myalert.setTitle(title);
         myalert.setHeaderText(headerText);
         DialogPane dialogPane = myalert.getDialogPane();
-        String css = HelloApplication.class.getResource("dialog.css").toExternalForm();
+        String css = HelloApplication.class.getResource("/ucr/proyectoalgoritmos/combined-styles.css").toExternalForm();
         dialogPane.getStylesheets().add(css);
         dialogPane.getStyleClass().add("myDialog");
         return myalert;
@@ -53,7 +53,7 @@ public class FXUtility {
         myalert.getDialogPane().getButtonTypes().add(buttonTypeNo);
         //dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
         DialogPane dialogPane = myalert.getDialogPane();
-        String css = HelloApplication.class.getResource("dialog.css").toExternalForm();
+        String css = HelloApplication.class.getResource("/ucr/proyectoalgoritmos/combined-styles.css").toExternalForm();
         dialogPane.getStylesheets().add(css);
         Optional<ButtonType> result = myalert.showAndWait();
         //if((result.isPresent())&&(result.get()== ButtonType.OK)) {

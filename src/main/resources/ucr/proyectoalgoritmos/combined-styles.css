@@ -1,0 +1,169 @@
+/* Estilos finales que preservan el gradiente radial específico del menú */
+
+/* Estilo general de botones */
+.button {
+    -fx-font-family: "Arial";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* Mantenemos exactamente el estilo especificado para los botones del menú lateral */
+VBox > .button {
+    -fx-background-color: transparent !important;
+    -fx-border-color: white !important;
+    -fx-border-width: 0px 0px 2px 0px !important;
+    -fx-font-family: "Serif" !important;
+    -fx-font-style: italic !important;
+    -fx-font-size: 37px !important;
+}
+
+/* No añadimos ningún estilo al textFill para preservar el gradiente radial original */
+
+VBox > .button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1) !important;
+    -fx-scale-y: 1.02 !important;
+}
+
+VBox > .button:pressed {
+    -fx-scale-y: 0.98 !important;
+    -fx-scale-x: 0.98 !important;
+}
+
+/* Estilo para botones dentro de los paneles centrales */
+AnchorPane Pane .button {
+    -fx-background-color: linear-gradient(#384463, #343336);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+AnchorPane Pane .button:hover {
+    -fx-background-color: linear-gradient(#384463, #526072);
+    -fx-cursor: hand;
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
+}
+
+AnchorPane Pane .button:pressed {
+    -fx-background-color: linear-gradient(#343336, #384463);
+    -fx-scale-y: 0.95;
+    -fx-scale-x: 0.95;
+}
+
+/* Estilos para ComboBox */
+.combo-box {
+    -fx-background-color: linear-gradient(#384463, #343336);
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.combo-box .arrow {
+    -fx-background-color: white;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 3 0 2 7;
+    -fx-font: 14px "Arial";
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: linear-gradient(#384463, #343336);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 8, 0.0, 0, 3);
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 4 0 4 5;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected,
+.combo-box-popup .list-view .list-cell:filled:selected:hover {
+    -fx-background-color: linear-gradient(#526072, #8f99b5);
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: #526072;
+    -fx-text-fill: white;
+}
+
+/* Estilos para TextField */
+.text-field {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #8f99b5;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font: 14px "Arial";
+    -fx-text-fill: #343336;
+}
+
+.text-field:focused {
+    -fx-border-color: #526072;
+    -fx-effect: dropshadow(three-pass-box, rgba(82, 96, 114, 0.4), 3, 0.0, 0, 0);
+}
+
+/* Estilos para TextArea */
+.text-area {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #8f99b5;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font: 14px "Arial";
+}
+
+.text-area .content {
+    -fx-background-color: #f8f8f8;
+}
+
+.text-area:focused .content {
+    -fx-background-color: #f8f8f8;
+}
+
+.text-area:focused {
+    -fx-border-color: #526072;
+}
+
+
+/* Estilo para el TableView */
+
+
+.table-view {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+}
+
+
+.table-view .column-header .label {
+    -fx-background-color: #394a6e;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-family: "Serif";
+}
+
+
+.table-view .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+}
+
+
+.table-view .table-row-cell:focused {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+
+.table-view .table-cell {
+    -fx-padding: 8px;
+    -fx-border-color: #ddd;
+}
+
+.table-view .table-cell:hover {
+    -fx-background-color: #e0e0e0;
+}

@@ -16,4 +16,7 @@ public class Node {
         this.prev = this.next = null;
     }
 
+    public Object getData() {
+        return data;
+    }
 }

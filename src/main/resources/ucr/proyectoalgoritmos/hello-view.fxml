@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ucr.proyectoalgoritmos.Controller.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-  <Label fx:id="welcomeText"/>
-  <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="1006.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.HelloController">
+  <left>
+    <VBox prefHeight="694.0" prefWidth="327.0" style="-fx-background-color: #0D1824;" BorderPane.alignment="CENTER">
+      <children>
+        <Button mnemonicParsing="false" onAction="#Home" prefHeight="58.0" prefWidth="256.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 0px 0px 2px 0px;" text="Home" textFill="WHITE">
+          <font>
+            <Font name="Arial" size="30.0" />
+          </font>
+        </Button>
+        <VBox style="-fx-background-color: #0D1824;">
+          <children>
+            <Button mnemonicParsing="false" onAction="#LoginOnAction" onMousePressed="#exampleOnMousePressed" prefHeight="62.0" prefWidth="253.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 0px 0px 2px 0px;" text="Login " textFill="WHITE">
+              <font>
+                <Font name="Arial" size="26.0" />
+              </font>
+            </Button>
+          </children>
+        </VBox>
+        <Button mnemonicParsing="false" onAction="#Exit" prefHeight="62.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-width: 0px 0px 2px 0px;" text="Exit" textFill="WHITE">
+          <font>
+            <Font name="Arial" size="30.0" />
+          </font>
+        </Button>
+      </children>
+    </VBox>
+  </left>
+  <center>
+    <AnchorPane fx:id="ap" prefHeight="769.0" prefWidth="816.0" style="-fx-background-color: #141428;" BorderPane.alignment="CENTER">
+      <children>
+        <Text fx:id="txtMessage" fill="#f7f7f7" layoutX="4.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Proyecto " textAlignment="CENTER" wrappingWidth="781.94921875">
+          <font>
+            <Font name="Arial" size="40.0" />
+          </font>
+        </Text>
+      </children>
+    </AnchorPane>
+  </center>
+</BorderPane>
