@@ -3,25 +3,32 @@ package ucr.proyectoalgoritmos;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class HelloApplication extends Application {
+    private static BorderPane root = new BorderPane();
+
     @Override
     public void start(Stage stage) throws IOException {
+        // Cargar el contenido principal (hello-view.fxml)
+        FXMLLoader mainLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        root.setCenter(mainLoader.load());  // Establecer como centro del BorderPane
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/ucr/proyectoalgoritmos/hello-view.fxml"));
-        //Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        Scene scene = new Scene(fxmlLoader.load());
-        String css = Objects.requireNonNull(HelloApplication.class.getResource("/ucr/proyectoalgoritmos/stylesheet.css")).toExternalForm();
-        scene.getStylesheets().add(css);
-        stage.setTitle("Laboratory 10");
+        // Cargar la barra de menú
+        FXMLLoader menuLoader = new FXMLLoader(HelloApplication.class.getResource("main-menubar.fxml"));
+        MenuBar menuBar = menuLoader.load();
+        root.setTop(menuBar);  // Establecer la barra de menú en la parte superior
+
+        // Configurar la escena
+        Scene scene = new Scene(root, 800, 600);  // Tamaño más adecuado para una aplicación con menú
+        stage.setTitle("Sistema de gestión de aeropuertos y rutas de vuelo");
         stage.setScene(scene);
-        stage.setResizable(false);
         stage.show();
-
     }
 
     public static void main(String[] args) {
