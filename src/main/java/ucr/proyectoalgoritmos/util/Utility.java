@@ -110,4 +110,47 @@ public class Utility {
         int randomIndex = random.nextInt(Alphabet.length);
         return Alphabet[randomIndex];
     }
+
+    public static String RandomNames(){
+        String [] names = { "Sofía", "Mateo", "Valentina", "Lucas", "Isabella",
+                "Benjamín", "Emma", "Sebastián", "Camila", "Diego",
+                "Mariana", "Alejandro", "Daniela", "Julián", "Natalia"};
+
+        String[] lastNames = {
+                "García", "Martínez", "López", "Rodríguez", "Hernández",
+                "Pérez", "González", "Ramírez", "Sánchez", "Torres",
+                "Flores", "Díaz", "Vázquez", "Morales", "Cruz"
+        };
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(names.length);
+        int randomEs = random.nextInt(lastNames.length);
+        return names[randomIndex] +  " " + lastNames[randomEs];
+    }
+
+    public static String RandomNationalities(){
+
+        String[] nationalities = {
+                "Mexicana", "Argentina", "Española", "Colombiana", "Chilena",
+                "Peruana", "Brasileña", "Estadounidense", "Canadiense", "Italiana",
+                "Francesa", "Alemana", "Japonesa", "China", "India"
+        };
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(nationalities.length);
+        return nationalities[randomIndex] ;
+    }
+
+    public static String RandomId() {
+
+        Random random = new Random();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        char[] idChars = new char[8];
+
+        for (int i = 0; i < 8; i++) {
+            idChars[i] = characters.charAt(random.nextInt(characters.length()));
+        }
+        return new String(idChars);
+
+    }
 }

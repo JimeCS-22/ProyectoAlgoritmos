@@ -5,7 +5,7 @@ import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;
 import ucr.proyectoalgoritmos.Domain.list.ListException; // Your ListException
 
 public class PassengerManager {
-    private AVL passengers; // AVL tree to store Passenger objects
+    public AVL passengers; // AVL tree to store Passenger objects
 
     public PassengerManager() {
         this.passengers = new AVL();

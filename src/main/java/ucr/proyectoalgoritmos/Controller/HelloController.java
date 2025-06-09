@@ -20,13 +20,6 @@ import static java.lang.System.load;
 
 public class HelloController {
 
-    //    @Deprecated
-//    public void Home(ActionEvent actionEvent) {
-//
-//        this.bp.setCenter(ap);
-//        this.txtMessage.setText("Proyecto");
-//    }
-
     @Deprecated
     public void Exit(ActionEvent actionEvent) {
 
