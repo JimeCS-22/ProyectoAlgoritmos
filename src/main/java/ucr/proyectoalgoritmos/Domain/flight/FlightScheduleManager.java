@@ -7,8 +7,8 @@ import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.Domain.passanger.Passenger;
-import ucr.proyectoalgoritmos.Domain.passanger.PassengerManager;
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
+import ucr.proyectoalgoritmos.Domain.passenger.PassengerManager;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
 import ucr.proyectoalgoritmos.route.RouteManager;
 

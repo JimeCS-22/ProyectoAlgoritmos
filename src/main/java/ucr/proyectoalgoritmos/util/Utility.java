@@ -1,6 +1,6 @@
 package ucr.proyectoalgoritmos.util;
 
-import ucr.proyectoalgoritmos.Domain.passanger.Passenger; // Import your Passenger class
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // Import your Passenger class
 
 import java.text.DecimalFormat;
 import java.util.Random;

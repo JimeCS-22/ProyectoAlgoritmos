@@ -9,11 +9,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.AirportController">
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.PassengersController">
     <children>
-        <ImageView fitHeight="722.0" fitWidth="1172.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="786.0" fitWidth="1183.0" layoutX="-5.0" layoutY="-61.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@images/degradados.png" />
+                <Image url="@images/degradado2.jpg" />
             </image>
         </ImageView>
         <Text fill="WHITE" layoutX="79.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" wrappingWidth="296.0703125">
@@ -28,28 +29,26 @@
         </ImageView>
         <ImageView fitHeight="320.0" fitWidth="492.0" layoutX="652.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@images/airport-plane.png" />
+                <Image url="@images/viajeros.png" />
             </image>
         </ImageView>
         <TableView layoutX="25.0" layoutY="243.0" prefHeight="320.0" prefWidth="601.0">
             <columns>
-                <TableColumn prefWidth="49.0" text="Cod" />
-                <TableColumn prefWidth="157.0" text="Name" />
-                <TableColumn prefWidth="82.0" text="Country" />
-                <TableColumn minWidth="0.0" prefWidth="91.0" text="Status" />
-                <TableColumn prefWidth="116.0" text="DepartureBoard" />
-                <TableColumn prefWidth="105.0" text="PassengerQueue" />
+                <TableColumn prefWidth="49.0" text="ID" />
+                <TableColumn prefWidth="266.0" text="Full Name " />
+                <TableColumn prefWidth="104.0" text="Nationality" />
+                <TableColumn prefWidth="181.0" text="Flight History" />
             </columns>
         </TableView>
-        <Button fx:id="btModify" layoutX="482.0" layoutY="161.0" mnemonicParsing="false" onAction="#modifyAirportOnAction" prefHeight="44.0" prefWidth="144.0" style="-fx-background-color: #ffb43c;" text="Modify Airport">
+        <Button fx:id="btUpdate" layoutX="458.0" layoutY="161.0" mnemonicParsing="false" onAction="#updatePassengerOnAction" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: #4f61da;" text="Update Passenger" textFill="WHITE">
             <font>
                 <Font name="Pristina" size="20.0" />
             </font>
         </Button>
-        <Button fx:id="btCreate" layoutX="25.0" layoutY="161.0" mnemonicParsing="false" onAction="#createAirportOnAction" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: #ffb43c;" text="Create New Airport">
+        <Button fx:id="btCreate" layoutX="25.0" layoutY="161.0" mnemonicParsing="false" onAction="#createPassengerOnAction" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: #4f61da;" text="Create New Passenger" textFill="WHITE">
             <font>
                 <Font name="Pristina" size="20.0" />
             </font>
         </Button>
     </children>
-</AnchorPane>
+</BorderPane>

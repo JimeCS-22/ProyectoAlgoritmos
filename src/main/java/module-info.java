@@ -2,11 +2,12 @@ module ucr.proyectoalgoritmos {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
+    requires java.desktop;
 
     // Open packages for reflection (Gson needs access to private fields)
     opens ucr.proyectoalgoritmos.Domain.aeropuetos to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.airplane to com.google.gson;
-    opens ucr.proyectoalgoritmos.Domain.passanger to com.google.gson;
+    opens ucr.proyectoalgoritmos.Domain.passenger to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.flight;
     opens ucr.proyectoalgoritmos.Domain.list to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.queue to com.google.gson; // <--- ADD THIS NEW CRITICAL LINE!
@@ -28,7 +29,7 @@ module ucr.proyectoalgoritmos {
     exports ucr.proyectoalgoritmos.Domain.airplane;
     exports ucr.proyectoalgoritmos.Domain.flight;
     exports ucr.proyectoalgoritmos.Domain.list;
-    exports ucr.proyectoalgoritmos.Domain.passanger; // Typo 'passanger' vs 'passenger' - check your actual package name!
+    exports ucr.proyectoalgoritmos.Domain.passenger; // Typo 'passanger' vs 'passenger' - check your actual package name!
 //    exports ucr.proyectoalgoritmos.Domain.passenger; // If you refactored it
     exports ucr.proyectoalgoritmos.Domain.queue; // <--- Make sure this is exported too
     exports ucr.proyectoalgoritmos.Domain.stack;

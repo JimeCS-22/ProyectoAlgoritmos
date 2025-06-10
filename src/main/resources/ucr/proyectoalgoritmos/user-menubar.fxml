@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.*?>
+
+<MenuBar xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="ucr.proyectoalgoritmos.Controller.UserMenuController">
+    <menus>
+        <Menu
+                mnemonicParsing="false"
+                text="Exit">
+            <items>
+                <MenuItem
+                        fx:id="menuExit"
+                        mnemonicParsing="false"
+                        onAction="#exit"
+                        text="Exit"/>
+            </items>
+        </Menu>
+        <Menu
+                mnemonicParsing="false"
+                text="Flights">
+            <items>
+                <MenuItem
+                        fx:id="FlightsSettings"
+                        mnemonicParsing="false"
+                        onAction="#loadFlightsPane"
+                        text="New Flight"/>
+
+            </items>
+        </Menu>
+
+        <Menu
+                mnemonicParsing="false"
+                text="Trips">
+            <items>
+                <MenuItem
+                        fx:id="Trips"
+                        mnemonicParsing="false"
+                        onAction="#loadTripsPane"
+                        text="My trips"/>
+
+            </items>
+        </Menu>
+        <Menu
+                mnemonicParsing="false"
+                text="Status">
+            <items>
+                <MenuItem
+                        fx:id="FlightStatus"
+                        mnemonicParsing="false"
+                        onAction="#loadFlightsStatusPane"
+                        text="Flights Status"/>
+            </items>
+        </Menu>
+    </menus>
+</MenuBar>
+

@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Domain.passanger;
+package ucr.proyectoalgoritmos.Domain.passenger;
 
 import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;
 import ucr.proyectoalgoritmos.Domain.flight.FlightHistoryList;

@@ -3,7 +3,7 @@ package ucr.proyectoalgoritmos.Domain.flight; // Adjust package
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // For passengers assigned to this flight
-import ucr.proyectoalgoritmos.Domain.passanger.Passenger; // For storing actual passengers
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // For storing actual passengers
 import ucr.proyectoalgoritmos.Domain.list.ListException; // Import ListException
 
 public class FlightSchedule implements Comparable<FlightSchedule> { // Implement Comparable for sorting/searching

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Parte de interfaz iniciada">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/PassengersController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/UserMenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/admin-menubar.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/flights.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/user-menubar.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/HelloController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/MainMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/MainMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passanger/Passenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/Passenger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passanger/PassengerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/Utility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/Utility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/main-menubar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/main-menubar.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/passengers.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/passengers.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;TEALZN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/JimeCS-22/ProyectoAlgoritmos.git&quot;,
+    &quot;accountId&quot;: &quot;4efc1420-26bd-49ed-8a99-9ebddc9aa46e&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2yG6twa9SHGc4y1FX4MI4eTHzFv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.FlightSimulator.executor": "Run",
+    "Application.HelloApplication.executor": "Run",
+    "JUnit.DijkstraTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.HelloApplication">
+    <configuration name="FlightSimulator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.flight.FlightSimulator" />
+      <module name="ProyectoAlgoritmos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.flight.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.HelloApplication" />
+      <module name="ProyectoAlgoritmos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DijkstraTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProyectoAlgoritmos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.dijkstra.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.dijkstra" />
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.dijkstra.DijkstraTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.HelloApplication" />
+        <item itemvalue="Application.FlightSimulator" />
+        <item itemvalue="JUnit.DijkstraTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="" />
+      <created>1749448781202</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1749448781202</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Parte de interfaz iniciada">
+      <option name="closed" value="true" />
+      <created>1749464841812</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749464841812</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Parte de interfaz iniciada" />
+    <option name="LAST_COMMIT_MESSAGE" value="Parte de interfaz iniciada" />
+  </component>
+</project>

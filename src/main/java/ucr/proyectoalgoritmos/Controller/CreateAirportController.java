@@ -6,7 +6,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
-public class CreateAirport {
+public class CreateAirportController {
     @javafx.fxml.FXML
     private TextField country;
     @javafx.fxml.FXML

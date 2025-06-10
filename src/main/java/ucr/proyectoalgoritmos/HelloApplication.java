@@ -20,13 +20,13 @@ public class HelloApplication extends Application {
         root.setCenter(mainLoader.load());  // Establecer como centro del BorderPane
 
         // Cargar la barra de menú
-        FXMLLoader menuLoader = new FXMLLoader(HelloApplication.class.getResource("main-menubar.fxml"));
+        FXMLLoader menuLoader = new FXMLLoader(HelloApplication.class.getResource("admin-menubar.fxml"));
         MenuBar menuBar = menuLoader.load();
         root.setTop(menuBar);  // Establecer la barra de menú en la parte superior
 
         // Configurar la escena
-        Scene scene = new Scene(root, 800, 600);  // Tamaño más adecuado para una aplicación con menú
-        stage.setTitle("Sistema de gestión de aeropuertos y rutas de vuelo");
+        Scene scene = new Scene(root, 1380, 688);  // Tamaño más adecuado para una aplicación con menú
+        stage.setTitle("Airport and flight route management system");
         stage.setScene(scene);
         stage.show();
     }

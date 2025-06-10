@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.FlightsController">
+    <children>
+        <ImageView fitHeight="731.0" fitWidth="1164.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/degradados.png" />
+            </image>
+        </ImageView>
+        <Text fill="WHITE" layoutX="79.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" wrappingWidth="296.0703125">
+            <font>
+                <Font name="Pristina" size="48.0" />
+            </font>
+        </Text>
+        <ImageView fitHeight="44.0" fitWidth="57.0" layoutX="25.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/whale_1841292.png" />
+            </image>
+        </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffb43c" height="501.0" layoutX="73.0" layoutY="149.0" stroke="BLACK" strokeType="INSIDE" width="1024.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#222a5b" height="451.0" layoutX="108.0" layoutY="176.0" stroke="BLACK" strokeType="INSIDE" width="954.0" />
+        <TableView fx:id="tableView" layoutX="133.0" layoutY="196.0" prefHeight="412.0" prefWidth="900.0">
+            <columns>
+                <TableColumn prefWidth="98.0" text="Flight Number" />
+                <TableColumn prefWidth="127.0" text="Origin Airport Code" />
+                <TableColumn prefWidth="161.0" text="Destination Airport Code" />
+                <TableColumn minWidth="0.0" prefWidth="111.0" text="Departure Time" />
+                <TableColumn prefWidth="72.0" text="Capacity" />
+                <TableColumn prefWidth="109.0" text="Ocupancy" />
+            <TableColumn text="Status" />
+            <TableColumn prefWidth="141.0" text="Assigned Passengers" />
+            </columns>
+        </TableView>
+        <Button fx:id="btSearch" layoutX="953.0" layoutY="82.0" mnemonicParsing="false" onAction="#searchFlightOnAction" prefHeight="44.0" prefWidth="144.0" style="-fx-background-color: #ffb43c;" text="Search Flight">
+            <font>
+                <Font name="Pristina" size="20.0" />
+            </font>
+        </Button>
+        <Button fx:id="btCreate" layoutX="750.0" layoutY="81.0" mnemonicParsing="false" onAction="#createFlightOnAction" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: #ffb43c;" text="Create New Flight">
+            <font>
+                <Font name="Pristina" size="20.0" />
+            </font>
+        </Button>
+    </children>
+</BorderPane>

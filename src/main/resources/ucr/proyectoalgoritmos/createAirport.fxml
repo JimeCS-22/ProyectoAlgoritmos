@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-image: degradado2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateAirport">
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-image: degradado2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateAirportController">
     <children>
       <ImageView fx:id="btEnter" fitHeight="467.0" fitWidth="721.0" layoutX="-97.0" onDragDetected="#enterOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -17,7 +18,7 @@
          </image>
       </ImageView>
         <TextField fx:id="name" layoutX="213.0" layoutY="137.0" prefHeight="26.0" prefWidth="205.0" />
-        <Label layoutX="167.0" layoutY="14.0" prefHeight="66.0" prefWidth="272.0" style="-fx-background-color: #3745b2;" text="Create New Airport" textFill="WHITE">
+        <Label layoutX="167.0" layoutY="14.0" prefHeight="66.0" prefWidth="272.0" style="-fx-background-color: #4f61da;" text="Create New Airport" textFill="WHITE">
             <font>
                 <Font name="Pristina" size="40.0" />
             </font>
@@ -32,7 +33,7 @@
                 <Font size="20.0" />
             </font>
         </Label>
-        <Button fx:id="Enter" layoutX="224.0" layoutY="362.0" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="26.0" prefWidth="157.0" style="-fx-background-color: #3745b2;" text="Enter" textFill="WHITE">
+        <Button fx:id="Enter" layoutX="224.0" layoutY="362.0" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="26.0" prefWidth="157.0" style="-fx-background-color: #4f61da;" text="Enter" textFill="WHITE">
             <font>
                 <Font name="Pristina" size="26.0" />
             </font>
@@ -63,4 +64,4 @@
       <TextField fx:id="passengerQueue" layoutX="213.0" layoutY="269.0" prefHeight="26.0" prefWidth="205.0" />
       <ComboBox fx:id="status" layoutX="213.0" layoutY="204.0" prefHeight="25.0" prefWidth="205.0" />
     </children>
-</AnchorPane>
+</BorderPane>

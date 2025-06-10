@@ -1,52 +1,44 @@
 package ucr.proyectoalgoritmos.Controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import ucr.proyectoalgoritmos.HelloApplication;
 
 import java.io.IOException;
 
-import static java.lang.System.load;
-
-
 public class HelloController {
 
-    @Deprecated
-    public void Exit(ActionEvent actionEvent) {
+    public static void loadView(String fxmlPath, BorderPane rootLayout) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloController.class.getResource(fxmlPath));
+            Parent view = loader.load();
 
-        System.exit(0);
+            if (rootLayout != null) {
+                rootLayout.setCenter(view);
+            } else {
+                Stage stage = new Stage();
+                stage.setScene(new Scene(view));
+                stage.show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-//    @Deprecated
-//    public void exampleOnMousePressed(Event event) {
-//
-//        this.txtMessage.setText("Loading Example. Please wait!!!");
-//    }
+    public static void loadViewInNewStage(String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloController.class.getResource(fxmlPath));
+            Parent view = loader.load();
 
-    private void load(String form) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(form));
-
-    }
-
-    @Deprecated
-    public void LoginOnAction(ActionEvent actionEvent) throws IOException {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ucr/proyectoalgoritmos/Login.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.setTitle("Login");
-        stage.setScene(new Scene(root));
-        stage.show();
-
+            Stage stage = new Stage();
+            stage.setScene(new Scene(view));
+            stage.setTitle(title);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

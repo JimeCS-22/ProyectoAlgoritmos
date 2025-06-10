@@ -24,66 +24,6 @@
                         text="Exit"/>
             </items>
         </Menu>
-        <Menu
-                mnemonicParsing="false"
-                text="Airports">
-            <items>
-                <MenuItem
-                        fx:id="AirportsSettings"
-                        mnemonicParsing="false"
-                        onAction="#loadAirportPane"
-                        text="Airport Settings"/>
-
-            </items>
-        </Menu>
-
-        <Menu
-                mnemonicParsing="false"
-                text="Passengers">
-            <items>
-                <MenuItem
-                        fx:id="Passengers"
-                        mnemonicParsing="false"
-                        onAction="#loadPassengersPane"
-                        text="New Passenger"/>
-
-            </items>
-        </Menu>
-        <Menu
-                mnemonicParsing="false"
-                text="Flights">
-            <items>
-                <MenuItem
-                        fx:id="FlightsSettings"
-                        mnemonicParsing="false"
-                        onAction="#loadFlightsPane"
-                        text="Flights Settings"/>
-            </items>
-        </Menu>
-
-        <Menu
-                mnemonicParsing="false"
-                text="Routes">
-            <items>
-                <MenuItem
-                        fx:id="RoutesSettings"
-                        mnemonicParsing="false"
-                        onAction="#loadRoutesPane"
-                        text="Routes Settings"/>
-            </items>
-        </Menu>
-
-        <Menu
-                mnemonicParsing="false"
-                text="Simulation">
-            <items>
-                <MenuItem
-                        fx:id="Simulation"
-                        mnemonicParsing="false"
-                        onAction="#loadSimulationPane"
-                        text="Simulation"/>
-            </items>
-        </Menu>
     </menus>
 </MenuBar>
 

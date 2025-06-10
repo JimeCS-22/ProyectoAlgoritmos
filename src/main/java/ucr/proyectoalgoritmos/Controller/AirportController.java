@@ -1,54 +1,77 @@
 package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+
 import ucr.proyectoalgoritmos.Controller.MainMenuController;
+import ucr.proyectoalgoritmos.Domain.Circular.ListException;
+import ucr.proyectoalgoritmos.graph.AdjacencyMatrixGraph;
+import ucr.proyectoalgoritmos.graph.GraphException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class AirportController {
     @javafx.fxml.FXML
     private Button btCreate;
     private BorderPane rootLayout;
-    @javafx.fxml.FXML
-    private Button btModify;
+    private AdjacencyMatrixGraph graph;
+    @FXML
+    private TextArea TextResult;
+    @FXML
+    private Button btSearch;
 
     public void setRootLayout(BorderPane rootLayout) {
         this.rootLayout = rootLayout;
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void createAirportOnAction(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/createAirport.fxml");
+        loadView("/ucr/proyectoalgoritmos/createAirport.fxml", null);
     }
 
-    @Deprecated
+    @FXML
     public void searchAirportOnAction(ActionEvent actionEvent) {
-    }
 
-    public void loadView(String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent view = loader.load();
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Verificar Aeropuerto");
+            dialog.setHeaderText("Verificar si un aeropuerto existe en el grafo");
+            dialog.setContentText("Ingrese el código del aeropuerto:");
 
-            if (rootLayout != null) {
-                rootLayout.setCenter(view);
-            } else {
-                Stage stage = new Stage();
-                stage.setScene(new Scene(view));
-                stage.show();
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent() && !result.get().isEmpty()) {
+                try {
+                    Object vertexToFind = result.get();
+
+                    boolean contains = graph.containsVertex(vertexToFind);
+                    if (contains) {
+                        TextResult.setText("El aeropuerto '" + vertexToFind + "' EXISTE en el grafo.");
+                    } else {
+                        TextResult.setText("El aeropuerto '" + vertexToFind + "' NO EXISTE en el grafo.");
+                    }
+                } catch (GraphException e) {
+                    showAlert("Error del Grafo", e.getMessage());
+                } catch (Exception e) {
+                    showAlert("Error", "Ocurrió un error inesperado: " + e.getMessage());
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }
 
-    @javafx.fxml.FXML
-    public void modifyAirportOnAction(ActionEvent actionEvent) {
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

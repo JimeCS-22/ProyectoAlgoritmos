@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Domain.passanger;
+package ucr.proyectoalgoritmos.Domain.passenger;
 
 import ucr.proyectoalgoritmos.Domain.AVL; // Assuming your AVL is in Domain
 import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;

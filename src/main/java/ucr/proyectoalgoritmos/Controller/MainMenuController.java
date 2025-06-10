@@ -32,15 +32,9 @@ public class MainMenuController {
     @FXML
     private MenuItem Simulation;
 
-    private BorderPane rootLayout;
-
-    public void setRootLayout(BorderPane rootLayout) {
-        this.rootLayout = rootLayout;
-    }
-
     @FXML
     private void loadLoginPane() {
-        loadView("/ucr/proyectoalgoritmos/login.fxml");
+        HelloController.loadView("/ucr/proyectoalgoritmos/login.fxml", null);
     }
 
     @FXML
@@ -48,45 +42,4 @@ public class MainMenuController {
         System.exit(0);
     }
 
-    @FXML
-    private void loadAirportPane() {
-        loadView("/ucr/proyectoalgoritmos/airports.fxml");
-    }
-
-    @FXML
-    private void loadPassengersPane() {
-        loadView("/ucr/proyectoalgoritmos/passengers.fxml");
-    }
-
-    @FXML
-    private void loadFlightsPane() {
-        loadView("/ucr/proyectoalgoritmos/flight.fxml");
-    }
-
-    @FXML
-    private void loadRoutesPane() {
-        loadView("/ucr/proyectoalgoritmos/route.fxml");
-    }
-
-    @FXML
-    private void loadSimulationPane() {
-        loadView("/ucr/proyectoalgoritmos/simulation.fxml");
-    }
-
-    public void loadView(String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent view = loader.load();
-
-            if (rootLayout != null) {
-                rootLayout.setCenter(view);
-            } else {
-                Stage stage = new Stage();
-                stage.setScene(new Scene(view));
-                stage.show();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

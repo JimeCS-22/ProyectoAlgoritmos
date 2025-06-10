@@ -2,7 +2,7 @@ package ucr.proyectoalgoritmos.Domain.Archivos;
 
 import org.junit.jupiter.api.Test;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.Domain.passanger.PassengerManager;
+import ucr.proyectoalgoritmos.Domain.passenger.PassengerManager;
 import ucr.proyectoalgoritmos.util.Utility;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -10,8 +10,8 @@ import ucr.proyectoalgoritmos.Domain.airplane.Airplane.AirplaneStatus; // Import
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // Ensure this is imported for type consistency
-import ucr.proyectoalgoritmos.Domain.passanger.Passenger;
-import ucr.proyectoalgoritmos.Domain.passanger.PassengerManager;
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
+import ucr.proyectoalgoritmos.Domain.passenger.PassengerManager;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
 import ucr.proyectoalgoritmos.route.RouteManager; // Import RouteManager
 import ucr.proyectoalgoritmos.route.Route; // Import your Route class
