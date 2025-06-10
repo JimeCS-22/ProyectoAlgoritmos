@@ -22,6 +22,10 @@ public class RouteManager {
         this.airportManager = airportManager; // Initialize the AirportManager reference
     }
 
+    public RouteManager() {
+
+    }
+
     // New Method: Load routes from a JSON file
     public void loadRoutesFromJson(String filePath) throws IOException, ListException {
         Gson gson = new Gson();

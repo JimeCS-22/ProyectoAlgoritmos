@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.PasswordField?>
 <AnchorPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-color: #76d7c4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.LoginController">
    <children>
       <Label layoutX="96.0" layoutY="30.0" prefHeight="66.0" prefWidth="407.0" text="Security System - Login">
@@ -29,6 +30,6 @@
          </font>
       </Button>
       <TextField fx:id="UserName" layoutX="175.0" layoutY="150.0" prefHeight="26.0" prefWidth="205.0" />
-      <TextField fx:id="Password" layoutX="175.0" layoutY="221.0" prefHeight="26.0" prefWidth="205.0" />
+      <PasswordField fx:id="Password" layoutX="175.0" layoutY="221.0" prefHeight="26.0" prefWidth="205.0" />
    </children>
 </AnchorPane>

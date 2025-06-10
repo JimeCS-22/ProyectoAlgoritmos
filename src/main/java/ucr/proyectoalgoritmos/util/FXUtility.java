@@ -21,16 +21,22 @@ public class FXUtility {
         }
     }
 
-    public static Alert alert(String title, String headerText){
+    public static void alert(String title, String message){
         Alert myalert = new Alert(Alert.AlertType.INFORMATION);
         myalert.setTitle(title);
-        myalert.setHeaderText(headerText);
+        myalert.setHeaderText(null);
+        myalert.setContentText(message);
+
         DialogPane dialogPane = myalert.getDialogPane();
         String css = HelloApplication.class.getResource("/ucr/proyectoalgoritmos/combined-styles.css").toExternalForm();
-        dialogPane.getStylesheets().add(css);
+        if (css != null) {
+            dialogPane.getStylesheets().add(css);
+        }
         dialogPane.getStyleClass().add("myDialog");
-        return myalert;
+
+        myalert.showAndWait();
     }
+
 
     public static TextInputDialog dialog(String title, String headerText){
         TextInputDialog dialog = new TextInputDialog();

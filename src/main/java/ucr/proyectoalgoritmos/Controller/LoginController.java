@@ -2,6 +2,7 @@ package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ucr.proyectoalgoritmos.Domain.Circular.CircularLinkedList;
 import ucr.proyectoalgoritmos.Domain.Circular.ListException;
@@ -15,10 +16,10 @@ public class LoginController {
     private TextField UserName;
     @javafx.fxml.FXML
     private Button Enter;
-    @javafx.fxml.FXML
-    private TextField Password;
 
     private CircularLinkedList userList ;
+    @javafx.fxml.FXML
+    private PasswordField Password;
 
     public LoginController(){
 
@@ -102,4 +103,5 @@ public class LoginController {
             FXUtility.alert("System Error" , "An unexpected error occurred " + e.getMessage());
         }
     }
+
 }

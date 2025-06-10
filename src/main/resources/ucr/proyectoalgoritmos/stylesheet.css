@@ -205,3 +205,9 @@
     -fx-font: 30px "Arial";
 }
 
+.error-field {
+    -fx-border-color: red;
+    -fx-border-width: 2px; /* Un borde un poco más grueso para que se note */
+    -fx-border-radius: 3px; /* Opcional: bordes ligeramente redondeados */
+}
+
