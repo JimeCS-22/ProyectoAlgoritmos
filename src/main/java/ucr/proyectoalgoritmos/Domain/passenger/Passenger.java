@@ -1,75 +1,55 @@
 package ucr.proyectoalgoritmos.Domain.passenger;
 
-import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;
-import ucr.proyectoalgoritmos.Domain.flight.FlightHistoryList;
-import ucr.proyectoalgoritmos.Domain.list.ListException; // Assuming this is your common ListException
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
+import ucr.proyectoalgoritmos.Domain.list.ListException;
 
-public class Passenger implements Comparable<Passenger> {
+public class Passenger {
     private String id;
     private String name;
     private String nationality;
-    private FlightHistoryList flightHistory; // Changed to a custom FlightHistoryList for a list of histories
+    private SinglyLinkedList flightHistory; // Historial de vuelos para este pasajero
 
-    public Passenger(String id, String name, String nationality) {
+    public Passenger(String id, String name, String nationality) throws ListException {
         this.id = id;
         this.name = name;
         this.nationality = nationality;
-        this.flightHistory = new FlightHistoryList(); // Initialize custom history list
+        this.flightHistory = new SinglyLinkedList();
     }
 
-    public String getId() {
-        return id;
-    }
+    // Getters
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getNationality() { return nationality; }
+    public SinglyLinkedList getFlightHistory() { return flightHistory; }
 
-    public String getName() {
-        return name;
-    }
+    // Setters
+    public void setId(String id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setNationality(String nationality) { this.nationality = nationality; }
 
-    public String getNationality() {
-        return nationality;
-    }
-
-    // This method now adds a single FlightHistory object to the passenger's history list
-    public void addFlightToHistory(FlightHistory completedFlight) {
-        if (completedFlight != null) {
-            try {
-                this.flightHistory.add(completedFlight);
-            } catch (ListException e) {
-                System.err.println("[ERROR] Failed to add flight history for passenger " + id + ": " + e.getMessage());
-            }
+    public void addFlightToHistory(Flight flight) throws ListException {
+        if (flight != null && !flightHistory.contains(flight)) { // Avoid adding duplicates
+            flightHistory.add(flight);
         }
     }
 
-    public FlightHistoryList getFlightHistory() {
-        return flightHistory;
-    }
-
-    @Override
-    public int compareTo(Passenger other) {
-        // This is the CRITICAL part for AVL: comparison MUST be based on the unique key (ID)
-        return this.id.compareTo(other.id);
-    }
-
+    // Important for list operations like 'contains' or 'remove'
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Passenger passenger = (Passenger) o;
-        // Equality should also be based on ID for consistency with compareTo
-        return id.equals(passenger.id);
+        return id.equals(passenger.id); // Assuming ID is unique
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode(); // Consistent with equals
+        return id.hashCode();
     }
 
     @Override
     public String toString() {
-        return "Passenger{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", nationality='" + nationality + '\'' +
-                '}';
+        return "Pasajero [ID: " + id + ", Nombre: " + name + ", Nacionalidad: " + nationality + "]";
     }
 }

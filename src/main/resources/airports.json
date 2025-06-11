@@ -1,84 +1,50 @@
-{
-  "airports": [
-    {
-      "code": "SJO",
-      "name": "Juan Santamaría",
-      "country": "Costa Rica"
-    },
-    {
-      "code": "LIR",
-      "name": "Daniel Oduber Quirós",
-      "country": "Costa Rica"
-    },
-    {
-      "code": "MIA",
-      "name": "Miami International",
-      "country": "USA"
-    },
-    {
-      "code": "JFK",
-      "name": "John F. Kennedy",
-      "country": "USA"
-    },
-    {
-      "code": "LAX",
-      "name": "Los Angeles International",
-      "country": "USA"
-    },
-    {
-      "code": "CDG",
-      "name": "Charles de Gaulle",
-      "country": "France"
-    },
-    {
-      "code": "FRA",
-      "name": "Frankfurt Airport",
-      "country": "Germany"
-    },
-    {
-      "code": "DXB",
-      "name": "Dubai International",
-      "country": "UAE"
-    },
-    {
-      "code": "NRT",
-      "name": "Narita International",
-      "country": "Japan"
-    },
-    {
-      "code": "SYD",
-      "name": "Sydney Airport",
-      "country": "Australia"
-    },
-    {
-      "code": "ORD",
-      "name": "O'Hare International",
-      "country": "USA"
-    },
-    {
-      "code": "PEK",
-      "name": "Beijing Capital",
-      "country": "China"
-    },
-    {
-      "code": "IST",
-      "name": "Istanbul Airport",
-      "country": "Turkey"
-    },
-    {
-      "code": "MEX",
-      "name": "Mexico City Int'l",
-      "country": "Mexico"
-    },
-    {
-      "code": "LIM",
-      "name": "Jorge Chávez Int'l",
-      "country": "Peru"
-    },
-    {
-      "code": "MAD",
-      "name": "Adolfo Suárez Madrid–Barajas Airport",
-      "country": "Spain"
-    }
-  ]
-}
+[
+  {
+    "code": "SJO",
+    "name": "Juan Santamaría International Airport",
+    "country": "Costa Rica",
+    "status": "ACTIVE"
+  },
+  {
+    "code": "MIA",
+    "name": "Miami International Airport",
+    "country": "USA",
+    "status": "ACTIVE"
+  },
+  {
+    "code": "LIR",
+    "name": "Daniel Oduber Quirós International Airport",
+    "country": "Costa Rica",
+    "status": "ACTIVE"
+  },
+  {
+    "code": "JFK",
+    "name": "John F. Kennedy International Airport",
+    "country": "USA",
+    "status": "ACTIVE"
+  },
+  {
+    "code": "LAX",
+    "name": "Los Angeles International Airport",
+    "country": "USA",
+    "status": "ACTIVE"
+  },
+  {
+    "code": "CDG",
+    "name": "Charles de Gaulle Airport",
+    "country": "France",
+    "status": "ACTIVE"
+  },
+  {
+    "code": "FRA",
+    "name": "Frankfurt Airport",
+    "country": "Germany",
+    "status": "ACTIVE"
+  },
+  {
+    "code": "DXB",
+    "name": "Dubai International Airport",
+    "country": "UAE",
+    "status": "ACTIVE"
+  }
+]
