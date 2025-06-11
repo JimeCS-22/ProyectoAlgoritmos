@@ -6,51 +6,64 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.AirportController">
-    <children>
-        <ImageView fitHeight="731.0" fitWidth="1164.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@images/degradados.png" />
-            </image>
-        </ImageView>
-      <Text fill="WHITE" layoutX="79.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" wrappingWidth="296.0703125">
-         <font>
-            <Font name="Pristina" size="48.0" />
-         </font>
-      </Text>
-      <ImageView fitHeight="44.0" fitWidth="57.0" layoutX="25.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/whale_1841292.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="320.0" fitWidth="492.0" layoutX="652.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/airport-plane.png" />
-         </image>
-      </ImageView>
-      <TableView layoutX="25.0" layoutY="243.0" prefHeight="320.0" prefWidth="601.0">
-        <columns>
-          <TableColumn prefWidth="49.0" text="Cod" />
-          <TableColumn prefWidth="157.0" text="Name" />
-            <TableColumn prefWidth="82.0" text="Country" />
-            <TableColumn minWidth="0.0" prefWidth="91.0" text="Status" />
-            <TableColumn prefWidth="116.0" text="DepartureBoard" />
-            <TableColumn prefWidth="105.0" text="PassengerQueue" />
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.AirportController">
+    <ImageView fitHeight="731.0" fitWidth="1164.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <image>
+            <Image url="@images/degradados.png" />
+        </image>
+    </ImageView>
+
+    <VBox spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <ImageView fitHeight="44.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/whale_1841292.png" />
+                </image>
+            </ImageView>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System">
+                <font>
+                    <Font name="Pristina" size="48.0" />
+                </font>
+            </Text>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+            <Button fx:id="btCreate" mnemonicParsing="false" onAction="#createAirportOnAction" prefHeight="47.0" prefWidth="180.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Create New Airport">
+                <font>
+                    <Font name="Pristina" size="20.0" />
+                </font>
+            </Button>
+            <Button fx:id="btSearch" mnemonicParsing="false" onAction="#searchAirportOnAction" prefHeight="44.0" prefWidth="160.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Search Airport">
+                <font>
+                    <Font name="Pristina" size="20.0" />
+                </font>
+            </Button>
+            <Button fx:id="btViewAll" mnemonicParsing="false" onAction="#viewAllAirportsOnAction" prefHeight="44.0" prefWidth="160.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="View All Airports">
+                <font>
+                    <Font name="Pristina" size="20.0" />
+                </font>
+            </Button>
+        </HBox>
+
+        <HBox spacing="20.0" VBox.vgrow="ALWAYS"> <TableView fx:id="tblAirports" prefHeight="358.0" prefWidth="623.0" HBox.hgrow="ALWAYS"> <columns>
+            <TableColumn fx:id="colCode" prefWidth="50.0" text="Cod" />
+            <TableColumn fx:id="colName" prefWidth="160.0" text="Name" />
+            <TableColumn fx:id="colCountry" prefWidth="90.0" text="Country" />
+            <TableColumn fx:id="colStatus" prefWidth="90.0" text="Status" />
+            <TableColumn fx:id="colDepartureBoard" prefWidth="120.0" text="DepartureBoard" />
+            <TableColumn fx:id="colPassengerQueue" prefWidth="100.0" text="PassengerQueue" />
         </columns>
-      </TableView>
-      <Button fx:id="btSearch" layoutX="482.0" layoutY="161.0" mnemonicParsing="false" onAction="#searchAirportOnAction" prefHeight="44.0" prefWidth="144.0" style="-fx-background-color: #ffb43c;" text="Search Airport">
-         <font>
-            <Font name="Pristina" size="20.0" />
-         </font>
-      </Button>
-      <Button fx:id="btCreate" layoutX="25.0" layoutY="161.0" mnemonicParsing="false" onAction="#createAirportOnAction" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: #ffb43c;" text="Create New Airport">
-         <font>
-            <Font name="Pristina" size="20.0" />
-         </font>
-      </Button>
-    </children>
-</BorderPane>
+        </TableView>
+            <ImageView fitHeight="320.0" fitWidth="492.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/airport-plane.png" />
+                </image>
+            </ImageView>
+        </HBox>
+    </VBox>
+</AnchorPane>

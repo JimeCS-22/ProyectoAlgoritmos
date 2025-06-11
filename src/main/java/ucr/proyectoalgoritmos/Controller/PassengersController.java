@@ -10,6 +10,20 @@ public class PassengersController {
     private Button btUpdate;
     @javafx.fxml.FXML
     private Button btCreate;
+    @javafx.fxml.FXML
+    private TableColumn colNationality;
+    @javafx.fxml.FXML
+    private Button btDelete;
+    @javafx.fxml.FXML
+    private TableColumn colID;
+    @javafx.fxml.FXML
+    private TableColumn colFlightHistory;
+    @javafx.fxml.FXML
+    private Button btViewAll;
+    @javafx.fxml.FXML
+    private TableView tblPassengers;
+    @javafx.fxml.FXML
+    private TableColumn colFullName;
 
     @javafx.fxml.FXML
     public void createPassengerOnAction(ActionEvent actionEvent) {
@@ -18,5 +32,13 @@ public class PassengersController {
 
     @javafx.fxml.FXML
     public void updatePassengerOnAction(ActionEvent actionEvent) {
+    }
+
+    @javafx.fxml.FXML
+    public void viewAllPassengersOnAction(ActionEvent actionEvent) {
+    }
+
+    @javafx.fxml.FXML
+    public void deletePassengerOnAction(ActionEvent actionEvent) {
     }
 }

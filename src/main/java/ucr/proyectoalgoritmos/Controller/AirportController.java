@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
@@ -27,9 +24,23 @@ public class AirportController {
     private BorderPane rootLayout;
     private AdjacencyMatrixGraph graph;
     @FXML
-    private TextArea TextResult;
-    @FXML
     private Button btSearch;
+    @FXML
+    private TableColumn colDepartureBoard;
+    @FXML
+    private TableColumn colName;
+    @FXML
+    private TableColumn colPassengerQueue;
+    @FXML
+    private TableColumn colCountry;
+    @FXML
+    private TableView tblAirports;
+    @FXML
+    private TableColumn colCode;
+    @FXML
+    private Button btViewAll;
+    @FXML
+    private TableColumn colStatus;
 
     public void setRootLayout(BorderPane rootLayout) {
         this.rootLayout = rootLayout;
@@ -73,5 +84,9 @@ public class AirportController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void viewAllAirportsOnAction(ActionEvent actionEvent) {
     }
 }
