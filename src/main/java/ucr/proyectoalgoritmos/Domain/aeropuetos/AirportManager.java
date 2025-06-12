@@ -1,124 +1,52 @@
-package ucr.proyectoalgoritmos.Domain.aeropuetos; // Adjust package
+package ucr.proyectoalgoritmos.Domain.aeropuetos;
 
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.util.Utility; // Your Utility class for compare method
 
 public class AirportManager {
-    private DoublyLinkedList airportList; // This will store Airport objects
+    private DoublyLinkedList airports;
 
     public AirportManager() {
-        this.airportList = new DoublyLinkedList(); // Initialize your DoublyLinkedList
+        this.airports = new DoublyLinkedList();
     }
 
-    // a. Create Airport
     public void createAirport(String code, String name, String country) throws ListException {
-        Airport newAirport = new Airport(code, name, country);
-        // Check for existing airport code before adding
+        // Simple check to prevent duplicate airport codes
         if (findAirport(code) != null) {
-            throw new ListException("Airport with code " + code + " already exists.");
-        }
-        airportList.add(newAirport); // Add to the DoublyLinkedList
-        System.out.println("[INFO] Airport created: " + newAirport.getName() + " (" + newAirport.getCode() + ")");
-    }
-
-    // a. Edit Airport
-    public void editAirport(String code, String newName, String newCountry, Airport.AirportStatus newStatus) throws ListException {
-        Airport airportToEdit = findAirport(code);
-        if (airportToEdit == null) {
-            throw new ListException("Airport with code " + code + " not found.");
-        }
-        airportToEdit.setName(newName);
-        airportToEdit.setCountry(newCountry);
-        airportToEdit.setStatus(newStatus);
-        System.out.println("[INFO] Airport " + code + " updated.");
-    }
-
-    // a. Delete Airport
-    public void deleteAirport(String code) throws ListException {
-        Airport airportToDelete = findAirport(code);
-        if (airportToDelete == null) {
-            throw new ListException("Airport with code " + code + " not found for deletion.");
-        }
-        airportList.remove(airportToDelete); // Remove from the DoublyLinkedList
-        System.out.println("[INFO] Airport " + code + " deleted.");
-    }
-
-    // b. Activate or Deactivate Airports
-    public void setAirportStatus(String code, Airport.AirportStatus status) throws ListException {
-        Airport airport = findAirport(code);
-        if (airport == null) {
-            throw new ListException("Airport with code " + code + " not found.");
-        }
-        airport.setStatus(status);
-        System.out.println("[INFO] Airport " + code + " status set to " + status);
-    }
-
-    // c. List Airports
-    public void listAirports(boolean includeActive, boolean includeInactive) throws ListException {
-        if (airportList.isEmpty()) {
-            System.out.println("No airports to list.");
+            System.out.println("ADVERTENCIA: El aeropuerto con código " + code + " ya existe. No se añadió de nuevo.");
             return;
         }
-        System.out.println("\n--- Airport List ---");
-        for (int i = 0; i < airportList.size(); i++) {
-            Airport airport = (Airport) airportList.get(i);
-            boolean print = false;
-            if (includeActive && airport.getStatus() == Airport.AirportStatus.ACTIVE) {
-                print = true;
-            }
-            if (includeInactive && airport.getStatus() == Airport.AirportStatus.INACTIVE) {
-                print = true;
-            }
-            if (print) {
-                System.out.println(airport);
-            }
-        }
-        System.out.println("--------------------");
+        Airport newAirport = new Airport(code, name, country);
+        airports.add(newAirport);
+        // System.out.println("[INFO] Aeropuerto creado: " + newAirport.getName() + " (" + newAirport.getCode() + ")");
     }
 
-    // Helper method to find an airport by code
     public Airport findAirport(String code) throws ListException {
-        if (airportList.isEmpty()) {
-            return null;
-        }
-        // Iterate and compare using the Airport's code
-        for (int i = 0; i < airportList.size(); i++) {
-            Airport airport = (Airport) airportList.get(i);
-            if (Utility.compare(airport.getCode(), code) == 0) { // Using Utility.compare for consistency
+        for (int i = 0; i < airports.size(); i++) {
+            Airport airport = (Airport) airports.get(i);
+            if (airport.getCode().equals(code)) {
                 return airport;
             }
         }
         return null; // Not found
     }
 
-    /**
-     * Retrieves the numerical index of an airport within the internal airport list,
-     * based on its airport code. This index corresponds to the vertex index in the graph.
-     *
-     * @param airportCode The unique code of the airport (e.g., "SJO", "MIA").
-     * @return The 0-based index of the airport if found, or -1 if the airport code is not in the list.
-     * @throws ListException If there's an issue accessing the internal airport list.
-     */
-    public int getAirportIndex(String airportCode) throws ListException {
-        if (airportList.isEmpty()) {
-            return -1; // No airports, so cannot find an index
+    public String getAirportName(String code) {
+        try {
+            Airport airport = findAirport(code);
+            return airport != null ? airport.getName() : "Desconocido (" + code + ")";
+        } catch (ListException e) {
+            return "ERROR: " + e.getMessage();
         }
-        // Iterate through the DoublyLinkedList to find the index
-        for (int i = 0; i < airportList.size(); i++) {
-            Airport airport = (Airport) airportList.get(i); // Retrieve the Airport object
-            if (Utility.compare(airport.getCode(), airportCode) == 0) {
-                return i; // Return the 0-based index
-            }
-        }
-        return -1; // Airport not found
     }
 
     public DoublyLinkedList getAllAirports() {
-        return airportList;
+        return airports;
     }
 
     public int getAirportCount() throws ListException {
-        return airportList.size();
+        return airports.size();
     }
+
+
 }

@@ -1,66 +1,87 @@
 package ucr.proyectoalgoritmos.Domain.passenger;
 
-import ucr.proyectoalgoritmos.Domain.AVL; // Assuming your AVL is in Domain
-import ucr.proyectoalgoritmos.Domain.flight.FlightHistory;
-import ucr.proyectoalgoritmos.Domain.list.ListException; // Your ListException
+import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PassengerManager {
-    public AVL passengers; // AVL tree to store Passenger objects
+    private Map<String, Passenger> passengers; // Mapea ID a objeto Passenger
 
-    public PassengerManager() {
-        this.passengers = new AVL();
+    public PassengerManager() throws ListException {
+        this.passengers = new HashMap<>();
     }
 
     public void registerPassenger(String id, String name, String nationality) throws ListException {
+        if (passengers.containsKey(id)) {
+            return; // Ya existe, no lo registramos de nuevo
+        }
         Passenger newPassenger = new Passenger(id, name, nationality);
-        try {
-            passengers.insert(newPassenger);
-            System.out.println("[INFO] Passenger registered: " + newPassenger.getName() + " (ID: " + newPassenger.getId() + ")");
-        } catch (ListException e) {
-            System.err.println("[ERROR] Failed to register passenger " + id + ": " + e.getMessage());
-            // Optionally, rethrow if registration must be unique and fail
-        }
+        passengers.put(id, newPassenger);
     }
 
-    public Passenger searchPassenger(String id) throws ListException {
-        // Create a "dummy" passenger object with just the ID for searching
-        // This relies on Passenger's compareTo and equals methods
-        Passenger searchKey = new Passenger(id, "", "");
-        try {
-            return (Passenger) passengers.search(searchKey);
-        } catch (ListException e) {
-            System.err.println("[ERROR] Error searching for passenger " + id + ": " + e.getMessage());
-            return null;
-        }
-    }
-
-    // Method to add flight history to a specific passenger
-    public void addFlightToPassengerHistory(String passengerId, FlightHistory flightRecord) throws ListException {
-        Passenger passenger = searchPassenger(passengerId); // Find the passenger
-        if (passenger != null) {
-            passenger.addFlightToHistory(flightRecord);
-            System.out.println("[HISTORY] Flight record added for passenger " + passengerId + ".");
-        } else {
-            System.err.println("[ERROR] Cannot add flight history: Passenger " + passengerId + " not found.");
-        }
-    }
-
-    public void showFlightHistory(String passengerId) {
-        try {
-            Passenger passenger = searchPassenger(passengerId);
-            if (passenger != null) {
-                System.out.println("\n--- Flight History for " + passenger.getName() + " (ID: " + passenger.getId() + ") ---");
-                System.out.println(passenger.getFlightHistory()); // Uses FlightHistoryList's toString
-            } else {
-                System.out.println("\n--- Flight History for " + passengerId + " ---");
-                System.out.println("  Passenger not found or no flight history recorded.");
-            }
-        } catch (ListException e) {
-            System.err.println("[ERROR] Error showing flight history for " + passengerId + ": " + e.getMessage());
-        }
+    public Passenger searchPassenger(String id) {
+        return passengers.get(id);
     }
 
     public int getPassengerCount() {
         return passengers.size();
+    }
+
+    public SinglyLinkedList getAllPassengerIds() throws ListException {
+        SinglyLinkedList ids = new SinglyLinkedList();
+        for (String id : passengers.keySet()) {
+            ids.add(id);
+        }
+        return ids;
+    }
+
+    public DoublyLinkedList getAllPassengers() throws ListException {
+        DoublyLinkedList all = new DoublyLinkedList();
+        for (Passenger p : passengers.values()) {
+            all.add(p);
+        }
+        return all;
+    }
+
+    // Simplemente añade el vuelo al historial personal del pasajero.
+    public void processTicketPurchase(Passenger passenger, Flight flight) throws ListException {
+        if (passenger != null && flight != null) {
+            passenger.addFlightToHistory(flight);
+        } else {
+            System.err.println("ERROR PM: No se pudo añadir vuelo al historial del pasajero. Objeto nulo.");
+        }
+    }
+
+    // Este método podría ser llamado por FlightSimulator para mostrar el historial
+    public void addFlightToPassengerHistory(String passengerId, Flight flight) throws ListException {
+        Passenger p = searchPassenger(passengerId);
+        if (p != null) {
+            p.addFlightToHistory(flight);
+        } else {
+            System.err.println("ERROR PM: Pasajero " + passengerId + " no encontrado para actualizar historial.");
+        }
+    }
+
+    public void showFlightHistory(String passengerId) throws ListException {
+        Passenger p = searchPassenger(passengerId);
+        if (p != null) {
+            System.out.println("Historial de Vuelos para Pasajero " + p.getName() + " (ID: " + p.getId() + "):");
+            SinglyLinkedList history = p.getFlightHistory();
+            if (history != null && !history.isEmpty()) {
+                for (int i = 0; i < history.size(); i++) {
+                    Flight f = (Flight) history.get(i);
+                    System.out.println("  - Vuelo " + f.getFlightNumber() + ": " + f.getOriginAirportCode() + " -> " + f.getDestinationAirportCode() + " (Estado: " + f.getStatus() + ")");
+                }
+            } else {
+                System.out.println("  (No tiene vuelos registrados)");
+            }
+        } else {
+            System.err.println("ERROR: Pasajero con ID " + passengerId + " no encontrado para mostrar historial.");
+        }
     }
 }

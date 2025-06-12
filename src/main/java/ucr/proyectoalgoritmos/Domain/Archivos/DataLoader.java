@@ -63,7 +63,8 @@ public class DataLoader {
             String destination = routeJson.get("destination_airport_code").getAsString();
             int distance = routeJson.get("distance").getAsInt();
 
-            routeManager.addRoute(origin , destination , distance);
+            //El de abajo lo comenté mientras tanto, hay que des-comentarlo
+           // routeManager.addRoute(origin , destination , distance);
 
         }
 

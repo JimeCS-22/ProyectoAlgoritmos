@@ -66,9 +66,9 @@ public class AirportController {
 
                     boolean contains = graph.containsVertex(vertexToFind);
                     if (contains) {
-                        TextResult.setText("El aeropuerto '" + vertexToFind + "' EXISTE en el grafo.");
+                        //TextResult.setText("El aeropuerto '" + vertexToFind + "' EXISTE en el grafo.");
                     } else {
-                        TextResult.setText("El aeropuerto '" + vertexToFind + "' NO EXISTE en el grafo.");
+                       // TextResult.setText("El aeropuerto '" + vertexToFind + "' NO EXISTE en el grafo.");
                     }
                 } catch (GraphException e) {
                     showAlert("Error del Grafo", e.getMessage());

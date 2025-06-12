@@ -9,7 +9,7 @@ public class SinglyLinkedList implements List {
     public SinglyLinkedList() {
         this.first = null; // The list is empty
         this.count = 0;    // Initialize count
-        System.out.println("SLL DEBUG: New list created. State: first=" + (first != null ? "not null" : "null") + ", count=" + count);
+        //System.out.println("SLL DEBUG: New list created. State: first=" + (first != null ? "not null" : "null") + ", count=" + count);
     }
 
     @Override
@@ -20,10 +20,10 @@ public class SinglyLinkedList implements List {
 
     @Override
     public void clear() {
-        System.out.println("SLL DEBUG: clear() called. Before: count=" + count);
+        //System.out.println("SLL DEBUG: clear() called. Before: count=" + count);
         this.first = null; // Nullify the list
         this.count = 0;    // Reset count
-        System.out.println("SLL DEBUG: clear() completed. After: count=" + count);
+        //System.out.println("SLL DEBUG: clear() completed. After: count=" + count);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SinglyLinkedList implements List {
 
     @Override
     public void add(Object element) {
-        System.out.println("SLL DEBUG: add(" + element + ") called. Before: count=" + count);
+        //System.out.println("SLL DEBUG: add(" + element + ") called. Before: count=" + count);
         Node newNode = new Node(element);
         if (isEmpty()) {
             first = newNode;
@@ -70,12 +70,12 @@ public class SinglyLinkedList implements List {
             aux.next = newNode;
         }
         count++; // Increment count on add
-        System.out.println("SLL DEBUG: add(" + element + ") completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+       // System.out.println("SLL DEBUG: add(" + element + ") completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
     }
 
     @Override
     public void addFirst(Object element) {
-        System.out.println("SLL DEBUG: addFirst(" + element + ") called. Before: count=" + count);
+        //System.out.println("SLL DEBUG: addFirst(" + element + ") called. Before: count=" + count);
         Node newNode = new Node(element);
         if (isEmpty()) {
             first = newNode;
@@ -84,7 +84,7 @@ public class SinglyLinkedList implements List {
             first = newNode;
         }
         count++; // Increment count on add
-        System.out.println("SLL DEBUG: addFirst(" + element + ") completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+        //System.out.println("SLL DEBUG: addFirst(" + element + ") completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SinglyLinkedList implements List {
 
     @Override
     public boolean remove(Object element) throws ListException {
-        System.out.println("SLL DEBUG: remove(" + element + ") called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
+        //System.out.println("SLL DEBUG: remove(" + element + ") called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
@@ -118,7 +118,7 @@ public class SinglyLinkedList implements List {
             if (count == 0) {
                 first = null; // Ensure first is null when list is truly empty
             }
-            System.out.println("SLL DEBUG: remove(" + removedData + ") (first) completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+            //System.out.println("SLL DEBUG: remove(" + removedData + ") (first) completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
             return true; // Element was found and removed
         }
 
@@ -138,17 +138,17 @@ public class SinglyLinkedList implements List {
             prev.next = aux.next;
             count--; // Decrement count
 
-            System.out.println("SLL DEBUG: remove(" + removedData + ") (middle/last) completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+            //System.out.println("SLL DEBUG: remove(" + removedData + ") (middle/last) completed. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
             return true; // Element was found and removed
         }
 
-        System.out.println("SLL DEBUG: remove(" + element + ") - Element not found. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+        //System.out.println("SLL DEBUG: remove(" + element + ") - Element not found. After: first=" + (first != null ? first.data : "null") + ", count=" + count);
         return false; // Element not found
     }
 
     @Override
     public Object removeFirst() throws ListException {
-        System.out.println("SLL DEBUG: removeFirst() called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
+       // System.out.println("SLL DEBUG: removeFirst() called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
@@ -160,20 +160,20 @@ public class SinglyLinkedList implements List {
         if (count == 0) {
             first = null; // Ensure first is null when list is truly empty
         }
-        System.out.println("SLL DEBUG: removeFirst() completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+        //System.out.println("SLL DEBUG: removeFirst() completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
         return removedData;
     }
 
     @Override
     public Object removeLast() throws ListException {
-        System.out.println("SLL DEBUG: removeLast() called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
+        //System.out.println("SLL DEBUG: removeLast() called. Before: first=" + (first != null ? first.data : "null") + ", count=" + count);
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
         if (size() == 1) { // If only one element
             Object removedData = first.data;
             clear(); // This correctly sets first=null and count=0
-            System.out.println("SLL DEBUG: removeLast() (single element) completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+            //System.out.println("SLL DEBUG: removeLast() (single element) completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
             return removedData;
         }
         Node aux = first;
@@ -184,13 +184,13 @@ public class SinglyLinkedList implements List {
         Object removedData = aux.next.data;
         aux.next = null; // Disconnect the last node
         count--; // Decrement count on removal
-        System.out.println("SLL DEBUG: removeLast() completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
+        //System.out.println("SLL DEBUG: removeLast() completed. Removed: " + removedData + ". After: first=" + (first != null ? first.data : "null") + ", count=" + count);
         return removedData;
     }
 
     @Override
     public void sort() throws ListException {
-        System.out.println("SLL DEBUG: sort() called. Before: " + this.toString().replace("\n", ", "));
+        //System.out.println("SLL DEBUG: sort() called. Before: " + this.toString().replace("\n", ", "));
         if (isEmpty()) {
             throw new ListException("Singly Linked List is Empty");
         }
@@ -210,7 +210,7 @@ public class SinglyLinkedList implements List {
                 }
             }
         }
-        System.out.println("SLL DEBUG: sort() completed. After: " + this.toString().replace("\n", ", "));
+       // System.out.println("SLL DEBUG: sort() completed. After: " + this.toString().replace("\n", ", "));
     }
 
     @Override

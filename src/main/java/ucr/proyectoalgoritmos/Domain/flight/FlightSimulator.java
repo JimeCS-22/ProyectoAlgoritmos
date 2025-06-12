@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Domain.flight; // Adjust package as needed
+package ucr.proyectoalgoritmos.Domain.flight;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -6,20 +6,20 @@ import com.google.gson.reflect.TypeToken;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
-import ucr.proyectoalgoritmos.Domain.airplane.Airplane.AirplaneStatus; // Import AirplaneStatus enum
+import ucr.proyectoalgoritmos.Domain.airplane.Airplane.AirplaneStatus;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
-import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // Ensure this is imported for type consistency
-import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
-import ucr.proyectoalgoritmos.Domain.passenger.PassengerManager;
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // Corregido: passenger a passanger
+import ucr.proyectoalgoritmos.Domain.passenger.PassengerManager; // Corregido: passenger a passanger
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
-import ucr.proyectoalgoritmos.route.RouteManager; // Import RouteManager
-import ucr.proyectoalgoritmos.route.Route; // Import your Route class
+import ucr.proyectoalgoritmos.route.RouteManager;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,205 +31,216 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FlightSimulator {
     private AirportManager airportManager;
     private PassengerManager passengerManager;
     private FlightScheduleManager flightScheduleManager;
-    private RouteManager routeManager; // Make sure this is initialized correctly
+    private RouteManager routeManager;
 
-    private Map<String, Airplane> airplanes; // Stores all airplanes
+    private Map<String, Airplane> airplanes;
     private ScheduledExecutorService scheduler;
     private Random random;
+    private AtomicInteger flightCounter;
+
+    private volatile boolean flightLimitMessagePrinted = false;
+    private final int MAX_FLIGHTS_TO_GENERATE = 15; // Define el límite como una constante
 
     public FlightSimulator() throws ListException, IOException {
         this.airportManager = new AirportManager();
-        // Pass AirportManager to RouteManager so it can resolve airport codes to indices
-        this.routeManager = new RouteManager(airportManager); // <--- IMPORTANT: Pass AirportManager
+        this.routeManager = new RouteManager(airportManager);
         this.passengerManager = new PassengerManager();
-        // Pass the already initialized AirportManager and RouteManager
         this.flightScheduleManager = new FlightScheduleManager(this.airportManager, this.routeManager);
 
         this.airplanes = new HashMap<>();
-        this.scheduler = Executors.newScheduledThreadPool(2); // Increased thread pool size for more concurrency
+        this.scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
         this.random = new Random();
+        this.flightCounter = new AtomicInteger(0);
 
-        // 1. System Initialization
         initializeSystem();
     }
 
     private void initializeSystem() throws ListException, IOException {
-        System.out.println("--- System Initialization ---");
-
-        // 1.1 Load Airports
+        System.out.println("SIMULADOR: Inicializando sistema...");
         loadAirportsFromFile("airports.json");
 
-        // Add all loaded airports as vertices to the graph (no try-catch here, ListException propagates)
-        System.out.println("[INIT] Adding airports as graph vertices...");
         DoublyLinkedList allLoadedAirports = airportManager.getAllAirports();
         if (allLoadedAirports != null && !allLoadedAirports.isEmpty()) {
             for (int i = 0; i < allLoadedAirports.size(); i++) {
-                Airport airport = (Airport) allLoadedAirports.get(i); // Explicit cast
-                routeManager.getGraph().addVertex(airport.getCode()); // Add each airport's code as a vertex
+                try {
+                    Airport airport = (Airport) allLoadedAirports.get(i);
+                    routeManager.getGraph().addVertex(airport.getCode());
+                } catch (ListException e) {
+                    System.err.println("ERROR: No se pudo obtener aeropuerto del índice " + i + " al añadir al grafo: " + e.getMessage());
+                }
             }
-            System.out.println("[INIT] All " + routeManager.getGraph().getNumVertices() + " airports added as graph vertices.");
         } else {
-            System.out.println("[WARN] No airports found in AirportManager to add as graph vertices.");
+            System.err.println("ADVERTENCIA: No hay aeropuertos cargados o la lista está vacía. El grafo no tendrá vértices.");
         }
 
-        // --- START NEW/MODIFIED CODE FOR ROUTE LOADING ---
-        // 1.2 Load Routes from routes.json (instead of generating random ones)
-        // Ensure that airports (vertices) are added to the graph BEFORE loading routes (edges).
+
         if (routeManager.getGraph().getNumVertices() < 2) {
-            System.err.println("[ERROR] Not enough airports (vertices) in the graph to load routes. Please ensure at least 2 airports are loaded.");
+            System.err.println("ERROR: No hay suficientes aeropuertos (vértices) en el grafo para cargar o generar rutas. Asegúrese de que se carguen al menos 2 aeropuertos.");
         } else {
-            System.out.println("[INIT] Loading routes from 'routes.json'...");
             try {
-                // Call the new method in RouteManager to load routes
                 routeManager.loadRoutesFromJson("routes.json");
-                System.out.println("[INIT] Routes loaded from 'routes.json'. Total routes: " + routeManager.getGraph().getNumEdges());
+                System.out.println("SIMULADOR: Rutas cargadas desde 'routes.json'.");
             } catch (IOException e) {
-                System.err.println("[ERROR] Failed to load routes from 'routes.json': " + e.getMessage());
-                // Fallback: If routes.json fails, generate random routes as a last resort
-                System.out.println("[INFO] Generating random routes as a fallback due to file loading error.");
-                routeManager.getGraph().generateRandomRoutes(3, 7, 100, 3000);
+                System.err.println("ADVERTENCIA: No se pudieron cargar las rutas desde 'routes.json': " + e.getMessage());
+                System.out.println("SIMULADOR: Generando rutas aleatorias como alternativa.");
+                int numVertices = routeManager.getGraph().getNumVertices();
+                int maxRoutes = numVertices * (numVertices - 1) / 2;
+                routeManager.getGraph().generateRandomRoutes(Math.min(maxRoutes, 20), 7, 30, 600);
+                //System.out.println("SIMULADOR: Rutas aleatorias generadas.");
             }
         }
-        // --- END NEW/MODIFIED CODE FOR ROUTE LOADING ---
 
+        // Añadir aviones predefinidos
+        addAirplane("AIR001", 180, "SJO");
+        addAirplane("AIR002", 220, "MIA");
+        addAirplane("AIR003", 160, "LIR");
+        addAirplane("AIR004", 200, "LAX");
+        addAirplane("AIR005", 250, "JFK");
+        addAirplane("AIR006", 190, "CDG");
+        addAirplane("AIR007", 210, "FRA");
+        addAirplane("AIR008", 170, "DXB");
+        addAirplane("AIR009", 230, "NRT");
+        addAirplane("AIR010", 150, "SYD");
+        addAirplane("AIR011", 205, "ORD");
+        addAirplane("AIR012", 240, "PEK");
+        addAirplane("AIR013", 195, "IST");
+        addAirplane("AIR014", 175, "MEX");
+        addAirplane("AIR015", 225, "LIM");
+        addAirplane("AIR016", 185, "SJO");
+        addAirplane("AIR017", 215, "MIA");
+        addAirplane("AIR018", 170, "LIR");
+        addAirplane("AIR019", 200, "LAX");
+        addAirplane("AIR020", 245, "JFK");
+        addAirplane("AIR021", 192, "CDG");
+        addAirplane("AIR022", 218, "FRA");
+        addAirplane("AIR023", 178, "DXB");
+        addAirplane("AIR024", 235, "NRT");
+        addAirplane("AIR025", 155, "SYD");
+        System.out.println("SIMULADOR: Aviones predefinidos añadidos.");
 
-        // Add some initial airplanes
-        addAirplane("AIR001", 200, "SJO");
-        addAirplane("AIR002", 150, "MIA");
-        addAirplane("AIR003", 250, "LIR");
-        addAirplane("AIR004", 100, "LAX");
-        addAirplane("AIR005", 300, "JFK");
-        System.out.println("[INIT] Initial airplanes added.");
-
-        // Add some initial passengers
+        // Registrar pasajeros predefinidos
         passengerManager.registerPassenger("1001", "Alice Smith", "USA");
         passengerManager.registerPassenger("1002", "Bob Johnson", "Canada");
         passengerManager.registerPassenger("1003", "Carlos Garcia", "Mexico");
         passengerManager.registerPassenger("1004", "Diana Miller", "UK");
         passengerManager.registerPassenger("1005", "Eve Brown", "Germany");
-        System.out.println("[INIT] Initial passengers registered.");
-
-        System.out.println("--- System Initialization Complete ---");
+        System.out.println("SIMULADOR: Pasajeros predefinidos registrados.");
+        System.out.println("SIMULADOR: Sistema inicializado con éxito.");
     }
 
     private void loadAirportsFromFile(String filename) throws ListException {
-        System.out.println("[INIT] Attempting to load airports from " + filename + "...");
         int loadedCount = 0;
         try (Reader reader = Files.newBufferedReader(Paths.get(filename))) {
             Gson gson = new Gson();
-            List<Airport> airportListFromFile = gson.fromJson(reader, new TypeToken<List<Airport>>() {
-            }.getType());
+            List<Airport> airportListFromFile = gson.fromJson(reader, new TypeToken<List<Airport>>() {}.getType());
 
-            if (airportListFromFile != null) {
+            if (airportListFromFile != null && !airportListFromFile.isEmpty()) {
                 for (Airport airport : airportListFromFile) {
-                    if (loadedCount >= 20) { // Limit to 20 airports from file
-                        System.out.println("[INIT] Reached max 20 airports from file. Stopping.");
+                    if (loadedCount >= 20) {
+                        System.out.println("ADVERTENCIA: Se ha alcanzado el límite de 20 aeropuertos del archivo. Saltando el resto.");
                         break;
                     }
                     airportManager.createAirport(airport.getCode(), airport.getName(), airport.getCountry());
                     loadedCount++;
                 }
+                System.out.println("SIMULADOR: " + loadedCount + " aeropuertos cargados desde '" + filename + "'.");
+            } else {
+                System.out.println("ADVERTENCIA: El archivo '" + filename + "' está vacío o no contiene datos válidos. No se cargaron aeropuertos del archivo.");
             }
 
             if (loadedCount < 15) {
-                System.out.println("[WARN] Only " + loadedCount + " airports loaded from file. Minimum 15 suggested for robust simulation.");
+                System.out.println("ADVERTENCIA: Solo se cargaron " + loadedCount + " aeropuertos del archivo. Se sugiere un mínimo de 15 para una simulación robusta.");
             }
 
         } catch (IOException e) {
-            System.err.println("[ERROR] Could not read airports file '" + filename + "': " + e.getMessage());
-            System.out.println("[INFO] Generating some default airports instead.");
-            addDefaultAirports(); // Fallback to default airports if file loading fails
+            System.err.println("ERROR: No se pudo leer el archivo de aeropuertos '" + filename + "': " + e.getMessage());
+            System.out.println("SIMULADOR: Generando algunos aeropuertos predeterminados en su lugar.");
+            addDefaultAirports();
         } finally {
-            if (airportManager.getAllAirports().isEmpty()) { // Final check if no airports exist
-                System.out.println("[INFO] No airports loaded/created, adding emergency default airports.");
+            if (airportManager.getAllAirports().isEmpty()) {
+                System.out.println("SIMULADOR: No se cargaron aeropuertos por ningún método; añadiendo aeropuertos predeterminados de emergencia.");
                 addDefaultAirports();
             }
-            System.out.println("[INIT] Total airports loaded/created: " + airportManager.getAllAirports().size() + ".");
         }
     }
 
     private void addDefaultAirports() throws ListException {
-        // Only add if not already present, to avoid duplicates if called multiple times
-        if (airportManager.findAirport("SJO") == null)
-            airportManager.createAirport("SJO", "Juan Santamaría", "Costa Rica");
-        if (airportManager.findAirport("LIR") == null)
-            airportManager.createAirport("LIR", "Daniel Oduber Quirós", "Costa Rica");
-        if (airportManager.findAirport("MIA") == null)
-            airportManager.createAirport("MIA", "Miami International", "USA");
-        if (airportManager.findAirport("JFK") == null)
-            airportManager.createAirport("JFK", "John F. Kennedy", "USA");
-        if (airportManager.findAirport("LAX") == null)
-            airportManager.createAirport("LAX", "Los Angeles International", "USA");
-        if (airportManager.findAirport("CDG") == null)
-            airportManager.createAirport("CDG", "Charles de Gaulle", "France");
-        if (airportManager.findAirport("FRA") == null)
-            airportManager.createAirport("FRA", "Frankfurt Airport", "Germany");
-        if (airportManager.findAirport("DXB") == null)
-            airportManager.createAirport("DXB", "Dubai International", "UAE");
-        if (airportManager.findAirport("NRT") == null)
-            airportManager.createAirport("NRT", "Narita International", "Japan");
-        if (airportManager.findAirport("SYD") == null)
-            airportManager.createAirport("SYD", "Sydney Airport", "Australia");
-        if (airportManager.findAirport("ORD") == null)
-            airportManager.createAirport("ORD", "O'Hare International", "USA");
-        if (airportManager.findAirport("PEK") == null)
-            airportManager.createAirport("PEK", "Beijing Capital", "China");
-        if (airportManager.findAirport("IST") == null)
-            airportManager.createAirport("IST", "Istanbul Airport", "Turkey");
-        if (airportManager.findAirport("MEX") == null)
-            airportManager.createAirport("MEX", "Mexico City Int'l", "Mexico");
-        if (airportManager.findAirport("LIM") == null)
-            airportManager.createAirport("LIM", "Jorge Chávez Int'l", "Peru");
+        if (airportManager.findAirport("SJO") == null) airportManager.createAirport("SJO", "Juan Santamaría", "Costa Rica");
+        if (airportManager.findAirport("LIR") == null) airportManager.createAirport("LIR", "Daniel Oduber Quirós", "Costa Rica");
+        if (airportManager.findAirport("MIA") == null) airportManager.createAirport("MIA", "Miami International", "USA");
+        if (airportManager.findAirport("JFK") == null) airportManager.createAirport("JFK", "John F. Kennedy", "USA");
+        if (airportManager.findAirport("LAX") == null) airportManager.createAirport("LAX", "Los Angeles International", "USA");
+        if (airportManager.findAirport("CDG") == null) airportManager.createAirport("CDG", "Charles de Gaulle", "France");
+        if (airportManager.findAirport("FRA") == null) airportManager.createAirport("FRA", "Frankfurt Airport", "Germany");
+        if (airportManager.findAirport("DXB") == null) airportManager.createAirport("DXB", "Dubai International", "UAE");
+        if (airportManager.findAirport("NRT") == null) airportManager.createAirport("NRT", "Narita International", "Japan");
+        if (airportManager.findAirport("SYD") == null) airportManager.createAirport("SYD", "Sydney Airport", "Australia");
+        if (airportManager.findAirport("ORD") == null) airportManager.createAirport("ORD", "O'Hare International", "USA");
+        if (airportManager.findAirport("PEK") == null) airportManager.createAirport("PEK", "Beijing Capital", "China");
+        if (airportManager.findAirport("IST") == null) airportManager.createAirport("IST", "Istanbul Airport", "Turkey");
+        if (airportManager.findAirport("MEX") == null) airportManager.createAirport("MEX", "Mexico City Int'l", "Mexico");
+        if (airportManager.findAirport("LIM") == null) airportManager.createAirport("LIM", "Jorge Chávez Int'l", "Peru");
+        //System.out.println("SIMULADOR: Aeropuertos predeterminados de emergencia añadidos.");
     }
 
     public void addAirplane(String id, int capacity, String initialLocationAirportCode) throws ListException {
         if (airportManager.findAirport(initialLocationAirportCode) != null) {
             if (!airplanes.containsKey(id)) {
                 airplanes.put(id, new Airplane(id, capacity, initialLocationAirportCode));
-                System.out.println("[INFO] Airplane '" + id + "' (Capacity: " + capacity + ") created at " + initialLocationAirportCode);
             } else {
-                System.out.println("[WARN] Airplane " + id + " already exists. Skipping.");
+                System.out.println("SIMULADOR: El avión " + id + " ya existe. Se omite la adición.");
             }
         } else {
-            System.err.println("[ERROR] Cannot add airplane " + id + ". Initial location " + initialLocationAirportCode + " is not a valid airport.");
+            System.err.println("ERROR: No se puede añadir el avión " + id + ". La ubicación inicial " + initialLocationAirportCode + " no es un aeropuerto válido.");
         }
     }
 
     private void generateRandomFlightBasedOnRules() throws ListException, StackException {
-        System.out.println("\n--- Generating new flight request ---");
+        if (flightCounter.get() >= MAX_FLIGHTS_TO_GENERATE) {
+            if (!flightLimitMessagePrinted) {
+                System.out.println("ADVERTENCIA: [GENERACIÓN] Límite de " + MAX_FLIGHTS_TO_GENERATE + " vuelos alcanzado. No se generarán más vuelos.");
+                flightLimitMessagePrinted = true;
+            }
+            return;
+        }
+        System.out.println("\nSIMULADOR: [GENERACIÓN] Intentando generar nuevo vuelo. Vuelos generados hasta ahora: " + flightCounter.get() + " (Límite: " + MAX_FLIGHTS_TO_GENERATE + ")");
 
-        // Find the 5 airports with the most routes
+
         DoublyLinkedList allAirportsList = airportManager.getAllAirports();
         if (allAirportsList.isEmpty()) {
-            System.out.println("[WARN] No airports available to generate flights. Cannot generate flight.");
+            System.out.println("ADVERTENCIA: [GENERACIÓN] No hay aeropuertos cargados para generar vuelos. Retornando.");
             return;
         }
 
         List<Airport> activeAirports = new ArrayList<>();
         for (int i = 0; i < allAirportsList.size(); i++) {
-            Airport airport = (Airport) allAirportsList.get(i);
-            if (airport.getStatus() == Airport.AirportStatus.ACTIVE) {
-                activeAirports.add(airport);
+            try {
+                Airport airport = (Airport) allAirportsList.get(i);
+                if (airport.getStatus() == Airport.AirportStatus.ACTIVE) {
+                    activeAirports.add(airport);
+                }
+            } catch (ListException e) {
+                System.err.println("ERROR: [GENERACIÓN] No se pudo obtener aeropuerto del índice " + i + " al filtrar por activos: " + e.getMessage());
             }
         }
 
-        if (activeAirports.isEmpty()) {
-            System.out.println("[WARN] No active airports to generate flights. Cannot generate flight.");
+        if (activeAirports.size() < 2) {
+            System.out.println("ADVERTENCIA: [GENERACIÓN] Se requieren al menos 2 aeropuertos activos para generar vuelos. Actualmente hay " + activeAirports.size() + ". Retornando.");
             return;
         }
 
-        // Sort by outgoing route count (descending)
         Collections.sort(activeAirports, new Comparator<Airport>() {
             @Override
             public int compare(Airport airport1, Airport airport2) {
                 int count1 = routeManager.getGraph().getOutgoingRouteCount(airport1.getCode());
                 int count2 = routeManager.getGraph().getOutgoingRouteCount(airport2.getCode());
-                return Integer.compare(count2, count1); // Descending order
+                return Integer.compare(count2, count1);
             }
         });
 
@@ -239,181 +250,353 @@ public class FlightSimulator {
         }
 
         if (selectedOrigins.isEmpty()) {
-            System.out.println("[WARN] Could not select suitable origin airports. Cannot generate flight.");
+            System.out.println("ADVERTENCIA: [GENERACIÓN] No se pudieron seleccionar aeropuertos de origen. Asegúrate de tener suficientes aeropuertos activos y conectados. Retornando.");
             return;
         }
 
-        // Pick a random origin from the selected top airports
-        Airport originAirport = selectedOrigins.get(random.nextInt(selectedOrigins.size()));
-        String originCode = originAirport.getCode();
-
-        // Find a random destination that is not the origin and has a route
-        SinglyLinkedList allAirportCodesFromGraph;
-        try {
-            allAirportCodesFromGraph = routeManager.getGraph().getAllAirportCodes();
-        } catch (ListException e) {
-            System.err.println("[ERROR] Failed to get airport codes from graph: " + e.getMessage());
-            return; // Cannot proceed without airport codes
-        }
-
-
+        Airport originAirport = null;
+        String originCode = null;
         String destinationCode = null;
-        int attempts = 0;
-        final int MAX_ATTEMPTS = 50;
+        int routeFindingAttempts = 0;
+        final int MAX_ROUTE_FINDING_ATTEMPTS = 100;
 
-        // Loop to find a valid destination with a route
-        while (destinationCode == null || destinationCode.equals(originCode) ||
-                routeManager.calculateShortestRoute(originCode, destinationCode) == Integer.MAX_VALUE) {
+        while (routeFindingAttempts < MAX_ROUTE_FINDING_ATTEMPTS) {
+            originAirport = selectedOrigins.get(random.nextInt(selectedOrigins.size()));
+            originCode = originAirport.getCode();
 
-            // Check if there are any airport codes to select from
-            if (allAirportCodesFromGraph.isEmpty()) {
-                System.out.println("[WARN] No destination airports available in graph to select from. Cannot generate flight.");
+            SinglyLinkedList allAirportCodesFromGraph;
+            try {
+                allAirportCodesFromGraph = routeManager.getGraph().getAllAirportCodes();
+            } catch (ListException e) {
+                System.err.println("ERROR: [GENERACIÓN] No se pudieron obtener los códigos de aeropuerto del grafo: " + e.getMessage());
                 return;
             }
 
-            // Prevent infinite loop if no valid destination can be found
-            if (attempts >= MAX_ATTEMPTS) {
-                System.out.println("[WARN] Failed to find a valid destination with a route from " + originCode + " after " + MAX_ATTEMPTS + " attempts. Cannot generate flight.");
+            if (allAirportCodesFromGraph.isEmpty() || allAirportCodesFromGraph.size() < 2) {
+                System.out.println("ADVERTENCIA: [GENERACIÓN] No hay códigos de aeropuerto disponibles o suficientes en el grafo para seleccionar un destino. Retornando.");
                 return;
             }
 
-            // Get a random airport code from the SinglyLinkedList and cast it to String
-            destinationCode = (String) allAirportCodesFromGraph.get(random.nextInt(allAirportCodesFromGraph.size()));
-            attempts++;
+            String potentialDestinationCode = null;
+            try {
+                potentialDestinationCode = (String) allAirportCodesFromGraph.get(random.nextInt(allAirportCodesFromGraph.size()));
+            } catch (ListException e) {
+                System.err.println("ERROR: [GENERACIÓN] No se pudo obtener código de aeropuerto para destino aleatorio: " + e.getMessage());
+                routeFindingAttempts++;
+                continue;
+            }
+
+            if (!potentialDestinationCode.equals(originCode) &&
+                    routeManager.calculateShortestRoute(originCode, potentialDestinationCode) != Integer.MAX_VALUE) {
+                destinationCode = potentialDestinationCode;
+                break;
+            }
+            routeFindingAttempts++;
         }
 
-        // --- MODIFIED LOGIC FOR AIRPLANE SELECTION AND FLIGHT SIMULATION ---
-        // Find an IDLE airplane at the origin airport
+        if (destinationCode == null) {
+            System.out.println("ADVERTENCIA: [GENERACIÓN] No se pudo encontrar una ruta válida entre aeropuertos después de " + MAX_ROUTE_FINDING_ATTEMPTS + " intentos. No se puede generar el vuelo. Retornando.");
+            return;
+        }
+
         Airplane selectedAirplane = null;
+        List<Airplane> idleAirplanes = new ArrayList<>();
         for (Airplane airplane : airplanes.values()) {
-            if (airplane.getCurrentLocationAirportCode() != null && // Check if location is not null
-                    airplane.getCurrentLocationAirportCode().equals(originCode) &&
-                    airplane.getStatus() == AirplaneStatus.IDLE) { // Ensure it's IDLE and at the origin
-                selectedAirplane = airplane;
-                break; // Found one, use it
+            if (airplane.getStatus() == AirplaneStatus.IDLE && airplane.getCurrentLocationAirportCode().equals(originCode)) {
+                idleAirplanes.add(airplane);
             }
         }
 
-        String flightNumber = "FL" + (random.nextInt(900) + 100);
-        LocalDateTime departureTime = LocalDateTime.now().plusHours(random.nextInt(12) + 1);
-        int capacity;
+        if (idleAirplanes.isEmpty()) {
+            System.out.println("ADVERTENCIA: [GENERACIÓN] No hay aviones IDLE disponibles en el aeropuerto de origen (" + originCode + ") para el vuelo. Retornando y esperando que se liberen en el siguiente ciclo.");
+            return;
+        }
 
-        if (selectedAirplane == null) {
-            System.out.println("[WARN] No IDLE airplane available at " + originCode + " for flight to " + destinationCode + ". Flight will be created but not simulated immediately.");
-            // Create the flight schedule anyway, so it exists and passengers can be assigned
-            capacity = 150 + random.nextInt(150); // Default capacity if no plane selected yet
-            flightScheduleManager.createFlight(flightNumber, originCode, destinationCode, departureTime, capacity);
+        selectedAirplane = idleAirplanes.get(random.nextInt(idleAirplanes.size()));
 
+        String flightNumber;
+        Flight newFlight = null;
+        int flightNumberAttempts = 0;
+        final int MAX_FLIGHT_NUMBER_ATTEMPTS = 50;
+
+        do {
+            flightNumber = "FL" + (random.nextInt(900) + 100);
+            try {
+                newFlight = flightScheduleManager.createFlight(flightNumber, originCode, destinationCode,
+                        LocalDateTime.now().plusSeconds(random.nextInt(3) + 1), 0, selectedAirplane.getCapacity());
+                break;
+            } catch (ListException e) {
+                flightNumberAttempts++;
+                if (flightNumberAttempts >= MAX_FLIGHT_NUMBER_ATTEMPTS) {
+                    System.err.println("ERROR: [GENERACIÓN] No se pudo generar un número de vuelo único después de " + MAX_FLIGHT_NUMBER_ATTEMPTS + " intentos. No se puede programar el vuelo. Retornando.");
+                    return;
+                }
+            }
+        } while (true);
+
+        if (newFlight == null) {
+            System.err.println("ERROR: [GENERACIÓN] Fallo inesperado al crear el objeto Flight. Retornando.");
+            return;
+        }
+
+        newFlight.setAirplane(selectedAirplane);
+        //System.out.println("DEBUG: [GENERACIÓN] Avión " + selectedAirplane.getId() + " asignado al vuelo " + flightNumber + ".");
+
+        int estimatedDurationRealistic = routeManager.calculateShortestRoute(originCode, destinationCode);
+        if (estimatedDurationRealistic == Integer.MAX_VALUE || estimatedDurationRealistic == 0) {
+            estimatedDurationRealistic = 120 + random.nextInt(180);
+           // System.out.println("DEBUG: [GENERACIÓN] Duración de ruta no válida o cero, usando duración estimada aleatoria: " + estimatedDurationRealistic + " minutos.");
+        }
+        newFlight.setEstimatedDurationMinutes(estimatedDurationRealistic);
+
+        System.out.println("\n--- Programando Vuelo " + flightNumber + " ---");
+        System.out.println("De: " + airportManager.getAirportName(originCode) + " (" + originCode + ")");
+        System.out.println("A: " + airportManager.getAirportName(destinationCode) + " (" + destinationCode + ")");
+        System.out.println("Avión asignado: " + selectedAirplane.getId() + " (Capacidad: " + selectedAirplane.getCapacity() + ")");
+        System.out.println("Salida programada: " + newFlight.getDepartureTime());
+        System.out.println("Duración estimada (simulada): " + String.format("%.2f", (double)newFlight.getEstimatedDurationMinutes() / 60.0) + " horas.");
+
+        // --- Simulación de compra de billetes y embarque de pasajeros ---
+        int passengersToBoard = random.nextInt(selectedAirplane.getCapacity() / 2) + 1;
+        passengersToBoard = Math.min(passengersToBoard, selectedAirplane.getCapacity() - newFlight.getOccupancy());
+        passengersToBoard = Math.min(passengersToBoard, passengerManager.getPassengerCount());
+
+        System.out.println("SIMULADOR: Simulando compra de " + passengersToBoard + " billetes para el vuelo " + flightNumber + ".");
+
+        SinglyLinkedList allAvailablePassengerIds = passengerManager.getAllPassengerIds();
+        if (allAvailablePassengerIds.isEmpty()) {
+            System.out.println("ADVERTENCIA: No hay pasajeros registrados en el sistema para simular la compra de billetes en el vuelo " + flightNumber + ". El vuelo podría salir vacío.");
         } else {
-            // If an airplane is found and is IDLE, proceed with flight creation
-            capacity = selectedAirplane.getCapacity(); // Use selected airplane's capacity
-            capacity = random.nextInt(capacity / 2) + capacity / 2; // Adjust capacity relative to selected plane for varied occupancy
+            List<String> shuffledPassengerIds = new ArrayList<>();
+            for (int i = 0; i < allAvailablePassengerIds.size(); i++) {
+                try {
+                    shuffledPassengerIds.add((String) allAvailablePassengerIds.get(i));
+                } catch (ListException e) {
+                    System.err.println("ERROR: No se pudo obtener ID de pasajero de la lista al preparar para shuffling: " + e.getMessage());
+                }
+            }
+            Collections.shuffle(shuffledPassengerIds);
 
-            // Create the flight schedule
-            flightScheduleManager.createFlight(flightNumber, originCode, destinationCode, departureTime, capacity);
+            int actualPassengersToAssign = Math.min(passengersToBoard, shuffledPassengerIds.size());
+            //System.out.println("DEBUG: Se intentará asignar " + actualPassengersToAssign + " pasajeros únicos para el vuelo " + flightNumber + ".");
 
-            // Now, trigger the flight simulation with the selected airplane
-            System.out.println("[SIM] Initiating simulation for flight " + flightNumber + " with airplane " + selectedAirplane.getId() + " from " + originCode + " to " + destinationCode);
-            flightScheduleManager.simulateFlight(flightNumber, airportManager, passengerManager, selectedAirplane);
-        }
+            for (int i = 0; i < actualPassengersToAssign; i++) {
+                String passengerId = shuffledPassengerIds.get(i);
+                Passenger p = passengerManager.searchPassenger(passengerId);
 
-        // Simulate some passengers buying tickets for the *created* flight (whether simulated or not)
-        // This part needs to happen *after* flight creation.
-        int passengersBuyingTickets = random.nextInt(capacity / 2) + 1; // Base on the *final* flight capacity
-        System.out.println("[INFO] Attempting to process tickets for " + passengersBuyingTickets + " passengers for flight " + flightNumber);
-        for (int i = 0; i < passengersBuyingTickets; i++) {
-            String passengerId = "100" + (random.nextInt(5) + 1); // Assuming passenger IDs are 1001-1005
-            Passenger p = passengerManager.searchPassenger(passengerId);
-            if (p != null) {
-                flightScheduleManager.processTicketPurchase(p, originCode, destinationCode);
-            } else {
-                System.err.println("[ERROR] Passenger " + passengerId + " not found for ticket purchase simulation.");
+                if (p != null) {
+                    try {
+                        // Llama a FlightScheduleManager.processTicketPurchase para añadir el pasajero al vuelo
+                        flightScheduleManager.processTicketPurchase(p, newFlight);
+                        // Llama a PassengerManager.processTicketPurchase para actualizar el historial del pasajero
+                        passengerManager.processTicketPurchase(p, newFlight);
+
+                    } catch (ListException | StackException e) {
+                        System.err.println("ERROR: Fallo al procesar billete para pasajero " + passengerId + " en el vuelo " + flightNumber + ": " + e.getMessage());
+                    }
+                } else {
+                    System.err.println("ADVERTENCIA: Pasajero con ID " + passengerId + " no encontrado en PassengerManager. No se pudo asignar al vuelo " + flightNumber + ".");
+                }
             }
         }
+        System.out.println("SIMULADOR: " + newFlight.getOccupancy() + " pasajeros asignados al vuelo " + flightNumber + " de " + newFlight.getCapacity() + " asientos.");
+        // --- Fin de la simulación de compra de billetes ---
+
+
+        // Programa la parte lógica del vuelo (cambios de estado, actualizaciones de avión/pasajeros)
+        // y también activa la animación visual.
+        long delaySecondsToTakeoff = Duration.between(LocalDateTime.now(), newFlight.getDepartureTime()).getSeconds();
+        if (delaySecondsToTakeoff < 0) delaySecondsToTakeoff = 0;
+
+        final String fNum = flightNumber;
+        final Airplane plane = selectedAirplane;
+        final String finalOriginCode = originCode;
+        final String finalDestinationCode = destinationCode;
+        // Usa la duración estimada real para el procesamiento lógico, convertida a segundos (escalada)
+        final long simulatedDurationForLogicSeconds = (long) (newFlight.getEstimatedDurationMinutes() * 60 / 100);
+
+
+        // Tarea 1: Despegue del Vuelo (cambio de estado, actualización del estado del avión)
+        scheduler.schedule(() -> {
+            try {
+                Flight currentFlight = flightScheduleManager.getFlight(fNum);
+                if (currentFlight != null) {
+                    currentFlight.setStatus(Flight.FlightStatus.IN_PROGRESS);
+                    plane.setStatus(AirplaneStatus.IN_FLIGHT); // Establece el estado del avión a EN_VUELO al despegar
+                    plane.setCurrentLocationAirportCode(null); // El avión está en el aire
+                    System.out.println("SIMULADOR: [LÓGICA] Vuelo " + fNum + " ha despegado de " + airportManager.getAirportName(finalOriginCode) + ". Estado: IN_PROGRESS. Avión " + plane.getId() + " ahora en IN_FLIGHT.");
+                } else {
+                    System.err.println("ERROR: [LÓGICA] Vuelo " + fNum + " no encontrado al intentar iniciar su simulación lógica.");
+                    return;
+                }
+            } catch (ListException e) {
+                System.err.println("ERROR: [LÓGICA] Durante la simulación de inicio de vuelo " + fNum + ": " + e.getMessage());
+            } catch (Exception e) {
+                System.err.println("ERROR: [LÓGICA] Excepción inesperada durante la simulación de inicio del vuelo " + fNum + ": " + e.getMessage());
+            }
+        }, delaySecondsToTakeoff, TimeUnit.SECONDS);
+
+
+        // Tarea 2: Animación Visual del Vuelo
+        scheduler.schedule(() -> {
+            try {
+                System.out.println("\n-----------------------------------------------------");
+                System.out.println("SIMULADOR: VUELO EN CURSO (Animación): " + fNum + " (" + plane.getId() + ")");
+                System.out.print(airportManager.getAirportName(finalOriginCode) + " >>>>>>>>>>>>>>>>✈️");
+                System.out.flush();
+
+                long animationSteps = 30;
+                long actualVisualAnimationDurationMillis = 1500;
+                long delayPerStep = actualVisualAnimationDurationMillis / animationSteps;
+
+                for (int k = 0; k < animationSteps; k++) {
+                    System.out.print(">");
+                    System.out.flush();
+                    Thread.sleep(delayPerStep);
+                }
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + airportManager.getAirportName(finalDestinationCode));
+                System.out.println("-----------------------------------------------------");
+                System.out.println("SIMULADOR: ¡El vuelo " + fNum + " ha aterrizado (Animación) en " + airportManager.getAirportName(finalDestinationCode) + "!");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("ERROR: Animación de vuelo " + fNum + " interrumpida: " + e.getMessage());
+            } catch (Exception e) {
+                System.err.println("ERROR: Excepción inesperada durante la animación del vuelo " + fNum + ": " + e.getMessage());
+            }
+        }, delaySecondsToTakeoff, TimeUnit.SECONDS);
+
+
+        // Tarea 3: Finalización del Vuelo (cambio de estado, actualización del estado del avión, desembarque de pasajeros)
+        scheduler.schedule(() -> {
+            try {
+                Flight currentFlight = flightScheduleManager.getFlight(fNum);
+                if (currentFlight != null) {
+                    currentFlight.setStatus(Flight.FlightStatus.COMPLETED);
+                    System.out.println("SIMULADOR: [LÓGICA] Vuelo " + fNum + " en estado: COMPLETED.");
+
+                    plane.setStatus(AirplaneStatus.IDLE); // El avión vuelve a IDLE
+                    plane.setCurrentLocationAirportCode(finalDestinationCode); // Actualiza la ubicación del avión
+                    plane.addFlightToHistory(currentFlight); // Añade el vuelo al historial del avión
+                    System.out.println("SIMULADOR: --> Vuelo " + fNum + " (Lógico) ha completado su viaje a " + airportManager.getAirportName(finalDestinationCode) + ". Avión " + plane.getId() + " ahora en IDLE y ubicado en " + airportManager.getAirportName(finalDestinationCode) + ".");
+
+                    // Los pasajeros desembarcan (se borran del vuelo)
+                    //System.out.println("DEBUG: [LÓGICA] Pasajeros desembarcando del vuelo " + fNum + ". Total: " + currentFlight.getOccupancy() + ".");
+                    currentFlight.clearPassengers();
+
+                    // Remueve el vuelo completado de la lista de vuelos programados en FSM
+                    try {
+                        flightScheduleManager.getScheduledFlights().remove(currentFlight);
+                        System.out.println("DEBUG: [LÓGICA] Vuelo " + fNum + " removido de la lista de vuelos programados.");
+                    } catch (ListException e) {
+                        System.err.println("ERROR: [LÓGICA] No se pudo remover el vuelo completado " + fNum + " de la lista de vuelos programados: " + e.getMessage());
+                    }
+
+
+                } else {
+                    System.err.println("ERROR: [LÓGICA] Vuelo " + fNum + " no encontrado al intentar finalizar su simulación lógica.");
+                }
+
+            } catch (Exception e) {
+                System.err.println("ERROR: [LÓGICA] Excepción inesperada durante la finalización lógica del vuelo " + fNum + ": " + e.getMessage());
+            }
+        }, delaySecondsToTakeoff + simulatedDurationForLogicSeconds, TimeUnit.SECONDS);
+
+        flightCounter.incrementAndGet();
+        System.out.println("SIMULADOR: Vuelo " + flightNumber + " programado exitosamente. Total vuelos generados: " + flightCounter.get());
     }
 
     public void startSimulation(long flightGenerationIntervalSeconds, long simulationDurationSeconds) {
-        System.out.println("\n--- Starting Flight Simulation ---");
-        System.out.println("Flights will be generated every " + flightGenerationIntervalSeconds + " seconds.");
-        System.out.println("Simulation will run for " + simulationDurationSeconds + " seconds.");
+        System.out.println("--- INICIANDO SIMULACIÓN DE VUELOS ---");
+        System.out.println("SIMULADOR: Intervalo de generación de vuelos: " + flightGenerationIntervalSeconds + " segundos.");
+        System.out.println("SIMULADOR: Duración total de la simulación: " + simulationDurationSeconds + " segundos.");
+        System.out.println("SIMULADOR: Límite de vuelos a generar: " + MAX_FLIGHTS_TO_GENERATE);
+
 
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                generateRandomFlightBasedOnRules();
+                if (flightCounter.get() < MAX_FLIGHTS_TO_GENERATE) {
+                    generateRandomFlightBasedOnRules();
+                } else {
+                    if (!flightLimitMessagePrinted) {
+                        System.out.println("\n[SIMULADOR] Límite de " + MAX_FLIGHTS_TO_GENERATE + " vuelos alcanzado. No se generarán más vuelos.");
+                        flightLimitMessagePrinted = true;
+                    }
+                }
             } catch (ListException | StackException e) {
-                System.err.println("[RUNTIME ERROR] Error generating random flight: " + e.getMessage());
-                // For a scheduled task, you might want more sophisticated error handling
-                // For now, it will just log and continue trying on the next interval
+                System.err.println("ERROR: [SCHEDULER] Error al intentar generar un vuelo aleatorio: " + e.getMessage());
+            } catch (Exception e) {
+                System.err.println("ERROR: [SCHEDULER] Un error inesperado ocurrió durante la generación de vuelos: " + e.getMessage());
             }
-        }, 1, flightGenerationIntervalSeconds, TimeUnit.SECONDS);
+        }, 0, flightGenerationIntervalSeconds, TimeUnit.SECONDS);
 
         scheduler.schedule(() -> {
             try {
+                System.out.println("\n[SIMULADOR] Tiempo de simulación (" + simulationDurationSeconds + "s) finalizado. Deteniendo la simulación...");
                 stopSimulation();
             } catch (ListException e) {
-                System.err.println("[RUNTIME ERROR] Error during simulation shutdown: " + e.getMessage());
+                System.err.println("ERROR: [SHUTDOWN] Error durante el apagado de la simulación: " + e.getMessage());
+                e.printStackTrace();
             }
         }, simulationDurationSeconds, TimeUnit.SECONDS);
     }
 
     public void stopSimulation() throws ListException {
-        System.out.println("\n--- Stopping Flight Simulation ---");
+        System.out.println("\n--- DETENIENDO SIMULACIÓN DE VUELOS ---");
         scheduler.shutdown();
         try {
-            if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) { // Give tasks 10 seconds to finish
+            if (!scheduler.awaitTermination(60, TimeUnit.SECONDS)) {
+                System.err.println("ADVERTENCIA: Algunas tareas no terminaron en el tiempo especificado (" + 60 + " segundos). Forzando apagado inmediato.");
                 scheduler.shutdownNow();
-                System.out.println("[WARN] Forced shutdown of scheduler. Some tasks might not have completed.");
             }
         } catch (InterruptedException e) {
             scheduler.shutdownNow();
             Thread.currentThread().interrupt();
-            System.err.println("[ERROR] Simulation shutdown was interrupted.");
-            throw new RuntimeException("Simulation shutdown interrupted", e);
+            System.err.println("ERROR: La simulación fue interrumpida durante el apagado.");
+            throw new RuntimeException("Simulación interrumpida durante el apagado", e);
         }
-        System.out.println("\n--- Flight Simulation Stopped ---");
+        System.out.println("SIMULADOR: Simulador apagado.");
 
-        System.out.println("\n--- Airplane Flight Histories ---");
+        System.out.println("\n--- Historial de Vuelos de Aviones ---");
         if (airplanes.isEmpty()) {
-            System.out.println("No airplanes in the system.");
+            System.out.println("No hay aviones en el sistema para mostrar historial.");
         } else {
             airplanes.values().forEach(Airplane::printFlightHistory);
         }
-        System.out.println("---------------------------------");
 
-        System.out.println("\n--- Passenger Flight Histories ---");
+        System.out.println("\n--- Historial de Vuelos de Pasajeros ---");
         if (passengerManager.getPassengerCount() == 0) {
-            System.out.println("No passengers registered or with flight history.");
+            System.out.println("No hay pasajeros registrados o con historial de vuelos para mostrar.");
         } else {
-            // Print histories for the initial passengers
-            passengerManager.showFlightHistory("1001");
-            passengerManager.showFlightHistory("1002");
-            passengerManager.showFlightHistory("1003");
-            passengerManager.showFlightHistory("1004");
-            passengerManager.showFlightHistory("1005");
+            SinglyLinkedList allPassengerIds = passengerManager.getAllPassengerIds();
+            if (allPassengerIds != null && !allPassengerIds.isEmpty()) {
+                for (int i = 0; i < allPassengerIds.size(); i++) {
+                    try {
+                        passengerManager.showFlightHistory((String) allPassengerIds.get(i));
+                    } catch (ListException e) {
+                        System.err.println("ERROR: No se pudo obtener ID de pasajero del índice " + i + " para mostrar historial: " + e.getMessage());
+                    }
+                }
+            } else {
+                System.out.println("No hay IDs de pasajeros en la lista para mostrar el historial.");
+            }
         }
-        System.out.println("----------------------------------");
-
-        System.out.println("\n--- Final Airport Status ---");
-        airportManager.listAirports(true, true); // Assuming listAirports shows active airports and queue sizes
-        System.out.println("\n--- Final Flight Schedule ---");
-        flightScheduleManager.listAllFlights();
-        System.out.println("-----------------------------");
     }
-
     public static void main(String[] args) {
         try {
+            // Create an instance of FlightSimulator
             FlightSimulator simulator = new FlightSimulator();
-            simulator.startSimulation(10, 60); // Generate every 10s, run for 60s
 
-        } catch (ListException e) {
-            System.err.println("[FATAL ERROR] Failed to initialize Flight Simulator due to ListException: " + e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("[FATAL ERROR] Failed to initialize Flight Simulator due to IOException (e.g., airports file issue): " + e.getMessage());
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            System.err.println("[FATAL ERROR] An unexpected runtime error occurred during simulation: " + e.getMessage());
+            // Define simulation parameters
+            long flightGenerationIntervalSeconds = 5; // Generate a new flight every 5 seconds
+            long simulationDurationSeconds = 300;    // Run the simulation for 60 seconds (1 minute)
+
+            System.out.println("\n--- Ejecutando Simulación de Vuelos ---");
+            simulator.startSimulation(flightGenerationIntervalSeconds, simulationDurationSeconds);
+
+        } catch (ListException | IOException e) {
+            System.err.println("ERROR FATAL: No se pudo iniciar el simulador debido a un error de inicialización: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 }

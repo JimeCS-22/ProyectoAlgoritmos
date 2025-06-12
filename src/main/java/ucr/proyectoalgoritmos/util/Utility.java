@@ -1,5 +1,6 @@
 package ucr.proyectoalgoritmos.util;
 
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // Import your Passenger class
 
 import java.text.DecimalFormat;
@@ -28,6 +29,7 @@ public class Utility {
         return new Random().nextInt(bound);
     }
 
+
     public static int compare(Object a, Object b) {
         // Handle null cases explicitly for robustness
         if (a == null && b == null) return 0;
@@ -44,22 +46,23 @@ public class Utility {
             case "Character":
                 Character c1 = (Character)a; Character c2 = (Character)b;
                 return c1.compareTo(c2); // compareTo already returns -1, 0, or 1
-            case "Passenger": // --- ADDED THIS CASE ---
+            case "Passenger":
                 Passenger p1 = (Passenger) a;
                 Passenger p2 = (Passenger) b;
-                return p1.getId().compareTo(p2.getId()); // Compare passengers by their ID
-            // case "EdgeWeight":
-            //    EdgeWeight ew1 = (EdgeWeight) a ; EdgeWeight ew2 = (EdgeWeight) b;
-            //    return compare(ew1.getEdge(), ew2.getEdge());
+                return p1.getId().compareTo(p2.getId());
+            case "Flight":
+
+                return a.equals(b) ? 0 : -1;
         }
-        return 2; // Unknown type comparison - indicates a problem
+        return 2;
     }
 
     private static String instanceOf(Object a, Object b) {
         if(a instanceof Integer && b instanceof Integer) return "Integer";
         if(a instanceof String && b instanceof String) return "String";
         if(a instanceof Character && b instanceof Character) return "Character";
-        if (a instanceof Passenger && b instanceof Passenger) return "Passenger"; // --- ADDED THIS LINE ---
+        if (a instanceof Passenger && b instanceof Passenger) return "Passenger";
+        if (a instanceof Flight && b instanceof Flight) return "Flight";
         //if (a instanceof EdgeWeight && b instanceof EdgeWeight) return "EdgeWeight";
         return "Unknown";
     }
