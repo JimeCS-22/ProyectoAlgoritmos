@@ -1,282 +1,296 @@
-package ucr.proyectoalgoritmos.Domain; // Adjust package as needed, e.g., ucr.proyectoalgoritmos.Domain.avl
+package ucr.proyectoalgoritmos.Domain;
 
-import ucr.proyectoalgoritmos.Domain.AVLNode;
+import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.util.Utility; // Assuming you have a Utility class with a compare method
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // Make sure this import is correct
+
+// Asumiendo que Passenger implementa Comparable<Passenger>
+// y que el elemento almacenado en el AVL es de un tipo que implementa Comparable.
 
 public class AVL {
     private AVLNode root;
-    private int count; // To keep track of the number of elements in the tree
+    private int size; // Ahora sí tenemos un contador de tamaño
 
     public AVL() {
         this.root = null;
-        this.count = 0;
-    }
-
-    public int size() {
-        return count;
-    }
-
-    public void clear() {
-        this.root = null;
-        this.count = 0;
+        this.size = 0; // Inicializamos el tamaño a 0
     }
 
     public boolean isEmpty() {
         return root == null;
     }
 
-    // --- AVL Tree Helper Methods ---
-
-    // Method to get the height of a node (null node has height -1)
-    private int height(AVLNode node) {
-        return node == null ? -1 : node.height;
+    /**
+     * Devuelve el número de elementos (nodos) en el árbol AVL.
+     * @return El número de elementos.
+     */
+    public int size() {
+        return size;
     }
 
-    // Method to calculate the balance factor of a node
-    // Balance Factor = height(left subtree) - height(right subtree)
-    private int balanceFactor(AVLNode node) {
-        return height(node.left) - height(node.right);
-    }
-
-    // Method to update the height of a node
-    private void updateHeight(AVLNode node) {
-        node.height = 1 + Math.max(height(node.left), height(node.right));
-    }
-
-    // --- Rotations for Balancing ---
-
-    // Right Rotation (LL Case)
-    private AVLNode rotateRight(AVLNode node) {
-        AVLNode newRoot = node.left;
-        node.left = newRoot.right;
-        if (newRoot.right != null) {
-            newRoot.right.parent = node;
+    /**
+     * Busca un elemento en el árbol AVL.
+     *
+     * @param element El elemento a buscar. Debe ser Comparable.
+     * @return El elemento encontrado si existe, o null si el árbol está vacío o el elemento no se encuentra.
+     * @throws TreeException Si el elemento no es Comparable.
+     */
+    public Object search(Object element) throws TreeException {
+        if (isEmpty()) {
+            return null;
         }
-        newRoot.right = node;
-        newRoot.parent = node.parent; // Set parent of newRoot
-        node.parent = newRoot; // Set parent of old root
-        updateHeight(node); // Update height of old root (now child)
-        updateHeight(newRoot); // Update height of new root
-        return newRoot;
-    }
-
-    // Left Rotation (RR Case)
-    private AVLNode rotateLeft(AVLNode node) {
-        AVLNode newRoot = node.right;
-        node.right = newRoot.left;
-        if (newRoot.left != null) {
-            newRoot.left.parent = node;
+        if (!(element instanceof Comparable)) {
+            throw new TreeException("El elemento debe implementar Comparable para ser buscado en el AVL.");
         }
-        newRoot.left = node;
-        newRoot.parent = node.parent; // Set parent of newRoot
-        node.parent = newRoot; // Set parent of old root
-        updateHeight(node); // Update height of old root (now child)
-        updateHeight(newRoot); // Update height of new root
-        return newRoot;
+        return search(this.root, (Comparable) element);
     }
 
-    // Left-Right Rotation (LR Case)
-    private AVLNode rotateLeftRight(AVLNode node) {
-        node.left = rotateLeft(node.left);
-        return rotateRight(node);
-    }
-
-    // Right-Left Rotation (RL Case)
-    private AVLNode rotateRightLeft(AVLNode node) {
-        node.right = rotateRight(node.right);
-        return rotateLeft(node);
-    }
-
-    // --- Insertion ---
-
-    public void insert(Object element) throws ListException {
-        // We need elements to be comparable for a sorted tree.
-        // Assuming your Passenger object (or whatever element is) has a natural ordering
-        // or that Utility.compare works for it.
-        // If Passenger objects are compared by ID, ensure Utility.compare handles Passenger objects correctly.
-        if (element == null) {
-            throw new ListException("Cannot insert null element.");
+    /**
+     * Método auxiliar recursivo para la búsqueda.
+     *
+     * @param node    El nodo actual a examinar.
+     * @param element El elemento comparable a buscar.
+     * @return El elemento encontrado, o null si no se encuentra.
+     */
+    private Object search(AVLNode node, Comparable element) {
+        if (node == null) {
+            return null;
         }
-        root = insert(root, element);
-        count++;
+
+        int cmp = element.compareTo((Comparable) node.data);
+
+        if (cmp < 0) {
+            return search(node.left, element);
+        } else if (cmp > 0) {
+            return search(node.right, element);
+        } else {
+            return node.data;
+        }
     }
 
-    private AVLNode insert(AVLNode node, Object element) throws ListException {
-        // Base case: If the node is null, we found the insertion point
+    /**
+     * Devuelve una lista doblemente enlazada con todos los elementos del árbol AVL
+     * en orden ascendente (recorrido in-order).
+     *
+     * @return Una DoublyLinkedList que contiene los elementos del AVL en orden.
+     * @throws ListException Si ocurre un error al añadir elementos a la lista.
+     */
+    public DoublyLinkedList inOrderList() throws ListException {
+        DoublyLinkedList list = new DoublyLinkedList();
+        inOrderList(this.root, list);
+        return list;
+    }
+
+    /**
+     * Método auxiliar recursivo para el recorrido in-order y añadir a una lista.
+     *
+     * @param node El nodo actual que se está visitando.
+     * @param list La DoublyLinkedList donde se añadirán los elementos.
+     * @throws ListException Si ocurre un error al añadir elementos a la lista.
+     */
+    private void inOrderList(AVLNode node, DoublyLinkedList list) throws ListException {
+        if (node != null) {
+            inOrderList(node.left, list);
+            list.add(node.data);
+            inOrderList(node.right, list);
+        }
+    }
+
+    /**
+     * Realiza un recorrido in-order imprimiendo los elementos.
+     * Este método solo para propósitos de depuración o visualización directa.
+     *
+     * @return Siempre true (este método es de impresión, no de estado del árbol).
+     */
+    public boolean inOrder() { // <-- COMPLETE: Implementación de inOrder para imprimir
+        System.out.print("In-Order Traversal: ");
+        inOrder(this.root);
+        System.out.println();
+        return true; // Retorna true como un indicador de que se realizó la operación.
+    }
+
+    /**
+     * Método auxiliar recursivo para el recorrido in-order (impresión).
+     *
+     * @param node El nodo actual que se está visitando.
+     */
+    private void inOrder(AVLNode node) {
+        if (node != null) {
+            inOrder(node.left);
+            System.out.print(node.data + " "); // Asume que el objeto tiene un toString() significativo
+            inOrder(node.right);
+        }
+    }
+
+    /**
+     * Inserta un nuevo pasajero en el árbol AVL.
+     *
+     * @param newPassenger El objeto Passenger a insertar. Debe ser Comparable.
+     * @throws TreeException Si el pasajero ya existe o si no implementa Comparable.
+     */
+    public void insert(Passenger newPassenger) throws TreeException { // <-- COMPLETE: Implementación de insert
+        if (newPassenger == null) {
+            throw new TreeException("No se puede insertar un pasajero nulo.");
+        }
+        if (!(newPassenger instanceof Comparable)) {
+            throw new TreeException("El pasajero debe implementar Comparable para ser insertado en el AVL.");
+        }
+
+        // Search for existing passenger first to prevent duplicates
+        if (search(newPassenger) != null) {
+            // Passenger with this ID already exists, do not insert
+            // You might want to throw a specific exception here instead of just returning
+            throw new TreeException("El pasajero con ID " + newPassenger.getId() + " ya existe y no puede ser duplicado.");
+        }
+
+        this.root = insert(this.root, newPassenger);
+        size++; // Incrementamos el tamaño solo si la inserción fue exitosa (no era duplicado)
+    }
+
+    /**
+     * Método auxiliar recursivo para la inserción en el árbol AVL.
+     * Realiza la inserción y luego el balanceo del árbol.
+     *
+     * @param node El nodo actual en el que se está intentando insertar.
+     * @param element El elemento (Comparable) a insertar.
+     * @return El nodo raíz del subárbol después de la inserción y el balanceo.
+     * @throws TreeException Si hay algún error durante la inserción o comparación.
+     */
+    private AVLNode insert(AVLNode node, Comparable element) throws TreeException {
+        // 1. Inserción normal de BST
         if (node == null) {
             return new AVLNode(element);
         }
 
-        int comparison = Utility.compare(element, node.data);
+        int cmp = element.compareTo((Comparable) node.data);
 
-        if (comparison < 0) { // Element is smaller, go left
-            AVLNode insertedNode = insert(node.left, element);
-            node.left = insertedNode;
-            insertedNode.parent = node;
-        } else if (comparison > 0) { // Element is larger, go right
-            AVLNode insertedNode = insert(node.right, element);
-            node.right = insertedNode;
-            insertedNode.parent = node;
+        if (cmp < 0) {
+            node.left = insert(node.left, element);
+            if (node.left != null) node.left.setParent(node); // Set parent pointer
+        } else if (cmp > 0) {
+            node.right = insert(node.right, element);
+            if (node.right != null) node.right.setParent(node); // Set parent pointer
         } else {
-            // Element already exists (assuming no duplicates, based on standard AVL behavior for unique keys)
-            // If duplicates are allowed, you'd modify this logic (e.g., add to a list in the node).
-            throw new ListException("Duplicate element: " + element);
-        }
-
-        // Update height of current node
-        updateHeight(node);
-
-        // Balance the node
-        int balance = balanceFactor(node);
-
-        // Left Left Case
-        if (balance > 1 && Utility.compare(element, node.left.data) < 0) {
-            return rotateRight(node);
-        }
-        // Right Right Case
-        if (balance < -1 && Utility.compare(element, node.right.data) > 0) {
-            return rotateLeft(node);
-        }
-        // Left Right Case
-        if (balance > 1 && Utility.compare(element, node.left.data) > 0) {
-            return rotateLeftRight(node);
-        }
-        // Right Left Case
-        if (balance < -1 && Utility.compare(element, node.right.data) < 0) {
-            return rotateRightLeft(node);
-        }
-
-        return node; // Return the (potentially rebalanced) node
-    }
-
-    // --- Search ---
-
-    public Object search(Object element) throws ListException {
-        if (isEmpty()) {
-            throw new ListException("AVL tree is empty.");
-        }
-        return search(root, element);
-    }
-
-    private Object search(AVLNode node, Object element) {
-        if (node == null) {
-            return null; // Element not found
-        }
-
-        int comparison = Utility.compare(element, node.data);
-
-        if (comparison < 0) {
-            return search(node.left, element);
-        } else if (comparison > 0) {
-            return search(node.right, element);
-        } else {
-            return node.data; // Element found
-        }
-    }
-
-    // --- Deletion (Optional - often more complex) ---
-    /*
-    public void delete(Object element) throws ListException {
-        if (isEmpty()) {
-            throw new ListException("AVL tree is empty. Cannot delete " + element);
-        }
-        root = delete(root, element);
-    }
-
-    private AVLNode delete(AVLNode node, Object element) throws ListException {
-        if (node == null) { // Element not found
+            // El elemento ya existe (duplicado), no hacemos nada
             return node;
         }
 
-        int comparison = Utility.compare(element, node.data);
-
-        if (comparison < 0) {
-            node.left = delete(node.left, element);
-            if (node.left != null) node.left.parent = node;
-        } else if (comparison > 0) {
-            node.right = delete(node.right, element);
-            if (node.right != null) node.right.parent = node;
-        } else { // Node to be deleted found
-            // Case 1: Node with no children or one child
-            if (node.left == null || node.right == null) {
-                AVLNode temp = (node.left != null) ? node.left : node.right;
-
-                if (temp == null) { // No child case
-                    temp = node;
-                    node = null;
-                } else { // One child case
-                    node = temp;
-                    node.parent = temp.parent; // Update parent correctly
-                }
-                count--;
-            } else {
-                // Case 2: Node with two children (get inorder successor)
-                AVLNode temp = findMin(node.right);
-                node.data = temp.data; // Copy the inorder successor's data to this node
-                node.right = delete(node.right, temp.data); // Delete the inorder successor
-                if (node.right != null) node.right.parent = node; // Update parent
-            }
-        }
-
-        if (node == null) { // If the node was deleted and it was a leaf/root
-            return node;
-        }
-
-        // Update height of current node
+        // 2. Actualizar la altura del nodo actual
         updateHeight(node);
 
-        // Balance the node
-        int balance = balanceFactor(node);
+        // 3. Obtener el factor de balance y balancear si es necesario
+        int balanceFactor = getBalanceFactor(node);
 
-        // Left Left Case
-        if (balance > 1 && balanceFactor(node.left) >= 0) {
+        // Rotación a la izquierda (Left Left Case)
+        if (balanceFactor > 1 && element.compareTo((Comparable) node.left.data) < 0) {
             return rotateRight(node);
         }
-        // Left Right Case
-        if (balance > 1 && balanceFactor(node.left) < 0) {
-            return rotateLeftRight(node);
-        }
-        // Right Right Case
-        if (balance < -1 && balanceFactor(node.right) <= 0) {
+
+        // Rotación a la derecha (Right Right Case)
+        if (balanceFactor < -1 && element.compareTo((Comparable) node.right.data) > 0) {
             return rotateLeft(node);
         }
-        // Right Left Case
-        if (balance < -1 && balanceFactor(node.right) > 0) {
-            return rotateRightLeft(node);
+
+        // Rotación doble izquierda-derecha (Left Right Case)
+        if (balanceFactor > 1 && element.compareTo((Comparable) node.left.data) > 0) {
+            node.left = rotateLeft(node.left);
+            return rotateRight(node);
         }
+
+        // Rotación doble derecha-izquierda (Right Left Case)
+        if (balanceFactor < -1 && element.compareTo((Comparable) node.right.data) < 0) {
+            node.right = rotateRight(node.right);
+            return rotateLeft(node);
+        }
+
         return node;
     }
 
-    private AVLNode findMin(AVLNode node) {
-        while (node.left != null) {
-            node = node.left;
-        }
-        return node;
-    }
-    */
 
-    // --- Traversal Methods (Optional, but useful for debugging/display) ---
+    // --- Métodos Auxiliares para AVL Balanceo ---
 
-    public String inOrder() {
-        if (isEmpty()) return "AVL tree is empty.";
-        StringBuilder sb = new StringBuilder();
-        inOrder(root, sb);
-        return sb.toString().trim();
+    /**
+     * Calcula la altura de un nodo.
+     * @param node El nodo cuya altura se quiere calcular.
+     * @return La altura del nodo, o -1 si el nodo es nulo.
+     */
+    private int height(AVLNode node) { // <-- NEW: Helper for height
+        return (node == null) ? -1 : node.height;
     }
 
-    private void inOrder(AVLNode node, StringBuilder sb) {
+    /**
+     * Actualiza la altura de un nodo basándose en las alturas de sus hijos.
+     * @param node El nodo cuya altura se va a actualizar.
+     */
+    private void updateHeight(AVLNode node) { // <-- NEW: Helper to update height
         if (node != null) {
-            inOrder(node.left, sb);
-            sb.append(node.data).append(" ");
-            inOrder(node.right, sb);
+            node.height = 1 + Math.max(height(node.left), height(node.right));
         }
     }
 
-    // You can add preOrder, postOrder, etc. as needed
-
-    @Override
-    public String toString() {
-        return inOrder(); // Default to in-order traversal for string representation
+    /**
+     * Calcula el factor de balance de un nodo.
+     * (altura del subárbol izquierdo - altura del subárbol derecho)
+     * @param node El nodo cuyo factor de balance se quiere calcular.
+     * @return El factor de balance.
+     */
+    private int getBalanceFactor(AVLNode node) { // <-- NEW: Helper for balance factor
+        return (node == null) ? 0 : height(node.left) - height(node.right);
     }
+
+    /**
+     * Realiza una rotación simple a la derecha.
+     */
+    private AVLNode rotateRight(AVLNode y) { // <-- NEW: Rotation method
+        AVLNode x = y.left;
+        AVLNode T2 = x.right;
+
+        // Realizar rotación
+        x.right = y;
+        y.left = T2;
+
+        // Actualizar padres
+        x.setParent(y.getParent()); // x toma el padre de y
+        y.setParent(x);             // y ahora es hijo derecho de x
+        if (T2 != null) T2.setParent(y); // T2 es hijo izquierdo de y
+
+        // Actualizar alturas
+        updateHeight(y);
+        updateHeight(x);
+
+        return x;
+    }
+
+    /**
+     * Realiza una rotación simple a la izquierda.
+     *
+     * x                        y
+     * / \                      / \
+     * T1  y      --->          x   T3
+     * / \                  / \
+     * T2  T3               T1  T2
+     *
+     * @param x La raíz del subárbol desbalanceado.
+     * @return La nueva raíz del subárbol (y).
+     */
+    private AVLNode rotateLeft(AVLNode x) { // <-- NEW: Rotation method
+        AVLNode y = x.right;
+        AVLNode T2 = y.left;
+
+        // Realizar rotación
+        y.left = x;
+        x.right = T2;
+
+        // Actualizar padres
+        y.setParent(x.getParent()); // y toma el padre de x
+        x.setParent(y);             // x ahora es hijo izquierdo de y
+        if (T2 != null) T2.setParent(x); // T2 es hijo derecho de x
+
+        // Actualizar alturas
+        updateHeight(x);
+        updateHeight(y);
+
+        return y;
+    }
+
 }
