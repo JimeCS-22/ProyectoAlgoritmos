@@ -358,9 +358,8 @@ public class FlightSimulator {
         System.out.println("De: " + airportManager.getAirportName(originCode) + " (" + originCode + ")");
         System.out.println("A: " + airportManager.getAirportName(destinationCode) + " (" + destinationCode + ")");
         System.out.println("Avión asignado: " + selectedAirplane.getId() + " (Capacidad: " + selectedAirplane.getCapacity() + ")");
-        System.out.println("Salida programada: " + newFlight.getDepartureTime());
-        System.out.println("Duración estimada (simulada): " + String.format("%.2f", (double)newFlight.getEstimatedDurationMinutes() / 60.0) + " horas.");
-
+        System.out.println("Salida programada: " + newFlight.getDepartureTime().toLocalDate()); // Solo la fecha
+        System.out.println("Duración estimada (simulada): " + (int) Math.round((double)newFlight.getEstimatedDurationMinutes() / 60.0) + " h.");
         // --- Simulación de compra de billetes y embarque de pasajeros ---
         int passengersToBoard = random.nextInt(selectedAirplane.getCapacity() / 2) + 1;
         passengersToBoard = Math.min(passengersToBoard, selectedAirplane.getCapacity() - newFlight.getOccupancy());
