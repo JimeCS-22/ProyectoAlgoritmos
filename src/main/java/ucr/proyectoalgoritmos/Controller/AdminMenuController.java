@@ -2,6 +2,7 @@ package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +22,6 @@ public class AdminMenuController {
     private MenuItem Simulation;
     @javafx.fxml.FXML
     private MenuItem RoutesSettings;
-    private static BorderPane root = new BorderPane();
 
     @Deprecated
     public void exit(ActionEvent actionEvent) {
@@ -30,27 +30,27 @@ public class AdminMenuController {
 
     @FXML
     private void loadAirportPane() {
-        loadView("/ucr/proyectoalgoritmos/airports.fxml", root);
+        loadView("/ucr/proyectoalgoritmos/airports.fxml", null);
     }
 
     @FXML
     private void loadPassengersPane() {
-        loadView("/ucr/proyectoalgoritmos/passengers.fxml", root);
+        loadView("/ucr/proyectoalgoritmos/passengers.fxml", null);
     }
 
     @FXML
     private void loadFlightsPane() {
-        loadView("/ucr/proyectoalgoritmos/flights.fxml", root);
+        loadView("/ucr/proyectoalgoritmos/flights.fxml", null);
     }
 
     @FXML
     private void loadRoutesPane() {
-        loadView("/ucr/proyectoalgoritmos/route.fxml", root);
+        loadView("/ucr/proyectoalgoritmos/routes.fxml", null);
     }
 
     @FXML
     private void loadSimulationPane() {
-        loadView("/ucr/proyectoalgoritmos/simulation.fxml", root);
+        loadView("/ucr/proyectoalgoritmos/simulation.fxml", null);
     }
 
 }

@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 
 import ucr.proyectoalgoritmos.Controller.MainMenuController;
 import ucr.proyectoalgoritmos.Domain.Circular.ListException;
@@ -41,14 +42,19 @@ public class AirportController {
     private Button btViewAll;
     @FXML
     private TableColumn colStatus;
-
+    @FXML
+    private Button btUpdate;
+    @FXML
+    private Button btDelete;
+    @javafx.fxml.FXML
+    private TextArea TextResult;
     public void setRootLayout(BorderPane rootLayout) {
         this.rootLayout = rootLayout;
     }
 
     @FXML
     public void createAirportOnAction(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/createAirport.fxml", null);
+        loadViewInNewStage("/ucr/proyectoalgoritmos/createAirport.fxml", "Create New Airport");
     }
 
     @FXML
@@ -88,5 +94,13 @@ public class AirportController {
 
     @FXML
     public void viewAllAirportsOnAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void updateAirportOnAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void deleteAirportOnAction(ActionEvent actionEvent) {
     }
 }
