@@ -10,15 +10,11 @@ public class CreateFlightController {
     @javafx.fxml.FXML
     private TextField departureTime;
     @javafx.fxml.FXML
-    private ImageView btEnter;
-    @javafx.fxml.FXML
     private TextField destinationCode;
     @javafx.fxml.FXML
     private TextField occupancy;
     @javafx.fxml.FXML
     private Button Enter;
-    @javafx.fxml.FXML
-    private TextField assidnedPassengers;
     @javafx.fxml.FXML
     private TextField originCode;
     @javafx.fxml.FXML

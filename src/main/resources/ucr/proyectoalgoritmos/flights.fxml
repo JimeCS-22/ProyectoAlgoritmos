@@ -1,56 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.FlightsController">
-    <children>
-        <ImageView fitHeight="731.0" fitWidth="1164.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@images/degradados.png" />
-            </image>
-        </ImageView>
-        <Text fill="WHITE" layoutX="79.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" wrappingWidth="296.0703125">
-            <font>
-                <Font name="Pristina" size="48.0" />
-            </font>
-        </Text>
-        <ImageView fitHeight="44.0" fitWidth="57.0" layoutX="25.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@images/whale_1841292.png" />
-            </image>
-        </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffb43c" height="501.0" layoutX="73.0" layoutY="149.0" stroke="BLACK" strokeType="INSIDE" width="1024.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#222a5b" height="451.0" layoutX="108.0" layoutY="176.0" stroke="BLACK" strokeType="INSIDE" width="954.0" />
-        <TableView fx:id="tableView" layoutX="133.0" layoutY="196.0" prefHeight="412.0" prefWidth="900.0">
-            <columns>
-                <TableColumn prefWidth="98.0" text="Flight Number" />
-                <TableColumn prefWidth="127.0" text="Origin Airport Code" />
-                <TableColumn prefWidth="161.0" text="Destination Airport Code" />
-                <TableColumn minWidth="0.0" prefWidth="111.0" text="Departure Time" />
-                <TableColumn prefWidth="72.0" text="Capacity" />
-                <TableColumn prefWidth="109.0" text="Ocupancy" />
-            <TableColumn text="Status" />
-            <TableColumn prefWidth="141.0" text="Assigned Passengers" />
-            </columns>
-        </TableView>
-        <Button fx:id="btSearch" layoutX="953.0" layoutY="82.0" mnemonicParsing="false" onAction="#searchFlightOnAction" prefHeight="44.0" prefWidth="144.0" style="-fx-background-color: #ffb43c;" text="Search Flight">
-            <font>
-                <Font name="Pristina" size="20.0" />
-            </font>
-        </Button>
-        <Button fx:id="btCreate" layoutX="750.0" layoutY="81.0" mnemonicParsing="false" onAction="#createFlightOnAction" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: #ffb43c;" text="Create New Flight">
-            <font>
-                <Font name="Pristina" size="20.0" />
-            </font>
-        </Button>
-    </children>
-</BorderPane>
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.FlightsController">
+    <!-- Imagen de fondo principal -->
+    <ImageView fitHeight="731.0" fitWidth="1164.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <image>
+            <Image url="@images/degradados.png" />
+        </image>
+    </ImageView>
+
+    <!-- Contenedor principal de contenido (la "tarjeta" central) -->
+    <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="40.0" prefHeight="594.0" prefWidth="1065.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 15;">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </padding>
+        <children>
+            <!-- Encabezado: Logo y Título del Sistema -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <children>
+                    <ImageView fitHeight="44.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/whale_1841292.png" />
+                        </image>
+                    </ImageView>
+                    <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System">
+                        <font>
+                            <Font name="Pristina" size="40.0" />
+                        </font>
+                    </Text>
+                </children>
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </HBox>
+
+            <!-- Título de la Página: Gestión de Vuelos -->
+            <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestión de Vuelos">
+                <font>
+                    <Font name="System Bold" size="32.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </Text>
+
+            <!-- Botones de Acción para Vuelos -->
+            <HBox alignment="CENTER" spacing="15.0">
+                <children>
+                    <Button fx:id="btCreate" mnemonicParsing="false" onAction="#createFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Crear Nuevo Vuelo" textFill="WHITE">
+                        <font>
+                            <Font name="Pristina" size="20.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#updateFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #4f61da; -fx-background-radius: 8;" text="Actualizar Vuelo" textFill="WHITE">
+                        <font>
+                            <Font name="Pristina" size="20.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="btDelete" mnemonicParsing="false" onAction="#deleteFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #da4f4f; -fx-background-radius: 8;" text="Eliminar Vuelo" textFill="WHITE">
+                        <font>
+                            <Font name="Pristina" size="20.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="btSearch" mnemonicParsing="false" onAction="#searchFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 8;" text="Buscar Vuelo" textFill="WHITE">
+                        <font>
+                            <Font name="Pristina" size="20.0" />
+                        </font>
+                    </Button>
+                </children>
+                <VBox.margin>
+                    <Insets bottom="25.0" />
+                </VBox.margin>
+            </HBox>
+
+            <!-- Área de Contenido Principal: Tabla de Vuelos e Imagen Decorativa -->
+            <HBox spacing="20.0" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
+                <!-- Contenedor de la Tabla -->
+                <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
+                    <padding>
+                        <!-- CORRECCIÓN: Se especifican los lados individuales en lugar de 'all' -->
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                    </padding>
+                    <children>
+                        <Label text="Lista de Vuelos" textFill="#333333">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <TableView fx:id="tableView" prefHeight="320.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn prefWidth="90.0" text="Número de Vuelo" />
+                                <TableColumn prefWidth="120.0" text="Código Origen" />
+                                <TableColumn prefWidth="120.0" text="Código Destino" />
+                                <TableColumn prefWidth="120.0" text="Hora de Salida" />
+                                <TableColumn prefWidth="80.0" text="Capacidad" />
+                                <TableColumn prefWidth="90.0" text="Ocupación" />
+                                <TableColumn prefWidth="80.0" text="Estado" />
+                                <TableColumn prefWidth="180.0" text="Pasajeros Asignados" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </VBox>
+
+                <!-- Imagen Decorativa (ej. un avión) -->
+                <ImageView fitHeight="380.0" fitWidth="380.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/airport-plane.png" />
+                    </image>
+                </ImageView>
+            </HBox>
+        </children>
+    </VBox>
+</AnchorPane>

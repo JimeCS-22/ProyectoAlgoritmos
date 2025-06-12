@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -7,73 +8,186 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-image: degradado2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateFlightController">
-    <children>
-        <ImageView fx:id="btEnter" fitHeight="467.0" fitWidth="721.0" layoutX="-97.0" onDragDetected="#enterOnAction" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@images/degradado2.jpg" />
-            </image>
-        </ImageView>
-        <Label layoutX="167.0" layoutY="14.0" prefHeight="66.0" prefWidth="272.0" style="-fx-background-color: #4f61da;" text="Create New Flight" textFill="WHITE">
-            <font>
-                <Font name="Pristina" size="40.0" />
-            </font>
-        </Label>
-        <Label layoutX="214.0" layoutY="95.0" prefHeight="40.0" prefWidth="142.0" text="Flight Number:">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="8.0" layoutY="95.0" prefHeight="40.0" prefWidth="185.0" text="Origin Airport Code:">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Button fx:id="Enter" layoutX="206.0" layoutY="379.0" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="26.0" prefWidth="157.0" style="-fx-background-color: #4f61da;" text="Enter" textFill="WHITE">
-            <font>
-                <Font name="Pristina" size="26.0" />
-            </font>
-        </Button>
-        <TextField fx:id="originCode" layoutX="57.0" layoutY="135.0" prefHeight="26.0" prefWidth="63.0" />
-        <Label layoutX="25.0" layoutY="194.0" prefHeight="40.0" prefWidth="151.0" text="Departure Time:">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <TextField fx:id="flightNumber" layoutX="253.0" layoutY="135.0" prefHeight="26.0" prefWidth="63.0" />
-        <Label layoutX="243.0" layoutY="194.0" prefHeight="40.0" prefWidth="84.0" text="Capacity:">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="381.0" layoutY="95.0" prefHeight="40.0" prefWidth="217.0" text="Destination Aiport Code:">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="432.0" layoutY="194.0" prefHeight="40.0" prefWidth="115.0" text="Occupancy:">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-      <TextField fx:id="destinationCode" layoutX="458.0" layoutY="135.0" prefHeight="26.0" prefWidth="63.0" />
-      <TextField fx:id="occupancy" layoutX="458.0" layoutY="241.0" prefHeight="26.0" prefWidth="63.0" />
-      <TextField fx:id="capacity" layoutX="253.0" layoutY="241.0" prefHeight="26.0" prefWidth="63.0" />
-      <TextField fx:id="departureTime" layoutX="57.0" layoutY="241.0" prefHeight="26.0" prefWidth="63.0" />
-      <Label layoutX="303.0" layoutY="279.0" prefHeight="40.0" prefWidth="204.0" text="Assigned Passengers:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="151.0" layoutY="279.0" prefHeight="40.0" prefWidth="63.0" text="Status:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <TextField fx:id="assidnedPassengers" layoutX="356.0" layoutY="319.0" prefHeight="26.0" prefWidth="63.0" />
-      <ChoiceBox fx:id="status" layoutX="151.0" layoutY="319.0" prefHeight="25.0" prefWidth="63.0" />
-    </children>
-</BorderPane>
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateFlightController">
+    <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
+    <ImageView fitHeight="758.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <image>
+            <Image url="@images/degradados.png" />
+        </image>
+    </ImageView>
+
+    <!-- Contenedor principal de contenido (la "tarjeta" central para el formulario) -->
+    <VBox alignment="CENTER" layoutX="327.0" layoutY="100.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="70.0">
+        <padding>
+            <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+        </padding>
+        <children>
+            <!-- Logo de la ballena -->
+            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/whale_1841292.png" />
+                </image>
+                <VBox.margin>
+                    <Insets bottom="5.0" />
+                </VBox.margin>
+            </ImageView>
+
+            <!-- Título "Whale System" con degradado -->
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
+                <font>
+                    <Font name="Pristina" size="40.0" />
+                </font>
+                <fill>
+                    <LinearGradient endX="1.0" endY="1.0">
+                        <stops>
+                            <Stop>
+                                <color>
+                                    <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
+                                </color>
+                            </Stop>
+                            <Stop offset="1.0">
+                                <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                </color>
+                            </Stop>
+                        </stops>
+                    </LinearGradient>
+                </fill>
+                <VBox.margin>
+                    <Insets bottom="15.0" />
+                </VBox.margin>
+            </Text>
+
+            <!-- Título del formulario -->
+            <Label text="Crear Nuevo Vuelo" textFill="#222a5b">
+                <font>
+                    <Font name="System Bold" size="28.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="25.0" />
+                </VBox.margin>
+            </Label>
+
+            <!-- GridPane para organizar los campos de entrada -->
+            <GridPane hgap="15.0" vgap="15.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Label text="Número de Vuelo:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="flightNumber" prefHeight="40.0" promptText="Ej. AM2345" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Código Origen:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="originCode" prefHeight="40.0" promptText="Ej. QRO" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Código Destino:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="destinationCode" prefHeight="40.0" promptText="Ej. MEX" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Hora de Salida:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="departureTime" prefHeight="40.0" promptText="HH:MM (Ej. 05:00)" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Capacidad:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="capacity" prefHeight="40.0" promptText="Número de asientos" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Ocupación Actual:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="occupancy" prefHeight="40.0" promptText="Número de pasajeros actuales" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Estado del Vuelo:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <ChoiceBox fx:id="status" prefHeight="40.0" prefWidth="250.0" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                </children>
+            </GridPane>
+
+            <!-- Botón de Acción -->
+            <Button fx:id="Enter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-text-fill: white; -fx-background-radius: 10;" text="Registrar Vuelo">
+                <font>
+                    <Font name="Pristina" size="24.0" />
+                </font>
+                <VBox.margin>
+                    <Insets top="30.0" />
+                </VBox.margin>
+            </Button>
+
+            <!-- Imagen decorativa (avión) -->
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/plane_1044134.png" />
+                </image>
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </ImageView>
+        </children>
+    </VBox>
+</AnchorPane>

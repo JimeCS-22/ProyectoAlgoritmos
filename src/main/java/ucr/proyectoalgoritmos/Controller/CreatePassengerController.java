@@ -7,8 +7,6 @@ import javafx.scene.image.ImageView;
 
 public class CreatePassengerController {
     @javafx.fxml.FXML
-    private ImageView btEnter;
-    @javafx.fxml.FXML
     private TextField nationality;
     @javafx.fxml.FXML
     private Button Enter;

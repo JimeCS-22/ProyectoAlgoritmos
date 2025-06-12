@@ -1,0 +1,1520 @@
+Index: src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.ComboBox?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.text.Font?>\r\n\r\n<?import javafx.scene.layout.BorderPane?>\r\n<BorderPane prefHeight=\"444.0\" prefWidth=\"600.0\" style=\"-fx-background-image: degradado2;\" xmlns=\"http://javafx.com/javafx/23.0.1\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"ucr.proyectoalgoritmos.Controller.CreateAirportController\">\r\n    <children>\r\n      <ImageView fx:id=\"btEnter\" fitHeight=\"467.0\" fitWidth=\"721.0\" layoutX=\"-97.0\" onDragDetected=\"#enterOnAction\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n         <image>\r\n            <Image url=\"@images/degradado2.jpg\" />\r\n         </image>\r\n      </ImageView>\r\n        <TextField fx:id=\"name\" layoutX=\"213.0\" layoutY=\"137.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n        <Label layoutX=\"167.0\" layoutY=\"14.0\" prefHeight=\"66.0\" prefWidth=\"272.0\" style=\"-fx-background-color: #4f61da;\" text=\"Create New Airport\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"40.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"47.0\" layoutY=\"95.0\" prefHeight=\"40.0\" prefWidth=\"125.0\" text=\"Airport Code: \">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"47.0\" layoutY=\"130.0\" prefHeight=\"40.0\" prefWidth=\"84.0\" text=\"Name:\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Button fx:id=\"Enter\" layoutX=\"224.0\" layoutY=\"362.0\" mnemonicParsing=\"false\" onAction=\"#enterOnAction\" prefHeight=\"26.0\" prefWidth=\"157.0\" style=\"-fx-background-color: #4f61da;\" text=\"Enter\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"26.0\" />\r\n            </font>\r\n        </Button>\r\n        <TextField fx:id=\"airportCode\" layoutX=\"213.0\" layoutY=\"102.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n      <Label layoutX=\"47.0\" layoutY=\"163.0\" prefHeight=\"40.0\" prefWidth=\"84.0\" text=\"Country:\">\r\n         <font>\r\n            <Font size=\"20.0\" />\r\n         </font>\r\n      </Label>\r\n      <TextField fx:id=\"country\" layoutX=\"213.0\" layoutY=\"170.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n      <Label layoutX=\"47.0\" layoutY=\"196.0\" prefHeight=\"40.0\" prefWidth=\"84.0\" text=\"Status:\">\r\n         <font>\r\n            <Font size=\"20.0\" />\r\n         </font>\r\n      </Label>\r\n      <Label layoutX=\"47.0\" layoutY=\"229.0\" prefHeight=\"40.0\" prefWidth=\"166.0\" text=\"Departures Board:\">\r\n         <font>\r\n            <Font size=\"20.0\" />\r\n         </font>\r\n      </Label>\r\n      <TextField fx:id=\"departuresBoard\" layoutX=\"213.0\" layoutY=\"236.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n      <Label layoutX=\"47.0\" layoutY=\"262.0\" prefHeight=\"40.0\" prefWidth=\"166.0\" text=\"Passenger Queue:\">\r\n         <font>\r\n            <Font size=\"20.0\" />\r\n         </font>\r\n      </Label>\r\n      <TextField fx:id=\"passengerQueue\" layoutX=\"213.0\" layoutY=\"269.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n      <ComboBox fx:id=\"status\" layoutX=\"213.0\" layoutY=\"204.0\" prefHeight=\"25.0\" prefWidth=\"205.0\" />\r\n    </children>\r\n</BorderPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml b/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml
+--- a/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml	(date 1749723648276)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
++<?import javafx.geometry.Insets?>
+ <?import javafx.scene.control.Button?>
+ <?import javafx.scene.control.ComboBox?>
+ <?import javafx.scene.control.Label?>
+@@ -7,61 +8,175 @@
+ <?import javafx.scene.image.Image?>
+ <?import javafx.scene.image.ImageView?>
+ <?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.layout.ColumnConstraints?>
++<?import javafx.scene.layout.GridPane?>
++<?import javafx.scene.layout.HBox?>
++<?import javafx.scene.layout.RowConstraints?>
++<?import javafx.scene.layout.VBox?>
++<?import javafx.scene.paint.Color?>
++<?import javafx.scene.paint.LinearGradient?>
++<?import javafx.scene.paint.Stop?>
+ <?import javafx.scene.text.Font?>
++<?import javafx.scene.text.Text?>
+ 
+-<?import javafx.scene.layout.BorderPane?>
+-<BorderPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-image: degradado2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateAirportController">
+-    <children>
+-      <ImageView fx:id="btEnter" fitHeight="467.0" fitWidth="721.0" layoutX="-97.0" onDragDetected="#enterOnAction" pickOnBounds="true" preserveRatio="true">
+-         <image>
+-            <Image url="@images/degradado2.jpg" />
+-         </image>
+-      </ImageView>
+-        <TextField fx:id="name" layoutX="213.0" layoutY="137.0" prefHeight="26.0" prefWidth="205.0" />
+-        <Label layoutX="167.0" layoutY="14.0" prefHeight="66.0" prefWidth="272.0" style="-fx-background-color: #4f61da;" text="Create New Airport" textFill="WHITE">
+-            <font>
+-                <Font name="Pristina" size="40.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="47.0" layoutY="95.0" prefHeight="40.0" prefWidth="125.0" text="Airport Code: ">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="47.0" layoutY="130.0" prefHeight="40.0" prefWidth="84.0" text="Name:">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Button fx:id="Enter" layoutX="224.0" layoutY="362.0" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="26.0" prefWidth="157.0" style="-fx-background-color: #4f61da;" text="Enter" textFill="WHITE">
+-            <font>
+-                <Font name="Pristina" size="26.0" />
+-            </font>
+-        </Button>
+-        <TextField fx:id="airportCode" layoutX="213.0" layoutY="102.0" prefHeight="26.0" prefWidth="205.0" />
+-      <Label layoutX="47.0" layoutY="163.0" prefHeight="40.0" prefWidth="84.0" text="Country:">
+-         <font>
+-            <Font size="20.0" />
+-         </font>
+-      </Label>
+-      <TextField fx:id="country" layoutX="213.0" layoutY="170.0" prefHeight="26.0" prefWidth="205.0" />
+-      <Label layoutX="47.0" layoutY="196.0" prefHeight="40.0" prefWidth="84.0" text="Status:">
+-         <font>
+-            <Font size="20.0" />
+-         </font>
+-      </Label>
+-      <Label layoutX="47.0" layoutY="229.0" prefHeight="40.0" prefWidth="166.0" text="Departures Board:">
+-         <font>
+-            <Font size="20.0" />
+-         </font>
+-      </Label>
+-      <TextField fx:id="departuresBoard" layoutX="213.0" layoutY="236.0" prefHeight="26.0" prefWidth="205.0" />
+-      <Label layoutX="47.0" layoutY="262.0" prefHeight="40.0" prefWidth="166.0" text="Passenger Queue:">
+-         <font>
+-            <Font size="20.0" />
+-         </font>
+-      </Label>
+-      <TextField fx:id="passengerQueue" layoutX="213.0" layoutY="269.0" prefHeight="26.0" prefWidth="205.0" />
+-      <ComboBox fx:id="status" layoutX="213.0" layoutY="204.0" prefHeight="25.0" prefWidth="205.0" />
+-    </children>
+-</BorderPane>
++<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateAirportController">
++    <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
++    <ImageView fitHeight="720.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <image>
++            <Image url="@images/degradados.png" />
++        </image>
++    </ImageView>
++
++    <!-- Contenedor principal de contenido (la "tarjeta" central para el formulario) -->
++    <VBox alignment="CENTER" layoutX="327.0" layoutY="100.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="70.0">
++        <padding>
++            <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
++        </padding>
++        <children>
++            <!-- Logo de la ballena -->
++            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
++                <image>
++                    <Image url="@images/whale_1841292.png" />
++                </image>
++                <VBox.margin>
++                    <Insets bottom="5.0" />
++                </VBox.margin>
++            </ImageView>
++
++            <!-- Título "Whale System" con degradado -->
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
++                <font>
++                    <Font name="Pristina" size="40.0" />
++                </font>
++                <fill>
++                    <LinearGradient endX="1.0" endY="1.0">
++                        <stops>
++                            <Stop>
++                                <color>
++                                    <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
++                                </color>
++                            </Stop>
++                            <Stop offset="1.0">
++                                <color>
++                                    <Color red="1.0" green="1.0" blue="1.0" />
++                                </color>
++                            </Stop>
++                        </stops>
++                    </LinearGradient>
++                </fill>
++                <VBox.margin>
++                    <Insets bottom="15.0" />
++                </VBox.margin>
++            </Text>
++
++            <!-- Título del formulario -->
++            <Label text="Registrar Nuevo Aeropuerto" textFill="#222a5b">
++                <font>
++                    <Font name="System Bold" size="28.0" />
++                </font>
++                <VBox.margin>
++                    <Insets bottom="25.0" />
++                </VBox.margin>
++            </Label>
++
++            <!-- GridPane para organizar los campos de entrada -->
++            <GridPane hgap="15.0" vgap="15.0">
++                <columnConstraints>
++                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
++                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
++                </columnConstraints>
++                <rowConstraints>
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                </rowConstraints>
++                <children>
++                    <Label text="Código de Aeropuerto:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="0">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="airportCode" prefHeight="40.0" promptText="Ej. SJO" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Nombre:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="1">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="name" prefHeight="40.0" promptText="Nombre del Aeropuerto" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="País:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="2">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="country" prefHeight="40.0" promptText="País del Aeropuerto" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Estado (Status):" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="3">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <ComboBox fx:id="status" prefHeight="40.0" prefWidth="250.0" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
++
++                    <Label text="Panel de Salidas:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="4">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="departuresBoard" prefHeight="40.0" promptText="Info del panel de salidas" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="4">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Cola de Pasajeros:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="5">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="passengerQueue" prefHeight="40.0" promptText="Info de cola de pasajeros" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++                </children>
++            </GridPane>
++
++            <!-- Botón de Acción -->
++            <Button fx:id="Enter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-text-fill: white; -fx-background-radius: 10;" text="Registrar Aeropuerto">
++                <font>
++                    <Font name="Pristina" size="24.0" />
++                </font>
++                <VBox.margin>
++                    <Insets top="30.0" />
++                </VBox.margin>
++            </Button>
++
++            <!-- Imagen decorativa (aeropuerto/avión) -->
++            <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
++                <image>
++                    <Image url="@images/airport-plane.png" />
++                </image>
++                <VBox.margin>
++                    <Insets top="20.0" />
++                </VBox.margin>
++            </ImageView>
++        </children>
++    </VBox>
++</AnchorPane>
+Index: src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ucr.proyectoalgoritmos.Controller;\r\n\r\nimport javafx.event.ActionEvent;\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.Menu;\r\nimport javafx.scene.control.MenuItem;\r\nimport javafx.scene.layout.BorderPane;\r\n\r\nimport javax.swing.*;\r\n\r\nimport static ucr.proyectoalgoritmos.Controller.HelloController.loadView;\r\n\r\npublic class AdminMenuController {\r\n    @javafx.fxml.FXML\r\n    private MenuItem AirportsSettings;\r\n    @javafx.fxml.FXML\r\n    private MenuItem Passengers;\r\n    @javafx.fxml.FXML\r\n    private MenuItem FlightsSettings;\r\n    @javafx.fxml.FXML\r\n    private MenuItem Simulation;\r\n    @javafx.fxml.FXML\r\n    private MenuItem RoutesSettings;\r\n    private static BorderPane root = new BorderPane();\r\n\r\n    @Deprecated\r\n    public void exit(ActionEvent actionEvent) {\r\n        System.exit(0);\r\n    }\r\n\r\n    @FXML\r\n    private void loadAirportPane() {\r\n        loadView(\"/ucr/proyectoalgoritmos/airports.fxml\", root);\r\n    }\r\n\r\n    @FXML\r\n    private void loadPassengersPane() {\r\n        loadView(\"/ucr/proyectoalgoritmos/passengers.fxml\", root);\r\n    }\r\n\r\n    @FXML\r\n    private void loadFlightsPane() {\r\n        loadView(\"/ucr/proyectoalgoritmos/flights.fxml\", root);\r\n    }\r\n\r\n    @FXML\r\n    private void loadRoutesPane() {\r\n        loadView(\"/ucr/proyectoalgoritmos/route.fxml\", root);\r\n    }\r\n\r\n    @FXML\r\n    private void loadSimulationPane() {\r\n        loadView(\"/ucr/proyectoalgoritmos/simulation.fxml\", root);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java b/src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java
+--- a/src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java	(date 1749711301312)
+@@ -2,6 +2,7 @@
+ 
+ import javafx.event.ActionEvent;
+ import javafx.fxml.FXML;
++import javafx.scene.Scene;
+ import javafx.scene.control.Menu;
+ import javafx.scene.control.MenuItem;
+ import javafx.scene.layout.BorderPane;
+@@ -21,7 +22,6 @@
+     private MenuItem Simulation;
+     @javafx.fxml.FXML
+     private MenuItem RoutesSettings;
+-    private static BorderPane root = new BorderPane();
+ 
+     @Deprecated
+     public void exit(ActionEvent actionEvent) {
+@@ -30,27 +30,27 @@
+ 
+     @FXML
+     private void loadAirportPane() {
+-        loadView("/ucr/proyectoalgoritmos/airports.fxml", root);
++        loadView("/ucr/proyectoalgoritmos/airports.fxml", null);
+     }
+ 
+     @FXML
+     private void loadPassengersPane() {
+-        loadView("/ucr/proyectoalgoritmos/passengers.fxml", root);
++        loadView("/ucr/proyectoalgoritmos/passengers.fxml", null);
+     }
+ 
+     @FXML
+     private void loadFlightsPane() {
+-        loadView("/ucr/proyectoalgoritmos/flights.fxml", root);
++        loadView("/ucr/proyectoalgoritmos/flights.fxml", null);
+     }
+ 
+     @FXML
+     private void loadRoutesPane() {
+-        loadView("/ucr/proyectoalgoritmos/route.fxml", root);
++        loadView("/ucr/proyectoalgoritmos/routes.fxml", null);
+     }
+ 
+     @FXML
+     private void loadSimulationPane() {
+-        loadView("/ucr/proyectoalgoritmos/simulation.fxml", root);
++        loadView("/ucr/proyectoalgoritmos/simulation.fxml", null);
+     }
+ 
+ }
+Index: src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.ChoiceBox?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.text.Font?>\r\n\r\n<?import javafx.scene.layout.BorderPane?>\r\n<BorderPane prefHeight=\"444.0\" prefWidth=\"600.0\" style=\"-fx-background-image: degradado2;\" xmlns=\"http://javafx.com/javafx/23.0.1\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"ucr.proyectoalgoritmos.Controller.CreateFlightController\">\r\n    <children>\r\n        <ImageView fx:id=\"btEnter\" fitHeight=\"467.0\" fitWidth=\"721.0\" layoutX=\"-97.0\" onDragDetected=\"#enterOnAction\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n            <image>\r\n                <Image url=\"@images/degradado2.jpg\" />\r\n            </image>\r\n        </ImageView>\r\n        <Label layoutX=\"167.0\" layoutY=\"14.0\" prefHeight=\"66.0\" prefWidth=\"272.0\" style=\"-fx-background-color: #4f61da;\" text=\"Create New Flight\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"40.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"214.0\" layoutY=\"95.0\" prefHeight=\"40.0\" prefWidth=\"142.0\" text=\"Flight Number:\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"8.0\" layoutY=\"95.0\" prefHeight=\"40.0\" prefWidth=\"185.0\" text=\"Origin Airport Code:\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Button fx:id=\"Enter\" layoutX=\"206.0\" layoutY=\"379.0\" mnemonicParsing=\"false\" onAction=\"#enterOnAction\" prefHeight=\"26.0\" prefWidth=\"157.0\" style=\"-fx-background-color: #4f61da;\" text=\"Enter\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"26.0\" />\r\n            </font>\r\n        </Button>\r\n        <TextField fx:id=\"originCode\" layoutX=\"57.0\" layoutY=\"135.0\" prefHeight=\"26.0\" prefWidth=\"63.0\" />\r\n        <Label layoutX=\"25.0\" layoutY=\"194.0\" prefHeight=\"40.0\" prefWidth=\"151.0\" text=\"Departure Time:\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <TextField fx:id=\"flightNumber\" layoutX=\"253.0\" layoutY=\"135.0\" prefHeight=\"26.0\" prefWidth=\"63.0\" />\r\n        <Label layoutX=\"243.0\" layoutY=\"194.0\" prefHeight=\"40.0\" prefWidth=\"84.0\" text=\"Capacity:\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"381.0\" layoutY=\"95.0\" prefHeight=\"40.0\" prefWidth=\"217.0\" text=\"Destination Aiport Code:\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"432.0\" layoutY=\"194.0\" prefHeight=\"40.0\" prefWidth=\"115.0\" text=\"Occupancy:\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n      <TextField fx:id=\"destinationCode\" layoutX=\"458.0\" layoutY=\"135.0\" prefHeight=\"26.0\" prefWidth=\"63.0\" />\r\n      <TextField fx:id=\"occupancy\" layoutX=\"458.0\" layoutY=\"241.0\" prefHeight=\"26.0\" prefWidth=\"63.0\" />\r\n      <TextField fx:id=\"capacity\" layoutX=\"253.0\" layoutY=\"241.0\" prefHeight=\"26.0\" prefWidth=\"63.0\" />\r\n      <TextField fx:id=\"departureTime\" layoutX=\"57.0\" layoutY=\"241.0\" prefHeight=\"26.0\" prefWidth=\"63.0\" />\r\n      <Label layoutX=\"303.0\" layoutY=\"279.0\" prefHeight=\"40.0\" prefWidth=\"204.0\" text=\"Assigned Passengers:\">\r\n         <font>\r\n            <Font size=\"20.0\" />\r\n         </font>\r\n      </Label>\r\n      <Label layoutX=\"151.0\" layoutY=\"279.0\" prefHeight=\"40.0\" prefWidth=\"63.0\" text=\"Status:\">\r\n         <font>\r\n            <Font size=\"20.0\" />\r\n         </font>\r\n      </Label>\r\n      <TextField fx:id=\"assidnedPassengers\" layoutX=\"356.0\" layoutY=\"319.0\" prefHeight=\"26.0\" prefWidth=\"63.0\" />\r\n      <ChoiceBox fx:id=\"status\" layoutX=\"151.0\" layoutY=\"319.0\" prefHeight=\"25.0\" prefWidth=\"63.0\" />\r\n    </children>\r\n</BorderPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml b/src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml
+--- a/src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml	(date 1749723578830)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
++<?import javafx.geometry.Insets?>
+ <?import javafx.scene.control.Button?>
+ <?import javafx.scene.control.ChoiceBox?>
+ <?import javafx.scene.control.Label?>
+@@ -7,73 +8,186 @@
+ <?import javafx.scene.image.Image?>
+ <?import javafx.scene.image.ImageView?>
+ <?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.layout.ColumnConstraints?>
++<?import javafx.scene.layout.GridPane?>
++<?import javafx.scene.layout.RowConstraints?>
++<?import javafx.scene.layout.VBox?>
++<?import javafx.scene.paint.Color?>
++<?import javafx.scene.paint.LinearGradient?>
++<?import javafx.scene.paint.Stop?>
+ <?import javafx.scene.text.Font?>
++<?import javafx.scene.text.Text?>
+ 
+-<?import javafx.scene.layout.BorderPane?>
+-<BorderPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-image: degradado2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateFlightController">
+-    <children>
+-        <ImageView fx:id="btEnter" fitHeight="467.0" fitWidth="721.0" layoutX="-97.0" onDragDetected="#enterOnAction" pickOnBounds="true" preserveRatio="true">
+-            <image>
+-                <Image url="@images/degradado2.jpg" />
+-            </image>
+-        </ImageView>
+-        <Label layoutX="167.0" layoutY="14.0" prefHeight="66.0" prefWidth="272.0" style="-fx-background-color: #4f61da;" text="Create New Flight" textFill="WHITE">
+-            <font>
+-                <Font name="Pristina" size="40.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="214.0" layoutY="95.0" prefHeight="40.0" prefWidth="142.0" text="Flight Number:">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="8.0" layoutY="95.0" prefHeight="40.0" prefWidth="185.0" text="Origin Airport Code:">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Button fx:id="Enter" layoutX="206.0" layoutY="379.0" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="26.0" prefWidth="157.0" style="-fx-background-color: #4f61da;" text="Enter" textFill="WHITE">
+-            <font>
+-                <Font name="Pristina" size="26.0" />
+-            </font>
+-        </Button>
+-        <TextField fx:id="originCode" layoutX="57.0" layoutY="135.0" prefHeight="26.0" prefWidth="63.0" />
+-        <Label layoutX="25.0" layoutY="194.0" prefHeight="40.0" prefWidth="151.0" text="Departure Time:">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <TextField fx:id="flightNumber" layoutX="253.0" layoutY="135.0" prefHeight="26.0" prefWidth="63.0" />
+-        <Label layoutX="243.0" layoutY="194.0" prefHeight="40.0" prefWidth="84.0" text="Capacity:">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="381.0" layoutY="95.0" prefHeight="40.0" prefWidth="217.0" text="Destination Aiport Code:">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="432.0" layoutY="194.0" prefHeight="40.0" prefWidth="115.0" text="Occupancy:">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-      <TextField fx:id="destinationCode" layoutX="458.0" layoutY="135.0" prefHeight="26.0" prefWidth="63.0" />
+-      <TextField fx:id="occupancy" layoutX="458.0" layoutY="241.0" prefHeight="26.0" prefWidth="63.0" />
+-      <TextField fx:id="capacity" layoutX="253.0" layoutY="241.0" prefHeight="26.0" prefWidth="63.0" />
+-      <TextField fx:id="departureTime" layoutX="57.0" layoutY="241.0" prefHeight="26.0" prefWidth="63.0" />
+-      <Label layoutX="303.0" layoutY="279.0" prefHeight="40.0" prefWidth="204.0" text="Assigned Passengers:">
+-         <font>
+-            <Font size="20.0" />
+-         </font>
+-      </Label>
+-      <Label layoutX="151.0" layoutY="279.0" prefHeight="40.0" prefWidth="63.0" text="Status:">
+-         <font>
+-            <Font size="20.0" />
+-         </font>
+-      </Label>
+-      <TextField fx:id="assidnedPassengers" layoutX="356.0" layoutY="319.0" prefHeight="26.0" prefWidth="63.0" />
+-      <ChoiceBox fx:id="status" layoutX="151.0" layoutY="319.0" prefHeight="25.0" prefWidth="63.0" />
+-    </children>
+-</BorderPane>
++<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreateFlightController">
++    <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
++    <ImageView fitHeight="758.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <image>
++            <Image url="@images/degradados.png" />
++        </image>
++    </ImageView>
++
++    <!-- Contenedor principal de contenido (la "tarjeta" central para el formulario) -->
++    <VBox alignment="CENTER" layoutX="327.0" layoutY="100.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="70.0">
++        <padding>
++            <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
++        </padding>
++        <children>
++            <!-- Logo de la ballena -->
++            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
++                <image>
++                    <Image url="@images/whale_1841292.png" />
++                </image>
++                <VBox.margin>
++                    <Insets bottom="5.0" />
++                </VBox.margin>
++            </ImageView>
++
++            <!-- Título "Whale System" con degradado -->
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
++                <font>
++                    <Font name="Pristina" size="40.0" />
++                </font>
++                <fill>
++                    <LinearGradient endX="1.0" endY="1.0">
++                        <stops>
++                            <Stop>
++                                <color>
++                                    <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
++                                </color>
++                            </Stop>
++                            <Stop offset="1.0">
++                                <color>
++                                    <Color red="1.0" green="1.0" blue="1.0" />
++                                </color>
++                            </Stop>
++                        </stops>
++                    </LinearGradient>
++                </fill>
++                <VBox.margin>
++                    <Insets bottom="15.0" />
++                </VBox.margin>
++            </Text>
++
++            <!-- Título del formulario -->
++            <Label text="Crear Nuevo Vuelo" textFill="#222a5b">
++                <font>
++                    <Font name="System Bold" size="28.0" />
++                </font>
++                <VBox.margin>
++                    <Insets bottom="25.0" />
++                </VBox.margin>
++            </Label>
++
++            <!-- GridPane para organizar los campos de entrada -->
++            <GridPane hgap="15.0" vgap="15.0">
++                <columnConstraints>
++                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
++                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
++                </columnConstraints>
++                <rowConstraints>
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                </rowConstraints>
++                <children>
++                    <Label text="Número de Vuelo:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="0">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="flightNumber" prefHeight="40.0" promptText="Ej. AM2345" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Código Origen:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="1">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="originCode" prefHeight="40.0" promptText="Ej. QRO" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Código Destino:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="2">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="destinationCode" prefHeight="40.0" promptText="Ej. MEX" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Hora de Salida:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="3">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="departureTime" prefHeight="40.0" promptText="HH:MM (Ej. 05:00)" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="3">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Capacidad:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="4">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="capacity" prefHeight="40.0" promptText="Número de asientos" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="4">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Ocupación Actual:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="5">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="occupancy" prefHeight="40.0" promptText="Número de pasajeros actuales" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Estado del Vuelo:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="6">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <ChoiceBox fx:id="status" prefHeight="40.0" prefWidth="250.0" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
++                </children>
++            </GridPane>
++
++            <!-- Botón de Acción -->
++            <Button fx:id="Enter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-text-fill: white; -fx-background-radius: 10;" text="Registrar Vuelo">
++                <font>
++                    <Font name="Pristina" size="24.0" />
++                </font>
++                <VBox.margin>
++                    <Insets top="30.0" />
++                </VBox.margin>
++            </Button>
++
++            <!-- Imagen decorativa (avión) -->
++            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
++                <image>
++                    <Image url="@images/plane_1044134.png" />
++                </image>
++                <VBox.margin>
++                    <Insets top="20.0" />
++                </VBox.margin>
++            </ImageView>
++        </children>
++    </VBox>
++</AnchorPane>
+Index: src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ucr.proyectoalgoritmos.Controller;\r\n\r\nimport javafx.event.ActionEvent;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.scene.control.*;\r\nimport javafx.scene.layout.BorderPane;\r\nimport javafx.stage.Stage;\r\nimport static ucr.proyectoalgoritmos.Controller.HelloController.loadView;\r\n\r\nimport ucr.proyectoalgoritmos.Controller.MainMenuController;\r\nimport ucr.proyectoalgoritmos.Domain.Circular.ListException;\r\nimport ucr.proyectoalgoritmos.graph.AdjacencyMatrixGraph;\r\nimport ucr.proyectoalgoritmos.graph.GraphException;\r\n\r\nimport java.io.IOException;\r\nimport java.util.Optional;\r\n\r\npublic class AirportController {\r\n    @javafx.fxml.FXML\r\n    private Button btCreate;\r\n    private BorderPane rootLayout;\r\n    private AdjacencyMatrixGraph graph;\r\n    @FXML\r\n    private Button btSearch;\r\n    @FXML\r\n    private TableColumn colDepartureBoard;\r\n    @FXML\r\n    private TableColumn colName;\r\n    @FXML\r\n    private TableColumn colPassengerQueue;\r\n    @FXML\r\n    private TableColumn colCountry;\r\n    @FXML\r\n    private TableView tblAirports;\r\n    @FXML\r\n    private TableColumn colCode;\r\n    @FXML\r\n    private Button btViewAll;\r\n    @FXML\r\n    private TableColumn colStatus;\r\n\r\n    public void setRootLayout(BorderPane rootLayout) {\r\n        this.rootLayout = rootLayout;\r\n    }\r\n\r\n    @FXML\r\n    public void createAirportOnAction(ActionEvent actionEvent) {\r\n        loadView(\"/ucr/proyectoalgoritmos/createAirport.fxml\", null);\r\n    }\r\n\r\n    @FXML\r\n    public void searchAirportOnAction(ActionEvent actionEvent) {\r\n\r\n            TextInputDialog dialog = new TextInputDialog();\r\n            dialog.setTitle(\"Verificar Aeropuerto\");\r\n            dialog.setHeaderText(\"Verificar si un aeropuerto existe en el grafo\");\r\n            dialog.setContentText(\"Ingrese el código del aeropuerto:\");\r\n\r\n            Optional<String> result = dialog.showAndWait();\r\n            if (result.isPresent() && !result.get().isEmpty()) {\r\n                try {\r\n                    Object vertexToFind = result.get();\r\n\r\n                    boolean contains = graph.containsVertex(vertexToFind);\r\n                    if (contains) {\r\n                        TextResult.setText(\"El aeropuerto '\" + vertexToFind + \"' EXISTE en el grafo.\");\r\n                    } else {\r\n                        TextResult.setText(\"El aeropuerto '\" + vertexToFind + \"' NO EXISTE en el grafo.\");\r\n                    }\r\n                } catch (GraphException e) {\r\n                    showAlert(\"Error del Grafo\", e.getMessage());\r\n                } catch (Exception e) {\r\n                    showAlert(\"Error\", \"Ocurrió un error inesperado: \" + e.getMessage());\r\n                }\r\n            }\r\n        }\r\n\r\n    private void showAlert(String title, String message) {\r\n        Alert alert = new Alert(Alert.AlertType.ERROR);\r\n        alert.setTitle(title);\r\n        alert.setHeaderText(null);\r\n        alert.setContentText(message);\r\n        alert.showAndWait();\r\n    }\r\n\r\n    @FXML\r\n    public void viewAllAirportsOnAction(ActionEvent actionEvent) {\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java b/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java
+--- a/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java	(date 1749724171915)
+@@ -9,6 +9,7 @@
+ import javafx.scene.layout.BorderPane;
+ import javafx.stage.Stage;
+ import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
++import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
+ 
+ import ucr.proyectoalgoritmos.Controller.MainMenuController;
+ import ucr.proyectoalgoritmos.Domain.Circular.ListException;
+@@ -41,14 +42,19 @@
+     private Button btViewAll;
+     @FXML
+     private TableColumn colStatus;
+-
++    @FXML
++    private Button btUpdate;
++    @FXML
++    private Button btDelete;
++    @javafx.fxml.FXML
++    private TextArea TextResult;
+     public void setRootLayout(BorderPane rootLayout) {
+         this.rootLayout = rootLayout;
+     }
+ 
+     @FXML
+     public void createAirportOnAction(ActionEvent actionEvent) {
+-        loadView("/ucr/proyectoalgoritmos/createAirport.fxml", null);
++        loadViewInNewStage("/ucr/proyectoalgoritmos/createAirport.fxml", "Create New Airport");
+     }
+ 
+     @FXML
+@@ -89,4 +95,12 @@
+     @FXML
+     public void viewAllAirportsOnAction(ActionEvent actionEvent) {
+     }
++
++    @FXML
++    public void updateAirportOnAction(ActionEvent actionEvent) {
++    }
++
++    @FXML
++    public void deleteAirportOnAction(ActionEvent actionEvent) {
++    }
+ }
+Index: src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ucr.proyectoalgoritmos.Controller;\r\n\r\nimport javafx.event.Event;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.ChoiceBox;\r\nimport javafx.scene.control.TextField;\r\nimport javafx.scene.image.ImageView;\r\n\r\npublic class CreateFlightController {\r\n    @javafx.fxml.FXML\r\n    private TextField departureTime;\r\n    @javafx.fxml.FXML\r\n    private ImageView btEnter;\r\n    @javafx.fxml.FXML\r\n    private TextField destinationCode;\r\n    @javafx.fxml.FXML\r\n    private TextField occupancy;\r\n    @javafx.fxml.FXML\r\n    private Button Enter;\r\n    @javafx.fxml.FXML\r\n    private TextField assidnedPassengers;\r\n    @javafx.fxml.FXML\r\n    private TextField originCode;\r\n    @javafx.fxml.FXML\r\n    private TextField flightNumber;\r\n    @javafx.fxml.FXML\r\n    private TextField capacity;\r\n    @javafx.fxml.FXML\r\n    private ChoiceBox status;\r\n\r\n    @javafx.fxml.FXML\r\n    public void enterOnAction(Event event) {\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java b/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java
+--- a/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java	(date 1749723912124)
+@@ -10,15 +10,11 @@
+     @javafx.fxml.FXML
+     private TextField departureTime;
+     @javafx.fxml.FXML
+-    private ImageView btEnter;
+-    @javafx.fxml.FXML
+     private TextField destinationCode;
+     @javafx.fxml.FXML
+     private TextField occupancy;
+     @javafx.fxml.FXML
+     private Button Enter;
+-    @javafx.fxml.FXML
+-    private TextField assidnedPassengers;
+     @javafx.fxml.FXML
+     private TextField originCode;
+     @javafx.fxml.FXML
+Index: src/main/resources/ucr/proyectoalgoritmos/airports.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.TableColumn?>\r\n<?import javafx.scene.control.TableView?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.layout.HBox?>\r\n<?import javafx.scene.layout.VBox?>\r\n<?import javafx.scene.text.Font?>\r\n<?import javafx.scene.text.Text?>\r\n\r\n<AnchorPane prefHeight=\"674.0\" prefWidth=\"1145.0\" xmlns=\"http://javafx.com/javafx/23.0.1\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"ucr.proyectoalgoritmos.Controller.AirportController\">\r\n    <ImageView fitHeight=\"731.0\" fitWidth=\"1164.0\" pickOnBounds=\"true\" preserveRatio=\"false\" AnchorPane.bottomAnchor=\"0.0\" AnchorPane.leftAnchor=\"0.0\" AnchorPane.rightAnchor=\"0.0\" AnchorPane.topAnchor=\"0.0\">\r\n        <image>\r\n            <Image url=\"@images/degradados.png\" />\r\n        </image>\r\n    </ImageView>\r\n\r\n    <VBox spacing=\"20.0\" AnchorPane.bottomAnchor=\"20.0\" AnchorPane.leftAnchor=\"20.0\" AnchorPane.rightAnchor=\"20.0\" AnchorPane.topAnchor=\"20.0\">\r\n        <HBox alignment=\"CENTER_LEFT\" spacing=\"10.0\">\r\n            <ImageView fitHeight=\"44.0\" fitWidth=\"57.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                <image>\r\n                    <Image url=\"@images/whale_1841292.png\" />\r\n                </image>\r\n            </ImageView>\r\n            <Text fill=\"WHITE\" strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Whale System\">\r\n                <font>\r\n                    <Font name=\"Pristina\" size=\"48.0\" />\r\n                </font>\r\n            </Text>\r\n        </HBox>\r\n\r\n        <HBox alignment=\"CENTER_LEFT\" spacing=\"15.0\">\r\n            <Button fx:id=\"btCreate\" mnemonicParsing=\"false\" onAction=\"#createAirportOnAction\" prefHeight=\"47.0\" prefWidth=\"180.0\" style=\"-fx-background-color: #ffb43c; -fx-background-radius: 8;\" text=\"Create New Airport\">\r\n                <font>\r\n                    <Font name=\"Pristina\" size=\"20.0\" />\r\n                </font>\r\n            </Button>\r\n            <Button fx:id=\"btSearch\" mnemonicParsing=\"false\" onAction=\"#searchAirportOnAction\" prefHeight=\"44.0\" prefWidth=\"160.0\" style=\"-fx-background-color: #ffb43c; -fx-background-radius: 8;\" text=\"Search Airport\">\r\n                <font>\r\n                    <Font name=\"Pristina\" size=\"20.0\" />\r\n                </font>\r\n            </Button>\r\n            <Button fx:id=\"btViewAll\" mnemonicParsing=\"false\" onAction=\"#viewAllAirportsOnAction\" prefHeight=\"44.0\" prefWidth=\"160.0\" style=\"-fx-background-color: #ffb43c; -fx-background-radius: 8;\" text=\"View All Airports\">\r\n                <font>\r\n                    <Font name=\"Pristina\" size=\"20.0\" />\r\n                </font>\r\n            </Button>\r\n        </HBox>\r\n\r\n        <HBox spacing=\"20.0\" VBox.vgrow=\"ALWAYS\"> <TableView fx:id=\"tblAirports\" prefHeight=\"358.0\" prefWidth=\"623.0\" HBox.hgrow=\"ALWAYS\"> <columns>\r\n            <TableColumn fx:id=\"colCode\" prefWidth=\"50.0\" text=\"Cod\" />\r\n            <TableColumn fx:id=\"colName\" prefWidth=\"160.0\" text=\"Name\" />\r\n            <TableColumn fx:id=\"colCountry\" prefWidth=\"90.0\" text=\"Country\" />\r\n            <TableColumn fx:id=\"colStatus\" prefWidth=\"90.0\" text=\"Status\" />\r\n            <TableColumn fx:id=\"colDepartureBoard\" prefWidth=\"120.0\" text=\"DepartureBoard\" />\r\n            <TableColumn fx:id=\"colPassengerQueue\" prefWidth=\"100.0\" text=\"PassengerQueue\" />\r\n        </columns>\r\n        </TableView>\r\n            <ImageView fitHeight=\"320.0\" fitWidth=\"492.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                <image>\r\n                    <Image url=\"@images/airport-plane.png\" />\r\n                </image>\r\n            </ImageView>\r\n        </HBox>\r\n    </VBox>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/ucr/proyectoalgoritmos/airports.fxml b/src/main/resources/ucr/proyectoalgoritmos/airports.fxml
+--- a/src/main/resources/ucr/proyectoalgoritmos/airports.fxml	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/resources/ucr/proyectoalgoritmos/airports.fxml	(date 1749723781886)
+@@ -1,6 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
++<?import javafx.geometry.Insets?>
+ <?import javafx.scene.control.Button?>
++<?import javafx.scene.control.Label?>
+ <?import javafx.scene.control.TableColumn?>
+ <?import javafx.scene.control.TableView?>
+ <?import javafx.scene.image.Image?>
+@@ -12,58 +14,118 @@
+ <?import javafx.scene.text.Text?>
+ 
+ <AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.AirportController">
+-    <ImageView fitHeight="731.0" fitWidth="1164.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
++    <!-- Imagen de fondo principal -->
++    <ImageView fitHeight="739.0" fitWidth="1172.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="-19.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-27.0" AnchorPane.topAnchor="0.0">
+         <image>
+             <Image url="@images/degradados.png" />
+         </image>
+     </ImageView>
+ 
+-    <VBox spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+-        <HBox alignment="CENTER_LEFT" spacing="10.0">
+-            <ImageView fitHeight="44.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+-                <image>
+-                    <Image url="@images/whale_1841292.png" />
+-                </image>
+-            </ImageView>
+-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System">
+-                <font>
+-                    <Font name="Pristina" size="48.0" />
+-                </font>
+-            </Text>
+-        </HBox>
++    <!-- Contenedor principal de contenido (la "tarjeta" central) -->
++    <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="40.0" prefHeight="644.0" prefWidth="1097.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 15;">
++        <padding>
++            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
++        </padding>
++        <children>
++            <!-- Encabezado: Logo y Título del Sistema -->
++            <HBox alignment="CENTER_LEFT" spacing="10.0">
++                <children>
++                    <ImageView fitHeight="44.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
++                        <image>
++                            <Image url="@images/whale_1841292.png" />
++                        </image>
++                    </ImageView>
++                    <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System">
++                        <font>
++                            <Font name="Pristina" size="40.0" />
++                        </font>
++                    </Text>
++                </children>
++                <VBox.margin>
++                    <Insets bottom="10.0" />
++                </VBox.margin>
++            </HBox>
+ 
+-        <HBox alignment="CENTER_LEFT" spacing="15.0">
+-            <Button fx:id="btCreate" mnemonicParsing="false" onAction="#createAirportOnAction" prefHeight="47.0" prefWidth="180.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Create New Airport">
++            <!-- Título de la Página: Gestión de Aeropuertos -->
++            <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestión de Aeropuertos">
+                 <font>
+-                    <Font name="Pristina" size="20.0" />
+-                </font>
+-            </Button>
+-            <Button fx:id="btSearch" mnemonicParsing="false" onAction="#searchAirportOnAction" prefHeight="44.0" prefWidth="160.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Search Airport">
+-                <font>
+-                    <Font name="Pristina" size="20.0" />
+-                </font>
+-            </Button>
+-            <Button fx:id="btViewAll" mnemonicParsing="false" onAction="#viewAllAirportsOnAction" prefHeight="44.0" prefWidth="160.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="View All Airports">
+-                <font>
+-                    <Font name="Pristina" size="20.0" />
+-                </font>
+-            </Button>
+-        </HBox>
++                    <Font name="System Bold" size="32.0" />
++                </font>
++                <VBox.margin>
++                    <Insets bottom="20.0" />
++                </VBox.margin>
++            </Text>
++
++            <!-- Botones de Acción para Aeropuertos -->
++            <HBox alignment="CENTER" spacing="15.0">
++                <children>
++                    <Button fx:id="btCreate" mnemonicParsing="false" onAction="#createAirportOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Crear Nuevo Aeropuerto" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                    <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#updateAirportOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #4f61da; -fx-background-radius: 8;" text="Actualizar Aeropuerto" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                    <Button fx:id="btDelete" mnemonicParsing="false" onAction="#deleteAirportOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #da4f4f; -fx-background-radius: 8;" text="Eliminar Aeropuerto" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                    <Button fx:id="btSearch" mnemonicParsing="false" onAction="#searchAirportOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 8;" text="Buscar Aeropuerto" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                    <Button fx:id="btViewAll" mnemonicParsing="false" onAction="#viewAllAirportsOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #222a5b; -fx-background-radius: 8;" text="Ver Todos los Aeropuertos" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                </children>
++                <VBox.margin>
++                    <Insets bottom="25.0" />
++                </VBox.margin>
++            </HBox>
+ 
+-        <HBox spacing="20.0" VBox.vgrow="ALWAYS"> <TableView fx:id="tblAirports" prefHeight="358.0" prefWidth="623.0" HBox.hgrow="ALWAYS"> <columns>
+-            <TableColumn fx:id="colCode" prefWidth="50.0" text="Cod" />
+-            <TableColumn fx:id="colName" prefWidth="160.0" text="Name" />
+-            <TableColumn fx:id="colCountry" prefWidth="90.0" text="Country" />
+-            <TableColumn fx:id="colStatus" prefWidth="90.0" text="Status" />
+-            <TableColumn fx:id="colDepartureBoard" prefWidth="120.0" text="DepartureBoard" />
+-            <TableColumn fx:id="colPassengerQueue" prefWidth="100.0" text="PassengerQueue" />
+-        </columns>
+-        </TableView>
+-            <ImageView fitHeight="320.0" fitWidth="492.0" pickOnBounds="true" preserveRatio="true">
+-                <image>
+-                    <Image url="@images/airport-plane.png" />
+-                </image>
+-            </ImageView>
+-        </HBox>
++            <!-- Área de Contenido Principal: Tabla de Aeropuertos e Imagen Decorativa -->
++            <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
++                <!-- Contenedor de la Tabla -->
++                <VBox alignment="TOP_CENTER" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;" HBox.hgrow="ALWAYS">
++                    <padding>
++                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
++                    </padding>
++                    <children>
++                        <Label text="Lista de Aeropuertos" textFill="#333333">
++                            <font>
++                                <Font name="System Bold" size="20.0" />
++                            </font>
++                            <VBox.margin>
++                                <Insets bottom="10.0" />
++                            </VBox.margin>
++                        </Label>
++                        <TableView fx:id="tblAirports" prefHeight="367.0" prefWidth="624.0" VBox.vgrow="ALWAYS">
++                            <columns>
++                                <TableColumn fx:id="colCode" prefWidth="80.0" text="Código" />
++                                <TableColumn fx:id="colName" prefWidth="180.0" text="Nombre" />
++                                <TableColumn fx:id="colCountry" prefWidth="100.0" text="País" />
++                                <TableColumn fx:id="colStatus" prefWidth="100.0" text="Estado" />
++                                <TableColumn fx:id="colDepartureBoard" prefWidth="140.0" text="Panel de Salidas" />
++                                <TableColumn fx:id="colPassengerQueue" prefWidth="140.0" text="Cola de Pasajeros" />
++                            </columns>
++                        </TableView>
++                    </children>
++                </VBox>
++
++                <!-- Imagen Decorativa -->
++                <ImageView fitHeight="275.0" fitWidth="276.0" pickOnBounds="true" preserveRatio="true">
++                    <image>
++                        <Image url="@images/airport-plane.png" />
++                    </image>
++                </ImageView>
++            </HBox>
++        </children>
+     </VBox>
+ </AnchorPane>
+Index: src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ucr.proyectoalgoritmos.Controller;\r\n\r\nimport javafx.event.Event;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.ComboBox;\r\nimport javafx.scene.control.TextField;\r\nimport javafx.scene.image.ImageView;\r\n\r\npublic class CreateAirportController {\r\n    @javafx.fxml.FXML\r\n    private TextField country;\r\n    @javafx.fxml.FXML\r\n    private ImageView btEnter;\r\n    @javafx.fxml.FXML\r\n    private TextField name;\r\n    @javafx.fxml.FXML\r\n    private Button Enter;\r\n    @javafx.fxml.FXML\r\n    private TextField airportCode;\r\n    @javafx.fxml.FXML\r\n    private TextField departuresBoard;\r\n    @javafx.fxml.FXML\r\n    private TextField passengerQueue;\r\n    @javafx.fxml.FXML\r\n    private ComboBox status;\r\n\r\n    @javafx.fxml.FXML\r\n    public void enterOnAction(Event event) {\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java b/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java
+--- a/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java	(date 1749723908851)
+@@ -10,8 +10,6 @@
+     @javafx.fxml.FXML
+     private TextField country;
+     @javafx.fxml.FXML
+-    private ImageView btEnter;
+-    @javafx.fxml.FXML
+     private TextField name;
+     @javafx.fxml.FXML
+     private Button Enter;
+Index: src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.text.Font?>\r\n\r\n<?import javafx.scene.layout.BorderPane?>\r\n<BorderPane prefHeight=\"444.0\" prefWidth=\"600.0\" style=\"-fx-background-image: degradado2;\" xmlns=\"http://javafx.com/javafx/23.0.1\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"ucr.proyectoalgoritmos.Controller.CreatePassengerController\">\r\n    <children>\r\n        <ImageView fx:id=\"btEnter\" fitHeight=\"517.0\" fitWidth=\"808.0\" layoutX=\"-187.0\" onDragDetected=\"#enterOnAction\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n            <image>\r\n                <Image url=\"@images/degradados.png\" />\r\n            </image>\r\n        </ImageView>\r\n        <TextField fx:id=\"fullName\" layoutX=\"213.0\" layoutY=\"183.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n        <Label layoutX=\"149.0\" layoutY=\"14.0\" prefHeight=\"66.0\" prefWidth=\"290.0\" style=\"-fx-background-color: #ffb43c;\" text=\"Create New Passenger\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"40.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"47.0\" layoutY=\"130.0\" prefHeight=\"40.0\" prefWidth=\"125.0\" text=\"ID:\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Label layoutX=\"47.0\" layoutY=\"176.0\" prefHeight=\"40.0\" prefWidth=\"106.0\" text=\"Full Name:\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <Button fx:id=\"Enter\" layoutX=\"224.0\" layoutY=\"362.0\" mnemonicParsing=\"false\" onAction=\"#enterOnAction\" prefHeight=\"26.0\" prefWidth=\"157.0\" style=\"-fx-background-color: #ffb43c;\" text=\"Enter\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"26.0\" />\r\n            </font>\r\n        </Button>\r\n        <TextField fx:id=\"id\" layoutX=\"213.0\" layoutY=\"137.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n        <Label layoutX=\"47.0\" layoutY=\"220.0\" prefHeight=\"40.0\" prefWidth=\"106.0\" text=\"Nationality:\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <TextField fx:id=\"nationality\" layoutX=\"213.0\" layoutY=\"227.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n        <Label layoutX=\"47.0\" layoutY=\"262.0\" prefHeight=\"40.0\" prefWidth=\"166.0\" text=\"Flight History:\" textFill=\"WHITE\">\r\n            <font>\r\n                <Font size=\"20.0\" />\r\n            </font>\r\n        </Label>\r\n        <TextField fx:id=\"flightHistory\" layoutX=\"213.0\" layoutY=\"269.0\" prefHeight=\"26.0\" prefWidth=\"205.0\" />\r\n    </children>\r\n</BorderPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml b/src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml
+--- a/src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml	(date 1749723458298)
+@@ -1,54 +1,151 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
++<?import javafx.geometry.Insets?>
+ <?import javafx.scene.control.Button?>
+ <?import javafx.scene.control.Label?>
+ <?import javafx.scene.control.TextField?>
+ <?import javafx.scene.image.Image?>
+ <?import javafx.scene.image.ImageView?>
+ <?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.layout.ColumnConstraints?>
++<?import javafx.scene.layout.GridPane?>
++<?import javafx.scene.layout.HBox?>
++<?import javafx.scene.layout.RowConstraints?>
++<?import javafx.scene.layout.VBox?>
++<?import javafx.scene.paint.Color?>
++<?import javafx.scene.paint.LinearGradient?>
++<?import javafx.scene.paint.Stop?>
+ <?import javafx.scene.text.Font?>
++<?import javafx.scene.text.Text?>
+ 
+-<?import javafx.scene.layout.BorderPane?>
+-<BorderPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-image: degradado2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreatePassengerController">
+-    <children>
+-        <ImageView fx:id="btEnter" fitHeight="517.0" fitWidth="808.0" layoutX="-187.0" onDragDetected="#enterOnAction" pickOnBounds="true" preserveRatio="true">
+-            <image>
+-                <Image url="@images/degradados.png" />
+-            </image>
+-        </ImageView>
+-        <TextField fx:id="fullName" layoutX="213.0" layoutY="183.0" prefHeight="26.0" prefWidth="205.0" />
+-        <Label layoutX="149.0" layoutY="14.0" prefHeight="66.0" prefWidth="290.0" style="-fx-background-color: #ffb43c;" text="Create New Passenger">
+-            <font>
+-                <Font name="Pristina" size="40.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="47.0" layoutY="130.0" prefHeight="40.0" prefWidth="125.0" text="ID:" textFill="WHITE">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Label layoutX="47.0" layoutY="176.0" prefHeight="40.0" prefWidth="106.0" text="Full Name:" textFill="WHITE">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <Button fx:id="Enter" layoutX="224.0" layoutY="362.0" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="26.0" prefWidth="157.0" style="-fx-background-color: #ffb43c;" text="Enter">
+-            <font>
+-                <Font name="Pristina" size="26.0" />
+-            </font>
+-        </Button>
+-        <TextField fx:id="id" layoutX="213.0" layoutY="137.0" prefHeight="26.0" prefWidth="205.0" />
+-        <Label layoutX="47.0" layoutY="220.0" prefHeight="40.0" prefWidth="106.0" text="Nationality:" textFill="WHITE">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <TextField fx:id="nationality" layoutX="213.0" layoutY="227.0" prefHeight="26.0" prefWidth="205.0" />
+-        <Label layoutX="47.0" layoutY="262.0" prefHeight="40.0" prefWidth="166.0" text="Flight History:" textFill="WHITE">
+-            <font>
+-                <Font size="20.0" />
+-            </font>
+-        </Label>
+-        <TextField fx:id="flightHistory" layoutX="213.0" layoutY="269.0" prefHeight="26.0" prefWidth="205.0" />
+-    </children>
+-</BorderPane>
++<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreatePassengerController">
++    <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
++    <ImageView fitHeight="720.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <image>
++            <Image url="@images/degradados.png" />
++        </image>
++    </ImageView>
++
++    <!-- Contenedor principal de contenido (la "tarjeta" central para el formulario) -->
++    <VBox alignment="CENTER" layoutX="327.0" layoutY="100.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="70.0">
++        <padding>
++            <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
++        </padding>
++        <children>
++            <!-- Logo de la ballena -->
++            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
++                <image>
++                    <Image url="@images/whale_1841292.png" />
++                </image>
++                <VBox.margin>
++                    <Insets bottom="5.0" />
++                </VBox.margin>
++            </ImageView>
++
++            <!-- Título "Whale System" con degradado -->
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
++                <font>
++                    <Font name="Pristina" size="40.0" />
++                </font>
++                <fill>
++                    <LinearGradient endX="1.0" endY="1.0">
++                        <stops>
++                            <Stop>
++                                <color>
++                                    <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
++                                </color>
++                            </Stop>
++                            <Stop offset="1.0">
++                                <color>
++                                    <Color red="1.0" green="1.0" blue="1.0" />
++                                </color>
++                            </Stop>
++                        </stops>
++                    </LinearGradient>
++                </fill>
++                <VBox.margin>
++                    <Insets bottom="15.0" />
++                </VBox.margin>
++            </Text>
++
++            <!-- Título del formulario -->
++            <Label text="Crear Nuevo Pasajero" textFill="#222a5b">
++                <font>
++                    <Font name="System Bold" size="28.0" />
++                </font>
++                <VBox.margin>
++                    <Insets bottom="25.0" />
++                </VBox.margin>
++            </Label>
++
++            <!-- GridPane para organizar los campos de entrada -->
++            <GridPane hgap="15.0" vgap="15.0">
++                <columnConstraints>
++                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
++                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
++                </columnConstraints>
++                <rowConstraints>
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                </rowConstraints>
++                <children>
++                    <Label text="ID:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="0">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="id" prefHeight="40.0" promptText="ID del Pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Nombre Completo:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="1">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="fullName" prefHeight="40.0" promptText="Nombre completo del pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Nacionalidad:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="2">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="nationality" prefHeight="40.0" promptText="Nacionalidad" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++
++                    <Label text="Historial de Vuelos:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="3">
++                        <font>
++                            <Font name="System Semibold" size="16.0" />
++                        </font>
++                    </Label>
++                    <TextField fx:id="flightHistory" prefHeight="40.0" promptText="Historial de vuelos (ej. ID de vuelos)" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="3">
++                        <font>
++                            <Font size="14.0" />
++                        </font>
++                    </TextField>
++                </children>
++            </GridPane>
++
++            <!-- Botón de Acción -->
++            <Button fx:id="Enter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #ffb43c; -fx-text-fill: white; -fx-background-radius: 10;" text="Registrar Pasajero">
++                <font>
++                    <Font name="Pristina" size="24.0" />
++                </font>
++                <VBox.margin>
++                    <Insets top="30.0" />
++                </VBox.margin>
++            </Button>
++        </children>
++    </VBox>
++</AnchorPane>
+Index: src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ucr.proyectoalgoritmos.Controller;\r\n\r\nimport javafx.event.Event;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.TextField;\r\nimport javafx.scene.image.ImageView;\r\n\r\npublic class CreatePassengerController {\r\n    @javafx.fxml.FXML\r\n    private ImageView btEnter;\r\n    @javafx.fxml.FXML\r\n    private TextField nationality;\r\n    @javafx.fxml.FXML\r\n    private Button Enter;\r\n    @javafx.fxml.FXML\r\n    private TextField fullName;\r\n    @javafx.fxml.FXML\r\n    private TextField flightHistory;\r\n    @javafx.fxml.FXML\r\n    private TextField id;\r\n\r\n    @javafx.fxml.FXML\r\n    public void enterOnAction(Event event) {\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java b/src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java
+--- a/src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java	(date 1749723914585)
+@@ -7,8 +7,6 @@
+ 
+ public class CreatePassengerController {
+     @javafx.fxml.FXML
+-    private ImageView btEnter;
+-    @javafx.fxml.FXML
+     private TextField nationality;
+     @javafx.fxml.FXML
+     private Button Enter;
+Index: src/main/resources/ucr/proyectoalgoritmos/flights.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.TableColumn?>\r\n<?import javafx.scene.control.TableView?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.shape.Rectangle?>\r\n<?import javafx.scene.text.Font?>\r\n<?import javafx.scene.text.Text?>\r\n\r\n<?import javafx.scene.layout.BorderPane?>\r\n<BorderPane prefHeight=\"674.0\" prefWidth=\"1145.0\" xmlns=\"http://javafx.com/javafx/23.0.1\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"ucr.proyectoalgoritmos.Controller.FlightsController\">\r\n    <children>\r\n        <ImageView fitHeight=\"731.0\" fitWidth=\"1164.0\" layoutX=\"-5.0\" layoutY=\"-13.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n            <image>\r\n                <Image url=\"@images/degradados.png\" />\r\n            </image>\r\n        </ImageView>\r\n        <Text fill=\"WHITE\" layoutX=\"79.0\" layoutY=\"72.0\" strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Whale System\" wrappingWidth=\"296.0703125\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"48.0\" />\r\n            </font>\r\n        </Text>\r\n        <ImageView fitHeight=\"44.0\" fitWidth=\"57.0\" layoutX=\"25.0\" layoutY=\"36.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n            <image>\r\n                <Image url=\"@images/whale_1841292.png\" />\r\n            </image>\r\n        </ImageView>\r\n      <Rectangle arcHeight=\"5.0\" arcWidth=\"5.0\" fill=\"#ffb43c\" height=\"501.0\" layoutX=\"73.0\" layoutY=\"149.0\" stroke=\"BLACK\" strokeType=\"INSIDE\" width=\"1024.0\" />\r\n      <Rectangle arcHeight=\"5.0\" arcWidth=\"5.0\" fill=\"#222a5b\" height=\"451.0\" layoutX=\"108.0\" layoutY=\"176.0\" stroke=\"BLACK\" strokeType=\"INSIDE\" width=\"954.0\" />\r\n        <TableView fx:id=\"tableView\" layoutX=\"133.0\" layoutY=\"196.0\" prefHeight=\"412.0\" prefWidth=\"900.0\">\r\n            <columns>\r\n                <TableColumn prefWidth=\"98.0\" text=\"Flight Number\" />\r\n                <TableColumn prefWidth=\"127.0\" text=\"Origin Airport Code\" />\r\n                <TableColumn prefWidth=\"161.0\" text=\"Destination Airport Code\" />\r\n                <TableColumn minWidth=\"0.0\" prefWidth=\"111.0\" text=\"Departure Time\" />\r\n                <TableColumn prefWidth=\"72.0\" text=\"Capacity\" />\r\n                <TableColumn prefWidth=\"109.0\" text=\"Ocupancy\" />\r\n            <TableColumn text=\"Status\" />\r\n            <TableColumn prefWidth=\"141.0\" text=\"Assigned Passengers\" />\r\n            </columns>\r\n        </TableView>\r\n        <Button fx:id=\"btSearch\" layoutX=\"953.0\" layoutY=\"82.0\" mnemonicParsing=\"false\" onAction=\"#searchFlightOnAction\" prefHeight=\"44.0\" prefWidth=\"144.0\" style=\"-fx-background-color: #ffb43c;\" text=\"Search Flight\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"20.0\" />\r\n            </font>\r\n        </Button>\r\n        <Button fx:id=\"btCreate\" layoutX=\"750.0\" layoutY=\"81.0\" mnemonicParsing=\"false\" onAction=\"#createFlightOnAction\" prefHeight=\"47.0\" prefWidth=\"168.0\" style=\"-fx-background-color: #ffb43c;\" text=\"Create New Flight\">\r\n            <font>\r\n                <Font name=\"Pristina\" size=\"20.0\" />\r\n            </font>\r\n        </Button>\r\n    </children>\r\n</BorderPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/ucr/proyectoalgoritmos/flights.fxml b/src/main/resources/ucr/proyectoalgoritmos/flights.fxml
+--- a/src/main/resources/ucr/proyectoalgoritmos/flights.fxml	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/resources/ucr/proyectoalgoritmos/flights.fxml	(date 1749723377038)
+@@ -1,56 +1,129 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
++<?import javafx.geometry.Insets?>
+ <?import javafx.scene.control.Button?>
++<?import javafx.scene.control.Label?>
+ <?import javafx.scene.control.TableColumn?>
+ <?import javafx.scene.control.TableView?>
+ <?import javafx.scene.image.Image?>
+ <?import javafx.scene.image.ImageView?>
+ <?import javafx.scene.layout.AnchorPane?>
+-<?import javafx.scene.shape.Rectangle?>
++<?import javafx.scene.layout.HBox?>
++<?import javafx.scene.layout.VBox?>
+ <?import javafx.scene.text.Font?>
+ <?import javafx.scene.text.Text?>
+ 
+-<?import javafx.scene.layout.BorderPane?>
+-<BorderPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.FlightsController">
+-    <children>
+-        <ImageView fitHeight="731.0" fitWidth="1164.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+-            <image>
+-                <Image url="@images/degradados.png" />
+-            </image>
+-        </ImageView>
+-        <Text fill="WHITE" layoutX="79.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" wrappingWidth="296.0703125">
+-            <font>
+-                <Font name="Pristina" size="48.0" />
+-            </font>
+-        </Text>
+-        <ImageView fitHeight="44.0" fitWidth="57.0" layoutX="25.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+-            <image>
+-                <Image url="@images/whale_1841292.png" />
+-            </image>
+-        </ImageView>
+-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffb43c" height="501.0" layoutX="73.0" layoutY="149.0" stroke="BLACK" strokeType="INSIDE" width="1024.0" />
+-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#222a5b" height="451.0" layoutX="108.0" layoutY="176.0" stroke="BLACK" strokeType="INSIDE" width="954.0" />
+-        <TableView fx:id="tableView" layoutX="133.0" layoutY="196.0" prefHeight="412.0" prefWidth="900.0">
+-            <columns>
+-                <TableColumn prefWidth="98.0" text="Flight Number" />
+-                <TableColumn prefWidth="127.0" text="Origin Airport Code" />
+-                <TableColumn prefWidth="161.0" text="Destination Airport Code" />
+-                <TableColumn minWidth="0.0" prefWidth="111.0" text="Departure Time" />
+-                <TableColumn prefWidth="72.0" text="Capacity" />
+-                <TableColumn prefWidth="109.0" text="Ocupancy" />
+-            <TableColumn text="Status" />
+-            <TableColumn prefWidth="141.0" text="Assigned Passengers" />
+-            </columns>
+-        </TableView>
+-        <Button fx:id="btSearch" layoutX="953.0" layoutY="82.0" mnemonicParsing="false" onAction="#searchFlightOnAction" prefHeight="44.0" prefWidth="144.0" style="-fx-background-color: #ffb43c;" text="Search Flight">
+-            <font>
+-                <Font name="Pristina" size="20.0" />
+-            </font>
+-        </Button>
+-        <Button fx:id="btCreate" layoutX="750.0" layoutY="81.0" mnemonicParsing="false" onAction="#createFlightOnAction" prefHeight="47.0" prefWidth="168.0" style="-fx-background-color: #ffb43c;" text="Create New Flight">
+-            <font>
+-                <Font name="Pristina" size="20.0" />
+-            </font>
+-        </Button>
+-    </children>
+-</BorderPane>
++<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.FlightsController">
++    <!-- Imagen de fondo principal -->
++    <ImageView fitHeight="731.0" fitWidth="1164.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <image>
++            <Image url="@images/degradados.png" />
++        </image>
++    </ImageView>
++
++    <!-- Contenedor principal de contenido (la "tarjeta" central) -->
++    <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="40.0" prefHeight="594.0" prefWidth="1065.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 15;">
++        <padding>
++            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
++        </padding>
++        <children>
++            <!-- Encabezado: Logo y Título del Sistema -->
++            <HBox alignment="CENTER_LEFT" spacing="10.0">
++                <children>
++                    <ImageView fitHeight="44.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
++                        <image>
++                            <Image url="@images/whale_1841292.png" />
++                        </image>
++                    </ImageView>
++                    <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System">
++                        <font>
++                            <Font name="Pristina" size="40.0" />
++                        </font>
++                    </Text>
++                </children>
++                <VBox.margin>
++                    <Insets bottom="10.0" />
++                </VBox.margin>
++            </HBox>
++
++            <!-- Título de la Página: Gestión de Vuelos -->
++            <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestión de Vuelos">
++                <font>
++                    <Font name="System Bold" size="32.0" />
++                </font>
++                <VBox.margin>
++                    <Insets bottom="20.0" />
++                </VBox.margin>
++            </Text>
++
++            <!-- Botones de Acción para Vuelos -->
++            <HBox alignment="CENTER" spacing="15.0">
++                <children>
++                    <Button fx:id="btCreate" mnemonicParsing="false" onAction="#createFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Crear Nuevo Vuelo" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                    <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#updateFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #4f61da; -fx-background-radius: 8;" text="Actualizar Vuelo" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                    <Button fx:id="btDelete" mnemonicParsing="false" onAction="#deleteFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #da4f4f; -fx-background-radius: 8;" text="Eliminar Vuelo" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                    <Button fx:id="btSearch" mnemonicParsing="false" onAction="#searchFlightOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 8;" text="Buscar Vuelo" textFill="WHITE">
++                        <font>
++                            <Font name="Pristina" size="20.0" />
++                        </font>
++                    </Button>
++                </children>
++                <VBox.margin>
++                    <Insets bottom="25.0" />
++                </VBox.margin>
++            </HBox>
++
++            <!-- Área de Contenido Principal: Tabla de Vuelos e Imagen Decorativa -->
++            <HBox spacing="20.0" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
++                <!-- Contenedor de la Tabla -->
++                <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
++                    <padding>
++                        <!-- CORRECCIÓN: Se especifican los lados individuales en lugar de 'all' -->
++                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
++                    </padding>
++                    <children>
++                        <Label text="Lista de Vuelos" textFill="#333333">
++                            <font>
++                                <Font name="System Bold" size="20.0" />
++                            </font>
++                            <VBox.margin>
++                                <Insets bottom="10.0" />
++                            </VBox.margin>
++                        </Label>
++                        <TableView fx:id="tableView" prefHeight="320.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
++                            <columns>
++                                <TableColumn prefWidth="90.0" text="Número de Vuelo" />
++                                <TableColumn prefWidth="120.0" text="Código Origen" />
++                                <TableColumn prefWidth="120.0" text="Código Destino" />
++                                <TableColumn prefWidth="120.0" text="Hora de Salida" />
++                                <TableColumn prefWidth="80.0" text="Capacidad" />
++                                <TableColumn prefWidth="90.0" text="Ocupación" />
++                                <TableColumn prefWidth="80.0" text="Estado" />
++                                <TableColumn prefWidth="180.0" text="Pasajeros Asignados" />
++                            </columns>
++                        </TableView>
++                    </children>
++                </VBox>
++
++                <!-- Imagen Decorativa (ej. un avión) -->
++                <ImageView fitHeight="380.0" fitWidth="380.0" pickOnBounds="true" preserveRatio="true">
++                    <image>
++                        <Image url="@images/airport-plane.png" />
++                    </image>
++                </ImageView>
++            </HBox>
++        </children>
++    </VBox>
++</AnchorPane>
+Index: src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ucr.proyectoalgoritmos.Controller;\r\n\r\nimport javafx.event.ActionEvent;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.TableView;\r\n\r\nimport static ucr.proyectoalgoritmos.Controller.HelloController.loadView;\r\n\r\npublic class FlightsController {\r\n    @javafx.fxml.FXML\r\n    private TableView tableView;\r\n    @javafx.fxml.FXML\r\n    private Button btCreate;\r\n    @javafx.fxml.FXML\r\n    private Button btSearch;\r\n\r\n    @javafx.fxml.FXML\r\n    public void searchFlightOnAction(ActionEvent actionEvent) {\r\n    }\r\n\r\n    @javafx.fxml.FXML\r\n    public void createFlightOnAction(ActionEvent actionEvent) {\r\n        loadView(\"/ucr/proyectoalgoritmos/createFlight.fxml\", null);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java b/src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java
+--- a/src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java	(date 1749723302551)
+@@ -5,6 +5,7 @@
+ import javafx.scene.control.TableView;
+ 
+ import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
++import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
+ 
+ public class FlightsController {
+     @javafx.fxml.FXML
+@@ -13,6 +14,10 @@
+     private Button btCreate;
+     @javafx.fxml.FXML
+     private Button btSearch;
++    @javafx.fxml.FXML
++    private Button btUpdate;
++    @javafx.fxml.FXML
++    private Button btDelete;
+ 
+     @javafx.fxml.FXML
+     public void searchFlightOnAction(ActionEvent actionEvent) {
+@@ -20,6 +25,14 @@
+ 
+     @javafx.fxml.FXML
+     public void createFlightOnAction(ActionEvent actionEvent) {
+-        loadView("/ucr/proyectoalgoritmos/createFlight.fxml", null);
++        loadViewInNewStage("/ucr/proyectoalgoritmos/createFlight.fxml", "Create New Flight");
++    }
++
++    @javafx.fxml.FXML
++    public void updateFlightOnAction(ActionEvent actionEvent) {
++    }
++
++    @javafx.fxml.FXML
++    public void deleteFlightOnAction(ActionEvent actionEvent) {
+     }
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b\" name=\"Changes\" comment=\"Parte de interfaz iniciada\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/passenger.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/airports.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/airports.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/routes.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/routes.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/PassengersController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/PassengersController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/Login.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/Login.fxml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/passengers.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/passengers.fxml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoaderTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoaderTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"FxmlFile\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;TEALZN&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/JimeCS-22/ProyectoAlgoritmos.git&quot;,\r\n    &quot;accountId&quot;: &quot;058a3909-7402-424c-9ffc-7061ec0a45a9&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 2\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2yG6twa9SHGc4y1FX4MI4eTHzFv\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.FlightSimulator.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.DataLoaderTest.test.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.DijkstraTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.PassengerDataTest.test.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/ucr/proyectoalgoritmos&quot;,\r\n    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/airports.json&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\jimen\\OneDrive\\Escritorio\\UCR\\Estructuras\\ProyectoAlgoritmos\\src\\main\\resources\\ucr\\proyectoalgoritmos\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\jimen\\OneDrive\\Escritorio\\UCR\\Estructuras\\ProyectoAlgoritmos\\src\\main\\resources\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"JUnit.DataLoaderTest.test\">\r\n    <configuration name=\"FlightSimulator\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ucr.proyectoalgoritmos.Domain.flight.FlightSimulator\" />\r\n      <module name=\"ProyectoAlgoritmos\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"ucr.proyectoalgoritmos.Domain.flight.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"HelloApplication\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ucr.proyectoalgoritmos.HelloApplication\" />\r\n      <module name=\"ProyectoAlgoritmos\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"ucr.proyectoalgoritmos.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"DataLoaderTest.test\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"ProyectoAlgoritmos\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"ucr.proyectoalgoritmos.Domain.Archivos.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"ucr.proyectoalgoritmos.Domain.Archivos\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ucr.proyectoalgoritmos.Domain.Archivos.DataLoaderTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"test\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"DijkstraTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"ProyectoAlgoritmos\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"ucr.proyectoalgoritmos.Domain.dijkstra.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"ucr.proyectoalgoritmos.Domain.dijkstra\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ucr.proyectoalgoritmos.Domain.dijkstra.DijkstraTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"PassengerDataTest.test\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"ProyectoAlgoritmos\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"ucr.proyectoalgoritmos.Domain.Archivos.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"ucr.proyectoalgoritmos.Domain.Archivos\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"ucr.proyectoalgoritmos.Domain.Archivos.PassengerDataTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"test\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"JUnit.DataLoaderTest.test\" />\r\n        <item itemvalue=\"JUnit.PassengerDataTest.test\" />\r\n        <item itemvalue=\"Application.HelloApplication\" />\r\n        <item itemvalue=\"Application.FlightSimulator\" />\r\n        <item itemvalue=\"JUnit.DijkstraTest\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b\" name=\"Changes\" comment=\"\" />\r\n      <created>1749448781202</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1749448781202</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Parte de interfaz iniciada\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1749464841812</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1749464841812</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Parte de interfaz iniciada\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Parte de interfaz iniciada\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/.idea/workspace.xml	(date 1749724575134)
+@@ -5,18 +5,40 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Parte de interfaz iniciada">
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/passenger.json" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/RouteController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/SimulationController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/TicketController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/UserFlightController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/UserFlightStatusController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/UserTripController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/GifPlayer.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/routes.fxml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/simulation.fxml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/ticket.fxml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/userFlight.fxml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/userFlightStatus.fxml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/userTrip.fxml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/airports.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/airports.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/routes.json" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AdminMenuController.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreatePassengerController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightsController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/HelloController.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/MainMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/MainMenuController.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/PassengersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/PassengersController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/UserMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/UserMenuController.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/Login.fxml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createFlight.fxml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createPassenger.fxml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/flights.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/flights.fxml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/hello-view.fxml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/passengers.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/passengers.fxml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoaderTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -55,22 +77,22 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Application.FlightSimulator.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.DataLoaderTest.test.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.DijkstraTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.PassengerDataTest.test.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/ucr/proyectoalgoritmos&quot;,
+-    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/airports.json&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Application.FlightSimulator.executor": "Run",
++    "Application.HelloApplication.executor": "Run",
++    "JUnit.DataLoaderTest.test.executor": "Run",
++    "JUnit.DijkstraTest.executor": "Run",
++    "JUnit.PassengerDataTest.test.executor": "Run",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "RunOnceActivity.git.unshallow": "true",
++    "git-widget-placeholder": "master",
++    "ignore.virus.scanning.warn.message": "true",
++    "kotlin-language-version-configured": "true",
++    "last_opened_file_path": "C:/Users/Usuario/OneDrive - Universidad de Costa Rica/Documentos/U/Progra 2/Lab4/lab4-2025-TEALZN",
++    "two.files.diff.last.used.file": "C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/airports.json"
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\jimen\OneDrive\Escritorio\UCR\Estructuras\ProyectoAlgoritmos\src\main\resources\ucr\proyectoalgoritmos" />
+@@ -79,7 +101,7 @@
+       <recent name="C:\Users\jimen\OneDrive\Escritorio\UCR\Estructuras\ProyectoAlgoritmos\src\main\resources" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="JUnit.DataLoaderTest.test">
++  <component name="RunManager" selected="Application.HelloApplication">
+     <configuration name="FlightSimulator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+       <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.flight.FlightSimulator" />
+       <module name="ProyectoAlgoritmos" />
+@@ -155,9 +177,9 @@
+     </configuration>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Application.HelloApplication" />
+         <item itemvalue="JUnit.DataLoaderTest.test" />
+         <item itemvalue="JUnit.PassengerDataTest.test" />
+-        <item itemvalue="Application.HelloApplication" />
+         <item itemvalue="Application.FlightSimulator" />
+         <item itemvalue="JUnit.DijkstraTest" />
+       </list>
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n  <modelVersion>4.0.0</modelVersion>\r\n\r\n  <groupId>ucr</groupId>\r\n  <artifactId>ProyectoAlgoritmos</artifactId>\r\n  <version>1.0-SNAPSHOT</version>\r\n  <name>ProyectoAlgoritmos</name>\r\n\r\n  <properties>\r\n    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\r\n<junit.version>5.10.2</junit.version>  </properties>\r\n\r\n  <dependencies>\r\n    <dependency>\r\n      <groupId>org.openjfx</groupId>\r\n      <artifactId>javafx-controls</artifactId>\r\n      <version>17.0.6</version>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.openjfx</groupId>\r\n      <artifactId>javafx-fxml</artifactId>\r\n      <version>17.0.6</version>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>com.google.code.gson</groupId>\r\n      <artifactId>gson</artifactId>\r\n      <version>2.10.1</version> </dependency>\r\n\r\n    <dependency>\r\n      <groupId>org.jdom</groupId>\r\n      <artifactId>jdom2</artifactId>\r\n      <version>2.0.6</version>\r\n    </dependency>\r\n\r\n<dependency>\r\n      <groupId>org.junit.jupiter</groupId>\r\n      <artifactId>junit-jupiter-api</artifactId>\r\n      <version>${junit.version}</version>\r\n      <scope>test</scope>\r\n    </dependency>\r\n    <dependency>\r\n      <groupId>org.junit.jupiter</groupId>\r\n      <artifactId>junit-jupiter-engine</artifactId>\r\n      <version>${junit.version}</version>\r\n      <scope>test</scope>\r\n    </dependency>  </dependencies>\r\n\r\n  <build>\r\n    <plugins>\r\n      <plugin>\r\n        <groupId>org.apache.maven.plugins</groupId>\r\n        <artifactId>maven-compiler-plugin</artifactId>\r\n        <version>3.13.0</version>\r\n        <configuration>\r\n          <source>24</source>\r\n          <target>24</target>\r\n        </configuration>\r\n      </plugin>\r\n      <plugin>\r\n        <groupId>org.openjfx</groupId>\r\n        <artifactId>javafx-maven-plugin</artifactId>\r\n        <version>0.0.8</version>\r\n        <executions>\r\n          <execution>\r\n            <!-- Default configuration for running with: mvn clean javafx:run -->\r\n            <id>default-cli</id>\r\n            <configuration>\r\n              <mainClass>ucr.proyectoalgoritmos/ucr.proyectoalgoritmos.HelloApplication</mainClass>\r\n              <launcher>app</launcher>\r\n              <jlinkZipName>app</jlinkZipName>\r\n              <jlinkImageName>app</jlinkImageName>\r\n              <noManPages>true</noManPages>\r\n              <stripDebug>true</stripDebug>\r\n              <noHeaderFiles>true</noHeaderFiles>\r\n            </configuration>\r\n          </execution>\r\n        </executions>\r\n      </plugin>\r\n    </plugins>\r\n  </build>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 8d836f8eb5383a50adbcadeecd68021289ce6d43)
++++ b/pom.xml	(date 1749683197724)
+@@ -17,12 +17,12 @@
+     <dependency>
+       <groupId>org.openjfx</groupId>
+       <artifactId>javafx-controls</artifactId>
+-      <version>17.0.6</version>
++      <version>24.0.1</version>
+     </dependency>
+     <dependency>
+       <groupId>org.openjfx</groupId>
+       <artifactId>javafx-fxml</artifactId>
+-      <version>17.0.6</version>
++      <version>24.0.1</version>
+     </dependency>
+     <dependency>
+       <groupId>com.google.code.gson</groupId>
+@@ -32,7 +32,7 @@
+     <dependency>
+       <groupId>org.jdom</groupId>
+       <artifactId>jdom2</artifactId>
+-      <version>2.0.6</version>
++      <version>2.0.6.1</version>
+     </dependency>
+ 
+ <dependency>
+Index: src/main/java/ucr/proyectoalgoritmos/util/GifPlayer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ucr/proyectoalgoritmos/util/GifPlayer.java b/src/main/java/ucr/proyectoalgoritmos/util/GifPlayer.java
+new file mode 100644
+--- /dev/null	(date 1749714444005)
++++ b/src/main/java/ucr/proyectoalgoritmos/util/GifPlayer.java	(date 1749714444005)
+@@ -0,0 +1,46 @@
++package ucr.proyectoalgoritmos.util;
++
++import javafx.animation.AnimationTimer;
++import javafx.scene.image.Image;
++import javafx.scene.image.ImageView;
++
++public class GifPlayer {
++    private ImageView imageView;
++    private Image[] frames;
++    private int currentFrame = 0;
++    private long lastTime = 0;
++    private int delayMillis;
++
++    public GifPlayer(String basePath, int frameCount, int delayMillis) {
++        this.delayMillis = delayMillis;
++        frames = new Image[frameCount];
++
++        // Cargar todos los frames
++        for (int i = 0; i < frameCount; i++) {
++            frames[i] = new Image(getClass().getResourceAsStream(basePath + i + ".png"));
++        }
++
++        imageView = new ImageView(frames[0]);
++
++        // Animación
++        new AnimationTimer() {
++            @Override
++            public void handle(long now) {
++                if (lastTime == 0) {
++                    lastTime = now;
++                    return;
++                }
++
++                if ((now - lastTime) / 1_000_000 >= delayMillis) {
++                    currentFrame = (currentFrame + 1) % frames.length;
++                    imageView.setImage(frames[currentFrame]);
++                    lastTime = now;
++                }
++            }
++        }.start();
++    }
++
++    public ImageView getView() {
++        return imageView;
++    }
++}

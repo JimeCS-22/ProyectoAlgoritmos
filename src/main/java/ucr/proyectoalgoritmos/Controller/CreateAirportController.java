@@ -10,8 +10,6 @@ public class CreateAirportController {
     @javafx.fxml.FXML
     private TextField country;
     @javafx.fxml.FXML
-    private ImageView btEnter;
-    @javafx.fxml.FXML
     private TextField name;
     @javafx.fxml.FXML
     private Button Enter;

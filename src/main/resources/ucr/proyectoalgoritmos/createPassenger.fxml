@@ -1,54 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane prefHeight="444.0" prefWidth="600.0" style="-fx-background-image: degradado2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreatePassengerController">
-    <children>
-        <ImageView fx:id="btEnter" fitHeight="517.0" fitWidth="808.0" layoutX="-187.0" onDragDetected="#enterOnAction" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@images/degradados.png" />
-            </image>
-        </ImageView>
-        <TextField fx:id="fullName" layoutX="213.0" layoutY="183.0" prefHeight="26.0" prefWidth="205.0" />
-        <Label layoutX="149.0" layoutY="14.0" prefHeight="66.0" prefWidth="290.0" style="-fx-background-color: #ffb43c;" text="Create New Passenger">
-            <font>
-                <Font name="Pristina" size="40.0" />
-            </font>
-        </Label>
-        <Label layoutX="47.0" layoutY="130.0" prefHeight="40.0" prefWidth="125.0" text="ID:" textFill="WHITE">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="47.0" layoutY="176.0" prefHeight="40.0" prefWidth="106.0" text="Full Name:" textFill="WHITE">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Button fx:id="Enter" layoutX="224.0" layoutY="362.0" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="26.0" prefWidth="157.0" style="-fx-background-color: #ffb43c;" text="Enter">
-            <font>
-                <Font name="Pristina" size="26.0" />
-            </font>
-        </Button>
-        <TextField fx:id="id" layoutX="213.0" layoutY="137.0" prefHeight="26.0" prefWidth="205.0" />
-        <Label layoutX="47.0" layoutY="220.0" prefHeight="40.0" prefWidth="106.0" text="Nationality:" textFill="WHITE">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <TextField fx:id="nationality" layoutX="213.0" layoutY="227.0" prefHeight="26.0" prefWidth="205.0" />
-        <Label layoutX="47.0" layoutY="262.0" prefHeight="40.0" prefWidth="166.0" text="Flight History:" textFill="WHITE">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <TextField fx:id="flightHistory" layoutX="213.0" layoutY="269.0" prefHeight="26.0" prefWidth="205.0" />
-    </children>
-</BorderPane>
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.CreatePassengerController">
+    <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
+    <ImageView fitHeight="720.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <image>
+            <Image url="@images/degradados.png" />
+        </image>
+    </ImageView>
+
+    <!-- Contenedor principal de contenido (la "tarjeta" central para el formulario) -->
+    <VBox alignment="CENTER" layoutX="327.0" layoutY="100.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="70.0">
+        <padding>
+            <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+        </padding>
+        <children>
+            <!-- Logo de la ballena -->
+            <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/whale_1841292.png" />
+                </image>
+                <VBox.margin>
+                    <Insets bottom="5.0" />
+                </VBox.margin>
+            </ImageView>
+
+            <!-- Título "Whale System" con degradado -->
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
+                <font>
+                    <Font name="Pristina" size="40.0" />
+                </font>
+                <fill>
+                    <LinearGradient endX="1.0" endY="1.0">
+                        <stops>
+                            <Stop>
+                                <color>
+                                    <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
+                                </color>
+                            </Stop>
+                            <Stop offset="1.0">
+                                <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                </color>
+                            </Stop>
+                        </stops>
+                    </LinearGradient>
+                </fill>
+                <VBox.margin>
+                    <Insets bottom="15.0" />
+                </VBox.margin>
+            </Text>
+
+            <!-- Título del formulario -->
+            <Label text="Crear Nuevo Pasajero" textFill="#222a5b">
+                <font>
+                    <Font name="System Bold" size="28.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="25.0" />
+                </VBox.margin>
+            </Label>
+
+            <!-- GridPane para organizar los campos de entrada -->
+            <GridPane hgap="15.0" vgap="15.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Label text="ID:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="id" prefHeight="40.0" promptText="ID del Pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Nombre Completo:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="fullName" prefHeight="40.0" promptText="Nombre completo del pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Nacionalidad:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="nationality" prefHeight="40.0" promptText="Nacionalidad" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+
+                    <Label text="Historial de Vuelos:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="flightHistory" prefHeight="40.0" promptText="Historial de vuelos (ej. ID de vuelos)" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+                </children>
+            </GridPane>
+
+            <!-- Botón de Acción -->
+            <Button fx:id="Enter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #ffb43c; -fx-text-fill: white; -fx-background-radius: 10;" text="Registrar Pasajero">
+                <font>
+                    <Font name="Pristina" size="24.0" />
+                </font>
+                <VBox.margin>
+                    <Insets top="30.0" />
+                </VBox.margin>
+            </Button>
+        </children>
+    </VBox>
+</AnchorPane>
