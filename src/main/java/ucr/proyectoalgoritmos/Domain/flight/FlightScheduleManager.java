@@ -25,7 +25,7 @@ public class FlightScheduleManager {
         this.airportManager = airportManager;
         this.routeManager = routeManager;
         this.waitingLists = new HashMap<>();
-        System.out.println("DEBUG FSM: FlightScheduleManager inicializado.");
+        //System.out.println("DEBUG FSM: FlightScheduleManager inicializado.");
     }
 
     // This method needs to return the created Flight object
@@ -69,7 +69,7 @@ public class FlightScheduleManager {
                 try {
                     if (routeWaitingList.contains(passenger)) { // Assuming contains and remove work with Passenger objects
                         routeWaitingList.remove(passenger);
-                        System.out.println("DEBUG TICKET: Pasajero " + passenger.getId() + " removido de la lista de espera para la ruta " + routeKey + ".");
+                       // System.out.println("DEBUG TICKET: Pasajero " + passenger.getId() + " removido de la lista de espera para la ruta " + routeKey + ".");
                         if (routeWaitingList.isEmpty()) {
                             waitingLists.remove(routeKey); // Remove empty waiting list
                         }
@@ -108,9 +108,4 @@ public class FlightScheduleManager {
         return this.scheduledFlights;
     }
 
-    // --- REMOVED simulateFlight() FROM FlightScheduleManager ---
-    // The simulation logic has been moved or handled directly in FlightSimulator's scheduler
-    // as per your provided FlightSimulator class structure.
-    // Ensure that airplane status and location, and passenger history updates,
-    // are correctly handled in the scheduled tasks in FlightSimulator.
 }

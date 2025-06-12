@@ -84,12 +84,7 @@ public class Graph {
         int startIndex = verticesMap.get(startCode);
         int endIndex = verticesMap.get(endCode);
 
-        // Simple BFS/DFS for unweighted or basic path existence,
-        // or a placeholder for Dijkstra for weighted paths.
-        // For a true shortest path by duration (weight), you'd implement Dijkstra's algorithm.
-        // For now, let's assume it returns a reasonable duration if a path *exists*.
-        // If a path exists, return a random duration within a plausible range
-        // If no path is found, return Integer.MAX_VALUE
+
         try {
             if (hasPathDFS(startIndex, endIndex, new boolean[numVertices])) {
                 // Simulate a plausible duration based on existence, not actual shortest path calculation
@@ -147,7 +142,7 @@ public class Graph {
             }
             attempts++;
         }
-        System.out.println("DEBUG Grafo: " + routesAdded + " rutas aleatorias añadidas.");
+        //System.out.println("DEBUG Grafo: " + routesAdded + " rutas aleatorias añadidas.");
     }
 
     // Get outgoing route count for sorting airports

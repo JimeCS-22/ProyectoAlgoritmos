@@ -4,26 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Parte de interfaz iniciada">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" afterDir="false" />
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Arreglado el simulador, aun le faltan cambio">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/PassengersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/PassengersController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightHistory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightHistoryList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSchedule.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/Passenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/Passenger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/list/SinglyLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/list/SinglyLinkedList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Route.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/RouteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/RouteManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/airports.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/airports.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/Utility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/Utility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749464841812</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Arreglado el simulador, aun le faltan cambio">
+      <option name="closed" value="true" />
+      <created>1749685837073</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749685837073</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -202,6 +202,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Parte de interfaz iniciada" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parte de interfaz iniciada" />
+    <MESSAGE value="Arreglado el simulador, aun le faltan cambio" />
+    <option name="LAST_COMMIT_MESSAGE" value="Arreglado el simulador, aun le faltan cambio" />
   </component>
 </project>

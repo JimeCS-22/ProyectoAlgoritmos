@@ -92,7 +92,7 @@ public class FlightSimulator {
                 int numVertices = routeManager.getGraph().getNumVertices();
                 int maxRoutes = numVertices * (numVertices - 1) / 2;
                 routeManager.getGraph().generateRandomRoutes(Math.min(maxRoutes, 20), 7, 30, 600);
-                System.out.println("SIMULADOR: Rutas aleatorias generadas.");
+                //System.out.println("SIMULADOR: Rutas aleatorias generadas.");
             }
         }
 
@@ -186,7 +186,7 @@ public class FlightSimulator {
         if (airportManager.findAirport("IST") == null) airportManager.createAirport("IST", "Istanbul Airport", "Turkey");
         if (airportManager.findAirport("MEX") == null) airportManager.createAirport("MEX", "Mexico City Int'l", "Mexico");
         if (airportManager.findAirport("LIM") == null) airportManager.createAirport("LIM", "Jorge Chávez Int'l", "Peru");
-        System.out.println("SIMULADOR: Aeropuertos predeterminados de emergencia añadidos.");
+        //System.out.println("SIMULADOR: Aeropuertos predeterminados de emergencia añadidos.");
     }
 
     public void addAirplane(String id, int capacity, String initialLocationAirportCode) throws ListException {
@@ -340,12 +340,12 @@ public class FlightSimulator {
         }
 
         newFlight.setAirplane(selectedAirplane);
-        System.out.println("DEBUG: [GENERACIÓN] Avión " + selectedAirplane.getId() + " asignado al vuelo " + flightNumber + ".");
+        //System.out.println("DEBUG: [GENERACIÓN] Avión " + selectedAirplane.getId() + " asignado al vuelo " + flightNumber + ".");
 
         int estimatedDurationRealistic = routeManager.calculateShortestRoute(originCode, destinationCode);
         if (estimatedDurationRealistic == Integer.MAX_VALUE || estimatedDurationRealistic == 0) {
             estimatedDurationRealistic = 120 + random.nextInt(180);
-            System.out.println("DEBUG: [GENERACIÓN] Duración de ruta no válida o cero, usando duración estimada aleatoria: " + estimatedDurationRealistic + " minutos.");
+           // System.out.println("DEBUG: [GENERACIÓN] Duración de ruta no válida o cero, usando duración estimada aleatoria: " + estimatedDurationRealistic + " minutos.");
         }
         newFlight.setEstimatedDurationMinutes(estimatedDurationRealistic);
 
@@ -378,7 +378,7 @@ public class FlightSimulator {
             Collections.shuffle(shuffledPassengerIds);
 
             int actualPassengersToAssign = Math.min(passengersToBoard, shuffledPassengerIds.size());
-            System.out.println("DEBUG: Se intentará asignar " + actualPassengersToAssign + " pasajeros únicos para el vuelo " + flightNumber + ".");
+            //System.out.println("DEBUG: Se intentará asignar " + actualPassengersToAssign + " pasajeros únicos para el vuelo " + flightNumber + ".");
 
             for (int i = 0; i < actualPassengersToAssign; i++) {
                 String passengerId = shuffledPassengerIds.get(i);
@@ -480,7 +480,7 @@ public class FlightSimulator {
                     System.out.println("SIMULADOR: --> Vuelo " + fNum + " (Lógico) ha completado su viaje a " + airportManager.getAirportName(finalDestinationCode) + ". Avión " + plane.getId() + " ahora en IDLE y ubicado en " + airportManager.getAirportName(finalDestinationCode) + ".");
 
                     // Los pasajeros desembarcan (se borran del vuelo)
-                    System.out.println("DEBUG: [LÓGICA] Pasajeros desembarcando del vuelo " + fNum + ". Total: " + currentFlight.getOccupancy() + ".");
+                    //System.out.println("DEBUG: [LÓGICA] Pasajeros desembarcando del vuelo " + fNum + ". Total: " + currentFlight.getOccupancy() + ".");
                     currentFlight.clearPassengers();
 
                     // Remueve el vuelo completado de la lista de vuelos programados en FSM
@@ -588,7 +588,7 @@ public class FlightSimulator {
 
             // Define simulation parameters
             long flightGenerationIntervalSeconds = 5; // Generate a new flight every 5 seconds
-            long simulationDurationSeconds = 60;    // Run the simulation for 60 seconds (1 minute)
+            long simulationDurationSeconds = 300;    // Run the simulation for 60 seconds (1 minute)
 
             System.out.println("\n--- Ejecutando Simulación de Vuelos ---");
             simulator.startSimulation(flightGenerationIntervalSeconds, simulationDurationSeconds);

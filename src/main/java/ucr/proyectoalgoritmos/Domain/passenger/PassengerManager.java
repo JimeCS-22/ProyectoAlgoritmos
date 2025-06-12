@@ -48,7 +48,6 @@ public class PassengerManager {
         return all;
     }
 
-    // --- MÉTODO MODIFICADO: processTicketPurchase (para PassengerManager) ---
     // Simplemente añade el vuelo al historial personal del pasajero.
     public void processTicketPurchase(Passenger passenger, Flight flight) throws ListException {
         if (passenger != null && flight != null) {

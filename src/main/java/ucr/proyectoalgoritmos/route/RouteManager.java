@@ -64,6 +64,4 @@ public class RouteManager {
         }
         return graph.shortestPath(originCode, destinationCode); // Returns path weight (duration)
     }
-
-    // You might also need a method to get specific route details if needed.
 }

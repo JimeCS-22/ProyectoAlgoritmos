@@ -16,7 +16,7 @@ class PassengerDataTest {
     private static final int MIN_TOTAL_PASSENGERS = 25;
 
     @Test
-    void test(){
+    void test() throws ListException {
 
         PassengerManager passengerManager = new PassengerManager();
         PassengerData passengerDataLoader = new PassengerData(passengerManager, MIN_TOTAL_PASSENGERS);
