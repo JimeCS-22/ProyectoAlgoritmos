@@ -5,51 +5,126 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #e0f2f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.LoginController">
-   <center>
-      <VBox alignment="CENTER" spacing="25.0" BorderPane.alignment="CENTER">
+<AnchorPane prefHeight="796.0" prefWidth="1254.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.LoginController">
+   <children>
+      <!-- Imagen de fondo principal, consistente con la página de bienvenida -->
+      <ImageView fitHeight="879.0" fitWidth="1484.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@images/fondo.png" />
+         </image>
+      </ImageView>
+
+      <!-- Contenedor principal de contenido (la "tarjeta" central para el login) -->
+      <VBox alignment="CENTER" layoutX="400.0" layoutY="148.0" prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="148.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="148.0">
          <padding>
-            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
          </padding>
-         <Label text="Security System - Login" textFill="#263238">
-            <font>
-               <Font name="Segoe UI Black" size="32.0" />
-            </font>
-         </Label>
-         <VBox alignment="CENTER_LEFT" spacing="8.0">
-            <Label text="Usuario" textFill="#455a64">
+         <children>
+            <!-- Logo de la ballena, consistente con la página de bienvenida -->
+            <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/whale_1841292.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </ImageView>
+
+            <!-- Título "Whale System" con degradado, consistente con la página de bienvenida -->
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
                <font>
-                  <Font name="Segoe UI Semibold" size="16.0" />
+                  <Font name="Pristina" size="48.0" />
                </font>
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Text>
+
+            <!-- Título del formulario de login -->
+            <Label text="Inicio de Sesión" textFill="#222a5b">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
             </Label>
-            <TextField fx:id="UserName" prefHeight="40.0" promptText="Ingresa tu usuario" style="-fx-background-radius: 5; -fx-border-color: #b0bec5; -fx-border-radius: 5; -fx-border-width: 1;">
+
+            <!-- Campo de Usuario -->
+            <VBox alignment="CENTER_LEFT" spacing="5.0" prefWidth="300.0">
+               <Label text="Usuario" textFill="#455a64">
+                  <font>
+                     <Font name="System Semibold" size="16.0" />
+                  </font>
+               </Label>
+               <TextField fx:id="UserName" prefHeight="40.0" promptText="Ingresa tu usuario" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </TextField>
+            </VBox>
+
+            <!-- Campo de Contraseña -->
+            <VBox alignment="CENTER_LEFT" spacing="5.0" prefWidth="300.0">
+               <Label text="Contraseña" textFill="#455a64">
+                  <font>
+                     <Font name="System Semibold" size="16.0" />
+                  </font>
+               </Label>
+               <PasswordField fx:id="Password" prefHeight="40.0" promptText="Ingresa tu contraseña" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </PasswordField>
+            </VBox>
+
+            <!-- Etiqueta para mensajes de error (inicialmente vacía) -->
+            <Label fx:id="lblErrorMessage" text="" textFill="RED" wrapText="true" textAlignment="CENTER">
                <font>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </font>
-            </TextField>
-         </VBox>
-         <VBox alignment="CENTER_LEFT" spacing="8.0">
-            <Label text="Contraseña" textFill="#455a64">
-               <font>
-                  <Font name="Segoe UI Semibold" size="16.0" />
-               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </Label>
-            <PasswordField fx:id="Password" prefHeight="40.0" promptText="Ingresa tu contraseña" style="-fx-background-radius: 5; -fx-border-color: #b0bec5; -fx-border-radius: 5; -fx-border-width: 1;">
+
+            <!-- Botón de Iniciar Sesión -->
+            <Button fx:id="Enter" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-text-fill: white; -fx-background-radius: 10;" text="Iniciar Sesión">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Pristina" size="24.0" />
                </font>
-            </PasswordField>
-         </VBox>
-         <Button fx:id="Enter" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-background-radius: 8;" text="Iniciar Sesión">
-            <font>
-               <Font name="Segoe UI Bold" size="20.0" />
-            </font>
-         </Button>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+         </children>
       </VBox>
-   </center>
-</BorderPane>
+   </children>
+</AnchorPane>

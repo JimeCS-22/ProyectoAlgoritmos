@@ -9,6 +9,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+
 public class MainMenuController {
 
     @FXML
@@ -18,23 +20,8 @@ public class MainMenuController {
     private MenuItem menuExit;
 
     @FXML
-    private MenuItem AirportsSettings;
-
-    @FXML
-    private MenuItem Passengers;
-
-    @FXML
-    private MenuItem FlightsSettings;
-
-    @FXML
-    private MenuItem RoutesSettings;
-
-    @FXML
-    private MenuItem Simulation;
-
-    @FXML
     private void loadLoginPane() {
-        HelloController.loadView("/ucr/proyectoalgoritmos/login.fxml", null);
+        loadView("/ucr/proyectoalgoritmos/login.fxml", null);
     }
 
     @FXML

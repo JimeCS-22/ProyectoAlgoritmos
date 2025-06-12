@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="625.0" prefWidth="400.0" spacing="10.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.TicketController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <HBox alignment="TOP_LEFT" prefHeight="30.0" prefWidth="200.0">
+            <children>
+                <VBox HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Thank you for your purchase!">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                        <Label text="Click! Use your seatbelt during the trip." wrapText="true">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                            <padding>
+                                <Insets top="5.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox alignment="TOP_RIGHT">
+                    <children>
+                        <Label text="Operation No.">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </Label>
+                        <Label text="41411626">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <HBox alignment="TOP_LEFT" prefHeight="30.0" prefWidth="200.0">
+            <children>
+                <VBox HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Name">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </Label>
+                        <Label text="Zailyn Tencio Alfaro">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox alignment="TOP_RIGHT">
+                    <children>
+                        <Label text="Passenger Type">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </Label>
+                        <Label text="Adult">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+            <VBox.margin>
+                <Insets top="15.0" />
+            </VBox.margin>
+        </HBox>
+
+        <VBox alignment="CENTER" prefHeight="250.0" prefWidth="300.0">
+            <children>
+                <ImageView fx:id="ImageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/flight_2297974.png" />
+               </image></ImageView>
+            </children>
+            <VBox.margin>
+                <Insets top="20.0" />
+            </VBox.margin>
+        </VBox>
+
+        <VBox alignment="TOP_LEFT" spacing="10.0">
+            <children>
+                <HBox alignment="TOP_LEFT" prefHeight="30.0" prefWidth="200.0">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Origin">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Querétaro (QRO)">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Bus Terminal">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <VBox alignment="TOP_RIGHT">
+                            <children>
+                                <Label text="Destination">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Mexico City (AEMEX)">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Airport T1">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox alignment="TOP_LEFT" prefHeight="30.0" prefWidth="200.0">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Travel Date">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Tuesday, 01/Apr/2025">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <VBox alignment="TOP_RIGHT">
+                            <children>
+                                <Label text="Travel Time">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                                <Label text="05:00 AM">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox alignment="TOP_LEFT" prefHeight="30.0" prefWidth="200.0">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Service Type">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                    <children>
+                                        <Label text="Local">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Service">
+                                            <font>
+                                                <Font size="10.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <VBox alignment="TOP_RIGHT">
+                            <children>
+                                <Label text="Advertised as">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
+                                    <children>
+                                        <Label text="Mexico Airport T2">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+            </children>
+            <VBox.margin>
+                <Insets top="20.0" />
+            </VBox.margin>
+        </VBox>
+
+    </children>
+</VBox>

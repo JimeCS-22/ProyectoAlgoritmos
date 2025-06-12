@@ -1,14 +1,19 @@
 package ucr.proyectoalgoritmos.Controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class HelloController {
+
+    @javafx.fxml.FXML
+    private Button btStart;
 
     public static void loadView(String fxmlPath, BorderPane rootLayout) {
         try {
@@ -41,4 +46,8 @@ public class HelloController {
         }
     }
 
+    @javafx.fxml.FXML
+    public void handleStartAction(ActionEvent actionEvent) {
+        loadView("/ucr/proyectoalgoritmos/login.fxml", null);
+    }
 }

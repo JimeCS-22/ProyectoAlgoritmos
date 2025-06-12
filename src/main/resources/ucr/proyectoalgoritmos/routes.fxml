@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.RouteController">
+    <!-- Fondo degradado principal -->
+    <ImageView fitHeight="720.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <image>
+            <Image url="@images/degradado2.jpg" />
+        </image>
+    </ImageView>
+
+    <!-- Título y logo de Whale System -->
+    <Text fill="WHITE" layoutX="79.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" wrappingWidth="296.0703125">
+        <font>
+            <Font name="Pristina" size="48.0" />
+        </font>
+    </Text>
+    <ImageView fitHeight="44.0" fitWidth="57.0" layoutX="25.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@images/whale_1841292.png" />
+        </image>
+    </ImageView>
+
+    <!-- Contenedor principal de contenido (fondo claro y redondeado) -->
+    <VBox alignment="TOP_CENTER" layoutX="35.0" layoutY="93.0" prefHeight="594.0" prefWidth="1075.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 15;">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </padding>
+        <children>
+            <!-- Título de la sección -->
+            <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Verificar Ruta de Vuelo">
+                <font>
+                    <Font name="System Bold" size="29.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="15.0" top="10.0" />
+                </VBox.margin>
+            </Text>
+
+            <!-- Campos de entrada y botón de búsqueda en una HBox -->
+            <HBox alignment="CENTER" spacing="20.0">
+                <children>
+                    <VBox alignment="CENTER_LEFT" spacing="5.0">
+                        <children>
+                            <Text fill="#333333" strokeType="OUTSIDE" strokeWidth="0.0" text="Origen:">
+                                <font>
+                                    <Font name="System Bold" size="16.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="txtOrigin" prefWidth="200.0" promptText="Código IATA (ej. QRO)" style="-fx-background-radius: 5;" />
+                        </children>
+                    </VBox>
+                    <VBox alignment="CENTER_LEFT" spacing="5.0">
+                        <children>
+                            <Text fill="#333333" strokeType="OUTSIDE" strokeWidth="0.0" text="Destino:">
+                                <font>
+                                    <Font name="System Bold" size="16.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="txtDestination" prefWidth="200.0" promptText="Código IATA (ej. MEX)" style="-fx-background-radius: 5;" />
+                        </children>
+                    </VBox>
+                    <Button fx:id="btCheckRoute" mnemonicParsing="false" onAction="#checkFlightOnAction" prefHeight="47.0" prefWidth="132.0" style="-fx-background-color: #222a5b; -fx-background-radius: 8;" text="Verificar Ruta" textFill="WHITE">
+                        <font>
+                            <Font name="Pristina" size="20.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets top="20.0" />
+                        </HBox.margin>
+                    </Button>
+                </children>
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </HBox>
+
+            <!-- Área de visualización de la ruta -->
+            <AnchorPane prefHeight="280.0" prefWidth="1025.0" style="-fx-background-color: #e0f2f7; -fx-background-radius: 10;">
+                <VBox.margin>
+                    <Insets left="5.0" right="5.0" />
+                </VBox.margin>
+                <!-- Imagen de fondo de cielo para simular un mapa o vista aérea -->
+                <ImageView fitHeight="280.0" fitWidth="1025.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <image>
+                        <Image url="@images/cielo.png" />
+                    </image>
+                </ImageView>
+
+                <!-- Icono de avión de origen (simula el inicio de la ruta) -->
+                <ImageView fx:id="imgPlaneOrigin" fitHeight="70.0" fitWidth="70.0" layoutX="100.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/plane_1044134.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="lblOriginPoint" layoutX="90.0" layoutY="165.0" text="Origen" textFill="#222a5b">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Label>
+                <Circle fx:id="circleOrigin" fill="#ffb43c" layoutX="135.0" layoutY="135.0" radius="5.0" stroke="WHITE" strokeWidth="2.0" />
+
+                <!-- Icono de llegada (simula el final de la ruta) -->
+                <ImageView fx:id="imgArrivalDest" fitHeight="70.0" fitWidth="70.0" layoutX="800.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/arrival_1605086.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="lblDestinationPoint" layoutX="790.0" layoutY="165.0" text="Destino" textFill="#222a5b">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Label>
+                <Circle fx:id="circleDestination" fill="#222a5b" layoutX="835.0" layoutY="135.0" radius="5.0" stroke="WHITE" strokeWidth="2.0" />
+
+                <!-- Línea para representar la ruta (se puede hacer dinámica en el controlador) -->
+                <Line fx:id="routeLine" endX="700.0" endY="0.0" layoutX="135.0" layoutY="135.0" startX="0.0" startY="0.0" stroke="#ffb43c" strokeWidth="3.0" />
+            </AnchorPane>
+
+            <!-- Sección para mostrar los detalles de la ruta encontrada -->
+            <VBox spacing="10.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+                <children>
+                    <Label text="Detalles de la Ruta:" textFill="#333333">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <children>
+                            <Label text="Duración estimada:" textFill="#333333">
+                                <font><Font size="14.0" /></font>
+                            </Label>
+                            <Label fx:id="lblEstimatedDuration" text="N/A" textFill="#222a5b">
+                                <font><Font name="System Bold" size="14.0" /></font>
+                            </Label>
+                        </children>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <children>
+                            <Label text="Distancia (km):" textFill="#333333">
+                                <font><Font size="14.0" /></font>
+                            </Label>
+                            <Label fx:id="lblDistance" text="N/A" textFill="#222a5b">
+                                <font><Font name="System Bold" size="14.0" /></font>
+                            </Label>
+                        </children>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <children>
+                            <Label text="Estado de la ruta:" textFill="#333333">
+                                <font><Font size="14.0" /></font>
+                            </Label>
+                            <Label fx:id="lblRouteStatus" text="Sin verificar" textFill="GRAY">
+                                <font><Font name="System Bold" size="14.0" /></font>
+                            </Label>
+                        </children>
+                    </HBox>
+                </children>
+                <VBox.margin>
+                    <Insets top="15.0" />
+                </VBox.margin>
+            </VBox>
+        </children>
+    </VBox>
+</AnchorPane>

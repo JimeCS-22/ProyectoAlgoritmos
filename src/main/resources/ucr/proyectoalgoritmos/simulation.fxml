@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.SimulationController">
+    <!-- Imagen de fondo principal, consistente con las otras páginas -->
+    <ImageView fitHeight="720.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <image>
+            <Image url="@images/degradados.png" />
+        </image>
+    </ImageView>
+
+    <!-- Contenedor principal de contenido (la "tarjeta" central) -->
+    <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="40.0" prefHeight="594.0" prefWidth="1065.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 15;">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </padding>
+        <children>
+            <!-- Encabezado: Logo y Título del Sistema -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <children>
+                    <ImageView fitHeight="44.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/whale_1841292.png" />
+                        </image>
+                    </ImageView>
+                    <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System">
+                        <font>
+                            <Font name="Pristina" size="40.0" />
+                        </font>
+                    </Text>
+                </children>
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </HBox>
+
+            <!-- Título de la Página: Simulación de Vuelos -->
+            <Text fill="#222a5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulación de Vuelos">
+                <font>
+                    <Font name="System Bold" size="32.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </Text>
+
+            <!-- Área de Simulación y Controles -->
+            <HBox spacing="20.0" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
+                <!-- Panel de Simulación (Mapa o Vista Aérea) -->
+                <AnchorPane fx:id="simulationPanel" prefHeight="400.0" prefWidth="700.0" HBox.hgrow="ALWAYS" style="-fx-background-color: #e0f2f7; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
+                    <ImageView fitHeight="400.0" fitWidth="700.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <image>
+                            <!-- Imagen de un mapa o cielo para el fondo de la simulación -->
+                            <Image url="@images/cielo.png" />
+                        </image>
+                    </ImageView>
+
+                    <!-- Icono del avión - se moverá en la simulación -->
+                    <ImageView fx:id="airplaneIcon" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" layoutX="50.0" layoutY="50.0">
+                        <image>
+                            <Image url="@images/plane_1044134.png" />
+                        </image>
+                    </ImageView>
+
+                    <!-- Línea que representa la ruta de vuelo (se dibuja dinámicamente) -->
+                    <!-- Necesitarás un Polyline si la ruta es compleja, o Lines individuales -->
+                    <Line fx:id="flightPathLine" startX="50.0" startY="50.0" endX="150.0" endY="150.0" stroke="#ffb43c" strokeWidth="3.0" />
+
+                    <!-- Información de vuelo sobre el mapa (ej. número de vuelo, destino) -->
+                    <Label fx:id="lblFlightInfo" text="Vuelo: AM2345 (QRO a MEX)" layoutX="20.0" layoutY="370.0" textFill="#222a5b">
+                        <font><Font name="System Bold" size="14.0" /></font>
+                    </Label>
+                </AnchorPane>
+
+                <!-- Controles y Datos de la Simulación -->
+                <VBox spacing="15.0" prefWidth="300.0" alignment="TOP_CENTER">
+                    <!-- Controles de Simulación -->
+                    <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
+                        <padding>
+                            <!-- CORRECCIÓN: Se especifican los lados individuales en lugar de 'all' -->
+                            <Insets top="15.0" right="15.0" bottom="15.0" left="15.0" />
+                        </padding>
+                        <children>
+                            <Label text="Controles de Simulación" textFill="#333333">
+                                <font>
+                                    <Font name="System Bold" size="18.0" />
+                                </font>
+                            </Label>
+                            <HBox alignment="CENTER" spacing="10.0">
+                                <children>
+                                    <Button fx:id="btnStartSimulation" mnemonicParsing="false" onAction="#startSimulation" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 8;" text="Iniciar" textFill="WHITE">
+                                        <font><Font name="Pristina" size="18.0" /></font>
+                                    </Button>
+                                    <Button fx:id="btnPauseSimulation" mnemonicParsing="false" onAction="#pauseSimulation" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Pausar" textFill="WHITE">
+                                        <font><Font name="Pristina" size="18.0" /></font>
+                                    </Button>
+                                    <Button fx:id="btnResetSimulation" mnemonicParsing="false" onAction="#resetSimulation" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #da4f4f; -fx-background-radius: 8;" text="Reiniciar" textFill="WHITE">
+                                        <font><Font name="Pristina" size="18.0" /></font>
+                                    </Button>
+                                </children>
+                            </HBox>
+                            <Label text="Velocidad de Simulación" textFill="#333333">
+                                <font><Font size="14.0" /></font>
+                                <VBox.margin><Insets top="10.0" /></VBox.margin>
+                            </Label>
+                            <Slider fx:id="speedSlider" min="0.1" max="2.0" value="1.0" majorTickUnit="0.5" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
+                        </children>
+                    </VBox>
+
+                    <!-- Datos en Tiempo Real -->
+                    <VBox alignment="CENTER_LEFT" spacing="8.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
+                        <padding>
+                            <!-- CORRECCIÓN: Se especifican los lados individuales en lugar de 'all' -->
+                            <Insets top="15.0" right="15.0" bottom="15.0" left="15.0" />
+                        </padding>
+                        <children>
+                            <Label text="Datos del Vuelo en Tiempo Real" textFill="#333333">
+                                <font>
+                                    <Font name="System Bold" size="18.0" />
+                                </font>
+                            </Label>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <Label text="Altitud:" textFill="#333333"><font><Font size="14.0" /></font></Label>
+                                <Label fx:id="lblAltitude" text="10,000 m" textFill="#222a5b"><font><Font name="System Bold" size="14.0" /></font></Label>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <Label text="Velocidad:" textFill="#333333"><font><Font size="14.0" /></font></Label>
+                                <Label fx:id="lblSpeed" text="800 km/h" textFill="#222a5b"><font><Font name="System Bold" size="14.0" /></font></Label>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <Label text="Rum. (Grados):" textFill="#333333"><font><Font size="14.0" /></font></Label>
+                                <Label fx:id="lblHeading" text="90° (Este)" textFill="#222a5b"><font><Font name="System Bold" size="14.0" /></font></Label>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <Label text="Tiempo Transcurrido:" textFill="#333333"><font><Font size="14.0" /></font></Label>
+                                <Label fx:id="lblElapsedTime" text="00:00:00" textFill="#222a5b"><font><Font name="System Bold" size="14.0" /></font></Label>
+                            </HBox>
+                        </children>
+                    </VBox>
+                </VBox>
+            </HBox>
+        </children>
+    </VBox>
+</AnchorPane>

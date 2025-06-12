@@ -2,8 +2,9 @@ package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-
-import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 
 public class PassengersController {
     @javafx.fxml.FXML
@@ -27,7 +28,7 @@ public class PassengersController {
 
     @javafx.fxml.FXML
     public void createPassengerOnAction(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/createPassenger.fxml", null);
+        loadViewInNewStage("/ucr/proyectoalgoritmos/createPassenger.fxml", "Create New Passenger");
     }
 
     @javafx.fxml.FXML
