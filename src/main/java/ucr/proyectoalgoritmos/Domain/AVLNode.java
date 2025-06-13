@@ -1,20 +1,19 @@
-package ucr.proyectoalgoritmos.Domain; // Make sure this package matches where your AVL class is located
+package ucr.proyectoalgoritmos.Domain;
 
 public class AVLNode {
     public Object element;
     Object data;
     AVLNode left;
     AVLNode right;
-    AVLNode parent; // Useful for traversals and some operations
-    int height; // Height of the node in the AVL tree
+    AVLNode parent;
+    int height;
 
     public AVLNode(Object data) {
         this.data = data;
         this.left = this.right = this.parent = null;
-        this.height = 0; // A new node starts with height 0
+        this.height = 0;
     }
 
-    // Getters for data, left, right, parent, height
     public Object getData() {
         return data;
     }
@@ -35,7 +34,6 @@ public class AVLNode {
         return height;
     }
 
-    // Setters (though generally AVL logic handles these)
     public void setData(Object data) {
         this.data = data;
     }

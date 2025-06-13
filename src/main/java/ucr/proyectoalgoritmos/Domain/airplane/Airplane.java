@@ -1,18 +1,18 @@
 package ucr.proyectoalgoritmos.Domain.airplane;
 
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
-import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
-import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.stack.LinkedStack; // Now we know the exact LinkedStack
+import ucr.proyectoalgoritmos.Domain.stack.StackException; // And the StackException
 
 public class Airplane {
     private String id;
     private int capacity;
     private String currentLocationAirportCode;
     private AirplaneStatus status;
-    private SinglyLinkedList flightHistory; // Historial de vuelos para este avión
+    private LinkedStack flightHistory; // Historial de vuelos para este avión, ahora como LinkedStack
 
     public enum AirplaneStatus {
-        IDLE, IN_FLIGHT, MAINTENANCE, RETIRED
+        IDLE, IN_FLIGHT, MAINTENANCE, ASSIGNED, RETIRED
     }
 
     public Airplane(String id, int capacity, String currentLocationAirportCode) {
@@ -20,17 +20,14 @@ public class Airplane {
         this.capacity = capacity;
         this.currentLocationAirportCode = currentLocationAirportCode;
         this.status = AirplaneStatus.IDLE; // Por defecto
-        this.flightHistory = new SinglyLinkedList();
+        this.flightHistory = new LinkedStack(); // Initialize as LinkedStack
     }
 
-    // Getters
     public String getId() { return id; }
     public int getCapacity() { return capacity; }
     public String getCurrentLocationAirportCode() { return currentLocationAirportCode; }
     public AirplaneStatus getStatus() { return status; }
-    public SinglyLinkedList getFlightHistory() { return flightHistory; }
 
-    // Setters
     public void setCurrentLocationAirportCode(String currentLocationAirportCode) {
         this.currentLocationAirportCode = currentLocationAirportCode;
     }
@@ -38,25 +35,33 @@ public class Airplane {
         this.status = status;
     }
 
-    public void addFlightToHistory(Flight flight) throws ListException {
+    /**
+     * Adds a flight to the airplane's history using the stack's push operation.
+     * @param flight The flight to add to the history.
+     * @throws StackException If there's an issue with the stack.
+     */
+    public void addFlightToHistory(Flight flight) throws StackException {
         if (flight != null) {
-            this.flightHistory.add(flight);
+            this.flightHistory.push(flight); // Use push for LinkedStack
         }
     }
 
+    /**
+     * Prints the flight history of the airplane using the LinkedStack's toString method.
+     */
     public void printFlightHistory() {
         System.out.println("Historial del Avión " + id + " (Capacidad: " + capacity + ", Ubicación actual: " + currentLocationAirportCode + ", Estado: " + status + "):");
         try {
             if (flightHistory != null && !flightHistory.isEmpty()) {
-                for (int i = 0; i < flightHistory.size(); i++) {
-                    Flight f = (Flight) flightHistory.get(i);
-                    System.out.println("  - Vuelo " + f.getFlightNumber() + ": " + f.getOriginAirportCode() + " a " + f.getDestinationAirportCode() + " (Estado: " + f.getStatus() + ")");
-                }
+                // Relying on LinkedStack's well-implemented toString() method
+                // It will print the elements from top to bottom (most recent to oldest flight pushed)
+                // in the format defined by LinkedStack.toString().
+                System.out.println(flightHistory.toString());
             } else {
                 System.out.println("  (No tiene vuelos registrados)");
             }
-        } catch (ListException e) {
-            System.err.println("ERROR: No se pudo mostrar el historial de vuelos del avión " + id + ": " + e.getMessage());
+        } catch (Exception e) { // Catch any unexpected exceptions from stack operations
+            System.err.println("ERROR inesperado al mostrar historial de vuelos del avión " + id + ": " + e.getMessage());
         }
     }
 

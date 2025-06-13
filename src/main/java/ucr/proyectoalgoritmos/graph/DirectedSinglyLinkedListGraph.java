@@ -1,185 +1,182 @@
-package ucr.proyectoalgoritmos.graph; // Adjust package
+package ucr.proyectoalgoritmos.graph;
 
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.util.Utility; // For comparisons
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random; // For random graph generation
+import java.util.PriorityQueue;
+import java.util.Comparator;
+import java.util.Random;
 
 public class DirectedSinglyLinkedListGraph {
-    private final Map<String, Integer> airportCodeToIndexMap; // Maps airport code (String) to vertex index (int)
-    private String[] indexToAirportCodeArray; // Maps vertex index (int) back to airport code (String)
-    private final ArrayList<SinglyLinkedList> adjList; // Adjacency list: list of SinglyLinkedLists, each containing edges
-    private int numVertices; // Current number of vertices in the graph
-    private int numEdges;    // New: Keep track of the total number of edges
+    private final Map<String, Integer> airportCodeToIndexMap;
+    private String[] indexToAirportCodeArray;
+    private final ArrayList<SinglyLinkedList> adjList; // Lista de adyacencia
+    private int numVertices;
+    private int numEdges;
     private final Random random;
 
     public DirectedSinglyLinkedListGraph() {
         this.airportCodeToIndexMap = new HashMap<>();
-        this.indexToAirportCodeArray = new String[25]; // Initial capacity for vertex array
-        this.adjList = new ArrayList<>(); // Initial capacity for adjacency list
+        // Asumiendo un tamaño inicial razonable, se redimensiona dinámicamente
+        this.indexToAirportCodeArray = new String[25];
+        this.adjList = new ArrayList<>();
         this.numVertices = 0;
-        this.numEdges = 0; // Initialize edge count
+        this.numEdges = 0;
         this.random = new Random();
     }
 
     /**
-     * Adds a vertex (airport) to the graph. If the airport code already exists,
-     * it returns the existing index. Otherwise, it adds a new vertex.
-     * @param airportCode The unique code of the airport.
-     * @return The integer index assigned to the airport.
+     * Añade un vértice (código de aeropuerto) al grafo. Si ya existe, retorna su índice.
+     * @param airportCode El código único del aeropuerto.
+     * @return El índice del vértice añadido o existente.
      */
     public int addVertex(String airportCode) {
         if (airportCodeToIndexMap.containsKey(airportCode)) {
-            return airportCodeToIndexMap.get(airportCode); // Airport already exists
+            return airportCodeToIndexMap.get(airportCode);
         }
 
-        // Expand array if needed for indexToAirportCodeArray
+        // Redimensionar el array si es necesario
         if (numVertices >= indexToAirportCodeArray.length) {
             indexToAirportCodeArray = Arrays.copyOf(indexToAirportCodeArray, indexToAirportCodeArray.length * 2);
         }
 
-        airportCodeToIndexMap.put(airportCode, numVertices); // Map code to new index
-        indexToAirportCodeArray[numVertices] = airportCode; // Map index to code
-        adjList.add(new SinglyLinkedList()); // Add a new empty adjacency list for this vertex
+        airportCodeToIndexMap.put(airportCode, numVertices);
+        indexToAirportCodeArray[numVertices] = airportCode;
+        adjList.add(new SinglyLinkedList()); // Añadir una nueva lista de adyacencia para el nuevo vértice
 
-        System.out.println("DEBUG Graph: Added vertex: " + airportCode + " at index " + numVertices);
-        return numVertices++; // Increment vertex count and return the new index
+        return numVertices++;
     }
 
     /**
-     * Adds a directed route (edge) between two airports with a given weight.
-     * Ensures both origin and destination airports exist as vertices.
-     * Prevents self-loops and duplicate routes.
-     * @param originCode The code of the origin airport.
-     * @param destinationCode The code of the destination airport.
-     * @param weight The weight (distance/cost) of the route.
-     * @throws ListException If there's an issue with the underlying SinglyLinkedList.
+     * Verifica si un vértice (aeropuerto) existe en el grafo.
+     * @param airportCode El código del aeropuerto a buscar.
+     * @return true si el aeropuerto existe, false en caso contrario.
+     */
+    public boolean containsVertex(String airportCode) {
+        return airportCodeToIndexMap.containsKey(airportCode);
+    }
+
+    /**
+     * Añade una arista (ruta) dirigida entre dos vértices (aeropuertos) con un peso (duración).
+     * @param u Índice del vértice de origen.
+     * @param v Índice del vértice de destino.
+     * @param weight Peso/duración de la arista.
+     * @throws IllegalArgumentException Si los índices de vértice son inválidos o si la arista ya existe.
+     * @throws ListException Si hay un error al añadir a la SinglyLinkedList.
      */
     public void addEdge(int u, int v, int weight) throws ListException {
-        // This method is designed to be called by RouteManager after airport codes are converted to indices.
-        // Thus, we assume u and v are valid indices.
         if (u < 0 || u >= numVertices || v < 0 || v >= numVertices) {
-            throw new ListException("Invalid vertex index for adding edge: u=" + u + ", v=" + v + ", numVertices=" + numVertices);
+            throw new IllegalArgumentException("Índice de vértice inválido para añadir arista: u=" + u + ", v=" + v + ", numVertices=" + numVertices);
         }
-        if (u == v) {
-            // System.out.println("[GRAPH] Skipping self-loop edge for vertex " + u);
-            return; // Business rule: no flights to the same airport
+        if (u == v) { // No permitir bucles propios
+            return;
         }
 
-        SinglyLinkedList connections = adjList.get(u); // Get the adjacency list for the origin vertex 'u'
+        SinglyLinkedList connections = adjList.get(u);
 
-        // Check if route already exists before adding
-        // Ensure connections is not null before iterating (though adjList.get(u) should ensure this)
-        if (connections != null) {
-            for (int i = 0; i < connections.size(); i++) {
-                int[] existingEdge = (int[]) connections.get(i);
-                if (existingEdge[0] == v) { // If the destination index matches
-                    System.out.println("[GRAPH] Edge from index " + u + " to " + v + " already exists. Skipping add.");
-                    return; // Route already exists
-                }
+        // Verificar si la arista ya existe
+        for (int i = 0; i < connections.size(); i++) {
+            int[] existingEdge = (int[]) connections.get(i);
+            if (existingEdge[0] == v) {
+                //System.out.println("ADVERTENCIA: La arista de " + indexToAirportCodeArray[u] + " a " + indexToAirportCodeArray[v] + " ya existe. No se añadió duplicado.");
+                return; // La arista ya existe, no hacer nada
             }
         }
 
-        int[] edge = new int[]{v, weight}; // {destination_index, weight}
-        connections.add(edge); // Add to the origin's adjacency list
-        numEdges++; // Increment total edge count
-        System.out.println("[GRAPH] Edge added: " + indexToAirportCodeArray[u] + " ("+u+") -> " + indexToAirportCodeArray[v] + " ("+v+") (Weight: " + weight + ")");
+        int[] edge = new int[]{v, weight};
+        connections.add(edge);
+        numEdges++;
     }
 
-
     /**
-     * Modifies the weight of an existing route (edge) between two airports.
-     * @param originCode The code of the origin airport.
-     * @param destinationCode The code of the destination airport.
-     * @param newWeight The new weight (distance/cost) for the route.
-     * @throws ListException If origin/destination airport not found or route not found.
+     * Modifica el peso de una arista existente.
+     * @param u Índice del vértice de origen.
+     * @param v Índice del vértice de destino.
+     * @param newWeight El nuevo peso/duración de la arista.
+     * @throws IllegalArgumentException Si los índices de vértice son inválidos.
+     * @throws ListException Si la arista no se encuentra o hay un error con la SinglyLinkedList.
      */
     public void modifyEdge(int u, int v, int newWeight) throws ListException {
-        // This method assumes u and v are valid indices
         if (u < 0 || u >= numVertices || v < 0 || v >= numVertices) {
-            throw new ListException("Invalid vertex index for modifying edge: u=" + u + ", v=" + v + ", numVertices=" + numVertices);
+            throw new IllegalArgumentException("Índice de vértice inválido para modificar arista: u=" + u + ", v=" + v + ", numVertices=" + numVertices);
         }
 
         SinglyLinkedList connections = adjList.get(u);
         boolean found = false;
-        if (connections != null) { // Defensive check
-            for (int i = 0; i < connections.size(); i++) {
-                int[] edge = (int[]) connections.get(i);
-                if (edge[0] == v) { // If the destination index matches
-                    edge[1] = newWeight; // Update the weight
-                    found = true;
-                    System.out.println("[GRAPH] Edge from index " + u + " ("+indexToAirportCodeArray[u]+") to " + v + " ("+indexToAirportCodeArray[v]+") modified to new weight: " + newWeight);
-                    break;
-                }
+
+        for (int i = 0; i < connections.size(); i++) {
+            int[] edge = (int[]) connections.get(i);
+            if (edge[0] == v) {
+                edge[1] = newWeight;
+                found = true;
+                System.out.println("[GRAFO] Arista de " + indexToAirportCodeArray[u] + " a " + indexToAirportCodeArray[v] + " modificada a nuevo peso: " + newWeight);
+                break;
             }
         }
         if (!found) {
-            throw new ListException("Edge from " + indexToAirportCodeArray[u] + " to " + indexToAirportCodeArray[v] + " not found to modify.");
+            throw new ListException("Arista de " + indexToAirportCodeArray[u] + " a " + indexToAirportCodeArray[v] + " no encontrada para modificar.");
         }
     }
 
-
     /**
-     * Helper to get all edges in the format required by Dijkstra.dijkstra: {origin_idx, dest_idx, weight}.
-     * @return A 2D array of integers representing all edges.
-     * @throws ListException If there's an issue accessing internal lists.
+     * Verifica si existe una arista dirigida entre dos aeropuertos.
+     * @param uAirportCode Código del aeropuerto de origen.
+     * @param vAirportCode Código del aeropuerto de destino.
+     * @return true si la arista existe, false en caso contrario.
+     * @throws ListException Si hay un error al acceder a la lista de adyacencia.
      */
-    public int[][] getAllEdgesForDijkstra() throws ListException {
-        ArrayList<int[]> edgesList = new ArrayList<>();
-        // Iterate through each vertex's adjacency list
-        for (int u = 0; u < numVertices; u++) {
-            SinglyLinkedList connections = adjList.get(u); // Get the SinglyLinkedList for vertex 'u'
+    public boolean containsEdge(String uAirportCode, String vAirportCode) throws ListException {
+        int u = getIndexForAirportCode(uAirportCode);
+        int v = getIndexForAirportCode(vAirportCode);
 
-            // CRITICAL CHECK for SinglyLinkedList consistency and emptiness
-            if (connections != null && !connections.isEmpty()) {
-                for (int i = 0; i < connections.size(); i++) {
-                    int[] edge = (int[]) connections.get(i); // This should now be safe with the debugged SLL
-                    edgesList.add(new int[]{u, edge[0], edge[1]}); // {origin_index, dest_index, weight}
+        if (u == -1 || v == -1) {
+            return false; // Uno o ambos aeropuertos no existen
+        }
+
+        SinglyLinkedList connections = adjList.get(u);
+        if (connections != null) {
+            for (int i = 0; i < connections.size(); i++) {
+                int[] existingEdge = (int[]) connections.get(i);
+                if (existingEdge[0] == v) {
+                    return true;
                 }
-            } else if (connections != null && connections.size() > 0) {
-                // This block should ideally never be hit if SinglyLinkedList is truly consistent
-                System.err.println("CRITICAL INCONSISTENCY DETECTED in DirectedSinglyLinkedListGraph.getAllEdgesForDijkstra(): " +
-                        "connections for vertex " + u + " is not empty but isEmpty() is true! Size: " + connections.size());
-                // Potentially iterate unsafely or skip, depending on desired robustness.
-                // For now, it will likely lead to a ListException from SLL.get(i) as designed.
             }
         }
-        return edgesList.toArray(new int[0][]);
+        return false;
     }
 
     /**
-     * Gets the total number of vertices (airports) in the graph.
-     * @return The number of vertices.
+     * Obtiene el número total de vértices (aeropuertos) en el grafo.
+     * @return El número de vértices.
      */
     public int getNumVertices() {
         return numVertices;
     }
 
     /**
-     * Gets the total number of edges (routes) in the graph.
-     * @return The number of edges.
+     * Obtiene el número total de aristas (rutas) en el grafo.
+     * @return El número de aristas.
      */
     public int getNumEdges() {
-        return numEdges; // Return the maintained edge count
+        return numEdges;
     }
 
     /**
-     * Gets the numerical index for a given airport code.
-     * @param airportCode The code of the airport.
-     * @return The index, or -1 if the airport code is not found.
+     * Obtiene el índice entero para un código de aeropuerto dado.
+     * @param airportCode El código del aeropuerto.
+     * @return El índice correspondiente, o -1 si el aeropuerto no existe.
      */
     public int getIndexForAirportCode(String airportCode) {
         return airportCodeToIndexMap.getOrDefault(airportCode, -1);
     }
 
     /**
-     * Gets the airport code for a given numerical index.
-     * @param index The numerical index of the vertex.
-     * @return The airport code, or null if the index is out of bounds.
+     * Obtiene el código de aeropuerto para un índice entero dado.
+     * @param index El índice del vértice.
+     * @return El código del aeropuerto, o null si el índice es inválido.
      */
     public String getAirportCodeForIndex(int index) {
         if (index >= 0 && index < numVertices) {
@@ -189,119 +186,183 @@ public class DirectedSinglyLinkedListGraph {
     }
 
     /**
-     * Gets the number of outgoing routes from a specific airport.
-     * @param airportCode The code of the airport.
-     * @return The count of outgoing routes, or 0 if the airport is not found.
+     * Obtiene el conteo de rutas salientes desde un aeropuerto específico.
+     * @param airportCode El código del aeropuerto.
+     * @return El número de rutas salientes, o 0 si el aeropuerto no existe.
      */
     public int getOutgoingRouteCount(String airportCode) {
         int index = getIndexForAirportCode(airportCode);
         if (index == -1) {
-            return 0; // Airport not in graph
+            return 0;
         }
         SinglyLinkedList connections = adjList.get(index);
-        return connections != null ? connections.size() : 0; // Defensive check for null
+        return connections != null ? connections.size() : 0;
     }
 
     /**
-     * Returns a SinglyLinkedList containing all airport codes present in the graph.
-     * @return A SinglyLinkedList of airport codes (Strings).
-     * @throws ListException If there's an issue with the SinglyLinkedList operations.
+     * Obtiene una lista de todos los códigos de aeropuerto en el grafo.
+     * @return Una SinglyLinkedList con los códigos de aeropuerto.
+     * @throws ListException Si hay un error al manipular la lista.
      */
     public SinglyLinkedList getAllAirportCodes() throws ListException {
         SinglyLinkedList codes = new SinglyLinkedList();
-        // Iterate through the map's keys and add them to the SinglyLinkedList
-        for (String code : airportCodeToIndexMap.keySet()) {
-            codes.add(code);
+        // Usar la lista de índices para asegurar orden consistente (aunque no es estrictamente necesario aquí)
+        for (int i = 0; i < numVertices; i++) {
+            codes.add(indexToAirportCodeArray[i]);
         }
         return codes;
     }
 
     /**
-     * Generates a specified number of random routes between existing airports.
-     * This is a fallback or initial data generation method.
-     * @param minRoutesPerAirport Minimum routes to generate per airport.
-     * @param maxRoutesPerAirport Maximum routes to generate per airport.
-     * @param minWeight Minimum weight for a route.
-     * @param maxWeight Maximum weight for a route.
-     * @throws ListException If there are not enough airports or an internal list error occurs.
+     * Genera rutas aleatorias entre aeropuertos existentes dentro del grafo.
+     * @param minRoutesPerAirport Número mínimo de rutas a generar por aeropuerto.
+     * @param maxRoutesPerAirport Número máximo de rutas a generar por aeropuerto.
+     * @param minWeight Peso/duración mínima para las rutas generadas.
+     * @param maxWeight Peso/duración máxima para las rutas generadas.
+     * @throws ListException Si hay un error al añadir rutas.
      */
     public void generateRandomRoutes(int minRoutesPerAirport, int maxRoutesPerAirport, int minWeight, int maxWeight) throws ListException {
-        SinglyLinkedList allCodes = getAllAirportCodes(); // Use the existing method to get all airport codes
+        SinglyLinkedList allCodes = getAllAirportCodes();
 
         if (allCodes.isEmpty() || allCodes.size() < 2) {
-            System.err.println("[GRAPH] Not enough airports (" + allCodes.size() + ") to generate random routes.");
+            // No hay suficientes aeropuertos para generar rutas.
             return;
         }
 
-        System.out.println("\n--- Generating Random Routes ---");
+        //System.out.println("\n--- Generando rutas aleatorias ---");
         for (int k = 0; k < allCodes.size(); k++) {
-            String originCode = (String) allCodes.get(k); // Get origin airport code
-            int originIndex = getIndexForAirportCode(originCode); // Get its index
+            String originCode = (String) allCodes.get(k);
+            int originIndex = getIndexForAirportCode(originCode);
 
-            // Determine how many routes to generate for this origin
             int routesToGenerate = random.nextInt(maxRoutesPerAirport - minRoutesPerAirport + 1) + minRoutesPerAirport;
             int generatedCount = 0;
-            int attemptCount = 0; // To prevent infinite loops if few valid destinations
-            final int MAX_ATTEMPTS_PER_ROUTE = 50; // Max attempts to find a unique, non-self-loop route
+            int attemptCount = 0;
+            final int MAX_ATTEMPTS_PER_ROUTE = 50; // Límite de intentos para encontrar una ruta válida
 
             while (generatedCount < routesToGenerate && attemptCount < allCodes.size() * MAX_ATTEMPTS_PER_ROUTE) {
-                // Pick a random destination from the available airports
                 String destinationCode = (String) allCodes.get(random.nextInt(allCodes.size()));
-                int destinationIndex = getIndexForAirportCode(destinationCode); // Get its index
+                int destinationIndex = getIndexForAirportCode(destinationCode);
 
-                // Generate a random weight
                 int weight = random.nextInt(maxWeight - minWeight + 1) + minWeight;
 
-                // Check for self-loop and if route already exists
-                if (originIndex != destinationIndex) { // No self-loops
+                if (originIndex != destinationIndex) { // Evitar rutas a sí mismo
                     try {
-                        // Check if the edge already exists. If addEdge handles duplicates, this is fine.
-                        // However, to be explicit, we can check here.
-                        boolean exists = false;
+                        // Se delega la verificación de existencia a addEdge, que retorna si la arista ya existe.
+                        addEdge(originIndex, destinationIndex, weight);
+                        // Solo incrementamos si addEdge realmente añade una nueva arista
+                        // (es decir, si no existía previamente)
+                        // Para esto, addEdge debería retornar un boolean o lanzar una excepción específica.
+                        // Por ahora, asumimos que si no lanza excepción, se añadió o ya existía y no se duplico.
+                        // Una forma más precisa sería hacer un `containsEdge` primero.
+                        boolean edgeAlreadyExists = false; // Este bloque no es estrictamente necesario si addEdge ya maneja duplicados
                         SinglyLinkedList currentConnections = adjList.get(originIndex);
                         if (currentConnections != null) {
                             for (int i = 0; i < currentConnections.size(); i++) {
                                 int[] existingEdge = (int[]) currentConnections.get(i);
-                                if (existingEdge[0] == destinationIndex) {
-                                    exists = true;
+                                if (existingEdge[0] == destinationIndex && existingEdge[1] == weight) { // Check if same edge with same weight
+                                    edgeAlreadyExists = true;
                                     break;
                                 }
                             }
                         }
-
-                        if (!exists) {
-                            addEdge(originIndex, destinationIndex, weight); // Add the route using indices
+                        if (!edgeAlreadyExists) { // This logic is simplified; addEdge already prevents duplicates based on u,v
                             generatedCount++;
-                        } else {
-                            // System.out.println("DEBUG: Route " + originCode + " -> " + destinationCode + " already exists. Trying another.");
                         }
-                    } catch (ListException e) {
-                        System.err.println("WARNING: Error adding random route (" + originCode + " -> " + destinationCode + "): " + e.getMessage());
+                    } catch (IllegalArgumentException | ListException e) {
+                        System.err.println("ADVERTENCIA: Error al añadir ruta aleatoria (" + originCode + " -> " + destinationCode + "): " + e.getMessage());
                     }
                 }
                 attemptCount++;
             }
             if (generatedCount < routesToGenerate) {
-                System.out.println("WARNING: Only generated " + generatedCount + " routes for " + originCode + " (intended " + routesToGenerate + ") due to attempts limit or no valid destinations.");
+                //System.out.println("ADVERTENCIA: Solo se generaron " + generatedCount + " rutas para " + originCode + " (se intentaron " + routesToGenerate + ") debido al límite de intentos o falta de destinos válidos.");
             }
         }
-        System.out.println("--- Random Route Generation Complete. Total edges: " + numEdges + " ---");
+        //System.out.println("--- Generación de Rutas Aleatorias Completada. Total de aristas: " + numEdges + " ---");
     }
 
     /**
-     * Gets the total number of edges (routes) in the graph.
-     * This is a simple count of edges.
-     * @return The total number of edges.
+     * Calcula la ruta más corta (en duración/peso) entre dos aeropuertos usando el algoritmo de Dijkstra.
+     * @param startAirportCode Código del aeropuerto de origen.
+     * @param endAirportCode Código del aeropuerto de destino.
+     * @return La duración más corta en minutos, o Integer.MAX_VALUE si no hay un camino.
+     * @throws ListException Si hay un error al acceder a las listas de adyacencia.
      */
-    // This is a duplicate of getNumEdges(). Keeping one version for clarity.
-    // public int getNumEdges() {
-    //     return numEdges;
-    // }
+    public int shortestPath(String startAirportCode, String endAirportCode) throws ListException {
+        int startIndex = getIndexForAirportCode(startAirportCode);
+        int endIndex = getIndexForAirportCode(endAirportCode);
 
-    // Utility for printing graph (optional)
+        if (startIndex == -1 || endIndex == -1) {
+            //System.err.println("ERROR: Uno o ambos aeropuertos no existen en el grafo para el cálculo de ruta más corta.");
+            return Integer.MAX_VALUE; // No se puede calcular si los aeropuertos no existen
+        }
+        if (startIndex == endIndex) {
+            return 0; // La distancia a sí mismo es 0
+        }
+
+        int[] distances = new int[numVertices];
+        Arrays.fill(distances, Integer.MAX_VALUE); // Inicializar distancias a infinito
+
+        boolean[] visited = new boolean[numVertices];
+        Arrays.fill(visited, false); // Inicializar todos los nodos como no visitados
+
+        // Cola de prioridad para seleccionar el nodo con la distancia más pequeña
+        PriorityQueue<Node> pq = new PriorityQueue<>(numVertices, Comparator.comparingInt(Node::getDistance));
+
+        distances[startIndex] = 0; // Distancia del origen a sí mismo es 0
+        pq.add(new Node(startIndex, 0)); // Añadir el nodo de origen a la cola de prioridad
+
+        while (!pq.isEmpty()) {
+            int u = pq.poll().getVertex(); // Extraer el nodo con la distancia mínima
+
+            if (visited[u]) {
+                continue; // Si ya fue visitado, saltar
+            }
+
+            visited[u] = true; // Marcar como visitado
+
+            if (u == endIndex) {
+                return distances[endIndex]; // Se encontró la ruta más corta al destino
+            }
+
+            SinglyLinkedList neighbors = adjList.get(u);
+            if (neighbors != null) {
+                for (int i = 0; i < neighbors.size(); i++) {
+                    int[] edge = (int[]) neighbors.get(i);
+                    int v = edge[0]; // Vértice adyacente
+                    int weight = edge[1]; // Peso de la arista
+
+                    // Relajación de la arista
+                    if (!visited[v] && distances[u] != Integer.MAX_VALUE && distances[u] + weight < distances[v]) {
+                        distances[v] = distances[u] + weight;
+                        pq.add(new Node(v, distances[v]));
+                    }
+                }
+            }
+        }
+
+        return distances[endIndex]; // Retorna la distancia al destino (MAX_VALUE si no es alcanzable)
+    }
+
+    /**
+     * Clase interna privada para representar un nodo en la cola de prioridad de Dijkstra.
+     */
+    private static class Node {
+        private final int vertex;
+        private final int distance;
+
+        public Node(int vertex, int distance) {
+            this.vertex = vertex;
+            this.distance = distance;
+        }
+
+        public int getVertex() { return vertex; }
+        public int getDistance() { return distance; }
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Graph (Vertices: " + numVertices + ", Edges: " + numEdges + "):\n");
+        StringBuilder sb = new StringBuilder("Grafo Dirigido (Vértices: " + numVertices + ", Aristas: " + numEdges + "):\n");
         for (int i = 0; i < numVertices; i++) {
             String originCode = indexToAirportCodeArray[i];
             sb.append("[").append(i).append("] ").append(originCode).append(" -> ");
@@ -311,13 +372,13 @@ public class DirectedSinglyLinkedListGraph {
                     for (int j = 0; j < connections.size(); j++) {
                         int[] edge = (int[]) connections.get(j);
                         String destCode = indexToAirportCodeArray[edge[0]];
-                        sb.append(destCode).append(" (").append(edge[1]).append(" units)").append(j < connections.size() - 1 ? ", " : "");
+                        sb.append(destCode).append(" (").append(edge[1]).append(" min)").append(j < connections.size() - 1 ? ", " : "");
                     }
                 } catch (ListException e) {
                     sb.append("ERROR: ").append(e.getMessage());
                 }
             } else {
-                sb.append("No outgoing routes.");
+                sb.append("No hay rutas salientes.");
             }
             sb.append("\n");
         }

@@ -4,13 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Correccion en tiempos">
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Comentarios de la simulacion listos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVL.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVLNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularDoublyLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularDoublyLinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularLinkedList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/Passenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/Passenger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/graph/DirectedSinglyLinkedListGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/graph/DirectedSinglyLinkedListGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/RouteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/RouteManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +83,7 @@
       <recent name="C:\Users\jimen\OneDrive\Escritorio\UCR\Estructuras\ProyectoAlgoritmos\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FlightSimulator">
+  <component name="RunManager">
     <configuration name="FlightSimulator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.flight.FlightSimulator" />
       <module name="ProyectoAlgoritmos" />
@@ -205,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749767203608</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Comentarios de la simulacion listos">
+      <option name="closed" value="true" />
+      <created>1749777483263</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1749777483263</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,6 +244,7 @@
     <MESSAGE value="Comente unas cosas, faltan unos cambios" />
     <MESSAGE value="Correccion en los pasajeros" />
     <MESSAGE value="Correccion en tiempos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Correccion en tiempos" />
+    <MESSAGE value="Comentarios de la simulacion listos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Comentarios de la simulacion listos" />
   </component>
 </project>

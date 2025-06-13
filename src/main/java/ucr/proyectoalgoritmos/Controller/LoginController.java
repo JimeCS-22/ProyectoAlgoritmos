@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ucr.proyectoalgoritmos.Domain.Circular.CircularLinkedList;
-import ucr.proyectoalgoritmos.Domain.Circular.Node;
+import ucr.proyectoalgoritmos.Domain.list.Node;
 import ucr.proyectoalgoritmos.Domain.Encriptador;
 import ucr.proyectoalgoritmos.Domain.User;
 import ucr.proyectoalgoritmos.util.FXUtility;

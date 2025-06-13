@@ -57,7 +57,7 @@ public class PassengerData {
 
             }
 
-        } catch (IOException | ListException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (TreeException e) {
             throw new RuntimeException(e);
@@ -76,7 +76,7 @@ public class PassengerData {
 
                 try {
                     passengerManager.registerPassenger(id , name , nationality);
-                } catch (ListException | TreeException e) {
+                } catch (TreeException e) {
                     throw new RuntimeException(e);
                 }
             }

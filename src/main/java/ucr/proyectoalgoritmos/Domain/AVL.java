@@ -2,39 +2,27 @@ package ucr.proyectoalgoritmos.Domain;
 
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // Make sure this import is correct
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
 
-// Asumiendo que Passenger implementa Comparable<Passenger>
-// y que el elemento almacenado en el AVL es de un tipo que implementa Comparable.
+
 
 public class AVL {
     private AVLNode root;
-    private int size; // Ahora sí tenemos un contador de tamaño
+    private int size;
 
     public AVL() {
         this.root = null;
-        this.size = 0; // Inicializamos el tamaño a 0
+        this.size = 0;
     }
 
     public boolean isEmpty() {
         return root == null;
     }
 
-    /**
-     * Devuelve el número de elementos (nodos) en el árbol AVL.
-     * @return El número de elementos.
-     */
     public int size() {
         return size;
     }
 
-    /**
-     * Busca un elemento en el árbol AVL.
-     *
-     * @param element El elemento a buscar. Debe ser Comparable.
-     * @return El elemento encontrado si existe, o null si el árbol está vacío o el elemento no se encuentra.
-     * @throws TreeException Si el elemento no es Comparable.
-     */
     public Object search(Object element) throws TreeException {
         if (isEmpty()) {
             return null;
@@ -45,13 +33,6 @@ public class AVL {
         return search(this.root, (Comparable) element);
     }
 
-    /**
-     * Método auxiliar recursivo para la búsqueda.
-     *
-     * @param node    El nodo actual a examinar.
-     * @param element El elemento comparable a buscar.
-     * @return El elemento encontrado, o null si no se encuentra.
-     */
     private Object search(AVLNode node, Comparable element) {
         if (node == null) {
             return null;
@@ -68,22 +49,12 @@ public class AVL {
         }
     }
 
-    /**
-     * Devuelve una lista doblemente enlazada con todos los elementos del árbol AVL
-     * en orden ascendente (recorrido in-order).
-     *
-     * @return Una DoublyLinkedList que contiene los elementos del AVL en orden.
-     * @throws ListException Si ocurre un error al añadir elementos a la lista.
-     */
     public DoublyLinkedList inOrderList() throws ListException {
         DoublyLinkedList list = new DoublyLinkedList();
         inOrderList(this.root, list);
         return list;
     }
 
-    /**
-     * Método auxiliar recursivo para el recorrido in-order y añadir a una lista.
-     */
     private void inOrderList(AVLNode node, DoublyLinkedList list) throws ListException {
         if (node != null) {
             inOrderList(node.left, list);
@@ -92,37 +63,23 @@ public class AVL {
         }
     }
 
-    /**
-     * Realiza un recorrido in-order imprimiendo los elementos.
-     * Este método solo para propósitos de depuración o visualización directa.
-     */
-    public boolean inOrder() { // <-- COMPLETE: Implementación de inOrder para imprimir
+    public boolean inOrder() {
         //System.out.print("In-Order Traversal: ");
         inOrder(this.root);
         System.out.println();
-        return true; // Retorna true como un indicador de que se realizó la operación.
+        return true;
     }
 
-    /**
-     * Método auxiliar recursivo para el recorrido in-order (impresión).
-     *
-     * @param node El nodo actual que se está visitando.
-     */
     private void inOrder(AVLNode node) {
         if (node != null) {
             inOrder(node.left);
-            System.out.print(node.data + " "); // Asume que el objeto tiene un toString() significativo
+            System.out.print(node.data + " ");
             inOrder(node.right);
         }
     }
 
-    /**
-     * Inserta un nuevo pasajero en el árbol AVL.
-     *
-     * @param newPassenger El objeto Passenger a insertar. Debe ser Comparable.
-     * @throws TreeException Si el pasajero ya existe o si no implementa Comparable.
-     */
-    public void insert(Passenger newPassenger) throws TreeException { // <-- COMPLETE: Implementación de insert
+
+    public void insert(Passenger newPassenger) throws TreeException {
         if (newPassenger == null) {
             throw new TreeException("No se puede insertar un pasajero nulo.");
         }
@@ -130,21 +87,15 @@ public class AVL {
             throw new TreeException("El pasajero debe implementar Comparable para ser insertado en el AVL.");
         }
 
-        // Search for existing passenger first to prevent duplicates
+
         if (search(newPassenger) != null) {
-            // Passenger with this ID already exists, do not insert
-            // You might want to throw a specific exception here instead of just returning
             throw new TreeException("El pasajero con ID " + newPassenger.getId() + " ya existe y no puede ser duplicado.");
         }
 
         this.root = insert(this.root, newPassenger);
-        size++; // Incrementamos el tamaño solo si la inserción fue exitosa (no era duplicado)
+        size++;
     }
 
-    /**
-     * Método auxiliar recursivo para la inserción en el árbol AVL.
-     * Realiza la inserción y luego el balanceo del árbol.
-     */
     private AVLNode insert(AVLNode node, Comparable element) throws TreeException {
         // 1. Inserción normal de BST
         if (node == null) {
@@ -155,10 +106,10 @@ public class AVL {
 
         if (cmp < 0) {
             node.left = insert(node.left, element);
-            if (node.left != null) node.left.setParent(node); // Set parent pointer
+            if (node.left != null) node.left.setParent(node);
         } else if (cmp > 0) {
             node.right = insert(node.right, element);
-            if (node.right != null) node.right.setParent(node); // Set parent pointer
+            if (node.right != null) node.right.setParent(node);
         } else {
             // El elemento ya existe (duplicado), no hacemos nada
             return node;
@@ -195,34 +146,21 @@ public class AVL {
         return node;
     }
 
-
-    /**
-     * Calcula la altura de un nodo.
-     */
-    private int height(AVLNode node) { // <-- NEW: Helper for height
+    private int height(AVLNode node) {
         return (node == null) ? -1 : node.height;
     }
 
-    /**
-     * Actualiza la altura de un nodo basándose en las alturas de sus hijos.
-     * */
-    private void updateHeight(AVLNode node) { // <-- NEW: Helper to update height
+    private void updateHeight(AVLNode node) {
         if (node != null) {
             node.height = 1 + Math.max(height(node.left), height(node.right));
         }
     }
 
-    /**
-     * Calcula el factor de balance de un nodo.
-     */
-    private int getBalanceFactor(AVLNode node) { // <-- NEW: Helper for balance factor
+    private int getBalanceFactor(AVLNode node) {
         return (node == null) ? 0 : height(node.left) - height(node.right);
     }
 
-    /**
-     * Realiza una rotación simple a la derecha.
-     */
-    private AVLNode rotateRight(AVLNode y) { // <-- NEW: Rotation method
+    private AVLNode rotateRight(AVLNode y) {
         AVLNode x = y.left;
         AVLNode T2 = x.right;
 
@@ -231,9 +169,9 @@ public class AVL {
         y.left = T2;
 
         // Actualizar padres
-        x.setParent(y.getParent()); // x toma el padre de y
-        y.setParent(x);             // y ahora es hijo derecho de x
-        if (T2 != null) T2.setParent(y); // T2 es hijo izquierdo de y
+        x.setParent(y.getParent());
+        y.setParent(x);
+        if (T2 != null) T2.setParent(y);
 
         // Actualizar alturas
         updateHeight(y);
@@ -243,7 +181,7 @@ public class AVL {
     }
 
 
-    private AVLNode rotateLeft(AVLNode x) { // <-- NEW: Rotation method
+    private AVLNode rotateLeft(AVLNode x) {
         AVLNode y = x.right;
         AVLNode T2 = y.left;
 
@@ -252,9 +190,9 @@ public class AVL {
         x.right = T2;
 
         // Actualizar padres
-        y.setParent(x.getParent()); // y toma el padre de x
-        x.setParent(y);             // x ahora es hijo izquierdo de y
-        if (T2 != null) T2.setParent(x); // T2 es hijo derecho de x
+        y.setParent(x.getParent());
+        x.setParent(y);
+        if (T2 != null) T2.setParent(x);
 
         // Actualizar alturas
         updateHeight(x);

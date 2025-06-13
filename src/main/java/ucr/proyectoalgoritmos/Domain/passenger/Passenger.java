@@ -1,45 +1,51 @@
 package ucr.proyectoalgoritmos.Domain.passenger;
 
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
-import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
+import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue; // Assuming your LinkedQueue is in this package
+import ucr.proyectoalgoritmos.Domain.queue.QueueException; // Assuming your QueueException is here
+import ucr.proyectoalgoritmos.Domain.list.ListException; // Keep if addFlightToHistory can still throw it, or remove
 
-import java.util.Objects; // For Objects.hash and Objects.equals
+import java.util.Objects;
 
 public class Passenger implements Comparable<Passenger> {
     private String id;
     private String name;
     private String nationality;
-    private SinglyLinkedList flightHistory; // As per your design
+    private LinkedQueue flightHistory; // Historial de vuelos para este pasajero, ahora como LinkedQueue
 
-    public Passenger(String id) { // Constructor for search
+    public Passenger(String id) {
         this.id = id;
-        this.flightHistory = new SinglyLinkedList();
+        this.flightHistory = new LinkedQueue();
     }
 
     public Passenger(String id, String name, String nationality) {
         this.id = id;
         this.name = name;
         this.nationality = nationality;
-        this.flightHistory = new SinglyLinkedList(); // Initialize here
+        this.flightHistory = new LinkedQueue(); // Initialize here
     }
 
-    // Getters
+    // --- Getters ---
     public String getId() { return id; }
     public String getName() { return name; }
-    public String StringgetNationality() { return nationality; }
-    public SinglyLinkedList getFlightHistory() { return flightHistory; }
+    public String getNationality() { return nationality; } // Corrected method name
+    public LinkedQueue getFlightHistory() { return flightHistory; } // Return LinkedQueue
 
-    // Method to add flight to history
-    public void addFlightToHistory(Flight flight) throws ucr.proyectoalgoritmos.Domain.list.ListException {
-        if (flightHistory == null) { // Defensive check
-            flightHistory = new SinglyLinkedList();
+
+
+    /**
+     * Adds a flight to the passenger's history using the queue's enqueue operation.
+     * @param flight The flight to add to the history.
+     * @throws QueueException If there's an issue with the queue.
+     */
+    public void addFlightToHistory(Flight flight) throws QueueException { // Changed ListException to QueueException
+        if (flight != null) {
+            this.flightHistory.enQueue(flight); // Use enqueue for LinkedQueue
         }
-        flightHistory.add(flight);
     }
 
     @Override
     public int compareTo(Passenger other) {
-        // Important: Compare by the ID, as that's your unique key
         return this.id.compareTo(other.id);
     }
 
@@ -54,5 +60,11 @@ public class Passenger implements Comparable<Passenger> {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Pasajero [ID: " + id + ", Nombre: " + (name != null ? name : "N/A") +
+                ", Nacionalidad: " + (nationality != null ? nationality : "N/A") + "]";
     }
 }
