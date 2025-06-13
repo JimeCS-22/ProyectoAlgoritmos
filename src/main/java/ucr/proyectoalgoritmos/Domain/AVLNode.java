@@ -1,6 +1,7 @@
-package ucr.proyectoalgoritmos.Domain; // Adjust package to where your Node/List classes are, or create a new one for AVL
+package ucr.proyectoalgoritmos.Domain; // Make sure this package matches where your AVL class is located
 
 public class AVLNode {
+    public Object element;
     Object data;
     AVLNode left;
     AVLNode right;
@@ -10,7 +11,7 @@ public class AVLNode {
     public AVLNode(Object data) {
         this.data = data;
         this.left = this.right = this.parent = null;
-        this.height = 0; // A new node starts with height 0 (or 1 depending on convention)
+        this.height = 0; // A new node starts with height 0
     }
 
     // Getters for data, left, right, parent, height

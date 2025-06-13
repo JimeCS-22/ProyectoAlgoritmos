@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import ucr.proyectoalgoritmos.Domain.TreeException;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.passenger.PassengerManager;
 import ucr.proyectoalgoritmos.util.Utility;
@@ -58,6 +59,8 @@ public class PassengerData {
 
         } catch (IOException | ListException e) {
             throw new RuntimeException(e);
+        } catch (TreeException e) {
+            throw new RuntimeException(e);
         }
 
         int currentPassengerCount = passengerManager.getPassengerCount();
@@ -73,7 +76,7 @@ public class PassengerData {
 
                 try {
                     passengerManager.registerPassenger(id , name , nationality);
-                } catch (ListException e) {
+                } catch (ListException | TreeException e) {
                     throw new RuntimeException(e);
                 }
             }

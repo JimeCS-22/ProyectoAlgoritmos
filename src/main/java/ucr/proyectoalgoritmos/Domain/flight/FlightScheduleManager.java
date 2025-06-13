@@ -59,7 +59,7 @@ public class FlightScheduleManager {
             flight.addPassenger(passenger); // Add passenger to the flight's internal list
             // NOTE: passenger.addFlightToHistory(flight) will be handled by PassengerManager.processTicketPurchase
             // (or similar method) to avoid circular dependencies if PassengerManager calls this FSM method.
-            System.out.println("TICKET: Pasajero " + passenger.getName() + " (" + passenger.getId() + ") reservado en el vuelo " + flight.getFlightNumber() + " de " + flight.getOriginAirportCode() + " a " + flight.getDestinationAirportCode() + ". Ocupación actual: " + flight.getOccupancy() + "/" + flight.getCapacity() + ".");
+            System.out.println("Pasajero " + passenger.getName() + " (" + passenger.getId() + ") reservado en el vuelo " + flight.getFlightNumber() + " de " + flight.getOriginAirportCode() + " a " + flight.getDestinationAirportCode() + ".");
 
             // If you have a waiting list, you'd check here if this passenger was waiting
             // for this specific route and remove them from the waiting list.

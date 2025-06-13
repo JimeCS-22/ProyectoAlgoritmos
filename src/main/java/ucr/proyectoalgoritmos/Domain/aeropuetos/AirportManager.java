@@ -28,7 +28,7 @@ public class AirportManager {
                 return airport;
             }
         }
-        return null; // Not found
+        return null;
     }
 
     public String getAirportName(String code) {
