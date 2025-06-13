@@ -1,36 +1,41 @@
 package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.MenuItem;
+import javafx.fxml.FXML;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
-import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 
-public class UserMenuController {
-    @javafx.fxml.FXML
-    private MenuItem menuExit;
-    @javafx.fxml.FXML
-    private MenuItem FlightsSettings;
-    @javafx.fxml.FXML
-    private MenuItem Trips;
-    @javafx.fxml.FXML
-    private MenuItem FlightStatus;
+public class UserMenuController implements Initializable {
 
-    @javafx.fxml.FXML
-    public void exit(ActionEvent actionEvent) {
+    private HelloController helloController;
+
+    public void setHelloController(HelloController helloController) {
+        this.helloController = helloController;
     }
 
-    @javafx.fxml.FXML
-    public void loadFlightsStatusPane(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/userFlightStatus.fxml", null);
+    @FXML
+    private void logout(ActionEvent event) {
+        if (helloController != null) {
+            helloController.logout();
+        }
     }
 
-    @javafx.fxml.FXML
-    public void loadTripsPane(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/userTrip.fxml", null);
+    @FXML
+    private void exit(ActionEvent event) {
+        System.exit(0);
     }
 
-    @javafx.fxml.FXML
-    public void loadFlightsPane(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/userFlight.fxml", null);
+    // Métodos para cargar pantallas a través de HelloController
+    @FXML private void loadFlightsPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/userFlight.fxml", "Registro de Vuelo"); }
+    @FXML private void loadTripsPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/userTrip.fxml", "Mis Vuelos"); }
+    @FXML private void loadFlightsStatusPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/userFlightStatus.fxml", "Estado de Vuelo"); }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("UserMenuController inicializado correctamente.");
     }
 }

@@ -9,13 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
 
 <AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.SimulationController">
     <!-- Imagen de fondo principal, consistente con las otras páginas -->
@@ -61,10 +57,10 @@
             </Text>
 
             <!-- Área de Simulación y Controles -->
-            <HBox spacing="20.0" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
+            <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                 <!-- Panel de Simulación (Mapa o Vista Aérea) -->
-                <AnchorPane fx:id="simulationPanel" prefHeight="400.0" prefWidth="700.0" HBox.hgrow="ALWAYS" style="-fx-background-color: #e0f2f7; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
-                    <ImageView fitHeight="400.0" fitWidth="700.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane fx:id="simulationPanel" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #e0f2f7; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;" HBox.hgrow="ALWAYS">
+                    <ImageView fitHeight="400.0" fitWidth="700.0" layoutX="12.0" layoutY="26.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="26.0">
                         <image>
                             <!-- Imagen de un mapa o cielo para el fondo de la simulación -->
                             <Image url="@images/cielo.png" />
@@ -72,7 +68,7 @@
                     </ImageView>
 
                     <!-- Icono del avión - se moverá en la simulación -->
-                    <ImageView fx:id="airplaneIcon" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" layoutX="50.0" layoutY="50.0">
+                    <ImageView fx:id="airplaneIcon" fitHeight="60.0" fitWidth="60.0" layoutX="48.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@images/plane_1044134.png" />
                         </image>
@@ -80,21 +76,21 @@
 
                     <!-- Línea que representa la ruta de vuelo (se dibuja dinámicamente) -->
                     <!-- Necesitarás un Polyline si la ruta es compleja, o Lines individuales -->
-                    <Line fx:id="flightPathLine" startX="50.0" startY="50.0" endX="150.0" endY="150.0" stroke="#ffb43c" strokeWidth="3.0" />
+                    <Line fx:id="flightPathLine" endX="150.0" endY="150.0" layoutX="-8.0" layoutY="37.0" startX="50.0" startY="50.0" stroke="#ffb43c" strokeWidth="3.0" />
 
                     <!-- Información de vuelo sobre el mapa (ej. número de vuelo, destino) -->
-                    <Label fx:id="lblFlightInfo" text="Vuelo: AM2345 (QRO a MEX)" layoutX="20.0" layoutY="370.0" textFill="#222a5b">
+                    <Label fx:id="lblFlightInfo" layoutX="20.0" layoutY="401.0" text="Vuelo: AM2345 (QRO a MEX)" textFill="#222a5b">
                         <font><Font name="System Bold" size="14.0" /></font>
                     </Label>
                 </AnchorPane>
 
                 <!-- Controles y Datos de la Simulación -->
-                <VBox spacing="15.0" prefWidth="300.0" alignment="TOP_CENTER">
+                <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="15.0">
                     <!-- Controles de Simulación -->
                     <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
                         <padding>
                             <!-- CORRECCIÓN: Se especifican los lados individuales en lugar de 'all' -->
-                            <Insets top="15.0" right="15.0" bottom="15.0" left="15.0" />
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                         </padding>
                         <children>
                             <Label text="Controles de Simulación" textFill="#333333">
@@ -119,7 +115,7 @@
                                 <font><Font size="14.0" /></font>
                                 <VBox.margin><Insets top="10.0" /></VBox.margin>
                             </Label>
-                            <Slider fx:id="speedSlider" min="0.1" max="2.0" value="1.0" majorTickUnit="0.5" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
+                            <Slider fx:id="speedSlider" majorTickUnit="0.5" max="2.0" min="0.1" minorTickCount="4" showTickLabels="true" showTickMarks="true" value="1.0" />
                         </children>
                     </VBox>
 
@@ -127,12 +123,12 @@
                     <VBox alignment="CENTER_LEFT" spacing="8.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-border-width: 1px;">
                         <padding>
                             <!-- CORRECCIÓN: Se especifican los lados individuales en lugar de 'all' -->
-                            <Insets top="15.0" right="15.0" bottom="15.0" left="15.0" />
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                         </padding>
                         <children>
                             <Label text="Datos del Vuelo en Tiempo Real" textFill="#333333">
                                 <font>
-                                    <Font name="System Bold" size="18.0" />
+                                    <Font name="System Bold" size="16.0" />
                                 </font>
                             </Label>
                             <HBox alignment="CENTER_LEFT" spacing="10.0">

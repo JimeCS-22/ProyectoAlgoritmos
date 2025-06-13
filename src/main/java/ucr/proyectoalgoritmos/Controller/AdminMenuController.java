@@ -2,55 +2,42 @@ package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
-import javax.swing.*;
+import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 
-import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+public class AdminMenuController implements Initializable {
 
-public class AdminMenuController {
-    @javafx.fxml.FXML
-    private MenuItem AirportsSettings;
-    @javafx.fxml.FXML
-    private MenuItem Passengers;
-    @javafx.fxml.FXML
-    private MenuItem FlightsSettings;
-    @javafx.fxml.FXML
-    private MenuItem Simulation;
-    @javafx.fxml.FXML
-    private MenuItem RoutesSettings;
+    private HelloController helloController;
 
-    @Deprecated
-    public void exit(ActionEvent actionEvent) {
+    public void setHelloController(HelloController helloController) {
+        this.helloController = helloController;
+    }
+
+    @FXML
+    private void logout(ActionEvent event) {
+        if (helloController != null) {
+            helloController.logout();
+        }
+    }
+
+    @FXML
+    private void exit(ActionEvent event) {
         System.exit(0);
     }
 
-    @FXML
-    private void loadAirportPane() {
-        loadView("/ucr/proyectoalgoritmos/airports.fxml", null);
-    }
+    // Métodos para cargar pantallas a través de HelloController
+    @FXML private void loadAirportPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/airports.fxml", "Gestor de Aeropuertos"); }
+    @FXML private void loadPassengersPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/passengers.fxml", "Gestor de Pasajeros"); }
+    @FXML private void loadFlightsPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/flights.fxml", "Gestor de Vuelos"); }
+    @FXML private void loadRoutesPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/routes.fxml", "Gestor de Rutas"); }
+    @FXML private void loadSimulationPane(ActionEvent event) { loadViewInNewStage("/ucr/proyectoalgoritmos/simulation.fxml", "Simulación de Vuelo"); }
 
-    @FXML
-    private void loadPassengersPane() {
-        loadView("/ucr/proyectoalgoritmos/passengers.fxml", null);
-    }
 
-    @FXML
-    private void loadFlightsPane() {
-        loadView("/ucr/proyectoalgoritmos/flights.fxml", null);
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("AdminMenuController inicializado correctamente.");
     }
-
-    @FXML
-    private void loadRoutesPane() {
-        loadView("/ucr/proyectoalgoritmos/routes.fxml", null);
-    }
-
-    @FXML
-    private void loadSimulationPane() {
-        loadView("/ucr/proyectoalgoritmos/simulation.fxml", null);
-    }
-
 }

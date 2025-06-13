@@ -1,6 +1,7 @@
 package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -46,13 +47,6 @@ public class SimulationController {
 //        gifImageView.setImage(gifPlayer.getView().getImage());
 //    }
 
-    @Deprecated
-    public void createAirportOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void searchAirportOnAction(ActionEvent actionEvent) {
-    }
 
     @javafx.fxml.FXML
     public void pauseSimulation(ActionEvent actionEvent) {

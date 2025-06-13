@@ -24,6 +24,12 @@ public class LoginController {
     @FXML
     private Label lblErrorMessage;
 
+    private LoginListener loginListener;
+
+    public void setLoginListener(LoginListener listener) {
+        this.loginListener = listener;
+    }
+
     public LoginController() {
         userList = new CircularLinkedList();
 
@@ -73,12 +79,8 @@ public class LoginController {
                     String userRole = foundUser.getRole();
                     FXUtility.alert("Successful Login", "Welcome, " + enteredUsername + "!");
 
-                    if (userRole.equalsIgnoreCase("ADMINISTRADOR")) {
-                        FXUtility.alert("Welcome", "Access granted to the administrator.");
-
-                    } else if (userRole.equalsIgnoreCase("USUARIO")) {
-                        FXUtility.alert("Welcome", "Access granted to the user.");
-                        
+                    if (loginListener != null) {
+                        loginListener.onLoginSuccess(userRole);
                     }
 
                     UserName.clear();
@@ -97,4 +99,10 @@ public class LoginController {
         }
     }
 
+    @FXML
+    private void closeLoginScreen(ActionEvent event) {
+        if (loginListener != null) {
+            loginListener.onLoginCanceled();
+        }
+    }
 }

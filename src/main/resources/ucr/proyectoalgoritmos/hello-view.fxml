@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
@@ -14,71 +15,90 @@
 
 <AnchorPane prefHeight="796.0" prefWidth="1254.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.HelloController">
    <children>
-      <!-- Imagen de fondo principal -->
+      <!-- Imagen de fondo principal que cubre todo el AnchorPane -->
       <ImageView fitHeight="879.0" fitWidth="1484.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@images/fondo.png" />
          </image>
       </ImageView>
 
-      <!-- Contenedor principal de contenido (la "tarjeta" central) -->
-      <VBox alignment="CENTER" layoutX="327.0" layoutY="71.0" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 20;" AnchorPane.bottomAnchor="225.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="327.0" AnchorPane.topAnchor="71.0">
-         <padding>
-            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-         </padding>
+      <!-- VBox que actúa como el contenedor dinámico principal (la "tarjeta" flotante) -->
+      <!-- Este VBox es el mainContentHost donde se cargan las otras vistas -->
+      <VBox fx:id="mainContentHost" alignment="TOP_CENTER" layoutX="230.0" layoutY="73.0" prefHeight="680.0" prefWidth="946.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 20;" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="230.0" AnchorPane.topAnchor="73.0">
          <children>
-            <!-- Logo de la ballena -->
-            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/whale_1841292.png" />
-               </image>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </ImageView>
-
-            <!-- Título "Whale System" con degradado -->
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER" wrappingWidth="400.0">
-               <font>
-                  <Font name="Pristina" size="72.0" />
-               </font>
-               <fill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="1.0" green="1.0" blue="1.0" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </fill>
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-            </Text>
-
-            <!-- Mensaje de bienvenida -->
-            <Text fill="#333333" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Bienvenido a tu sistema de gestión de vuelos!" textAlignment="CENTER" wrappingWidth="450.0">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="30.0" />
-               </VBox.margin>
-            </Text>
-
-            <!-- Botón principal de acción -->
-            <Button fx:id="btStart" mnemonicParsing="false" onAction="#handleStartAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-background-radius: 10;" text="Comenzar" textFill="WHITE">
-               <font>
-                  <Font name="Pristina" size="24.0" />
-               </font>
-            </Button>
+            <!-- StackPane para superponer el contenido inicial de bienvenida y el botón de cierre total -->
+            <StackPane prefHeight="596.0" prefWidth="790.0" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+               </padding>
+               <children>
+                  <!-- Contenido de Bienvenida (inicialmente visible) -->
+                  <VBox alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/whale_1841292.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER" wrappingWidth="400.0">
+                           <font>
+                              <Font name="Pristina" size="72.0" />
+                           </font>
+                           <fill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.75" green="0.34049999713897705" blue="0.11999999731779099" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="1.0" green="1.0" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fill="#333333" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Bienvenido a tu sistema de gestión de vuelos!" textAlignment="CENTER" wrappingWidth="450.0">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="30.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Button fx:id="btStart" mnemonicParsing="false" onAction="#handleStartAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-background-radius: 10;" text="Comenzar" textFill="WHITE">
+                           <font>
+                              <Font name="Pristina" size="24.0" />
+                           </font>
+                        </Button>
+            
+                        <!-- Botón de Cierre 'X' para toda la aplicación -->
+                        <Button onAction="#exitApplication" prefHeight="27.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+                           <padding>
+                              <!-- Se especifican los lados individuales del padding -->
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/close_icon_dark.png" /> <!-- Un icono más oscuro para el fondo claro de la tarjeta -->
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
          </children>
       </VBox>
    </children>

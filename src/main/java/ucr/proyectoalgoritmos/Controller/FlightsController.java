@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
-import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
 import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 
 public class FlightsController {

@@ -2,21 +2,14 @@ package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+
 import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 
-import ucr.proyectoalgoritmos.Controller.MainMenuController;
-import ucr.proyectoalgoritmos.Domain.Circular.ListException;
 import ucr.proyectoalgoritmos.graph.AdjacencyMatrixGraph;
 import ucr.proyectoalgoritmos.graph.GraphException;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public class AirportController {
@@ -72,9 +65,9 @@ public class AirportController {
 
                     boolean contains = graph.containsVertex(vertexToFind);
                     if (contains) {
-                        //TextResult.setText("El aeropuerto '" + vertexToFind + "' EXISTE en el grafo.");
+                        TextResult.setText("El aeropuerto '" + vertexToFind + "' EXISTE en el grafo.");
                     } else {
-                       // TextResult.setText("El aeropuerto '" + vertexToFind + "' NO EXISTE en el grafo.");
+                       TextResult.setText("El aeropuerto '" + vertexToFind + "' NO EXISTE en el grafo.");
                     }
                 } catch (GraphException e) {
                     showAlert("Error del Grafo", e.getMessage());

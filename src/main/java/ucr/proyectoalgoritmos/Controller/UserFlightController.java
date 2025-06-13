@@ -3,7 +3,7 @@ package ucr.proyectoalgoritmos.Controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
-import static ucr.proyectoalgoritmos.Controller.HelloController.loadView;
+import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 
 public class UserFlightController {
 
@@ -14,11 +14,11 @@ public class UserFlightController {
 
     @javafx.fxml.FXML
     public void checkInOnAction(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/createPassenger.fxml", null);
+        loadViewInNewStage("/ucr/proyectoalgoritmos/createPassenger.fxml", "Check-In");
     }
 
     @javafx.fxml.FXML
     public void reservationOnAction(ActionEvent actionEvent) {
-        loadView("/ucr/proyectoalgoritmos/ticket.fxml", null);
+        loadViewInNewStage("/ucr/proyectoalgoritmos/ticket.fxml", "Confirmación de Vuelo");
     }
 }
