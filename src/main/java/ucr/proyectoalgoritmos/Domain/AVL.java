@@ -83,10 +83,6 @@ public class AVL {
 
     /**
      * Método auxiliar recursivo para el recorrido in-order y añadir a una lista.
-     *
-     * @param node El nodo actual que se está visitando.
-     * @param list La DoublyLinkedList donde se añadirán los elementos.
-     * @throws ListException Si ocurre un error al añadir elementos a la lista.
      */
     private void inOrderList(AVLNode node, DoublyLinkedList list) throws ListException {
         if (node != null) {
@@ -99,11 +95,9 @@ public class AVL {
     /**
      * Realiza un recorrido in-order imprimiendo los elementos.
      * Este método solo para propósitos de depuración o visualización directa.
-     *
-     * @return Siempre true (este método es de impresión, no de estado del árbol).
      */
     public boolean inOrder() { // <-- COMPLETE: Implementación de inOrder para imprimir
-        System.out.print("In-Order Traversal: ");
+        //System.out.print("In-Order Traversal: ");
         inOrder(this.root);
         System.out.println();
         return true; // Retorna true como un indicador de que se realizó la operación.
@@ -150,11 +144,6 @@ public class AVL {
     /**
      * Método auxiliar recursivo para la inserción en el árbol AVL.
      * Realiza la inserción y luego el balanceo del árbol.
-     *
-     * @param node El nodo actual en el que se está intentando insertar.
-     * @param element El elemento (Comparable) a insertar.
-     * @return El nodo raíz del subárbol después de la inserción y el balanceo.
-     * @throws TreeException Si hay algún error durante la inserción o comparación.
      */
     private AVLNode insert(AVLNode node, Comparable element) throws TreeException {
         // 1. Inserción normal de BST
@@ -207,12 +196,8 @@ public class AVL {
     }
 
 
-    // --- Métodos Auxiliares para AVL Balanceo ---
-
     /**
      * Calcula la altura de un nodo.
-     * @param node El nodo cuya altura se quiere calcular.
-     * @return La altura del nodo, o -1 si el nodo es nulo.
      */
     private int height(AVLNode node) { // <-- NEW: Helper for height
         return (node == null) ? -1 : node.height;
@@ -220,8 +205,7 @@ public class AVL {
 
     /**
      * Actualiza la altura de un nodo basándose en las alturas de sus hijos.
-     * @param node El nodo cuya altura se va a actualizar.
-     */
+     * */
     private void updateHeight(AVLNode node) { // <-- NEW: Helper to update height
         if (node != null) {
             node.height = 1 + Math.max(height(node.left), height(node.right));
@@ -230,9 +214,6 @@ public class AVL {
 
     /**
      * Calcula el factor de balance de un nodo.
-     * (altura del subárbol izquierdo - altura del subárbol derecho)
-     * @param node El nodo cuyo factor de balance se quiere calcular.
-     * @return El factor de balance.
      */
     private int getBalanceFactor(AVLNode node) { // <-- NEW: Helper for balance factor
         return (node == null) ? 0 : height(node.left) - height(node.right);
@@ -261,18 +242,7 @@ public class AVL {
         return x;
     }
 
-    /**
-     * Realiza una rotación simple a la izquierda.
-     *
-     * x                        y
-     * / \                      / \
-     * T1  y      --->          x   T3
-     * / \                  / \
-     * T2  T3               T1  T2
-     *
-     * @param x La raíz del subárbol desbalanceado.
-     * @return La nueva raíz del subárbol (y).
-     */
+
     private AVLNode rotateLeft(AVLNode x) { // <-- NEW: Rotation method
         AVLNode y = x.right;
         AVLNode T2 = y.left;

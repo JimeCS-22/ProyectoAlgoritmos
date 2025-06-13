@@ -16,12 +16,6 @@ public class PassengerManager {
 
     /**
      * Registra un nuevo pasajero en el sistema.
-     *
-     * @param id El ID único del pasajero.
-     * @param name El nombre del pasajero.
-     * @param nationality La nacionalidad del pasajero.
-     * @throws ListException Si ocurre un error al manipular listas internas (ej. en el historial).
-     * @throws TreeException Si ocurre un error con el árbol AVL (ej. elemento no Comparable).
      */
     public void registerPassenger(String id, String name, String nationality) throws ListException, TreeException {
         // Creamos un pasajero temporal para la búsqueda por ID
@@ -37,10 +31,6 @@ public class PassengerManager {
 
     /**
      * Busca un pasajero por su ID.
-     *
-     * @param id El ID del pasajero a buscar.
-     * @return El objeto Passenger si se encuentra, o null si no.
-     * @throws TreeException Si ocurre un error con el árbol AVL (ej. elemento no Comparable).
      */
     public Passenger searchPassenger(String id) throws TreeException {
         // Usamos search del AVL, creando un pasajero 'fantasma' para la búsqueda por ID
@@ -49,24 +39,14 @@ public class PassengerManager {
 
     /**
      * Obtiene el número total de pasajeros registrados.
-     *
-     * @return El conteo de pasajeros.
      */
     public int getPassengerCount() {
-        // Asumiendo que tu clase AVL tiene un método size() que devuelve el conteo de nodos.
-        // Si no lo tiene, podrías implementarlo o contar los nodos en inOrderList().
-        // Si tu AVL no tiene size, esta línea causará un error.
-        // Alternativa si no tienes size(): return passengers.inOrderList().size(); (menos eficiente)
         return passengers.size();
     }
 
     /**
      * Obtiene una lista con todos los IDs de los pasajeros registrados.
      * Recorre el AVL en orden para obtener los IDs.
-     *
-     * @return Una SinglyLinkedList con los IDs de los pasajeros.
-     * @throws ListException Si ocurre un error al manipular la lista.
-     * @throws TreeException Si ocurre un error al recorrer el árbol.
      */
     public SinglyLinkedList getAllPassengerIds() throws ListException, TreeException {
         SinglyLinkedList ids = new SinglyLinkedList();
@@ -85,10 +65,6 @@ public class PassengerManager {
     /**
      * Obtiene una lista con todos los objetos Passenger registrados.
      * Recorre el AVL en orden para obtener los pasajeros.
-     *
-     * @return Una DoublyLinkedList con todos los objetos Passenger.
-     * @throws ListException Si ocurre un error al manipular la lista.
-     * @throws TreeException Si ocurre un error al recorrer el árbol.
      */
     public DoublyLinkedList getAllPassengers() throws ListException, TreeException {
         // Simplemente devolvemos la lista que ya genera el AVL en orden
@@ -97,43 +73,29 @@ public class PassengerManager {
 
     /**
      * Procesa la compra de un billete para un pasajero, añadiendo el vuelo a su historial.
-     *
-     * @param passenger El objeto Passenger.
-     * @param flight El objeto Flight a añadir al historial.
-     * @throws ListException Si ocurre un error al añadir el vuelo al historial del pasajero.
      */
     public void processTicketPurchase(Passenger passenger, Flight flight) throws ListException {
         if (passenger != null && flight != null) {
             passenger.addFlightToHistory(flight);
-            System.out.println("DEBUG PM: Vuelo " + flight.getFlightNumber() + " añadido al historial de " + passenger.getName());
         } else {
-            System.err.println("ERROR PM: No se pudo añadir vuelo al historial del pasajero. Objeto pasajero o vuelo nulo.");
+            System.err.println("ERROR: No se pudo añadir vuelo al historial del pasajero.");
         }
     }
 
     /**
      * Añade un vuelo al historial de un pasajero dado su ID.
-     *
-     * @param passengerId El ID del pasajero.
-     * @param flight El vuelo a añadir.
-     * @throws ListException Si ocurre un error en la lista de historial.
-     * @throws TreeException Si ocurre un error al buscar el pasajero en el árbol.
      */
     public void addFlightToPassengerHistory(String passengerId, Flight flight) throws ListException, TreeException {
         Passenger p = searchPassenger(passengerId);
         if (p != null) {
             p.addFlightToHistory(flight);
         } else {
-            System.err.println("ERROR PM: Pasajero " + passengerId + " no encontrado para actualizar historial.");
+            System.err.println("ERROR: Pasajero " + passengerId + " no encontrado para actualizar historial.");
         }
     }
 
     /**
      * Muestra el historial de vuelos de un pasajero dado su ID.
-     *
-     * @param passengerId El ID del pasajero.
-     * @throws ListException Si ocurre un error en la lista de historial.
-     * @throws TreeException Si ocurre un error al buscar el pasajero en el árbol.
      */
     public void showFlightHistory(String passengerId) throws ListException, TreeException {
         Passenger p = searchPassenger(passengerId);
@@ -146,7 +108,7 @@ public class PassengerManager {
                     System.out.println("  - Vuelo " + f.getFlightNumber() + ": " + f.getOriginAirportCode() + " -> " + f.getDestinationAirportCode() + " (Estado: " + f.getStatus() + ")");
                 }
             } else {
-                System.out.println("  (No tiene vuelos registrados en su historial)");
+                System.out.println("  (No tiene vuelos registrados)");
             }
         } else {
             System.err.println("ERROR: Pasajero con ID " + passengerId + " no encontrado para mostrar historial.");
