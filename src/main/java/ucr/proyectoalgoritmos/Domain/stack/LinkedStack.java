@@ -53,7 +53,7 @@ public class LinkedStack implements Stack {
     public void push(Object element) throws StackException {
         Node newNode = new Node(element);
         if(isEmpty()){
-            //creamos un nuevo nodo
+
             top = newNode;
         }
         else{
@@ -72,11 +72,23 @@ public class LinkedStack implements Stack {
         counter--;
         return topElement;
     }
+    public Object[] toArray() {
+        if (isEmpty()) {
+            return new Object[0];
+        }
+        Object[] array = new Object[counter];
+        Node current = top;
+        for (int i = 0; i < counter; i++) {
+            array[i] = current.data;
+            current = current.next;
+        }
+        return array;
+    }
     
     @Override
     public String toString() {
         if(isEmpty()) return "Linked Stack is Empty";
-        String result = "\nLinked Stack Content";
+        String result = " ";
         try {
             LinkedStack aux = new LinkedStack();
             while(!isEmpty()){           

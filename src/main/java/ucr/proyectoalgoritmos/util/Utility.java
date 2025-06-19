@@ -2,6 +2,7 @@ package ucr.proyectoalgoritmos.util;
 
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // Import your Passenger class
+import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport; // *** NEW IMPORT: Import your Airport class ***
 
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -36,6 +37,17 @@ public class Utility {
         if (a == null) return -1; // a is "less" than b if a is null
         if (b == null) return 1;  // a is "greater" than b if b is null
 
+        // *** IMPORTANT: Before the switch, consider handling general Object.equals() ***
+        // This is a robust approach for any custom object that overrides equals().
+        if (a.getClass().equals(b.getClass())) {
+            // If they are of the same class, and that class has overridden equals, use it.
+            // This covers Airport, Flight, Passenger, etc., IF they have correct equals()
+            // It will also work for String, Integer etc., but the switch cases are more specific for comparison.
+            if (a.equals(b)) {
+                return 0; // Objects are considered equal
+            }
+        }
+
         switch (instanceOf(a, b)){
             case "Integer":
                 Integer int1 = (Integer)a; Integer int2 = (Integer)b;
@@ -49,12 +61,24 @@ public class Utility {
             case "Passenger":
                 Passenger p1 = (Passenger) a;
                 Passenger p2 = (Passenger) b;
+                // Assuming Passenger has a getId() and it returns a Comparable (like String)
                 return p1.getId().compareTo(p2.getId());
             case "Flight":
-
-                return a.equals(b) ? 0 : -1;
+                // Assuming Flight.equals() is well-defined to compare flight properties
+                // If you need ordering for Flight objects (e.g., by flight number, departure time),
+                // you would need to implement Comparable<Flight> in Flight, or a custom comparison logic here.
+                return a.equals(b) ? 0 : -1; // -1 or 1 if not equal, as no natural order defined here
+            // *** NEW CASE FOR AIRPORT ***
+            case "Airport":
+                // Assuming Airport.equals() is well-defined to compare based on code
+                return a.equals(b) ? 0 : -1; // -1 or 1 if not equal, as no natural order defined here
         }
-        return 2;
+        // If they are not of a known type to compare, and not equal by object.equals(),
+        // we might consider them "not equal" or throw an exception.
+        // Returning 2 might indicate "uncomparable" or "not found", but it's risky for sort/remove operations.
+        // For remove/contains, any non-zero value means "not equal".
+        return a.equals(b) ? 0 : -1; // Default to Object.equals() if not explicitly handled above
+        // And return -1 if not equal (arbitrary for ordering)
     }
 
     private static String instanceOf(Object a, Object b) {
@@ -63,6 +87,8 @@ public class Utility {
         if(a instanceof Character && b instanceof Character) return "Character";
         if (a instanceof Passenger && b instanceof Passenger) return "Passenger";
         if (a instanceof Flight && b instanceof Flight) return "Flight";
+        // *** NEW CASE FOR AIRPORT ***
+        if (a instanceof Airport && b instanceof Airport) return "Airport";
         //if (a instanceof EdgeWeight && b instanceof EdgeWeight) return "EdgeWeight";
         return "Unknown";
     }

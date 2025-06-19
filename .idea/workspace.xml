@@ -4,14 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Comentarios de la simulacion listos">
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Últimos arreglos de la simulación listos">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/Route.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteListWrapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/airplane/AirplaneTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulatorConsoleTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/route/RouteManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_6_2025_17_06_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_6_2025_17_06__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_2025_04_27_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_2025_04_27__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_2025_13_47_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_2025_13_47__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_2025_19_07_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_2025_19_07__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVL.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/AVLNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularDoublyLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularDoublyLinkedList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/Circular/CircularLinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" afterDir="false" />
@@ -19,9 +37,15 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/Passenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/Passenger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/passenger/PassengerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/queue/LinkedQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/queue/LinkedQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/stack/LinkedStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/stack/LinkedStack.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/graph/DirectedSinglyLinkedListGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/graph/DirectedSinglyLinkedListGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/RouteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/RouteManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteGraphService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/route/RouteManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/Utility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/Utility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/airports.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/airports.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/DataLoaderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ucr/proyectoalgoritmos/Domain/Archivos/PassengerDataTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +57,7 @@
       <list>
         <option value="FxmlFile" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -59,22 +84,90 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.FlightSimulator.executor&quot;: &quot;Run&quot;,
-    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataLoaderTest.test.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DijkstraTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PassengerDataTest.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/ucr/proyectoalgoritmos&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/airports.json&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.FlightSimulator.executor": "Run",
+    "Application.FlightSimulatorConsoleTest.executor": "Run",
+    "Application.HelloApplication.executor": "Run",
+    "JUnit.AirplaneTest.executor": "Run",
+    "JUnit.AirplaneTest.testAddFlightToHistory.executor": "Run",
+    "JUnit.AirplaneTest.testAddFlightToHistoryNull.executor": "Run",
+    "JUnit.AirplaneTest.testConstructorAndGetters.executor": "Run",
+    "JUnit.AirplaneTest.testConstructorInvalidCapacity.executor": "Run",
+    "JUnit.AirplaneTest.testConstructorInvalidId.executor": "Run",
+    "JUnit.AirplaneTest.testConstructorInvalidLocation.executor": "Run",
+    "JUnit.AirplaneTest.testEqualsAndHashCodeDifferentId.executor": "Run",
+    "JUnit.AirplaneTest.testEqualsAndHashCodeSameId.executor": "Run",
+    "JUnit.AirplaneTest.testEqualsEdgeCases.executor": "Run",
+    "JUnit.AirplaneTest.testSetCurrentLocationAirportCode.executor": "Run",
+    "JUnit.AirplaneTest.testSetCurrentLocationAirportCodeInvalid.executor": "Run",
+    "JUnit.AirplaneTest.testSetStatus.executor": "Run",
+    "JUnit.AirplaneTest.testSetStatusNull.executor": "Run",
+    "JUnit.AirplaneTest.testToString.executor": "Run",
+    "JUnit.AirportManagerTest.testActivateDeactivateAirport.executor": "Run",
+    "JUnit.AirportManagerTest.testCreateAirport.executor": "Run",
+    "JUnit.AirportManagerTest.testDeleteAirport.executor": "Run",
+    "JUnit.AirportManagerTest.testFindAirport.executor": "Run",
+    "JUnit.AirportManagerTest.testGetAirportCount.executor": "Run",
+    "JUnit.AirportManagerTest.testGetAirportName.executor": "Run",
+    "JUnit.AirportManagerTest.testListAirports.executor": "Run",
+    "JUnit.DataLoaderTest.executor": "Run",
+    "JUnit.DataLoaderTest.test.executor": "Run",
+    "JUnit.DijkstraTest.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testAddPassengerToFullFlight.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testAddSamePassengerTwice.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testConstructorInitialization.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testConstructorNullAirportManager.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testConstructorNullRouteManager.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testCreateFlightDuplicateNumber.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testCreateFlightInvalidDestinationAirport.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testCreateFlightInvalidOriginAirport.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testCreateFlightNoExistingRoute.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testCreateFlightSuccess.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testDisplayFlightsByStatus.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testDisplayFlightsByStatusEmpty.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testFindFlightEmptyList.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testFindFlightExisting.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testFindFlightNonExisting.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testRemovePassengerFromWaitingListAfterBooking.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testSimulateFlightAlreadyProcessed.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testSimulateFlightNoAirplaneAssigned.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testSimulateFlightNonExistent.executor": "Run",
+    "JUnit.FlightScheduleManagerTest.testSimulateFlightSuccess.executor": "Run",
+    "JUnit.PassengerDataTest.executor": "Run",
+    "JUnit.PassengerDataTest.test.executor": "Run",
+    "JUnit.PassengerDataTest.testLoadPassengersFromJson_FileNotFound.executor": "Run",
+    "JUnit.PassengerDataTest.testLoadPassengersFromJson_InvalidJsonFormat.executor": "Run",
+    "JUnit.PassengerDataTest.testLoadPassengersFromJson_SuccessfulLoading.executor": "Run",
+    "JUnit.PassengerManagerTest.executor": "Run",
+    "JUnit.PassengerManagerTest.testAddFlightToPassengerHistory.executor": "Run",
+    "JUnit.PassengerManagerTest.testAddFlightToPassengerHistoryNullFlight.executor": "Run",
+    "JUnit.PassengerManagerTest.testAddFlightToPassengerHistoryPassengerNotFound.executor": "Run",
+    "JUnit.PassengerManagerTest.testGetAllPassengerIds.executor": "Run",
+    "JUnit.PassengerManagerTest.testGetAllPassengers.executor": "Run",
+    "JUnit.PassengerManagerTest.testGetPassengerCount.executor": "Run",
+    "JUnit.PassengerManagerTest.testGetPassengerFlightHistory.executor": "Run",
+    "JUnit.PassengerManagerTest.testGetPassengerFlightHistoryNotFound.executor": "Run",
+    "JUnit.PassengerManagerTest.testProcessTicketPurchase.executor": "Run",
+    "JUnit.PassengerManagerTest.testProcessTicketPurchaseNulls.executor": "Run",
+    "JUnit.PassengerManagerTest.testRegisterAndSearchPassenger.executor": "Run",
+    "JUnit.PassengerManagerTest.testRegisterDuplicatePassenger.executor": "Run",
+    "JUnit.PassengerManagerTest.testSearchNonExistentPassenger.executor": "Run",
+    "JUnit.RouteManagerTest.executor": "Run",
+    "JUnit.RouteManagerTest.testAddAirportToGraph.executor": "Run",
+    "JUnit.RouteManagerTest.testGetGraph.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/ucr/proyectoalgoritmos",
+    "two.files.diff.last.used.file": "C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/airports.json"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jimen\OneDrive\Escritorio\UCR\Estructuras\ProyectoAlgoritmos\src\main\resources\ucr\proyectoalgoritmos" />
@@ -82,10 +175,20 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jimen\OneDrive\Escritorio\UCR\Estructuras\ProyectoAlgoritmos\src\main\resources" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="ucr.proyectoalgoritmos.Domain.flight" />
+      <recent name="ucr.proyectoalgoritmos.route" />
+      <recent name="ucr.proyectoalgoritmos.Domain.passenger" />
+      <recent name="ucr.proyectoalgoritmos.Domain.airplane" />
+      <recent name="ucr.proyectoalgoritmos.Domain.aeropuetos" />
+    </key>
   </component>
-  <component name="RunManager">
-    <configuration name="FlightSimulator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.flight.FlightSimulator" />
+  <component name="RunManager" selected="Application.FlightSimulatorConsoleTest">
+    <configuration name="FlightSimulatorConsoleTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.flight.FlightSimulatorConsoleTest" />
       <module name="ProyectoAlgoritmos" />
       <extension name="coverage">
         <pattern>
@@ -97,73 +200,74 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.HelloApplication" />
+    <configuration name="FlightScheduleManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ProyectoAlgoritmos" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ucr.proyectoalgoritmos.*" />
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.flight.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DataLoaderTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ProyectoAlgoritmos" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.Archivos.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.Archivos" />
-      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.Archivos.DataLoaderTest" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DijkstraTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ProyectoAlgoritmos" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.dijkstra.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.dijkstra" />
-      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.dijkstra.DijkstraTest" />
+      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.flight" />
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.flight.FlightScheduleManagerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PassengerDataTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PassengerManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ProyectoAlgoritmos" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.Archivos.*" />
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.passenger.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.Archivos" />
-      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.Archivos.PassengerDataTest" />
-      <option name="METHOD_NAME" value="test" />
+      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.passenger" />
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.passenger.PassengerManagerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PassengerManagerTest.testGetPassengerFlightHistory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProyectoAlgoritmos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.passenger.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.passenger" />
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.passenger.PassengerManagerTest" />
+      <option name="METHOD_NAME" value="testGetPassengerFlightHistory" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RouteManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProyectoAlgoritmos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.route.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.route" />
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.route.RouteManagerTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.FlightSimulator" />
-        <item itemvalue="JUnit.DataLoaderTest.test" />
-        <item itemvalue="JUnit.PassengerDataTest.test" />
-        <item itemvalue="Application.HelloApplication" />
-        <item itemvalue="JUnit.DijkstraTest" />
+        <item itemvalue="Application.FlightSimulatorConsoleTest" />
+        <item itemvalue="JUnit.PassengerManagerTest" />
+        <item itemvalue="JUnit.FlightScheduleManagerTest" />
+        <item itemvalue="JUnit.RouteManagerTest" />
+        <item itemvalue="JUnit.PassengerManagerTest.testGetPassengerFlightHistory" />
       </list>
     </recent_temporary>
   </component>
@@ -224,7 +328,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749777483263</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Últimos arreglos de la simulación listos">
+      <option name="closed" value="true" />
+      <created>1749789854037</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1749789854037</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -245,6 +357,7 @@
     <MESSAGE value="Correccion en los pasajeros" />
     <MESSAGE value="Correccion en tiempos" />
     <MESSAGE value="Comentarios de la simulacion listos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Comentarios de la simulacion listos" />
+    <MESSAGE value="Últimos arreglos de la simulación listos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Últimos arreglos de la simulación listos" />
   </component>
 </project>

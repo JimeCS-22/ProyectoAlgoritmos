@@ -119,9 +119,21 @@ public class LinkedQueue implements Queue {
         } else { //caso 2. caso contrario
             front = front.next; //anterior=anterior.sgte
         }
-        //actualizo el contador de elementos encolados
         count--;
         return element;
+    }
+
+    public Object[] toArray() {
+        if (isEmpty()) {
+            return new Object[0];
+        }
+        Object[] array = new Object[count];
+        Node current = front;
+        for (int i = 0; i < count; i++) {
+            array[i] = current.data;
+            current = current.next;
+        }
+        return array;
     }
 
     @Override
@@ -136,7 +148,6 @@ public class LinkedQueue implements Queue {
             }
             aux.enQueue(deQueue());
         }//while
-        //al final dejamos la cola en su estado original
         while (!aux.isEmpty()) {
             enQueue(aux.deQueue());
         }
@@ -173,7 +184,6 @@ public class LinkedQueue implements Queue {
                 result += front() + "\n";
                 aux.enQueue(deQueue());
             }
-            //al final dejamos la cola en su estado original
             while (!aux.isEmpty()) {
                 enQueue(aux.deQueue());
             }
@@ -185,25 +195,17 @@ public class LinkedQueue implements Queue {
 
     public Object poll() throws QueueException {
         if (isEmpty()) {
-            return null; // Return null if the queue is empty, as per poll() contract
+            return null;
         }
 
-        return deQueue(); // Call your existing deQueue method
-
-        // This catch block should ideally not be reached if isEmpty() check is correct.
-        // However, it's good practice for robustness.
-
+        return deQueue();
 
     }
 
     public boolean offer(Object o) throws QueueException {
 
-        // Here you can choose which enQueue to call.
-        // If it's a regular queue, call the non-priority enQueue.
-        // If it's always a priority queue, you'll need to define a default priority here
-        // or require the caller to provide one for offer().
-        // For now, assuming this acts as a regular enqueue.
-        enQueue(o); // Call your existing enQueue method
+
+        enQueue(o);
         return true;
 
     }

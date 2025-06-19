@@ -11,7 +11,7 @@ module ucr.proyectoalgoritmos {
     opens ucr.proyectoalgoritmos.Domain.flight;
     opens ucr.proyectoalgoritmos.Domain.list to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.queue to com.google.gson; // <--- ADD THIS NEW CRITICAL LINE!
-    opens ucr.proyectoalgoritmos.route to com.google.gson;
+    opens ucr.proyectoalgoritmos.Domain.route to com.google.gson;
     opens ucr.proyectoalgoritmos.Domain.stack to com.google.gson;
     // If your Node class is in a separate package (e.g., if Node is generic and used by multiple structures
     // and its own package), you might need an opens for that package too.
@@ -33,6 +33,6 @@ module ucr.proyectoalgoritmos {
 //    exports ucr.proyectoalgoritmos.Domain.passenger; // If you refactored it
     exports ucr.proyectoalgoritmos.Domain.queue; // <--- Make sure this is exported too
     exports ucr.proyectoalgoritmos.Domain.stack;
-    exports ucr.proyectoalgoritmos.route;
+    exports ucr.proyectoalgoritmos.Domain.route;
     exports ucr.proyectoalgoritmos.util;
 }

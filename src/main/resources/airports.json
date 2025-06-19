@@ -46,5 +46,11 @@
     "name": "Dubai International Airport",
     "country": "UAE",
     "status": "ACTIVE"
+  },
+  {
+    "code": "MAD",
+    "name": "Adolfo Suárez Madrid–Barajas Airport",
+    "country": "Spain",
+    "status": "ACTIVE"
   }
 ]
