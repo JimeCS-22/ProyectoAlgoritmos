@@ -8,12 +8,14 @@ import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane.AirplaneStatus;
+import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList; // Importación para manejar la lista circular
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
 import ucr.proyectoalgoritmos.Domain.passenger.PassengerManager;
-import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue;
+// import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue; // Ya no es necesario
+// import ucr.proyectoalgoritmos.Domain.queue.QueueException; // Ya no es necesario
 import ucr.proyectoalgoritmos.Domain.queue.QueueException;
 import ucr.proyectoalgoritmos.Domain.route.RouteManager;
 import ucr.proyectoalgoritmos.Domain.stack.LinkedStack;
@@ -195,6 +197,7 @@ public class FlightSimulator {
         if (airportManager.findAirport(initialLocationAirportCode) != null) {
             if (!airplanes.containsKey(id)) {
                 airplanes.put(id, new Airplane(id, capacity, initialLocationAirportCode));
+                System.out.println("Avión " + id + " añadido en " + initialLocationAirportCode + "."); // Mensaje de confirmación
             } else {
                 System.out.println("ADVERTENCIA: El avión con ID '" + id + "' ya existe y no se añadió de nuevo.");
             }
@@ -203,7 +206,7 @@ public class FlightSimulator {
         }
     }
 
-    private void generateRandomFlightBasedOnRules() throws ListException, QueueException, TreeException {
+    private void generateRandomFlightBasedOnRules() throws ListException, TreeException { // Removido QueueException
         if (flightCounter.get() >= MAX_FLIGHTS_TO_GENERATE) {
             if (!flightLimitMessagePrinted) {
                 System.out.println("ADVERTENCIA: Límite de " + MAX_FLIGHTS_TO_GENERATE + " vuelos alcanzado. No se generarán más vuelos.");
@@ -299,20 +302,25 @@ public class FlightSimulator {
         }
 
         Airplane selectedAirplane = null;
-        List<Airplane> idleAirplanes = new ArrayList<>();
+        List<Airplane> idleAirplanesAtOrigin = new ArrayList<>();
         for (Airplane airplane : airplanes.values()) {
-            if (airplane.getStatus() == AirplaneStatus.IDLE && airplane.getCurrentLocationAirportCode() != null && airplane.getCurrentLocationAirportCode().equals(originCode)) {
-                idleAirplanes.add(airplane);
+            // MODIFICADO: Comprobar si el estado es IDLE Y el tipo de ubicación es AIRPORT en el origen
+            if (airplane.getStatus() == AirplaneStatus.IDLE &&
+                    airplane.getLocationType() == Airplane.AirplaneLocationType.AIRPORT &&
+                    airplane.getCurrentLocationAirportCode() != null && // Debería ser no nulo si locationType es AIRPORT
+                    airplane.getCurrentLocationAirportCode().equals(originCode)) {
+                idleAirplanesAtOrigin.add(airplane);
             }
         }
 
-        if (idleAirplanes.isEmpty()) {
+        if (idleAirplanesAtOrigin.isEmpty()) {
             System.out.println("ADVERTENCIA: No hay aviones IDLE disponibles en el aeropuerto de origen '" + originCode + "'. No se puede generar el vuelo. Retornando.");
             return;
         }
 
-        selectedAirplane = idleAirplanes.get(random.nextInt(idleAirplanes.size()));
+        selectedAirplane = idleAirplanesAtOrigin.get(random.nextInt(idleAirplanesAtOrigin.size()));
         selectedAirplane.setStatus(AirplaneStatus.ASSIGNED);
+        // NO es necesario cambiar locationType a IN_FLIGHT aún, todavía está en el aeropuerto (asignado para el despegue)
 
         String flightNumber = null;
         Flight newFlight = null;
@@ -376,7 +384,7 @@ public class FlightSimulator {
 
         List<Passenger> allAvailablePassengersFromAVL = null;
         try {
-            // ADJUSTED LINE: Using the getter method for proper encapsulation
+            // Ajustado: Usando el método getter para una encapsulación adecuada
             DoublyLinkedList dll = passengerManager.getPassengersAVL().inOrderList();
             if (dll != null && !dll.isEmpty()) {
                 allAvailablePassengersFromAVL = new ArrayList<>();
@@ -405,7 +413,7 @@ public class FlightSimulator {
                         flightScheduleManager.processTicketPurchase(p, newFlight);
                         passengerManager.processTicketPurchase(p, newFlight);
                         actualPassengersAssigned++;
-                    } catch (ListException | QueueException e) {
+                    } catch (ListException | QueueException /*| QueueException*/ e) { // Removido QueueException
                         System.err.println("ERROR: Fallo al procesar billete para pasajero " + p.getId() + " en el vuelo " + flightNumber + ": " + e.getMessage());
                         e.printStackTrace();
                     }
@@ -435,112 +443,40 @@ public class FlightSimulator {
                 if (currentFlight != null) {
                     currentFlight.setStatus(Flight.FlightStatus.IN_PROGRESS);
                     plane.setStatus(AirplaneStatus.IN_FLIGHT);
+                    plane.setLocationInFlight(); // NUEVO: Establecer el tipo de ubicación a IN_FLIGHT
+                    System.out.println("Vuelo " + fNum + ": Despegando de " + finalOriginCode + " con avión " + plane.getId() + ". Estado: " + plane.getStatus() + ", Ubicación: " + plane.getLocationType());
 
-                    // --- THE FIX IS HERE ---
-                    // Before setting to null, set it to the origin airport code.
-                    // The plane is AT the origin airport before takeoff.
-                    // You set it to null *after* it's in the air, but the error happens
-                    // when it's *about to take off* and its location is still the origin.
-                    // Then, when it lands, you set it to the destination.
-                    // So, if an exception happens *before* it lands, and you previously set it to null,
-                    // the next flight trying to pick it up might find its location as null.
+                    // Schedule flight landing
+                    scheduler.schedule(() -> {
+                        try {
+                            Flight landedFlight = flightScheduleManager.findFlight(fNum);
+                            if (landedFlight != null) {
+                                // Aquí se llama a simulateFlight para que se encargue del desembarque
+                                // simulateFlight internamente cambiará el estado a COMPLETED y desembarcará pasajeros.
+                                flightScheduleManager.simulateFlight(fNum);
 
-                    // Debugging: What's the plane's location right before takeoff?
-                    System.out.println("DEBUG (FlightSimulator): Antes del despegue - Avión " + plane.getId() + " ubicación: " + plane.getCurrentLocationAirportCode() + ". Intentando despegar de: " + finalOriginCode);
+                                plane.setCurrentLocationAirportCode(finalDestinationCode); // Establece la nueva ubicación del avión
+                                plane.setStatus(AirplaneStatus.IDLE); // El avión ahora está disponible en el destino
+                                System.out.println("Vuelo " + fNum + " ha aterrizado en " + (airportManager.findAirport(finalDestinationCode) != null ? airportManager.findAirport(finalDestinationCode).getName() : finalDestinationCode) + ". Avión " + plane.getId() + " ubicado en " + (airportManager.findAirport(finalDestinationCode) != null ? airportManager.findAirport(finalDestinationCode).getName() : finalDestinationCode) + ".");
 
-                    // The logic should be:
-                    // 1. Plane is at origin (should be already set during airplane creation or previous landing)
-                    // 2. Flight starts, plane status changes to IN_FLIGHT.
-                    // 3. ONLY after the plane has "left" the airport (conceptually),
-                    //    then you can set its location to null (or some "in air" status).
-                    // The error is happening because `plane.setCurrentLocationAirportCode(null)`
-                    // is called *immediately* after `plane.setStatus(AirplaneStatus.IN_FLIGHT);`,
-                    // but the problem occurs if the previous flight that *landed* this plane failed to
-                    // set its `currentLocationAirportCode` to the destination.
+                                // Añadir vuelo al historial del avión *después* de que todo el proceso de aterrizaje y desembarque haya ocurrido
+                                plane.addFlightToHistory(landedFlight);
 
-                    // Let's assume the previous flight *should* have left the plane at its destination.
-                    // So, at this point (takeoff), its location *should* be `finalOriginCode`.
-                    // The problem arises because if the previous flight ended with an error,
-                    // or if the plane was never properly placed at an airport *initially*,
-                    // then `currentLocationAirportCode` could be null here.
-
-                    // The error `El código del aeropuerto actual no puede ser nulo o vacío.` is from `Airplane.java:108`
-                    // which is YOUR setter: `public void setCurrentLocationAirportCode(String currentLocationAirportCode)`
-                    // This means the `null` is coming from *some other part of your code* that calls this setter.
-
-                    // Looking at your `remove` method in `AVL.java`, it might have decremented size incorrectly.
-                    // No, the error is definitely in `FlightSimulator`.
-
-                    // The problem is THIS line:
-                    // plane.setCurrentLocationAirportCode(null);
-                    // This line makes the airplane's location NULL.
-                    // Then, *later*, when a *new* flight attempts to find an idle airplane at a specific origin:
-                    // `if (airplane.getStatus() == AirplaneStatus.IDLE && airplane.getCurrentLocationAirportCode() != null && airplane.getCurrentLocationAirportCode().equals(originCode))`
-                    // This logic will work fine.
-
-                    // The actual error: `ERROR: Excepción inesperada durante la simulación de inicio del vuelo FL509: El código del aeropuerto actual no puede ser nulo o vacío.`
-                    // This means `plane.setCurrentLocationAirportCode(null)` IS THE PROBLEM.
-                    // You should NOT set the airplane's location to null when it's taking off.
-                    // An airplane that's IN_FLIGHT doesn't have a specific *airport* location.
-                    // Its location is "in the air, en route from X to Y".
-                    // The `currentLocationAirportCode` should *only* represent an airport.
-
-                    // FIX: Remove or comment out the problematic line.
-                    // An airplane that is IN_FLIGHT doesn't have a `currentLocationAirportCode`.
-                    // You should only set this *after* it lands.
-
-                    // --- ORIGINAL PROBLEM LINE ---
-                    // plane.setCurrentLocationAirportCode(null); // <--- THIS LINE IS THE PROBLEM
-                    // --- END ORIGINAL PROBLEM LINE ---
-
-                    // The `Airplane` constructor sets `currentLocationAirportCode`.
-                    // `addAirplane` uses it.
-                    // When a flight is selected, `selectedAirplane.getCurrentLocationAirportCode().equals(originCode)` is checked.
-                    // This means the plane *must* have a location at the origin airport before takeoff.
-
-                    // The `IllegalArgumentException` is thrown because `setCurrentLocationAirportCode` is called with `null`.
-                    // You are calling it with `null` here, which is what's causing the error.
-                    // An airplane is "in the air" during a flight, so its `currentLocationAirportCode` should effectively be "not at an airport".
-                    // However, your `setCurrentLocationAirportCode` method *validates* against null.
-                    //
-                    // Option 1 (Recommended): Remove the problematic line. An in-flight plane simply doesn't have a `currentLocationAirportCode`.
-                    // When it lands, you set it to the destination.
-                    // This means the `getCurrentLocationAirportCode()` for an `IN_FLIGHT` plane would return its *last known airport*.
-                    // This is acceptable if your system uses this field only for "at an airport" state.
-
-                    // Option 2: Introduce a special constant for "in-flight".
-                    // For example, `plane.setCurrentLocationAirportCode(Airplane.IN_FLIGHT_CODE);`
-                    // But then your AirportManager would need to handle this special code.
-                    // For now, let's go with Option 1.
-
-                    // The code causing the error:
-                    // plane.setCurrentLocationAirportCode(null); // This is what triggers the IllegalArgumentException
-
-                    // Removed the problematic line.
-                    // The airplane's currentLocationAirportCode should *not* be set to null here.
-                    // It represents the airport where it *last was* or *will be*.
-                    // When it's IN_FLIGHT, this field should ideally reflect its departure airport until it lands.
-                    // Or, if it truly means "current physical airport location", then it should be null,
-                    // but you need to adjust `setCurrentLocationAirportCode` to allow null for "in-flight" state,
-                    // or use a flag. The simplest fix given your validation is to remove the `null` setting.
-
-                    // Debugging: Verify the plane's state just before the exception.
-                    System.out.println("DEBUG (FlightSimulator): Avión " + plane.getId() + " status ANTES de cambiar a IN_FLIGHT: " + plane.getStatus() + ", Location: " + plane.getCurrentLocationAirportCode());
-
-                    // The fix is to NOT set the airport code to null upon takeoff.
-                    // It should implicitly remain at the origin until it lands, or you introduce a more complex "in-air" state.
-                    // Given your current setup, it's best to leave it at the origin and update only upon landing.
-                    // The `currentLocationAirportCode` should only represent an actual airport.
-                    // If it's in flight, it's not at an airport.
-
-                    // Re-evaluated: The `IllegalArgumentException` is thrown BY `setCurrentLocationAirportCode`.
-                    // The line `plane.setCurrentLocationAirportCode(null);` is indeed the *direct cause*.
-                    // You added that line. Remove it. An airplane's `currentLocationAirportCode` should only be updated
-                    // when it's *at* an airport (initial location, or landed at destination).
-                    // When it's in flight, its `currentLocationAirportCode` logically doesn't apply to a *current airport*.
-                    // You could leave it as the origin airport, or set it to a special "in-flight" string if you want to.
-                    // But setting it to `null` is what triggers *your own validation*.
-
+                                // Remover vuelo de la lista de vuelos programados (asumiendo que FlightScheduleManager mantiene los vuelos actuales/programados)
+                                try {
+                                    flightScheduleManager.getScheduledFlights().remove(landedFlight);
+                                } catch (ListException e) {
+                                    System.err.println("ERROR: No se pudo remover el vuelo completado " + fNum + " de la lista de vuelos programados: " + e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                System.err.println("ADVERTENCIA: Vuelo " + fNum + " no encontrado para simular el aterrizaje.");
+                            }
+                        } catch (ListException | StackException e) { // Capturar ListException y StackException
+                            System.err.println("ERROR: Excepción inesperada durante la simulación de aterrizaje del vuelo " + fNum + ": " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }, simulatedDurationForLogicSeconds, TimeUnit.SECONDS);
                 } else {
                     System.err.println("Vuelo " + fNum + " no encontrado al intentar iniciar su simulación.");
                 }
@@ -584,52 +520,10 @@ public class FlightSimulator {
         }, delaySecondsToTakeoff, TimeUnit.SECONDS); // Start animation at takeoff time
 
         // Schedule flight completion (after takeoff + simulated duration)
-        scheduler.schedule(() -> {
-            try {
-                Flight currentFlight = flightScheduleManager.findFlight(fNum);
-                if (currentFlight != null) {
-                    currentFlight.setStatus(Flight.FlightStatus.COMPLETED);
-                    System.out.println("Vuelo " + fNum + " en estado: COMPLETED.");
-
-                    plane.setStatus(AirplaneStatus.IDLE);
-                    // --- DEBUG START ---
-                    System.out.println("DEBUG (FlightSimulator): Después de aterrizar - Avión " + plane.getId() + " cambiando ubicación a: '" + finalDestinationCode + "'");
-                    // --- DEBUG END ---
-                    plane.setCurrentLocationAirportCode(finalDestinationCode); // Plane is now at destination
-                    plane.addFlightToHistory(currentFlight); // Add flight to airplane's history
-                    System.out.println("Vuelo " + fNum + " ha completado su viaje a " + (airportManager.findAirport(finalDestinationCode) != null ? airportManager.findAirport(finalDestinationCode).getName() : finalDestinationCode) + ". Avión " + plane.getId() + " ubicado en " + (airportManager.findAirport(finalDestinationCode) != null ? airportManager.findAirport(finalDestinationCode).getName() : finalDestinationCode) + ".");
-
-                    // Process passenger arrival
-                    LinkedQueue passengersOnFlight = currentFlight.getPassengers();
-                    if (passengersOnFlight != null && !passengersOnFlight.isEmpty()) {
-                        int initialPassengerCount = passengersOnFlight.size();
-                        for (int i = 0; i < initialPassengerCount; i++) {
-                            try {
-                                Passenger p = (Passenger) passengersOnFlight.deQueue();
-                                passengerManager.processFlightCompletion(p, currentFlight);
-                            } catch (QueueException e) {
-                                System.err.println("ERROR: Fallo al procesar pasajero de vuelo completado " + fNum + ": " + e.getMessage());
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    // Remove flight from scheduled flights (assuming flightScheduleManager holds current/scheduled flights)
-                    try {
-                        flightScheduleManager.getScheduledFlights().remove(currentFlight);
-                    } catch (ListException e) {
-                        System.err.println("ERROR: No se pudo remover el vuelo completado " + fNum + " de la lista de vuelos programados: " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.err.println("ERROR: Vuelo " + fNum + " no encontrado al intentar finalizar su simulación lógica.");
-                }
-
-            } catch (Exception e) {
-                System.err.println("ERROR: Excepción inesperada durante la finalización lógica del vuelo " + fNum + ": " + e.getMessage());
-                e.printStackTrace();
-            }
-        }, delaySecondsToTakeoff + simulatedDurationForLogicSeconds, TimeUnit.SECONDS);
+        // ESTE BLOQUE HA SIDO REESTRUCTURADO PARA LLAMAR A simulateFlight EN SU LUGAR
+        // Y ASÍ EVITAR CÓDIGO DUPLICADO Y ASEGURAR EL COMPORTAMIENTO FIFO.
+        // EL DESEMBARQUE DE PASAJEROS SE HACE AHORA DENTRO DE FlightScheduleManager.simulateFlight()
+        // Removido el bloque original de procesamiento de pasajeros aquí.
 
         flightCounter.incrementAndGet();
         System.out.println("Vuelo " + flightNumber + " programado exitosamente. Vuelos generados hasta ahora: " + flightCounter.get());
@@ -659,8 +553,8 @@ public class FlightSimulator {
             return;
         }
         for (Airplane airplane : airplanes.values()) {
-            System.out.printf("Historial del %s (Ubicación actual: %s, Estado: %s):\n",
-                    airplane.toString(), airplane.getCurrentLocationAirportCode(), airplane.getStatus());
+            System.out.printf("Historial del %s (Ubicación actual: %s, Estado: %s, Tipo Ubicación: %s):\n",
+                    airplane.getId(), airplane.getCurrentLocationAirportCode(), airplane.getStatus(), airplane.getLocationType()); // Ajustado para mostrar el tipo de ubicación
 
             LinkedStack history = airplane.getFlightHistory();
             if (history == null || history.isEmpty()) {
@@ -699,7 +593,7 @@ public class FlightSimulator {
                         flightLimitMessagePrinted = true;
                     }
                 }
-            } catch (ListException | QueueException | TreeException e) {
+            } catch (ListException | TreeException e) { // Removido QueueException aquí también
                 System.err.println("ERROR FATAL: Error al generar vuelo aleatorio: " + e.getMessage());
                 e.printStackTrace();
                 shutdownSimulation(); // Consider shutting down on fatal errors

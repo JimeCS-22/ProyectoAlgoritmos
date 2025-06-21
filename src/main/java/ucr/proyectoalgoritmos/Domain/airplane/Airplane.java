@@ -3,20 +3,21 @@ package ucr.proyectoalgoritmos.Domain.airplane;
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.Domain.stack.LinkedStack;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
-import java.util.Objects; // Importar java.util.Objects para los métodos equals y hashCode
+import java.util.Objects;
 
 /**
  * Representa un **avión** dentro del sistema de gestión de vuelos.
  * Cada avión tiene un identificador único, una capacidad de pasajeros,
- * una ubicación actual (código de aeropuerto), un estado operativo
- * y un historial de vuelos que ha realizado.
+ * una ubicación actual (código de aeropuerto), un **tipo de ubicación** (en tierra o en vuelo),
+ * un estado operativo y un historial de vuelos que ha realizado.
  */
 public class Airplane {
-    private String id; // Identificador único del avión (ej. "N123AA")
-    private int capacity; // Capacidad máxima de pasajeros
-    private String currentLocationAirportCode; // Código IATA del aeropuerto donde se encuentra actualmente
-    private AirplaneStatus status; // Estado operativo actual del avión
-    private LinkedStack flightHistory; // Historial de vuelos realizados por este avión
+    private String id;
+    private int capacity;
+    private String currentLocationAirportCode; // Código IATA del aeropuerto donde se encuentra actualmente (o el último conocido si está en vuelo)
+    private AirplaneLocationType locationType; // NUEVO: Para distinguir si está en un aeropuerto o en vuelo
+    private AirplaneStatus status;
+    private LinkedStack flightHistory;
 
     /**
      * Enumeración que define los posibles **estados operativos** en los que puede encontrarse un avión.
@@ -45,32 +46,51 @@ public class Airplane {
     }
 
     /**
+     * Enumeración que define el **tipo de ubicación** actual de un avión.
+     * Permite diferenciar claramente si el avión está en un aeropuerto o en el aire.
+     */
+    public enum AirplaneLocationType {
+        /**
+         * El avión se encuentra actualmente en un aeropuerto.
+         */
+        AIRPORT,
+        /**
+         * El avión está actualmente en vuelo entre dos aeropuertos.
+         */
+        IN_FLIGHT,
+        /**
+         * La ubicación del avión es desconocida o no definida.
+         */
+        UNKNOWN
+    }
+
+    /**
      * Constructor para crear una nueva instancia de un avión.
-     * Un avión recién creado se establece por defecto en estado **IDLE**
-     * y su historial de vuelos se inicializa como una pila vacía.
+     * Un avión recién creado se establece por defecto en estado **IDLE**,
+     * su tipo de ubicación en **AIRPORT** y su historial de vuelos se inicializa como una pila vacía.
      *
      * @param id El identificador único del avión. No debe ser nulo ni vacío.
      * @param capacity La capacidad máxima de pasajeros del avión. Debe ser un número positivo.
-     * @param currentLocationAirportCode El código del aeropuerto donde el avión se encuentra inicialmente.
+     * @param initialLocationAirportCode El código del aeropuerto donde el avión se encuentra inicialmente.
      * No debe ser nulo ni vacío.
      * @throws IllegalArgumentException Si el ID, la capacidad o el código de aeropuerto son inválidos.
      */
-    public Airplane(String id, int capacity, String currentLocationAirportCode) {
-        // Validaciones básicas para asegurar la integridad de los datos
+    public Airplane(String id, int capacity, String initialLocationAirportCode) {
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("El ID del avión no puede ser nulo o vacío.");
         }
         if (capacity <= 0) {
             throw new IllegalArgumentException("La capacidad del avión debe ser un número positivo.");
         }
-        // This check is good for the constructor
-        if (currentLocationAirportCode == null || currentLocationAirportCode.trim().isEmpty()) {
-            throw new IllegalArgumentException("El código del aeropuerto actual no puede ser nulo o vacío.");
+        // La ubicación inicial SIEMPRE debe ser un aeropuerto válido.
+        if (initialLocationAirportCode == null || initialLocationAirportCode.trim().isEmpty()) {
+            throw new IllegalArgumentException("El código del aeropuerto de ubicación inicial no puede ser nulo o vacío.");
         }
 
-        this.id = id;
+        this.id = id.trim(); // Asegurarse de limpiar espacios
         this.capacity = capacity;
-        this.currentLocationAirportCode = currentLocationAirportCode;
+        this.currentLocationAirportCode = initialLocationAirportCode.trim(); // Establecer ubicación inicial
+        this.locationType = AirplaneLocationType.AIRPORT; // Por defecto, el avión inicia en un aeropuerto
         this.status = AirplaneStatus.IDLE; // Estado por defecto
         this.flightHistory = new LinkedStack(); // Inicializa la pila del historial de vuelos
     }
@@ -84,8 +104,21 @@ public class Airplane {
         return capacity;
     }
 
+    /**
+     * Obtiene el código del aeropuerto donde el avión se encuentra actualmente,
+     * o el último aeropuerto conocido si el avión está en vuelo.
+     * @return El código IATA del aeropuerto o el último conocido.
+     */
     public String getCurrentLocationAirportCode() {
         return currentLocationAirportCode;
+    }
+
+    /**
+     * Obtiene el tipo de ubicación actual del avión (AIRPORT, IN_FLIGHT, UNKNOWN).
+     * @return El {@link AirplaneLocationType} actual del avión.
+     */
+    public AirplaneLocationType getLocationType() { // NUEVO GETTER
+        return locationType;
     }
 
     public AirplaneStatus getStatus() {
@@ -97,33 +130,43 @@ public class Airplane {
     }
 
     // --- Setters ---
-    // Nota: 'id' y 'capacity' no tienen setters porque suelen ser inmutables después de la creación.
-    // Si necesitas cambiarlos, puedes añadir los setters correspondientes.
 
     /**
      * Establece la nueva ubicación (código de aeropuerto) actual del avión.
-     * @param currentLocationAirportCode El nuevo código del aeropuerto.
+     * Cuando se establece un código de aeropuerto, el {@code locationType} del avión
+     * se actualiza automáticamente a {@link AirplaneLocationType#AIRPORT}.
+     * @param currentLocationAirportCode El nuevo código del aeropuerto. No puede ser nulo o vacío.
+     * @throws IllegalArgumentException Si el código de aeropuerto proporcionado es nulo o vacío.
      */
     public void setCurrentLocationAirportCode(String currentLocationAirportCode) {
-        // --- DEBUG START ---
-        System.out.println("DEBUG (Airplane): Intentando establecer la ubicación actual a: '" + currentLocationAirportCode + "' para avión ID: " + this.id);
-        // --- DEBUG END ---
+        // Los mensajes DEBUG son útiles, pero pueden ser ruidosos en producción.
+        // Considera usar un logger para controlarlos mejor.
+        // System.out.println("DEBUG (Airplane): Intentando establecer la ubicación actual a: '" + currentLocationAirportCode + "' para avión ID: " + this.id);
 
         if (currentLocationAirportCode == null || currentLocationAirportCode.trim().isEmpty()) {
-            // --- DEBUG START ---
-            System.err.println("ERROR DEBUG (Airplane): Valor nulo o vacío recibido para currentLocationAirportCode en avión ID: " + this.id);
-            // --- DEBUG END ---
+            // System.err.println("ERROR DEBUG (Airplane): Valor nulo o vacío recibido para currentLocationAirportCode en avión ID: " + this.id);
             throw new IllegalArgumentException("El código del aeropuerto actual no puede ser nulo o vacío.");
         }
-        this.currentLocationAirportCode = currentLocationAirportCode;
-        // --- DEBUG START ---
-        System.out.println("DEBUG (Airplane): Ubicación actual establecida a: '" + this.currentLocationAirportCode + "' para avión ID: " + this.id);
-        // --- DEBUG END ---
+        this.currentLocationAirportCode = currentLocationAirportCode.trim();
+        this.locationType = AirplaneLocationType.AIRPORT; // Al establecer un aeropuerto, el tipo de ubicación es AIRPORT
+        // System.out.println("DEBUG (Airplane): Ubicación actual establecida a: '" + this.currentLocationAirportCode + "' y locationType a AIRPORT para avión ID: " + this.id);
+    }
+
+    /**
+     * Establece el tipo de ubicación del avión a {@link AirplaneLocationType#IN_FLIGHT}.
+     * Cuando un avión está en vuelo, su {@code currentLocationAirportCode} mantiene
+     * el código del último aeropuerto del que despegó, hasta que aterrice en el siguiente.
+     */
+    public void setLocationInFlight() { // NUEVO MÉTODO
+        this.locationType = AirplaneLocationType.IN_FLIGHT;
+        // No se cambia currentLocationAirportCode aquí; este representa el ÚLTIMO aeropuerto conocido.
+        // System.out.println("DEBUG (Airplane): LocationType establecido a IN_FLIGHT para avión ID: " + this.id);
     }
 
     /**
      * Establece el nuevo estado operativo del avión.
-     * @param status El nuevo estado del avión.
+     * @param status El nuevo estado del avión. No puede ser nulo.
+     * @throws IllegalArgumentException Si el estado proporcionado es nulo.
      */
     public void setStatus(AirplaneStatus status) {
         if (status == null) {
@@ -135,8 +178,7 @@ public class Airplane {
     /**
      * Añade un vuelo al historial de vuelos del avión. El vuelo se añade a la parte superior de la pila.
      * @param flight El objeto {@link Flight} a añadir al historial.
-     * @throws StackException Si ocurre un error al añadir el vuelo a la pila (ej. si la pila está llena, aunque
-     * LinkedStack no debería tener este problema a menos que se defina).
+     * @throws StackException Si ocurre un error al añadir el vuelo a la pila.
      * @throws IllegalArgumentException Si el vuelo proporcionado es nulo.
      */
     public void addFlightToHistory(Flight flight) throws StackException {
@@ -149,11 +191,20 @@ public class Airplane {
     /**
      * Provee una representación en cadena de texto de la información del avión.
      * Útil para depuración y visualización en consola.
+     * Muestra la ubicación de manera dinámica según el {@code locationType}.
      * @return Una cadena formateada con el ID, capacidad, ubicación y estado del avión.
      */
     @Override
     public String toString() {
-        return "Avión [ID: " + id + ", Capacidad: " + capacity + ", Ubicación: " + currentLocationAirportCode + ", Estado: " + status + "]";
+        String locationDisplay;
+        if (locationType == AirplaneLocationType.AIRPORT) {
+            locationDisplay = "en aeropuerto: " + currentLocationAirportCode;
+        } else if (locationType == AirplaneLocationType.IN_FLIGHT) {
+            locationDisplay = "en vuelo (último aeropuerto: " + currentLocationAirportCode + ")";
+        } else {
+            locationDisplay = "ubicación desconocida";
+        }
+        return "Avión [ID: " + id + ", Capacidad: " + capacity + ", Estado: " + status + ", " + locationDisplay + "]";
     }
 
     /**
@@ -163,15 +214,11 @@ public class Airplane {
      * @param o El objeto a comparar con este Airplane.
      * @return {@code true} si los objetos son iguales (mismo ID), {@code false} en caso contrario.
      */
-    @Override // Asegurarse de que se sobrescribe correctamente
+    @Override
     public boolean equals(Object o) {
-        // Optimización: Si es la misma referencia de objeto, son iguales.
         if (this == o) return true;
-        // Si el objeto es nulo o no es una instancia de Airplane, no son iguales.
         if (o == null || getClass() != o.getClass()) return false;
-        // Realiza un 'cast' seguro al tipo Airplane.
         Airplane airplane = (Airplane) o;
-        // La igualdad se basa únicamente en el 'id' del avión, que es el identificador único.
         return Objects.equals(id, airplane.id);
     }
 
@@ -183,9 +230,8 @@ public class Airplane {
      *
      * @return Un valor de código hash entero.
      */
-    @Override // Asegurarse de que se sobrescribe correctamente
+    @Override
     public int hashCode() {
-        // Genera el hash code basado en el ID del avión, que es el identificador único.
         return Objects.hash(id);
     }
 }

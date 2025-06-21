@@ -4,11 +4,11 @@ package ucr.proyectoalgoritmos.Domain.flight;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList; // Usar DoublyLinkedList estándar
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
-import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.list.ListException; // Importar ListException para errores de lista
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
 import ucr.proyectoalgoritmos.Domain.route.RouteManager;
-import ucr.proyectoalgoritmos.Domain.queue.QueueException; // Importar QueueException
+// import ucr.proyectoalgoritmos.Domain.queue.QueueException; // REMOVIDO: Ya no es necesario si Flight usa CircularDoublyLinkedList
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -19,11 +19,10 @@ import java.util.Map;
  * Coordina con AirportManager y RouteManager para validar la información de vuelos.
  */
 public class FlightScheduleManager {
-    private DoublyLinkedList scheduledFlights; // CAMBIO: Ahora DoublyLinkedList
-    private AirportManager airportManager; // Manager para la gestión de aeropuertos
-    private RouteManager routeManager; // Manager para la gestión de rutas de grafos
-    // Mantiene CircularDoublyLinkedList para waitingLists si necesitas contains/remove específicos
-    private Map<String, ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList> waitingLists; // Mantiene CircularDoublyLinkedList
+    private DoublyLinkedList scheduledFlights;
+    private AirportManager airportManager;
+    private RouteManager routeManager;
+    private Map<String, ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList> waitingLists;
 
     /**
      * Constructor para FlightScheduleManager.
@@ -39,7 +38,7 @@ public class FlightScheduleManager {
         if (routeManager == null) {
             throw new IllegalArgumentException("RouteManager no puede ser nulo.");
         }
-        this.scheduledFlights = new DoublyLinkedList(); // CAMBIO: Inicializa DoublyLinkedList
+        this.scheduledFlights = new DoublyLinkedList();
         this.airportManager = airportManager;
         this.routeManager = routeManager;
         this.waitingLists = new HashMap<>();
@@ -50,7 +49,7 @@ public class FlightScheduleManager {
      *
      * @return Una DoublyLinkedList que contiene los vuelos programados.
      */
-    public DoublyLinkedList getScheduledFlights() { // CAMBIO: Retorna DoublyLinkedList
+    public DoublyLinkedList getScheduledFlights() {
         return scheduledFlights;
     }
 
@@ -73,16 +72,15 @@ public class FlightScheduleManager {
      * @param originCode El código IATA del aeropuerto de origen.
      * @param destinationCode El código IATA del aeropuerto de destino.
      * @param departureTime La fecha y hora de salida programada del vuelo.
+     * @param estimatedDurationMinutes Duración estimada del vuelo en minutos.
      * @param capacity La capacidad de pasajeros del vuelo.
      * @return El objeto Flight recién creado y añadido.
      * @throws ListException Si el número de vuelo ya está en uso, los aeropuertos no son válidos
      * o no existe una ruta válida.
      * @throws IllegalArgumentException Si algún parámetro de entrada es nulo o inválido.
-     * @throws QueueException Si ocurre un error al crear la cola de pasajeros del vuelo.
      */
     public Flight createFlight(String number, String originCode, String destinationCode,
-                               LocalDateTime departureTime, int estimatedDurationMinutes, int capacity) throws ListException, IllegalArgumentException, QueueException {
-
+                               LocalDateTime departureTime, int estimatedDurationMinutes, int capacity) throws ListException, IllegalArgumentException {
         // Validar si el número de vuelo ya está en uso
         if (findFlight(number) != null) {
             throw new ListException("El número de vuelo " + number + " ya está en uso.");
@@ -102,9 +100,8 @@ public class FlightScheduleManager {
         }
 
         // Crea el nuevo objeto Flight
-        // El constructor de Flight ahora puede lanzar QueueException
         Flight newFlight = new Flight(number, originCode, destinationCode, departureTime, capacity);
-        newFlight.setEstimatedDurationMinutes(estimatedDurationMinutes); // Asegurarse de setear la duración
+        newFlight.setEstimatedDurationMinutes(estimatedDurationMinutes);
 
         // Añade el vuelo a la lista de vuelos programados
         scheduledFlights.add(newFlight);
@@ -118,10 +115,9 @@ public class FlightScheduleManager {
      * @param passenger El objeto {@link Passenger} que desea comprar un billete.
      * @param flight El objeto {@link Flight} en el que se desea reservar.
      * @throws IllegalArgumentException Si el vuelo o el pasajero son nulos.
-     * @throws ListException Si ocurre un error con la lista de espera (no con la lista de pasajeros del vuelo directamente).
-     * @throws QueueException Si el vuelo está lleno y no se puede añadir al pasajero.
+     * @throws ListException Si ocurre un error al añadir el pasajero o con la lista de espera.
      */
-    public void processTicketPurchase(Passenger passenger, Flight flight) throws IllegalArgumentException, ListException, QueueException {
+    public void processTicketPurchase(Passenger passenger, Flight flight) throws IllegalArgumentException, ListException {
         if (flight == null) {
             throw new IllegalArgumentException("No se puede procesar la compra de billetes. El objeto vuelo es nulo.");
         }
@@ -129,16 +125,10 @@ public class FlightScheduleManager {
             throw new IllegalArgumentException("No se puede procesar la compra de billetes. El objeto pasajero es nulo.");
         }
 
-        // El check de 'flight.getPassengers().contains(passenger)' se remueve
-        // porque Flight ahora usa LinkedQueue, que no tiene un contains eficiente.
-        // Asumimos que la lógica de negocio a este nivel asegura que un pasajero
-        // no intente comprar el mismo billete dos veces, o que la unicidad
-        // dentro de la cola del vuelo no es un requisito directo de la cola misma.
-
         // Si el vuelo está programado y no está lleno
         if (flight.getStatus() == Flight.FlightStatus.SCHEDULED && !flight.isFull()) {
             try {
-                flight.addPassenger(passenger); // Intenta añadir al pasajero al vuelo. Ahora lanza QueueException.
+                flight.addPassenger(passenger); // Intenta añadir al pasajero al vuelo.
                 System.out.println("Pasajero " + passenger.getName() + " (" + passenger.getId() + ") reservado en el vuelo " + flight.getFlightNumber() + " de " + flight.getOriginAirportCode() + " a " + flight.getDestinationAirportCode() + ".");
 
                 // Si el pasajero estaba en lista de espera para esta ruta, se le remueve.
@@ -146,7 +136,7 @@ public class FlightScheduleManager {
                 if (waitingLists.containsKey(routeKey)) {
                     ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList routeWaitingList = waitingLists.get(routeKey);
                     try {
-                        if (routeWaitingList.contains(passenger)) { // Esto sigue funcionando porque waitingLists es CircularDoublyLinkedList
+                        if (routeWaitingList.contains(passenger)) {
                             routeWaitingList.remove(passenger);
                             if (routeWaitingList.isEmpty()) {
                                 waitingLists.remove(routeKey);
@@ -156,16 +146,15 @@ public class FlightScheduleManager {
                         System.err.println("ERROR: Error al intentar remover pasajero de la lista de espera para la ruta " + routeKey + ": " + e.getMessage());
                     }
                 }
-            } catch (QueueException e) {
-                // Si flight.addPassenger lanza QueueException (ej. por vuelo lleno), se maneja aquí
-                System.out.println("ADVERTENCIA: El vuelo " + flight.getFlightNumber() + " está lleno. Pasajero " + passenger.getId() + " añadido a lista de espera. Detalle: " + e.getMessage());
-                // Caerá al else if si no se maneja, o se puede forzar aquí a añadir a la lista de espera
-                addToWaitingList(passenger, flight); // Llamar a un método auxiliar para manejar la lista de espera
+            } catch (ListException e) {
+                // Si flight.addPassenger lanza ListException (ej. por vuelo lleno o pasajero duplicado), se maneja aquí
+                System.out.println("ADVERTENCIA: No se pudo reservar al pasajero " + passenger.getId() + " en el vuelo " + flight.getFlightNumber() + ". Detalle: " + e.getMessage() + ". Añadiendo a lista de espera.");
+                addToWaitingList(passenger, flight); // Añadir a la lista de espera si no se pudo reservar
             }
 
         } else { // El vuelo no está disponible para reserva (lleno o estado no 'SCHEDULED')
             System.out.println("ADVERTENCIA: El vuelo " + flight.getFlightNumber() + " no está disponible para reserva (Estado: " + flight.getStatus() + ", Ocupación: " + flight.getOccupancy() + "/" + flight.getCapacity() + "). Pasajero " + passenger.getId() + " añadido a lista de espera.");
-            addToWaitingList(passenger, flight); // Llamar a un método auxiliar
+            addToWaitingList(passenger, flight);
         }
     }
 
@@ -182,6 +171,9 @@ public class FlightScheduleManager {
 
         if (!routeWaitingList.contains(passenger)) { // Evitar duplicados en la lista de espera
             routeWaitingList.add(passenger);
+            System.out.println("Pasajero " + passenger.getName() + " (" + passenger.getId() + ") añadido a la lista de espera para la ruta " + routeKey + ".");
+        } else {
+            System.out.println("Pasajero " + passenger.getName() + " (" + passenger.getId() + ") ya está en la lista de espera para la ruta " + routeKey + ".");
         }
     }
 
@@ -259,16 +251,6 @@ public class FlightScheduleManager {
         }
     }
 
-    /**
-     * Simula el progreso de un vuelo desde despegue hasta aterrizaje.
-     * Actualiza el estado del vuelo y el estado y ubicación del avión asignado.
-     *
-     * @param flightNumber El número de vuelo a simular.
-     * @throws ListException Si el vuelo no se encuentra o hay un problema en la lista.
-     * @throws StackException Si ocurre un error al añadir el vuelo al historial del avión.
-     * @throws IllegalArgumentException Si el avión asignado es nulo.
-     * @throws IllegalStateException Si el vuelo ya está en progreso, completado o cancelado.
-     */
     public void simulateFlight(String flightNumber) throws ListException, StackException {
         Flight flight = findFlight(flightNumber);
         if (flight == null) {
@@ -296,13 +278,29 @@ public class FlightScheduleManager {
         System.out.println("Vuelo " + flightNumber + ": Despegando de " + flight.getOriginAirportCode() + " con avión " + assignedAirplane.getId() + ".");
 
         // Simulación de tiempo de vuelo (simplificado)
-        // Puedes añadir Thread.sleep() aquí para una simulación más realista
+        // Aquí podrías añadir Thread.sleep() para pausas en la simulación
+        // o un cálculo más complejo basado en estimatedDurationMinutes
 
         // Paso 2: Vuelo completado
         flight.setStatus(Flight.FlightStatus.COMPLETED);
         assignedAirplane.setCurrentLocationAirportCode(flight.getDestinationAirportCode()); // Actualizar ubicación del avión
         assignedAirplane.setStatus(Airplane.AirplaneStatus.IDLE); // El avión está de nuevo disponible
         assignedAirplane.addFlightToHistory(flight); // Añadir el vuelo al historial del avión
+
+        // Desembarcar a todos los pasajeros del vuelo
+        try {
+            while (!flight.getPassengers().isEmpty()) {
+                // Obtener el primer pasajero y luego removerlo
+                Passenger p = (Passenger) flight.getPassengers().get(0); // Get the first passenger
+                flight.removePassenger(p); // Remove that specific passenger
+                System.out.println("  - Pasajero " + p.getName() + " (" + p.getId() + ") desembarcado.");
+                // Aquí podrías añadir lógica para actualizar el historial de vuelos del pasajero si tienes un PassengerManager global.
+            }
+            System.out.println("Todos los pasajeros han sido desembarcados del vuelo " + flightNumber + ".");
+        } catch (ListException e) {
+            System.err.println("ERROR al desembarcar pasajeros del vuelo " + flightNumber + ": " + e.getMessage());
+        }
+
 
         System.out.println("Vuelo " + flightNumber + ": Aterrizando en " + flight.getDestinationAirportCode() + ".");
         System.out.println("Simulación para el vuelo " + flightNumber + " completada. Avión " + assignedAirplane.getId() + " ahora en " + assignedAirplane.getCurrentLocationAirportCode() + ".");
@@ -324,11 +322,11 @@ public class FlightScheduleManager {
             String routeKey = entry.getKey();
             ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList list = entry.getValue();
             System.out.println("Ruta: " + routeKey + " (" + list.size() + " pasajeros en espera)");
-            // Puedes imprimir los IDs de los pasajeros si lo deseas:
-            // for (int i = 0; i < list.size(); i++) {
-            //     Passenger p = (Passenger) list.get(i);
-            //     System.out.println("  - " + p.getId() + " (" + p.getName() + ")");
-            // }
+            // Imprimir los IDs y nombres de los pasajeros en la lista de espera
+            for (int i = 0; i < list.size(); i++) {
+                Passenger p = (Passenger) list.get(i);
+                System.out.println("  - " + p.getId() + " (" + p.getName() + ")");
+            }
         }
     }
 }

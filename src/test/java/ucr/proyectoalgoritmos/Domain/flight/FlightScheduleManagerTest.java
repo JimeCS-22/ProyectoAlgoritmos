@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Domain.flight; // Asegúrate de que este paquete sea correcto
+package ucr.proyectoalgoritmos.Domain.flight;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,11 +7,12 @@ import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
-import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue; // Importar LinkedQueue
-import ucr.proyectoalgoritmos.Domain.queue.QueueException; // Importar QueueException
+import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList; // <<--- Importación corregida
+// import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue; // <<--- Ya no es necesario
+// import ucr.proyectoalgoritmos.Domain.queue.QueueException; // <<--- Ya no es necesario
 import ucr.proyectoalgoritmos.Domain.route.RouteManager;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
-import ucr.proyectoalgoritmos.util.Utility; // Para generar IDs aleatorios si fuera necesario
+import ucr.proyectoalgoritmos.util.Utility;
 
 import java.time.LocalDateTime;
 
@@ -90,7 +91,7 @@ class FlightScheduleManagerTest {
     // --- Tests del Constructor ---
     @Test
     @DisplayName("El constructor debe inicializar los managers y las listas")
-    void testConstructorInitialization() {
+    void testConstructorInitialization() throws ListException { // Se agregó ListException aquí porque getScheduledFlights() la lanza
         assertNotNull(flightScheduleManager, "El FlightScheduleManager no debería ser nulo.");
         assertNotNull(flightScheduleManager.getScheduledFlights(), "La lista de vuelos programados no debería ser nula.");
         assertTrue(flightScheduleManager.getScheduledFlights().isEmpty(), "La lista de vuelos programados debería estar vacía al inicio.");
@@ -116,9 +117,9 @@ class FlightScheduleManagerTest {
     // --- Tests de `createFlight` ---
     @Test
     @DisplayName("Crear un vuelo exitosamente")
-    void testCreateFlightSuccess() throws ListException, QueueException { // Añadido QueueException
+    void testCreateFlightSuccess() throws ListException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 12, 25, 10, 0);
-        Flight flight = flightScheduleManager.createFlight("AA100", "SJO", "MIA", departure, 180, 200); // Añadido 180
+        Flight flight = flightScheduleManager.createFlight("AA100", "SJO", "MIA", departure, 180, 200);
 
         assertNotNull(flight, "El vuelo creado no debería ser nulo.");
         assertEquals("AA100", flight.getFlightNumber());
@@ -137,12 +138,12 @@ class FlightScheduleManagerTest {
 
     @Test
     @DisplayName("Crear un vuelo con número duplicado debe lanzar ListException")
-    void testCreateFlightDuplicateNumber() throws ListException, QueueException { // Añadido QueueException
+    void testCreateFlightDuplicateNumber() throws ListException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 12, 25, 10, 0);
-        flightScheduleManager.createFlight("AA101", "SJO", "MIA", departure, 120, 200); // Añadido 120
+        flightScheduleManager.createFlight("AA101", "SJO", "MIA", departure, 120, 200);
 
         assertThrows(ListException.class, () -> {
-            flightScheduleManager.createFlight("AA101", "SJO", "LAX", departure, 240, 180); // Añadido 240
+            flightScheduleManager.createFlight("AA101", "SJO", "LAX", departure, 240, 180);
         }, "Debería lanzar ListException por número de vuelo duplicado.");
     }
 
@@ -152,7 +153,7 @@ class FlightScheduleManagerTest {
         LocalDateTime departure = LocalDateTime.of(2025, 12, 25, 10, 0);
         assertThrows(ListException.class, () -> {
             // "XYZ" no fue añadido al AirportManager en setUp
-            flightScheduleManager.createFlight("AA102", "XYZ", "MIA", departure, 150, 200); // Añadido 150
+            flightScheduleManager.createFlight("AA102", "XYZ", "MIA", departure, 150, 200);
         }, "Debería lanzar ListException por aeropuerto de origen inválido.");
     }
 
@@ -162,7 +163,7 @@ class FlightScheduleManagerTest {
         LocalDateTime departure = LocalDateTime.of(2025, 12, 25, 10, 0);
         assertThrows(ListException.class, () -> {
             // "ABC" no fue añadido al AirportManager en setUp
-            flightScheduleManager.createFlight("AA103", "SJO", "ABC", departure, 150, 200); // Añadido 150
+            flightScheduleManager.createFlight("AA103", "SJO", "ABC", departure, 150, 200);
         }, "Debería lanzar ListException por aeropuerto de destino inválido.");
     }
 
@@ -172,16 +173,16 @@ class FlightScheduleManagerTest {
         LocalDateTime departure = LocalDateTime.of(2025, 12, 25, 10, 0);
         // Suponiendo que no hay ruta directa o indirecta de SYD a IST en el setup
         assertThrows(ListException.class, () -> {
-            flightScheduleManager.createFlight("AA104", "SYD", "IST", departure, 600, 200); // Añadido 600
+            flightScheduleManager.createFlight("AA104", "SYD", "IST", departure, 600, 200);
         }, "Debería lanzar ListException si no hay ruta entre los aeropuertos.");
     }
 
     // --- Tests de `findFlight` ---
     @Test
     @DisplayName("Encontrar un vuelo existente por su número")
-    void testFindFlightExisting() throws ListException, QueueException { // Añadido QueueException
+    void testFindFlightExisting() throws ListException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 12, 26, 11, 0);
-        Flight createdFlight = flightScheduleManager.createFlight("UA200", "SJO", "MIA", departure, 180, 100); // Añadido 180
+        Flight createdFlight = flightScheduleManager.createFlight("UA200", "SJO", "MIA", departure, 180, 100);
 
         Flight foundFlight = flightScheduleManager.findFlight("UA200");
         assertNotNull(foundFlight, "Se debería encontrar el vuelo existente.");
@@ -206,19 +207,19 @@ class FlightScheduleManagerTest {
     // --- Tests de `processTicketPurchase` ---
     @Test
     @DisplayName("Añadir pasajero a vuelo disponible debe ser exitoso")
-    void testAddPassengerSuccess() throws ListException, StackException, QueueException { // Añadido QueueException
+    void testAddPassengerSuccess() throws ListException, StackException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 10, 10, 8, 0);
-        Flight flight = flightScheduleManager.createFlight("DL300", "SJO", "MIA", departure, 180, 2); // Capacidad de 2, añadido 180
+        Flight flight = flightScheduleManager.createFlight("DL300", "SJO", "MIA", departure, 180, 2);
         Passenger p1 = new Passenger(Utility.RandomId(), Utility.RandomNames(), Utility.RandomNationalities());
 
         flightScheduleManager.processTicketPurchase(p1, flight);
 
         assertEquals(1, flight.getOccupancy(), "La ocupación del vuelo debería ser 1.");
-        // Nuevo método para verificar la presencia de un pasajero en la LinkedQueue del vuelo
-        assertTrue(containsPassengerInFlightQueue(flight, p1), "El pasajero debería estar en la cola del vuelo.");
+        // Nuevo método para verificar la presencia de un pasajero en la CircularDoublyLinkedList del vuelo
+        assertTrue(containsPassengerInFlightList(flight, p1), "El pasajero debería estar en la lista de pasajeros del vuelo.");
     }
 
-    // ESTE TEST SE ELIMINA/MODIFICA ya que LinkedQueue no tiene un 'contains' directo y addPassenger ya no arrojará una excepción por duplicados por defecto.
+    // Comentado el test de añadir el mismo pasajero dos veces por el cambio en la lógica interna
     // Si la unicidad del pasajero en el vuelo es crítica, debe gestionarse con una estructura auxiliar en la clase Flight.
     /*
     @Test
@@ -241,9 +242,9 @@ class FlightScheduleManagerTest {
 
     @Test
     @DisplayName("Añadir pasajero a vuelo lleno debe añadir a lista de espera")
-    void testAddPassengerToFullFlight() throws ListException, StackException, QueueException { // Añadido QueueException
+    void testAddPassengerToFullFlight() throws ListException, StackException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 10, 12, 10, 0);
-        Flight flight = flightScheduleManager.createFlight("DL302", "SJO", "MIA", departure, 180, 1); // Vuelo con capacidad 1, añadido 180
+        Flight flight = flightScheduleManager.createFlight("DL302", "SJO", "MIA", departure, 180, 1);
         Passenger p1 = new Passenger(Utility.RandomId(), Utility.RandomNames(), Utility.RandomNationalities());
         Passenger p2 = new Passenger(Utility.RandomId(), Utility.RandomNames(), Utility.RandomNationalities());
 
@@ -264,10 +265,10 @@ class FlightScheduleManagerTest {
 
     @Test
     @DisplayName("Remover pasajero de lista de espera si luego se le asigna asiento")
-    void testRemovePassengerFromWaitingListAfterBooking() throws ListException, StackException, QueueException { // Añadido QueueException
+    void testRemovePassengerFromWaitingListAfterBooking() throws ListException, StackException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 10, 13, 11, 0);
-        Flight flight1 = flightScheduleManager.createFlight("DL303", "SJO", "MIA", departure, 180, 1); // Vuelo 1, capacidad 1, añadido 180
-        Flight flight2 = flightScheduleManager.createFlight("DL304", "SJO", "MIA", departure.plusDays(1), 180, 1); // Vuelo 2, capacidad 1, añadido 180
+        Flight flight1 = flightScheduleManager.createFlight("DL303", "SJO", "MIA", departure, 180, 1);
+        Flight flight2 = flightScheduleManager.createFlight("DL304", "SJO", "MIA", departure.plusDays(1), 180, 1);
 
         Passenger p1 = new Passenger(Utility.RandomId(), Utility.RandomNames(), Utility.RandomNationalities());
         Passenger p2 = new Passenger(Utility.RandomId(), Utility.RandomNames(), Utility.RandomNationalities());
@@ -292,6 +293,7 @@ class FlightScheduleManagerTest {
 
         // ASSERTION 2: P2 debería ser removido de la lista de espera para SJO-MIA
         // Si la lista de espera está vacía después de remover, la clave se elimina.
+        // Aquí asumimos que removePassengerFromWaitingList se llama internamente y si la lista queda vacía, la key se quita del mapa.
         assertFalse(flightScheduleManager.getWaitingListsForTest().containsKey(routeKey), "La clave de la lista de espera para SJO-MIA debería haber sido eliminada si quedó vacía.");
     }
 
@@ -299,9 +301,9 @@ class FlightScheduleManagerTest {
 
     @Test
     @DisplayName("Simular un vuelo debe actualizar su estado y el estado/ubicación del avión")
-    void testSimulateFlightSuccess() throws ListException, StackException, QueueException { // Añadido QueueException
+    void testSimulateFlightSuccess() throws ListException, StackException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 11, 1, 14, 0);
-        Flight flight = flightScheduleManager.createFlight("AA400", "SJO", "MIA", departure, 180, 150); // Añadido 180
+        Flight flight = flightScheduleManager.createFlight("AA400", "SJO", "MIA", departure, 180, 150);
         Airplane airplane = new Airplane("AV-001", 150, "SJO");
         flight.setAirplane(airplane); // Asignar un avión al vuelo
 
@@ -320,13 +322,15 @@ class FlightScheduleManagerTest {
         assertFalse(airplane.getFlightHistory().isEmpty(), "El historial del avión no debería estar vacío.");
         assertEquals(1, airplane.getFlightHistory().size(), "Debería haber un vuelo en el historial del avión.");
         assertEquals(flight, airplane.getFlightHistory().top(), "El vuelo simulado debería ser el último en el historial del avión.");
+        // Verificar que la lista de pasajeros del vuelo está vacía después del desembarque
+        assertTrue(flight.getPassengers().isEmpty(), "La lista de pasajeros del vuelo debería estar vacía después de la simulación.");
     }
 
     @Test
     @DisplayName("Simular vuelo sin avión asignado debe lanzar IllegalArgumentException")
-    void testSimulateFlightNoAirplaneAssigned() throws ListException, QueueException { // Añadido QueueException
+    void testSimulateFlightNoAirplaneAssigned() throws ListException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 11, 2, 10, 0);
-        flightScheduleManager.createFlight("AA401", "SJO", "MIA", departure, 180, 100); // Añadido 180
+        flightScheduleManager.createFlight("AA401", "SJO", "MIA", departure, 180, 100);
 
         assertThrows(IllegalArgumentException.class, () -> {
             flightScheduleManager.simulateFlight("AA401");
@@ -343,9 +347,9 @@ class FlightScheduleManagerTest {
 
     @Test
     @DisplayName("No se debe simular un vuelo ya en progreso o completado")
-    void testSimulateFlightAlreadyProcessed() throws ListException, StackException, QueueException { // Añadido QueueException
+    void testSimulateFlightAlreadyProcessed() throws ListException, StackException { // <<--- Eliminado QueueException
         LocalDateTime departure = LocalDateTime.of(2025, 11, 3, 9, 0);
-        Flight flight = flightScheduleManager.createFlight("AA402", "SJO", "MIA", departure, 180, 150); // Añadido 180
+        Flight flight = flightScheduleManager.createFlight("AA402", "SJO", "MIA", departure, 180, 150);
         Airplane airplane = new Airplane("AV-002", 150, "SJO");
         flight.setAirplane(airplane);
 
@@ -367,14 +371,14 @@ class FlightScheduleManagerTest {
 
     @Test
     @DisplayName("Display flights by status should run without exceptions")
-    void testDisplayFlightsByStatus() throws ListException, QueueException { // Añadido QueueException
-        flightScheduleManager.createFlight("DP101", "SJO", "MIA", LocalDateTime.of(2025, 1, 1, 10, 0), 180, 100); // Añadido 180
-        flightScheduleManager.createFlight("DP102", "MIA", "JFK", LocalDateTime.of(2025, 1, 2, 11, 0), 180, 100); // Añadido 180
-        Flight cancelledFlight = flightScheduleManager.createFlight("DP103", "SJO", "LAX", LocalDateTime.of(2025, 1, 3, 12, 0), 180, 100); // Añadido 180
+    void testDisplayFlightsByStatus() throws ListException { // <<--- Eliminado QueueException
+        flightScheduleManager.createFlight("DP101", "SJO", "MIA", LocalDateTime.of(2025, 1, 1, 10, 0), 180, 100);
+        flightScheduleManager.createFlight("DP102", "MIA", "JFK", LocalDateTime.of(2025, 1, 2, 11, 0), 180, 100);
+        Flight cancelledFlight = flightScheduleManager.createFlight("DP103", "SJO", "LAX", LocalDateTime.of(2025, 1, 3, 12, 0), 180, 100);
         cancelledFlight.setStatus(Flight.FlightStatus.CANCELLED);
 
         // Simulate a flight to get it to COMPLETED status
-        Flight completedFlight = flightScheduleManager.createFlight("DP104", "SJO", "MIA", LocalDateTime.of(2025, 1, 4, 13, 0), 180, 100); // Añadido 180
+        Flight completedFlight = flightScheduleManager.createFlight("DP104", "SJO", "MIA", LocalDateTime.of(2025, 1, 4, 13, 0), 180, 100);
         Airplane airplane = new Airplane("AV-TEST-004", 100, "SJO");
         completedFlight.setAirplane(airplane);
         try {
@@ -402,34 +406,34 @@ class FlightScheduleManagerTest {
     // --- MÉTODOS AUXILIARES PARA TESTS ---
 
     /**
-     * Verifica si un pasajero específico está presente en la LinkedQueue de pasajeros de un vuelo.
-     * Dado que LinkedQueue no tiene un método 'contains' directo, este es un método de ayuda para pruebas.
-     * @param flight El vuelo cuya cola de pasajeros se va a inspeccionar.
+     * Verifica si un pasajero específico está presente en la CircularDoublyLinkedList de pasajeros de un vuelo.
+     * Dado que CircularDoublyLinkedList no tiene un método 'contains' directo que podamos usar sin modificarla
+     * para tests, la recorremos y luego la restauramos.
+     * @param flight El vuelo cuya lista de pasajeros se va a inspeccionar.
      * @param passenger El pasajero a buscar.
-     * @return true si el pasajero está en la cola, false en caso contrario.
+     * @return true si el pasajero está en la lista, false en caso contrario.
      */
-    private boolean containsPassengerInFlightQueue(Flight flight, Passenger passenger) {
-        LinkedQueue tempQueue = new LinkedQueue();
-        boolean found = false;
-        try {
-            // Recorre la cola temporalmente para buscar al pasajero
-            while (!flight.getPassengers().isEmpty()) {
-                Passenger p = (Passenger) flight.getPassengers().deQueue();
-                if (p.equals(passenger)) {
-                    found = true;
-                }
-                tempQueue.enQueue(p); // Vuelve a encolar al pasajero en la cola temporal
-            }
-            // Regresa todos los pasajeros a la cola original del vuelo
-            while (!tempQueue.isEmpty()) {
-                flight.getPassengers().enQueue(tempQueue.deQueue());
-            }
-        } catch (QueueException e) {
-            // Manejar la excepción si la cola está vacía o hay otro error, aunque en este contexto de test no debería ocurrir.
-            e.printStackTrace();
-            fail("Excepción inesperada al verificar pasajero en cola de vuelo: " + e.getMessage());
+    private boolean containsPassengerInFlightList(Flight flight, Passenger passenger) {
+        CircularDoublyLinkedList passengers = flight.getPassengers();
+        // Si la lista es null o vacía, no hay nada que buscar.
+        if (passengers == null || passengers.isEmpty()) {
+            return false;
         }
-        return found;
+
+        // Temporalmente movemos los elementos a una lista auxiliar para poder recorrer la original.
+        // Aunque CircularDoublyLinkedList tiene métodos de recorrido, el get(index) es más sencillo aquí para el test.
+        // Si tu CircularDoublyLinkedList soporta iteradores o un toArray(), sería más directo.
+        // Asumiendo que tiene un método get(index):
+        try {
+            for (int i = 0; i < passengers.size(); i++) {
+                if (((Passenger) passengers.get(i)).equals(passenger)) {
+                    return true;
+                }
+            }
+        } catch (ListException e) {
+            fail("Excepción inesperada al verificar pasajero en lista circular: " + e.getMessage());
+        }
+        return false;
     }
 
 

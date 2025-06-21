@@ -1,11 +1,9 @@
 package ucr.proyectoalgoritmos.Domain.flight;
 
-// Importa LinkedQueue en lugar de CircularDoublyLinkedList
-import ucr.proyectoalgoritmos.Domain.queue.LinkedQueue;
+import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
-import ucr.proyectoalgoritmos.Domain.list.ListException; // Puede que necesites cambiar a QueueException para los errores específicos de la cola
+import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
-import ucr.proyectoalgoritmos.Domain.queue.QueueException; // Asegúrate de importar QueueException
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,7 +14,7 @@ public class Flight {
     private String destinationAirportCode;
     private LocalDateTime departureTime;
     private int capacity; // Esta capacidad puede cambiar si se asigna un avión
-    private LinkedQueue passengers; // AHORA ES LinkedQueue para la lista de pasajeros
+    private CircularDoublyLinkedList passengers; // Lista de pasajeros en el vuelo
     private int occupancy; // Número actual de pasajeros en el vuelo
     private FlightStatus status; // Estado actual del vuelo
     private Airplane airplane; // El avión asignado a este vuelo (puede ser nulo inicialmente)
@@ -59,10 +57,10 @@ public class Flight {
      * @param capacity La capacidad inicial de pasajeros del vuelo. Esta puede ser actualizada
      * si se asigna un avión con una capacidad diferente.
      * @throws IllegalArgumentException Si alguno de los parámetros obligatorios es nulo, vacío o inválido.
-     * @throws QueueException Si ocurre un error al inicializar la cola de pasajeros. (Cambiado de ListException)
+     * @throws ListException Si ocurre un error al inicializar la lista de pasajeros.
      */
     public Flight(String flightNumber, String originAirportCode, String destinationAirportCode,
-                  LocalDateTime departureTime, int capacity) throws QueueException { // Cambiado de ListException
+                  LocalDateTime departureTime, int capacity) throws ListException {
         // Validaciones en el constructor para asegurar la integridad de los datos.
         if (flightNumber == null || flightNumber.trim().isEmpty()) {
             throw new IllegalArgumentException("El número de vuelo no puede ser nulo o vacío.");
@@ -85,7 +83,7 @@ public class Flight {
         this.destinationAirportCode = destinationAirportCode.trim();
         this.departureTime = departureTime;
         this.capacity = capacity;
-        this.passengers = new LinkedQueue(); // AHORA SE INICIALIZA COMO LinkedQueue
+        this.passengers = new CircularDoublyLinkedList(); // Inicializa la lista de pasajeros
         this.occupancy = 0; // Ocupación inicial en 0
         this.status = FlightStatus.SCHEDULED; // Estado inicial
         this.airplane = null; // Avión no asignado al inicio
@@ -98,7 +96,7 @@ public class Flight {
     public String getDestinationAirportCode() { return destinationAirportCode; }
     public LocalDateTime getDepartureTime() { return departureTime; }
     public int getCapacity() { return capacity; }
-    public LinkedQueue getPassengers() { return passengers; } // AHORA RETORNA LinkedQueue
+    public CircularDoublyLinkedList getPassengers() { return passengers; }
     public int getOccupancy() { return occupancy; }
     public FlightStatus getStatus() { return status; }
     public Airplane getAirplane() { return airplane; }
@@ -137,7 +135,13 @@ public class Flight {
      */
     public void setAirplane(Airplane airplane) {
         if (airplane == null) {
+            // Decide how to handle capacity when no airplane is assigned.
+            // For now, if no plane is assigned, the flight's capacity might revert to its
+            // initial constructor capacity or become effectively 0 depending on design.
+            // This implementation maintains the last set capacity for flexibility.
+            // Consider if a null airplane means the flight is no longer viable (e.g., set status to CANCELLED).
             this.airplane = null;
+            // Optionally: set this.capacity = 0; or revert to initial capacity if applicable
             return;
         }
 
@@ -175,40 +179,51 @@ public class Flight {
      * Añade un pasajero al vuelo.
      * @param passenger El objeto {@link Passenger} a añadir.
      * @throws IllegalArgumentException Si el pasajero es nulo.
-     * @throws QueueException Si el vuelo está lleno. (Cambiado de ListException)
+     * @throws ListException Si el vuelo está lleno o el pasajero ya está en el vuelo.
      */
-    public void addPassenger(Passenger passenger) throws QueueException { // Cambiado a QueueException
+    public void addPassenger(Passenger passenger) throws ListException {
         if (passenger == null) {
             throw new IllegalArgumentException("El pasajero no puede ser nulo.");
         }
         if (occupancy >= capacity) {
-            throw new QueueException("El vuelo " + this.flightNumber + " está lleno. No se pudo añadir al pasajero " + passenger.getId() + ".");
+            throw new ListException("El vuelo " + this.flightNumber + " está lleno. No se pudo añadir al pasajero " + passenger.getId() + ".");
         }
-        // Nota: Las colas no suelen verificar si un elemento ya existe antes de añadirlo (no tienen 'contains' eficiente).
-        // Si la unicidad del pasajero en el vuelo es un requisito estricto, la lógica de validación
-        // debería manejarse antes de llamar a este método, o añadir un conjunto auxiliar para rastrear la unicidad.
-        this.passengers.enQueue(passenger); // AHORA USA enQueue
+        // Asume que Passenger.equals() está correctamente implementado (por ID del pasajero)
+        if (this.passengers.contains(passenger)) {
+            throw new ListException("El pasajero " + passenger.getId() + " ya está en el vuelo " + this.flightNumber + ".");
+        }
+
+        this.passengers.add(passenger);
         this.occupancy++;
     }
 
     /**
-     * Remueve el primer pasajero de la cola del vuelo (FIFO).
-     * @return El objeto {@link Passenger} que fue removido.
-     * @throws QueueException Si el vuelo no tiene pasajeros.
+     * Remueve un pasajero del vuelo.
+     * @param passenger El objeto {@link Passenger} a remover.
+     * @throws IllegalArgumentException Si el pasajero es nulo.
+     * @throws ListException Si el vuelo no tiene pasajeros o el pasajero no está en el vuelo.
      */
-    public Passenger deQueuePassenger() throws QueueException { // Renombrado y modificado para usar deQueue
-        if (this.passengers.isEmpty()) {
-            throw new QueueException("El vuelo " + this.flightNumber + " no tiene pasajeros para remover.");
+    public void removePassenger(Passenger passenger) throws ListException {
+        if (passenger == null) {
+            throw new IllegalArgumentException("El pasajero no puede ser nulo.");
         }
-        this.occupancy--;
-        return (Passenger) this.passengers.deQueue(); // Usa deQueue
+        if (this.passengers.isEmpty()) {
+            throw new ListException("El vuelo " + this.flightNumber + " no tiene pasajeros para remover.");
+        }
+        // Asume que Passenger.equals() está correctamente implementado (por ID del pasajero)
+        if (this.passengers.contains(passenger)) {
+            this.passengers.remove(passenger);
+            this.occupancy--;
+        } else {
+            throw new ListException("El pasajero " + passenger.getId() + " no está en el vuelo " + this.flightNumber + ".");
+        }
     }
 
     /**
      * Vacía la lista de pasajeros del vuelo y restablece la ocupación a cero.
-     * @throws QueueException Si ocurre un error al limpiar la lista de pasajeros. (Cambiado de ListException)
+     * @throws ListException Si ocurre un error al limpiar la lista de pasajeros.
      */
-    public void clearPassengers() throws QueueException { // Cambiado a QueueException
+    public void clearPassengers() throws ListException {
         this.passengers.clear();
         this.occupancy = 0;
     }
