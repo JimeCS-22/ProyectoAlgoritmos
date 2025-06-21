@@ -5,17 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Cambios en varias clases, test de todas las clases que flataban, cambios en el simulador(falta quitarle unos debug) y creo que ya">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_6_2025_04_38_[Changes]/arrival_1605086.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_6_2025_04_38_[Changes]/check-in.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_6_2025_04_38_[Changes]/check_9149990.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_6_2025_04_38_[Changes]/cielo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_6_2025_04_38_[Changes]/flight_2297974.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_6_2025_04_38_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_6_2025_04_38__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/FlightManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/DoublyLinkedListDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/UtilJson/AirportJson.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/list/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/list/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/airports.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/airports.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,13 +157,26 @@
       <recent name="ucr.proyectoalgoritmos.Domain.aeropuetos" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FlightSimulatorConsoleTest">
+  <component name="RunManager" selected="Application.HelloApplication">
     <configuration name="FlightSimulatorConsoleTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.flight.FlightSimulatorConsoleTest" />
       <module name="ProyectoAlgoritmos" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.flight.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.HelloApplication" />
+      <module name="ProyectoAlgoritmos" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ucr.proyectoalgoritmos.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -200,22 +214,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PassengerManagerTest.testGetPassengerFlightHistory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ProyectoAlgoritmos" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ucr.proyectoalgoritmos.Domain.passenger.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ucr.proyectoalgoritmos.Domain.passenger" />
-      <option name="MAIN_CLASS_NAME" value="ucr.proyectoalgoritmos.Domain.passenger.PassengerManagerTest" />
-      <option name="METHOD_NAME" value="testGetPassengerFlightHistory" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="RouteManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ProyectoAlgoritmos" />
       <extension name="coverage">
@@ -233,11 +231,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.HelloApplication" />
         <item itemvalue="Application.FlightSimulatorConsoleTest" />
         <item itemvalue="JUnit.PassengerManagerTest" />
         <item itemvalue="JUnit.FlightScheduleManagerTest" />
         <item itemvalue="JUnit.RouteManagerTest" />
-        <item itemvalue="JUnit.PassengerManagerTest.testGetPassengerFlightHistory" />
       </list>
     </recent_temporary>
   </component>
@@ -338,5 +336,16 @@
     <MESSAGE value="Últimos arreglos de la simulación listos" />
     <MESSAGE value="Cambios en varias clases, test de todas las clases que flataban, cambios en el simulador(falta quitarle unos debug) y creo que ya" />
     <option name="LAST_COMMIT_MESSAGE" value="Cambios en varias clases, test de todas las clases que flataban, cambios en el simulador(falta quitarle unos debug) y creo que ya" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/HelloApplication.java</url>
+          <line>10</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

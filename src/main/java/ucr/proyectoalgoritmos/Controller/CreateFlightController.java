@@ -1,30 +1,52 @@
 package ucr.proyectoalgoritmos.Controller;
 
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
+import ucr.proyectoalgoritmos.Domain.Circular.CircularLinkedList;
+import ucr.proyectoalgoritmos.Domain.FlightManager;
+import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
+import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
+import ucr.proyectoalgoritmos.Domain.flight.FlightScheduleManager;
+import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.util.FXUtility;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class CreateFlightController {
-    @javafx.fxml.FXML
+    @FXML
     private TextField departureTime;
-    @javafx.fxml.FXML
+    @FXML
     private TextField destinationCode;
-    @javafx.fxml.FXML
+    @FXML
     private TextField occupancy;
-    @javafx.fxml.FXML
+    @FXML
     private Button Enter;
-    @javafx.fxml.FXML
+    @FXML
     private TextField originCode;
-    @javafx.fxml.FXML
+    @FXML
     private TextField flightNumber;
-    @javafx.fxml.FXML
+    @FXML
     private TextField capacity;
-    @javafx.fxml.FXML
-    private ChoiceBox status;
+    @FXML
+    private ChoiceBox<Flight.FlightStatus> status;
 
-    @javafx.fxml.FXML
+
+    @FXML
     public void enterOnAction(Event event) {
+
+
     }
+
+
+
+
 }

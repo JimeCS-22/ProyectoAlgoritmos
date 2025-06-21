@@ -1,5 +1,6 @@
 package ucr.proyectoalgoritmos.Domain.aeropuetos;
 
+import ucr.proyectoalgoritmos.Domain.FlightManager;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException; // ¡Asegúrate de que esta excepción esté definida en tu proyecto!
 
@@ -17,6 +18,7 @@ public class AirportManager {
      * que están siendo gestionados por este manager. Es el TDA principal para aeropuertos.
      */
     private DoublyLinkedList airports;
+    private static AirportManager instance;
 
     /**
      * Constructor para inicializar una nueva instancia de `AirportManager`.
@@ -189,5 +191,23 @@ public class AirportManager {
             System.out.println("No se encontraron aeropuertos con los criterios de filtro especificados.");
         }
         System.out.println("--------------------------");
+    }
+
+    public static synchronized AirportManager getInstance() {
+        if (instance == null) {
+            instance = new AirportManager();
+        }
+        return instance;
+    }
+
+    public DoublyLinkedList getAirportList() {
+        return airports;
+    }
+
+    public void addAirport(Airport airport) throws ListException {
+        if (airport == null) {
+            throw new ListException("El aeropuerto no puede ser nulo.");
+        }
+        this.airports.add(airport);
     }
 }

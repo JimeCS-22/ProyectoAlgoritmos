@@ -2,7 +2,7 @@ module ucr.proyectoalgoritmos {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
-    requires java.desktop;
+    requires com.fasterxml.jackson.databind;
 
     // Open packages for reflection (Gson needs access to private fields)
     opens ucr.proyectoalgoritmos.Domain.aeropuetos to com.google.gson;
@@ -35,4 +35,6 @@ module ucr.proyectoalgoritmos {
     exports ucr.proyectoalgoritmos.Domain.stack;
     exports ucr.proyectoalgoritmos.Domain.route;
     exports ucr.proyectoalgoritmos.util;
+    exports ucr.proyectoalgoritmos.Serializer;
+    opens ucr.proyectoalgoritmos.Serializer to javafx.fxml;
 }
