@@ -18,21 +18,27 @@ public class DoublyLinkedListSerializer extends StdSerializer<DoublyLinkedList> 
         super(t);
     }
 
-
     @Override
     public void serialize(DoublyLinkedList value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartArray(); // La lista doble se representará como un array JSON
+        // Asegúrate de que si la lista es nula o vacía, se serialice como un array vacío []
+        if (value == null || value.isEmpty()) {
+            gen.writeStartArray();
+            gen.writeEndArray();
+            return;
+        }
+
+        gen.writeStartArray(); // Inicia el array JSON
         try {
             for (int i = 0; i < value.size(); i++) {
-                // Asumimos que tu get(i) devuelve el Airport.
-                // Jackson se encargará de serializar el objeto Airport por nosotros.
-                gen.writeObject(value.get(i));
+                Object item = value.get(i);
+                if (item != null) {
+                    gen.writeObject(item); // Jackson se encargará de serializar 'item'
+                }
             }
-        } catch (ListException e) {
-            System.err.println("Error al serializar DoublyLinkedList: " + e.getMessage());
-            throw new IOException("Error al acceder a elementos de la lista durante la serialización", e);
+        } catch (Exception e) {
+            // Manejo de errores
+            throw new IOException("Error serializando DoublyLinkedList: " + e.getMessage(), e);
         }
-        gen.writeEndArray();
+        gen.writeEndArray(); // Cierra el array JSON
     }
-
 }

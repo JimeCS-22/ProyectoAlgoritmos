@@ -1,6 +1,271 @@
 [ {
-  "code" : "RC",
-  "name" : "Republica Colombiana",
+  "code" : "SJO",
+  "name" : "Juan Santamaría International Airport",
+  "country" : "Costa Rica",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "LIR",
+  "name" : "Daniel Oduber Quirós International Airport",
+  "country" : "Costa Rica",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "MEX",
+  "name" : "Mexico City International Airport",
+  "country" : "Mexico",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "CUN",
+  "name" : "Cancún International Airport",
+  "country" : "Mexico",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "PTY",
+  "name" : "Tocumen International Airport",
+  "country" : "Panama",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "BOG",
+  "name" : "El Dorado International Airport",
   "country" : "Colombia",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "LIM",
+  "name" : "Jorge Chávez International Airport",
+  "country" : "Peru",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "EZE",
+  "name" : "Ministro Pistarini International Airport",
+  "country" : "Costa Rica",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "GRU",
+  "name" : "São Paulo/Guarulhos International Airport",
+  "country" : "Brazil",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "MIA",
+  "name" : "Miami International Airport",
+  "country" : "USA",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "LAX",
+  "name" : "Los Angeles International Airport",
+  "country" : "USA",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "JFK",
+  "name" : "John F. Kennedy International Airport",
+  "country" : "USA",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "ORD",
+  "name" : "O'Hare International Airport",
+  "country" : "USA",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "LHR",
+  "name" : "London Heathrow Airport",
+  "country" : "United Kingdom",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "CDG",
+  "name" : "Charles de Gaulle Airport",
+  "country" : "France",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "FRA",
+  "name" : "Frankfurt Airport",
+  "country" : "Germany",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "DXB",
+  "name" : "Dubai International Airport",
+  "country" : "United Arab Emirates",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "NRT",
+  "name" : "Narita International Airport",
+  "country" : "Japan",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "SYD",
+  "name" : "Sydney Airport",
+  "country" : "Australia",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "MAD",
+  "name" : "Adolfo Suárez Madrid–Barajas Airport",
+  "country" : "Spain",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "AMS",
+  "name" : "Amsterdam Airport Schiphol",
+  "country" : "Netherlands",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "YYZ",
+  "name" : "Toronto Pearson International Airport",
+  "country" : "Canada",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "PEK",
+  "name" : "Beijing Capital International Airport",
+  "country" : "China",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "DEL",
+  "name" : "Indira Gandhi International Airport",
+  "country" : "India",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "CPH",
+  "name" : "Copenhagen Airport",
+  "country" : "Denmark",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "QRO",
+  "name" : "Querétaro Intercontinental Airport",
+  "country" : "Colombia",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "SJO",
+  "name" : "Juan SantaMaria Airport",
+  "country" : "Costa Rica",
+  "passengerQueue" : [ ],
+  "status" : "UNDER_MAINTENANCE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "JEY",
+  "name" : "JuanchoE.Yrausquin",
+  "country" : "Isla de Saba",
+  "passengerQueue" : [ ],
   "status" : "CLOSED",
-  "departuresBoard" : {
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "FR",
+  "name" : "Francia Airport",
+  "country" : "Francia",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "RD",
+  "name" : "Republica Dominicana Airport",
+  "country" : "Republica Dominicada",
+  "passengerQueue" : [ ],
+  "status" : "CLOSED",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+} ]

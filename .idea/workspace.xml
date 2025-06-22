@@ -4,19 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Cambios en varias clases, test de todas las clases que flataban, cambios en el simulador(falta quitarle unos debug) y creo que ya">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/FlightManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/DoublyLinkedListDeserializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/UtilJson/AirportJson.java" afterDir="false" />
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Clases para el json">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/DeleteAirportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/UpdateAirportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/CircularDoublyLinkedListDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/CircularDoublyLinkedListSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/UtilJson/FlightJson.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/DeleteAirport.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/updateAirport.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/AirportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateAirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/CreateAirportController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/CreateFlightController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/list/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/list/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/DoublyLinkedListDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/DoublyLinkedListDeserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/DoublyLinkedListSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/DoublyLinkedListSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/SinglyLinkedListDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/SinglyLinkedListDeserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/SinglyLinkedListSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Serializer/SinglyLinkedListSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/UtilJson/AirportJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/UtilJson/AirportJson.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/airports.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/airports.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/airports.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/createAirport.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,9 +38,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JUnit5 Test Class" />
         <option value="FxmlFile" />
         <option value="Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -41,12 +53,12 @@
     &quot;assignee&quot;: &quot;TEALZN&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/JimeCS-22/ProyectoAlgoritmos.git&quot;,
-    &quot;accountId&quot;: &quot;9fb43fba-24fa-4582-9d69-18688c67828b&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/JimeCS-22/ProyectoAlgoritmos.git",
+    "accountId": "058a3909-7402-424c-9ffc-7061ec0a45a9"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -312,7 +324,23 @@
       <option name="project" value="LOCAL" />
       <updated>1750313073235</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Ya se guarda el Json solo me falta arreglar algunas cositas">
+      <option name="closed" value="true" />
+      <created>1750544890163</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1750544890163</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Clases para el json">
+      <option name="closed" value="true" />
+      <created>1750545143800</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1750545143800</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -335,7 +363,9 @@
     <MESSAGE value="Comentarios de la simulacion listos" />
     <MESSAGE value="Últimos arreglos de la simulación listos" />
     <MESSAGE value="Cambios en varias clases, test de todas las clases que flataban, cambios en el simulador(falta quitarle unos debug) y creo que ya" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cambios en varias clases, test de todas las clases que flataban, cambios en el simulador(falta quitarle unos debug) y creo que ya" />
+    <MESSAGE value="Ya se guarda el Json solo me falta arreglar algunas cositas" />
+    <MESSAGE value="Clases para el json" />
+    <option name="LAST_COMMIT_MESSAGE" value="Clases para el json" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -343,7 +373,7 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/HelloApplication.java</url>
           <line>10</line>
-          <option name="timeStamp" value="1" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

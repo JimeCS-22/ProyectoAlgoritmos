@@ -1,5 +1,7 @@
 package ucr.proyectoalgoritmos.Domain.aeropuetos;
 
+import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
+import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 import java.util.Objects; // Import required for Objects.equals and Objects.hash
 
@@ -22,6 +24,7 @@ public class Airport {
      * El **país** donde se localiza el aeropuerto.
      */
     private String country;
+    private DoublyLinkedList passengerQueue;
     /**
      * El **estado operativo actual** del aeropuerto, definido por la enumeración {@link AirportStatus}.
      * Permite saber si el aeropuerto está activo, cerrado o en mantenimiento.
@@ -67,7 +70,16 @@ public class Airport {
         this.name = name;
         this.country = country;
         this.status = AirportStatus.ACTIVE; // Estado por defecto
-        this.departuresBoard = new SinglyLinkedList(); // Inicializa la pizarra de salidas
+        this.departuresBoard = new SinglyLinkedList(); // Inicializar siempre
+        this.passengerQueue = new DoublyLinkedList();
+    }
+
+    public Airport() {
+        // Inicializa cualquier cosa a valores por defecto si es necesario,
+        // pero para la deserialización de Jackson, a menudo es suficiente con que exista.
+        this.status = AirportStatus.ACTIVE; // Un buen valor por defecto
+        this.departuresBoard = new SinglyLinkedList(); // ¡AÑADIR ESTO!
+        this.passengerQueue = new DoublyLinkedList();
     }
 
     /**
@@ -84,6 +96,7 @@ public class Airport {
         this.country = country;
         this.status = status;
         this.departuresBoard = new SinglyLinkedList();
+        this.passengerQueue = new DoublyLinkedList();
     }
 
 
@@ -124,25 +137,23 @@ public class Airport {
      * conteniendo los vuelos programados.
      * @return La SinglyLinkedList que representa la pizarra de salidas.
      */
-    public SinglyLinkedList getDeparturesBoard() {
-        return departuresBoard;
-    }
+    public SinglyLinkedList getDeparturesBoard() { return departuresBoard; }
+
+
+
 
     /**
      * Establece un **nuevo estado operativo** para el aeropuerto.
      * @param status El nuevo estado del aeropuerto, de tipo {@link AirportStatus}.
      */
-    public void setStatus(AirportStatus status) {
-        this.status = status;
-    }
+    public void setStatus(AirportStatus status) { this.status = status; }
+
 
     /**
      * Establece una nueva **pizarra de salidas** para el aeropuerto.
      * @param departuresBoard La nueva SinglyLinkedList que representará la pizarra de salidas.
      */
-    public void setDeparturesBoard(SinglyLinkedList departuresBoard) {
-        this.departuresBoard = departuresBoard;
-    }
+    public void setDeparturesBoard(SinglyLinkedList departuresBoard) { this.departuresBoard = departuresBoard; }
 
     /**
      * Provee una **representación en cadena de texto** de la información del aeropuerto.
@@ -186,5 +197,34 @@ public class Airport {
     public int hashCode() {
         // Genera el hash code basado en el código del aeropuerto, que es el identificador único.
         return Objects.hash(code);
+    }
+
+    public DoublyLinkedList getPassengerQueue() { // Debe coincidir con el tipo de tu campo
+        return passengerQueue;
+    }
+
+    // Setter para la cola de pasajeros (Jackson lo necesita para deserializar si está en el JSON)
+    public void setPassengerQueue(DoublyLinkedList passengerQueue) {
+        this.passengerQueue = passengerQueue;
+    }
+
+    public int getPassengerQueueSize() throws ListException { // ¡QUITAR throws ListException!
+        return passengerQueue != null ? passengerQueue.size() : 0;
+    }
+
+    public int getDeparturesBoardSize() {
+        return departuresBoard != null ? departuresBoard.size() : 0;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

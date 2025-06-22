@@ -20,19 +20,25 @@ public class SinglyLinkedListSerializer extends StdSerializer<SinglyLinkedList> 
 
     @Override
     public void serialize(SinglyLinkedList value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartArray();
+        // MUY IMPORTANTE: Si la lista es nula o vacía, escribe un array JSON vacío.
+        if (value == null || value.isEmpty()) {
+            gen.writeStartArray();
+            gen.writeEndArray();
+            return;
+        }
+
+        gen.writeStartArray(); // Inicia el array JSON
         try {
             for (int i = 0; i < value.size(); i++) {
-                // Asumimos que tu get(i) devuelve el Airport.
-                // Jackson se encargará de serializar el objeto Airport por nosotros.
-                gen.writeObject(value.get(i));
+                Object item = value.get(i);
+                if (item != null) {
+                    gen.writeObject(item); // Jackson se encargará de serializar 'item' (ej. Flight)
+                }
             }
-        } catch (ListException e) {
-            // Manejo de errores: si tu get() lanza una excepción, regístrala o re-lánzala como IOException
-            System.err.println("Error al serializar SinglyLinkedList: " + e.getMessage());
-            throw new IOException("Error al acceder a elementos de la lista durante la serialización", e);
+        } catch (Exception e) {
+            // Considera un manejo más específico de ListException si tu get(i) la lanza
+            throw new IOException("Error serializando SinglyLinkedList: " + e.getMessage(), e);
         }
-        gen.writeEndArray();
+        gen.writeEndArray(); // Cierra el array JSON
     }
-
 }

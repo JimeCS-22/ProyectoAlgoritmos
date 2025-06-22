@@ -3,6 +3,8 @@ package ucr.proyectoalgoritmos.Domain.aeropuetos;
 import ucr.proyectoalgoritmos.Domain.FlightManager;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException; // ¡Asegúrate de que esta excepción esté definida en tu proyecto!
+import ucr.proyectoalgoritmos.Domain.list.Node;
+import ucr.proyectoalgoritmos.UtilJson.AirportJson;
 
 /**
  * La clase `AirportManager` es responsable de **gestionar la colección de aeropuertos**
@@ -27,6 +29,8 @@ public class AirportManager {
     public AirportManager() {
         this.airports = new DoublyLinkedList();
     }
+
+
 
     /**
      * Crea un **nuevo aeropuerto** y lo añade a la lista de aeropuertos gestionados.
@@ -195,9 +199,19 @@ public class AirportManager {
 
     public static synchronized AirportManager getInstance() {
         if (instance == null) {
-            instance = new AirportManager();
+            instance = new AirportManager(); // Tu constructor privado
+            // Carga los aeropuertos aquí
+            instance.setAirports(AirportJson.loadAirportsFromJson()); // O como lo hayas llamado
         }
         return instance;
+    }
+
+    public void setAirports(DoublyLinkedList airports) {
+        if (airports == null) {
+            this.airports = new DoublyLinkedList(); // Asegura que nunca sea null
+        } else {
+            this.airports = airports;
+        }
     }
 
     public DoublyLinkedList getAirportList() {
@@ -209,5 +223,55 @@ public class AirportManager {
             throw new ListException("El aeropuerto no puede ser nulo.");
         }
         this.airports.add(airport);
+    }
+
+    //Metodo para obtener el nombre del aeropuerto
+    public Airport getAirportByName(String name) throws ListException {
+        if (airports.isEmpty()) {
+            return null;
+        }
+
+        for (int i = 0; i < this.airports.size(); i++) {
+            Airport airport = (Airport) this.airports.get(i);
+            if (airport.getName().equalsIgnoreCase(name)) {
+                return airport;
+            }
+        }
+        return null;
+    }
+
+    //Actualiza el aeropuerto
+    public void updateAirport(Airport updatedAirport) throws ListException {
+        if (updatedAirport == null) {
+            throw new ListException("El aeropuerto a actualizar no puede ser nulo.");
+        }
+
+        boolean foundAndUpdated = false;
+        // Iterar usando el método get(index) que sí tienes y funciona bien
+        for (int i = 0; i < this.airports.size(); i++) {
+            Airport existingAirport = (Airport) this.airports.get(i);
+            // Comparamos por el código, ya que es el identificador inmutable.
+            if (existingAirport.getCode().equals(updatedAirport.getCode())) {
+                // Actualizar las propiedades del objeto existente directamente
+                existingAirport.setName(updatedAirport.getName());
+                existingAirport.setCountry(updatedAirport.getCountry());
+                existingAirport.setStatus(updatedAirport.getStatus());
+                // Si quieres que departuresBoard y passengerQueue también se "actualicen" (reemplacen),
+                // hazlo aquí. Pero lo normal es que las listas internas se gestionen aparte.
+                // Por ahora, las propiedades existentes permanecen.
+                // existingAirport.setDeparturesBoard(updatedAirport.getDeparturesBoard());
+                // existingAirport.setPassengerQueue(updatedAirport.getPassengerQueue());
+
+                foundAndUpdated = true;
+                break; // Salir del bucle una vez que se encuentra y actualiza
+            }
+        }
+
+        if (foundAndUpdated) {
+            System.out.println("[INFO] Aeropuerto " + updatedAirport.getName() + " actualizado exitosamente.");
+            AirportJson.saveAirportsToJson(this.airports); // ¡Guardar los cambios después de la modificación!
+        } else {
+            throw new ListException("No se encontró el aeropuerto con código " + updatedAirport.getCode() + " para actualizar.");
+        }
     }
 }

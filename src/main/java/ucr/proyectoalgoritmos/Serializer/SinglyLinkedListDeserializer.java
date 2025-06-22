@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 
@@ -22,16 +23,25 @@ public class SinglyLinkedListDeserializer extends StdDeserializer<SinglyLinkedLi
 
     @Override
     public SinglyLinkedList deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        SinglyLinkedList list = new SinglyLinkedList(); // Crea una nueva instancia de tu lista
-        JsonNode node = p.getCodec().readTree(p); // Lee todo el array JSON como un nodo
+        SinglyLinkedList list = new SinglyLinkedList(); // Siempre crea una nueva instancia
+        JsonNode node = p.getCodec().readTree(p);
+
+        // Si el JSON para la lista es null, simplemente devolvemos la lista vacía recién creada.
+        if (node.isNull()) {
+            return list;
+        }
 
         if (node.isArray()) {
             for (JsonNode elementNode : node) {
-                Airport airport = ctxt.readValue(elementNode.traverse(p.getCodec()), Airport.class);
-                list.add(airport); // Usa tu método add()
+                // Deserializa cada elemento como Flight
+                Flight flight = ctxt.readValue(elementNode.traverse(p.getCodec()), Flight.class);
+                list.add(flight);
             }
+        } else {
+            // Si no es un array (e.g., es un objeto vacío '{}' o un valor inesperado),
+            // simplemente se devuelve la lista vacía. Esto previene errores para JSONs malformados
+            // y evita que se intente añadir un elemento no-array a la lista.
         }
         return list;
     }
-
 }

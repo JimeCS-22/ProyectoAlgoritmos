@@ -1,5 +1,7 @@
 package ucr.proyectoalgoritmos.UtilJson;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -17,16 +19,21 @@ import java.io.IOException;
 
 public class AirportJson {
 
+
     private static final String FILE_PATH = "src/main/resources/airports.json";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        // **REGISTRAR TUS SERIALIZADORES/DESERIALIZADORES PERSONALIZADOS PARA DoublyLinkedList**
         SimpleModule module = new SimpleModule();
         module.addSerializer(DoublyLinkedList.class, new DoublyLinkedListSerializer());
-        module.addDeserializer(DoublyLinkedList.class, new DoublyLinkedListDeserializer());
+        module.addDeserializer(DoublyLinkedList.class, new DoublyLinkedListDeserializer(Airport.class));
+        // Register SinglyLinkedList serializer and deserializer
+        module.addSerializer(SinglyLinkedList.class, new SinglyLinkedListSerializer());
+        module.addDeserializer(SinglyLinkedList.class, new SinglyLinkedListDeserializer());
+
         objectMapper.registerModule(module);
     }
 
@@ -55,24 +62,32 @@ public class AirportJson {
      */
     public static DoublyLinkedList loadAirportsFromJson() {
         File file = new File(FILE_PATH);
+        System.out.println("DEBUG: Intentando cargar aeropuertos desde: " + file.getAbsolutePath());
+        System.out.println("DEBUG: ¿Existe el archivo? " + file.exists());
+        System.out.println("DEBUG: ¿Está vacío el archivo? (length == 0) " + (file.exists() && file.length() == 0));
+
+
         if (!file.exists() || file.length() == 0) {
             System.out.println("El archivo JSON no existe o está vacío. Retornando una nueva DoublyLinkedList.");
-            return new DoublyLinkedList(); // Retorna tu propia lista doble vacía
+            return new DoublyLinkedList();
         }
 
         try {
-            // Jackson ahora sabe cómo leer directamente en tu DoublyLinkedList
+            // ObjectMapper.readValue() ahora invocará a tu DoublyLinkedListDeserializer,
+            // y este ya sabe que debe deserializar los elementos como Airport.class.
             DoublyLinkedList airports = objectMapper.readValue(file, DoublyLinkedList.class);
             System.out.println("Aeropuertos cargados desde " + FILE_PATH);
+            System.out.println("DEBUG: Cantidad de aeropuertos cargados: " + airports.size());
             return airports;
         } catch (IOException e) {
             System.err.println("Error al cargar aeropuertos desde JSON: " + e.getMessage());
+            e.printStackTrace();
             FXUtility.alert("Error de Carga", "No se pudo cargar la lista de aeropuertos.");
             return new DoublyLinkedList();
         } catch (Exception e) {
             System.err.println("Error inesperado durante la carga de JSON: " + e.getMessage());
-            FXUtility.alert("Error Inesperado", "Ocurrió un error inesperado al cargar los aeropuertos.");
             e.printStackTrace();
+            FXUtility.alert("Error Inesperado", "Ocurrió un error inesperado al cargar los aeropuertos.");
             return new DoublyLinkedList();
         }
     }

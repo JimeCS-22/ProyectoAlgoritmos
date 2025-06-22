@@ -23,6 +23,7 @@ public class RouteManager {
     private AirportManager airportManager;
     // Instancia de GSON para la serialización/deserialización de JSON.
     private Gson gson;
+    private static RouteManager instance;
 
     /**
      * Constructor para RouteManager.
@@ -37,6 +38,8 @@ public class RouteManager {
         // Inicializa Gson con formato bonito para depuración.
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
+
+
 
     /**
      * Carga las rutas desde un archivo JSON y las añade al grafo.
@@ -123,4 +126,14 @@ public class RouteManager {
         return routeService.getOutgoingRouteCount(airportCode);
     }
     */
+
+    public RouteManager() {
+    }
+
+    public static synchronized RouteManager getInstance() {
+        if (instance == null) {
+            instance = new RouteManager();
+        }
+        return instance;
+    }
 }

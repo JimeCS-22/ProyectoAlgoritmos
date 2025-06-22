@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -18,21 +19,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="444.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.AirportController.CreateAirportController">
-    <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
+<AnchorPane prefHeight="720.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.AirportController.UpdateAirportController">
     <ImageView fitHeight="720.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <image>
             <Image url="@images/degradados.png" />
         </image>
     </ImageView>
 
-    <!-- Contenedor principal de contenido (la "tarjeta" central para el formulario) -->
     <VBox alignment="CENTER" layoutX="327.0" layoutY="100.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="70.0">
         <padding>
             <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
         </padding>
         <children>
-            <!-- Logo de la ballena -->
             <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@images/whale_1841292.png" />
@@ -42,7 +40,6 @@
                 </VBox.margin>
             </ImageView>
 
-            <!-- Título "Whale System" con degradado -->
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
                 <font>
                     <Font name="Pristina" size="40.0" />
@@ -68,8 +65,7 @@
                 </VBox.margin>
             </Text>
 
-            <!-- Título del formulario -->
-            <Label text="Registrar Nuevo Aeropuerto" textFill="#222a5b">
+            <Label text="Actualizar Aeropuerto" textFill="#222a5b">
                 <font>
                     <Font name="System Bold" size="28.0" />
                 </font>
@@ -78,7 +74,29 @@
                 </VBox.margin>
             </Label>
 
-            <!-- GridPane para organizar los campos de entrada -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <children>
+                    <Label text="Buscar por Nombre:" textFill="#455a64">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="nameToSearch" prefHeight="40.0" prefWidth="200.0" promptText="Nombre del aeropuerto a actualizar" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+                    <Button fx:id="SearchButton" mnemonicParsing="false" onAction="#searchOnAction" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #5cb85c; -fx-text-fill: white; -fx-background-radius: 8;" text="Buscar">
+                        <font>
+                            <Font name="System Bold" size="14.0" />
+                        </font>
+                    </Button>
+                </children>
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </HBox>
+
             <GridPane hgap="15.0" vgap="15.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
@@ -98,33 +116,21 @@
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="airportCode" prefHeight="40.0" promptText="Ej. SJO" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </TextField>
+                    <TextField fx:id="airportCode" prefHeight="40.0" promptText="Ej. SJO" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                    <Label text="Nombre:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Nuevo Nombre:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="1">
                         <font>
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="name" prefHeight="40.0" promptText="Nombre del Aeropuerto" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </TextField>
+                    <TextField fx:id="name" prefHeight="40.0" promptText="Nombre del Aeropuerto" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <Label text="País:" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="2">
                         <font>
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="country" prefHeight="40.0" promptText="País del Aeropuerto" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </TextField>
+                    <TextField fx:id="country" prefHeight="40.0" promptText="País del Aeropuerto" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                     <Label text="Estado (Status):" textFill="#455a64" GridPane.columnIndex="0" GridPane.rowIndex="3">
                         <font>
@@ -138,7 +144,7 @@
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="departuresBoard" prefHeight="40.0" promptText="Info del panel de salidas" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <TextField fx:id="departuresBoard" disable="true" prefHeight="40.0" promptText="Info del panel de salidas (no editable)" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                         <font>
                             <Font size="14.0" />
                         </font>
@@ -149,7 +155,7 @@
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="passengerQueue" prefHeight="40.0" promptText="Info de cola de pasajeros" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <TextField fx:id="passengerQueue" disable="true" prefHeight="40.0" promptText="Info de cola de pasajeros (no editable)" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
                         <font>
                             <Font size="14.0" />
                         </font>
@@ -157,8 +163,7 @@
                 </children>
             </GridPane>
 
-            <!-- Botón de Acción -->
-            <Button fx:id="Enter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-text-fill: white; -fx-background-radius: 10;" text="Registrar Aeropuerto">
+            <Button fx:id="Enter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #4f61da; -fx-text-fill: white; -fx-background-radius: 10;" text="Actualizar Aeropuerto">
                 <font>
                     <Font name="Pristina" size="24.0" />
                 </font>
@@ -167,7 +172,6 @@
                 </VBox.margin>
             </Button>
 
-            <!-- Imagen decorativa (aeropuerto/avión) -->
             <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@images/airport-plane.png" />

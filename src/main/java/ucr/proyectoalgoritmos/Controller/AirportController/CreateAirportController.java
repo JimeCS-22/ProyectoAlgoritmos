@@ -1,16 +1,13 @@
-package ucr.proyectoalgoritmos.Controller;
+package ucr.proyectoalgoritmos.Controller.AirportController;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
-import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 import ucr.proyectoalgoritmos.UtilJson.AirportJson;
 import ucr.proyectoalgoritmos.util.FXUtility;
 
@@ -29,18 +26,28 @@ public class CreateAirportController {
     private TextField passengerQueue;
     @javafx.fxml.FXML
     private ComboBox<Airport.AirportStatus> status;
-    private DoublyLinkedList airportList;
+    private AirportManager airportManager; // Instancia del AirportManager Singleton
 
-    @javafx.fxml.FXML
+    @FXML
     public void initialize() {
         status.getItems().setAll(Airport.AirportStatus.values());
-        status.getSelectionModel().select(Airport.AirportStatus.ACTIVE);
+        status.getSelectionModel().select(Airport.AirportStatus.ACTIVE); // Estado por defecto
+
+        try {
+            // Obtén la instancia del AirportManager Singleton
+            this.airportManager = AirportManager.getInstance();
+            // Esto asegura que la lista de aeropuertos se cargue al inicio
+            // y que airportManager.getAirports() tenga datos.
+        } catch (Exception e) {
+            FXUtility.alert("Error de Inicialización", "No se pudo preparar el sistema para crear aeropuertos: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void enterOnAction(ActionEvent event) {
         try {
-            String code = airportCode.getText().trim();
+            String code = airportCode.getText().trim().toUpperCase(); // ¡IMPORTANTE! Códigos IATA en mayúsculas
             String airportName = name.getText().trim();
             String airportCountry = country.getText().trim();
             Airport.AirportStatus selectedStatus = status.getSelectionModel().getSelectedItem();
@@ -50,38 +57,31 @@ public class CreateAirportController {
                 return;
             }
 
-            DoublyLinkedList currentAirports = AirportManager.getInstance().getAirportList();
-            boolean codeExists = false;
-            for (int i = 0; i < currentAirports.size(); i++) {
-                Airport existingAirport = (Airport) currentAirports.get(i);
-                if (existingAirport.getCode().equalsIgnoreCase(code)) {
-                    codeExists = true;
-                    break;
-                }
-            }
-
-            if (codeExists){
-                FXUtility.alert("Error de Duplicación", "Ya existe un aeropuerto con el código: " + code);
-                return;
-            }
-
+            // Crea el nuevo objeto Airport
             Airport newAirport = new Airport(code , airportName , airportCountry);
             newAirport.setStatus(selectedStatus);
 
-            // Agrega el nuevo aeropuerto a la lista del manejador
-            AirportManager.getInstance().addAirport(newAirport);
+            // Delega la lógica de añadir y validar duplicidad al AirportManager
+            // El AirportManager lanzará una ListException si el código ya existe.
+            this.airportManager.addAirport(newAirport);
 
             // *** IMPORTANTE: Guarda la lista actualizada en JSON ***
-            AirportJson.saveAirportsToJson(AirportManager.getInstance().getAirportList());
+            // Usa el método getAirports() del manager para obtener la lista actualizada.
+            AirportJson.saveAirportsToJson(this.airportManager.getAllAirports());
 
             FXUtility.alert("Éxito", "Aeropuerto " + newAirport.getName() + " ha sido creado exitosamente.");
             clearFields();
 
         } catch (ListException e) {
+            // Captura las excepciones de lógica lanzadas por AirportManager.addAirport()
             FXUtility.alert("Error de Lógica", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            // Si addAirport lanza IllegalArgumentException (ej. aeropuerto nulo)
+            FXUtility.alert("Error de Entrada", e.getMessage());
         } catch (Exception e) {
+            // Captura cualquier otro error inesperado
             FXUtility.alert("Error del Sistema", "Ocurrió un error inesperado: " + e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(); // Imprime la traza completa para depuración
         }
     }
 

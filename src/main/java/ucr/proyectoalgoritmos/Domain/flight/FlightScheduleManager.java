@@ -8,6 +8,7 @@ import ucr.proyectoalgoritmos.Domain.list.ListException; // Importar ListExcepti
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
 import ucr.proyectoalgoritmos.Domain.route.RouteManager;
+import ucr.proyectoalgoritmos.UtilJson.FlightJson;
 // import ucr.proyectoalgoritmos.Domain.queue.QueueException; // REMOVIDO: Ya no es necesario si Flight usa CircularDoublyLinkedList
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class FlightScheduleManager {
     private AirportManager airportManager;
     private RouteManager routeManager;
     private Map<String, ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList> waitingLists;
+    private static FlightScheduleManager instance;
 
     /**
      * Constructor para FlightScheduleManager.
@@ -329,4 +331,21 @@ public class FlightScheduleManager {
             }
         }
     }
+
+    public static synchronized FlightScheduleManager getInstance(AirportManager airportManager, RouteManager routeManager) {
+        if (instance == null) {
+            // Se crea la instancia solo si aún no existe
+            instance = new FlightScheduleManager(airportManager, routeManager);
+            // ¡IMPORTANTE! Cargar los vuelos desde el JSON aquí, cuando el manager se inicializa
+            instance.setScheduledFlights(FlightJson.loadFlightsFromJson());
+            // Si también quisieras persistir las waitingLists, aquí deberías cargarlas también
+            // instance.setWaitingLists(FlightJson.loadWaitingListsFromJson()); // Si tuvieras un método así
+        }
+        return instance;
+    }
+
+    public void setScheduledFlights(DoublyLinkedList scheduledFlights) {
+        this.scheduledFlights = scheduledFlights;
+    }
+
 }
