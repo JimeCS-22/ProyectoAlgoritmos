@@ -62,4 +62,5 @@ public class Passenger implements Comparable<Passenger> {
         return "Pasajero [ID: " + id + ", Nombre: " + (name != null ? name : "N/A") +
                 ", Nacionalidad: " + (nationality != null ? nationality : "N/A") + "]";
     }
+
 }

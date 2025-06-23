@@ -4,7 +4,10 @@ module ucr.proyectoalgoritmos {
 
     requires com.google.gson;
     requires com.fasterxml.jackson.datatype.jsr310;
-    requires com.fasterxml.jackson.databind; // A menudo es necesario con databind
+    requires com.fasterxml.jackson.databind;
+
+    requires kernel;
+    requires layout; // A menudo es necesario con databind
 
 
     opens ucr.proyectoalgoritmos.Domain.aeropuetos to com.fasterxml.jackson.databind;

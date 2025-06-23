@@ -21,8 +21,10 @@ import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.Domain.stack.StackException;
+import ucr.proyectoalgoritmos.reportes.ReportGenerator;
 import ucr.proyectoalgoritmos.util.ListConverter;
 
+import java.io.File; // Para manejar rutas de archivo
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,7 +65,12 @@ public class SimulationController implements Initializable {
     // @FXML // Este botón ya no es necesario si se automatiza el avance de vuelo
     // private Button btnNextFlight;
 
+    // Ya no necesitamos un @FXML para el botón de reportes si se genera automáticamente.
+    // @FXML
+    // private Button btnGenerateReports;
+
     private FlightSimulator flightSimulator;
+    private ReportGenerator reportGenerator; // Instancia de ReportGenerator
     private Timeline updateTimeline;
     private Timeline movementTimeline;
     private String currentVisualizedFlightNumber = null;
@@ -85,12 +92,17 @@ public class SimulationController implements Initializable {
 
     private List<Point2D> fixedRoutePoints = new ArrayList<>();
 
+    // Ruta para guardar los reportes
+    private static final String REPORTS_OUTPUT_DIR = "C:/data/reports";
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             flightSimulator = new FlightSimulator();
+            reportGenerator = new ReportGenerator(flightSimulator); // Inicializa el ReportGenerator aquí
             isSimulatorInitialized = true;
-            System.out.println("DEBUG INIT: FlightSimulator inicializado en el controlador.");
+            System.out.println("DEBUG INIT: FlightSimulator y ReportGenerator inicializados en el controlador.");
         } catch (ListException | IOException | TreeException e) {
             System.err.println("ERROR INIT: Fallo al inicializar FlightSimulator: " + e.getMessage());
             e.printStackTrace();
@@ -101,7 +113,6 @@ public class SimulationController implements Initializable {
             btnStartSimulation.setDisable(true);
             btnPauseSimulation.setDisable(true);
             btnResetSimulation.setDisable(true);
-            // btnNextFlight.setDisable(true); // Eliminar esta línea
             speedSlider.setDisable(true);
             lblFlightInfo.setText("ERROR: Simulador no disponible. Revise la consola.");
             return;
@@ -110,7 +121,6 @@ public class SimulationController implements Initializable {
         btnStartSimulation.setDisable(false);
         btnPauseSimulation.setDisable(true);
         btnResetSimulation.setDisable(true);
-        // btnNextFlight.setDisable(false); // Eliminar esta línea
 
         speedSlider.setMin(MIN_SIM_SPEED);
         speedSlider.setMax(MAX_SIM_SPEED);
@@ -125,7 +135,6 @@ public class SimulationController implements Initializable {
 
         resetLiveFlightDataLabels();
 
-        // El updateTimeline ahora también será responsable de activar el siguiente vuelo
         updateTimeline = new Timeline(new KeyFrame(Duration.millis(120), event -> {
             updateLiveFlightData();
         }));
@@ -166,7 +175,7 @@ public class SimulationController implements Initializable {
             btnStartSimulation.setDisable(true);
             btnPauseSimulation.setDisable(false);
             btnResetSimulation.setDisable(true);
-            // btnNextFlight.setDisable(true); // Deshabilitar si todavía existe en el FXML
+
             System.out.println("DEBUG ACTION: Simulación automática iniciada. UI Timeline play().");
 
             // Intenta avanzar al primer vuelo inmediatamente al iniciar
@@ -224,7 +233,6 @@ public class SimulationController implements Initializable {
                 if (activatedFlight != null) {
                     System.out.println("DEBUG ACTION: Se ha avanzado al siguiente vuelo programado: " + activatedFlight.getFlightNumber());
                     resetLiveFlightDataLabels();
-                    // updateLiveFlightData(); // No es necesario llamarlo aquí, el timeline lo hará.
                     startAirplaneMovement(activatedFlight.getFlightNumber());
                 } else {
                     lblFlightInfo.setText("No hay más vuelos programados. Simulación finalizada.");
@@ -232,11 +240,15 @@ public class SimulationController implements Initializable {
                     resetLiveFlightDataLabels();
                     speedSlider.setValue(MIN_SIM_SPEED);
                     stopAirplaneMovement();
-                    isSimulationRunning = false; // Detener la simulación una vez que no haya más vuelos
+                    isSimulationRunning = false;
                     updateTimeline.stop(); // Detener el timeline de actualización de la UI
                     btnStartSimulation.setDisable(false); // Habilitar el botón de inicio de nuevo
                     btnPauseSimulation.setDisable(true);
                     btnResetSimulation.setDisable(false); // Habilitar reset
+
+                    // *** AQUÍ ES DONDE SE LLAMA A LA GENERACIÓN DE REPORTES AUTOMÁTICAMENTE ***
+                    generateReportsAutomatically();
+                    // **************************************************************************
                 }
             } catch (Exception e) {
                 System.err.println("ERROR ACTION: Fallo al avanzar al siguiente vuelo automáticamente: " + e.getMessage());
@@ -258,8 +270,9 @@ public class SimulationController implements Initializable {
 
             try {
                 flightSimulator = new FlightSimulator();
+                reportGenerator = new ReportGenerator(flightSimulator); // Reinicializa el ReportGenerator también
                 isSimulatorInitialized = true;
-                System.out.println("DEBUG ACTION: FlightSimulator reinicializado con éxito.");
+                System.out.println("DEBUG ACTION: FlightSimulator y ReportGenerator reinicializados con éxito.");
             } catch (ListException | IOException | TreeException e) {
                 System.err.println("ERROR ACTION: Fallo al reinicializar FlightSimulator: " + e.getMessage());
                 e.printStackTrace();
@@ -267,7 +280,6 @@ public class SimulationController implements Initializable {
                 btnStartSimulation.setDisable(true);
                 btnPauseSimulation.setDisable(true);
                 btnResetSimulation.setDisable(true);
-                // btnNextFlight.setDisable(true); // Eliminar esta línea
                 speedSlider.setDisable(true);
                 lblFlightInfo.setText("ERROR: Reinicialización fallida.");
                 return;
@@ -279,12 +291,11 @@ public class SimulationController implements Initializable {
             btnStartSimulation.setDisable(false);
             btnPauseSimulation.setDisable(true);
             btnResetSimulation.setDisable(true);
-            // btnNextFlight.setDisable(false); // Eliminar esta línea
             speedSlider.setValue(DEFAULT_SIM_SPEED);
 
             resetLiveFlightDataLabels();
             System.out.println("DEBUG ACTION: Simulación reiniciada y lista para comenzar de nuevo.");
-            lblFlightInfo.setText("Simulación lista. Presione 'Iniciar'."); // Mensaje actualizado
+            lblFlightInfo.setText("Simulación lista. Presione 'Iniciar'.");
             airplaneIcon.setOpacity(0.0);
         } else {
             System.out.println("DEBUG ACTION: El simulador no está inicializado. No se puede reiniciar.");
@@ -312,7 +323,6 @@ public class SimulationController implements Initializable {
                     Flight currentFlight = (Flight) scheduledFlightsList.get(i);
                     if (currentFlight.getStatus() == Flight.FlightStatus.IN_PROGRESS) {
                         flightInProgress = currentFlight;
-                        // System.out.println("DEBUG UI: Vuelo en progreso encontrado: " + currentFlight.getFlightNumber() + ", estado: " + currentFlight.getStatus());
                         break;
                     }
                 }
@@ -462,15 +472,11 @@ public class SimulationController implements Initializable {
                             if (progressRatio >= 1.0) {
                                 System.out.println("Movimiento del avión para " + currentVisualizedFlightNumber + " completado visualmente.");
                                 stopAirplaneMovement();
-                                // Aquí llamamos a processNextFlightAutomatically para que
-                                // el sistema intente cargar el siguiente vuelo.
                                 processNextFlightAutomatically();
                             }
                         } else {
                             System.out.println("FlightData para " + currentVisualizedFlightNumber + " no encontrado. Deteniendo movimiento.");
                             stopAirplaneMovement();
-                            // Si el FlightData es nulo, el vuelo ya no está en progreso en el simulador principal,
-                            // entonces intentamos avanzar al siguiente.
                             processNextFlightAutomatically();
                         }
                     } else {
@@ -528,5 +534,56 @@ public class SimulationController implements Initializable {
         double y = startPoint.getY() + (endPoint.getY() - startPoint.getY()) * segmentProgress;
 
         return new Point2D(x, y);
+    }
+
+    /**
+     * Genera automáticamente los reportes PDF al finalizar la simulación.
+     */
+    private void generateReportsAutomatically() {
+        if (!isSimulatorInitialized) {
+            System.err.println("ERROR REPORT: Simulador no inicializado. No se pueden generar reportes automáticamente.");
+            lblFlightInfo.setText("ERROR: No se pueden generar reportes. Simulador no inicializado.");
+            return;
+        }
+        if (reportGenerator == null) {
+            System.err.println("ERROR REPORT: ReportGenerator no inicializado.");
+            lblFlightInfo.setText("ERROR: No se pueden generar reportes. Objeto de reporte nulo.");
+            return;
+        }
+
+        System.out.println("DEBUG ACTION: Iniciando generación automática de reportes...");
+        lblFlightInfo.setText("Simulación finalizada. Generando reportes...");
+
+        // 1. Asegúrate de que el directorio exista.
+        File reportsDirectory = new File(REPORTS_OUTPUT_DIR);
+        if (!reportsDirectory.exists()) {
+            if (reportsDirectory.mkdirs()) {
+                System.out.println("DEBUG ACTION: Directorio de reportes creado: " + reportsDirectory.getAbsolutePath());
+            } else {
+                System.err.println("ERROR ACTION: No se pudo crear el directorio de reportes: " + reportsDirectory.getAbsolutePath() + ". Por favor, verifica los permisos.");
+                lblFlightInfo.setText("ERROR: No se pudo crear el directorio " + REPORTS_OUTPUT_DIR);
+                return; // Salir si no se puede crear el directorio
+            }
+        }
+
+        try {
+            // Generar cada reporte
+            reportGenerator.generateTop5AirportsReport(reportsDirectory.getAbsolutePath() + File.separator + "Reporte_Top_Aeropuertos.pdf");
+            reportGenerator.generateMostUsedRoutesReport(reportsDirectory.getAbsolutePath() + File.separator + "Reporte_Rutas_Mas_Usadas.pdf");
+            reportGenerator.generateTopPassengersReport(reportsDirectory.getAbsolutePath() + File.separator + "Reporte_Pasajeros_Frecuentes.pdf");
+            reportGenerator.generateAverageOccupancyReport(reportsDirectory.getAbsolutePath() + File.separator + "Reporte_Ocupacion_Promedio.pdf");
+
+            lblFlightInfo.setText("¡Reportes generados exitosamente en: " + REPORTS_OUTPUT_DIR + "!");
+            System.out.println("DEBUG ACTION: Todos los reportes generados exitosamente en: " + REPORTS_OUTPUT_DIR);
+
+        } catch (IOException e) {
+            System.err.println("ERROR REPORT: Error al generar reportes: " + e.getMessage());
+            e.printStackTrace();
+            lblFlightInfo.setText("ERROR al generar reportes. Verifique la consola.");
+        } catch (Exception e) { // Captura cualquier otra excepción inesperada
+            System.err.println("ERROR REPORT: Error inesperado al generar reportes: " + e.getMessage());
+            e.printStackTrace();
+            lblFlightInfo.setText("ERROR inesperado al generar reportes.");
+        }
     }
 }
