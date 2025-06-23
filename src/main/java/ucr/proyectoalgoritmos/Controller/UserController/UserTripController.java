@@ -42,6 +42,7 @@ public class UserTripController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         AirportManager airportManager = AirportManager.getInstance();
         RouteManager routeManager = RouteManager.getInstance(airportManager);
         flightScheduleManager = FlightScheduleManager.getInstance(airportManager, routeManager);
@@ -98,3 +99,4 @@ public class UserTripController implements Initializable {
         flightHistoryTable.refresh();
     }
 }
+
