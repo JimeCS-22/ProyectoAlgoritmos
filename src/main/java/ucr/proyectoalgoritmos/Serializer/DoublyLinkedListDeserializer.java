@@ -17,7 +17,7 @@ public class DoublyLinkedListDeserializer extends StdDeserializer<DoublyLinkedLi
     private final Class<?> elementType;
 
     public DoublyLinkedListDeserializer() {
-        this(Object.class); // Por defecto si no se especifica, deserializa como Object
+        this(Object.class);
     }
 
     public DoublyLinkedListDeserializer(Class<?> elementType) {
@@ -27,10 +27,9 @@ public class DoublyLinkedListDeserializer extends StdDeserializer<DoublyLinkedLi
 
     @Override
     public DoublyLinkedList deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        DoublyLinkedList list = new DoublyLinkedList(); // Siempre inicializa la lista
+        DoublyLinkedList list = new DoublyLinkedList();
         JsonNode node = p.getCodec().readTree(p);
 
-        // Si el nodo JSON es null, devolvemos la lista vacía.
         if (node.isNull()) {
             return list;
         }

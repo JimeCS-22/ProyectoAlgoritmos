@@ -30,7 +30,7 @@ public class AirportJson {
         SimpleModule module = new SimpleModule();
         module.addSerializer(DoublyLinkedList.class, new DoublyLinkedListSerializer());
         module.addDeserializer(DoublyLinkedList.class, new DoublyLinkedListDeserializer(Airport.class));
-        // Register SinglyLinkedList serializer and deserializer
+
         module.addSerializer(SinglyLinkedList.class, new SinglyLinkedListSerializer());
         module.addDeserializer(SinglyLinkedList.class, new SinglyLinkedListDeserializer());
 
@@ -73,8 +73,7 @@ public class AirportJson {
         }
 
         try {
-            // ObjectMapper.readValue() ahora invocará a tu DoublyLinkedListDeserializer,
-            // y este ya sabe que debe deserializar los elementos como Airport.class.
+
             DoublyLinkedList airports = objectMapper.readValue(file, DoublyLinkedList.class);
             System.out.println("Aeropuertos cargados desde " + FILE_PATH);
             System.out.println("DEBUG: Cantidad de aeropuertos cargados: " + airports.size());

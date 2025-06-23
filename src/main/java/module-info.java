@@ -3,9 +3,9 @@ module ucr.proyectoalgoritmos {
     requires javafx.fxml;
     // --- IMPORTANTE: Si estás usando Jackson, necesitas estos REQUIRES ---
     // requires com.google.gson; // <-- Si ya no usas GSON para nada, puedes eliminar esta línea
-    requires com.fasterxml.jackson.databind;
-    requires com.fasterxml.jackson.core;
-    requires com.google.gson; // A menudo es necesario con databind
+    requires com.google.gson;
+    requires com.fasterxml.jackson.datatype.jsr310;
+    requires com.fasterxml.jackson.databind; // A menudo es necesario con databind
     // requires com.fasterxml.jackson.annotation; // Puede que necesites esta si usas anotaciones de Jackson
 
     // -------------------------------------------------------------------
@@ -53,5 +53,7 @@ module ucr.proyectoalgoritmos {
     exports ucr.proyectoalgoritmos.Serializer; // Exporta tu paquete de serializadores
     exports ucr.proyectoalgoritmos.UtilJson;
     exports ucr.proyectoalgoritmos.Controller.AirportController;
-    opens ucr.proyectoalgoritmos.Controller.AirportController to javafx.fxml; // Exporta tu paquete de UtilJson
+    opens ucr.proyectoalgoritmos.Controller.AirportController to javafx.fxml;
+    exports ucr.proyectoalgoritmos.Controller.FlightController;
+    opens ucr.proyectoalgoritmos.Controller.FlightController to javafx.fxml; // Exporta tu paquete de UtilJson
 }

@@ -69,19 +69,16 @@ public class AirportController {
         colDepartureBoard.setCellValueFactory(new PropertyValueFactory<>("departuresBoardSize"));
         colPassengerQueue.setCellValueFactory(new PropertyValueFactory<>("passengerQueueSize"));
 
-
-        // Asigna la ObservableList a la TableView
         tblAirports.setItems(airportData);
 
-        // Carga los aeropuertos existentes en la tabla al iniciar el controlador
         loadAirportsIntoTable();
 
-        // Inicializa el grafo si es necesario (ejemplo)
-        // this.graph = new AdjacencyMatrixGraph(20); /
+
 
     }
 
     public void refreshAirportTable() {
+
         loadAirportsIntoTable();
     }
 
@@ -100,11 +97,11 @@ public class AirportController {
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent() && !result.get().isEmpty()) {
-            String airportCode = result.get().trim(); // Obtener el código y limpiar espacios en blanco
+            String airportCode = result.get().trim();
 
             try {
-                // Aquí es donde se cambia la lógica del grafo a la lista
-                Airport foundAirport = airportManager.findAirport(airportCode); // Usar tu método findAirport
+
+                Airport foundAirport = airportManager.findAirport(airportCode);
 
                 if (foundAirport != null) {
                     FXUtility.alert("Información", "El aeropuerto con código '" + airportCode + "' EXISTE en la lista.\n" +
@@ -115,10 +112,10 @@ public class AirportController {
                     FXUtility.alert("Información", "El aeropuerto con código '" + airportCode + "' NO EXISTE en la lista.");
                 }
             } catch (ListException e) {
-                // Captura excepciones específicas de tu lista si 'findAirport' las lanza
+
                 showAlert("Error de Lista", "Ocurrió un error al buscar en la lista: " + e.getMessage());
             } catch (Exception e) {
-                // Captura cualquier otra excepción inesperada
+
                 showAlert("Error Inesperado", "Ocurrió un error inesperado: " + e.getMessage());
             }
         }
@@ -135,33 +132,30 @@ public class AirportController {
     @FXML
     public void viewAllAirportsOnAction(ActionEvent actionEvent) {
         try {
-            DoublyLinkedList allAirports = airportManager.getAllAirports(); // Obtiene todos los aeropuertos
+            DoublyLinkedList allAirports = airportManager.getAllAirports();
 
             if (allAirports == null || allAirports.isEmpty()) {
                 FXUtility.alert("Información", "No hay aeropuertos registrados en el sistema.");
                 return;
             }
 
-            // Construir el mensaje con los detalles de cada aeropuerto
-            StringBuilder airportListText = new StringBuilder();
-            airportListText.append("Listado de todos los aeropuertos:\n\n");
+            String airportListText = "Listado de todos los aeropuertos:\n\n";
 
             for (int i = 0; i < allAirports.size(); i++) {
-                Airport airport = (Airport) allAirports.get(i); // Asegúrate de que los elementos sean Airport
-                airportListText.append("Código: ").append(airport.getCode()).append("\n");
-                airportListText.append("Nombre: ").append(airport.getName()).append("\n");
-                airportListText.append("País: ").append(airport.getCountry()).append("\n");
-                airportListText.append("Estado: ").append(airport.getStatus()).append("\n");
-                airportListText.append("----------------------------------\n"); // Separador entre aeropuertos
+                Airport airport = (Airport) allAirports.get(i);
+                airportListText += "Código: " + airport.getCode() + "\n";
+                airportListText += "Nombre: " + airport.getName() + "\n";
+                airportListText += "País: " + airport.getCountry() + "\n";
+                airportListText += "Estado: " + airport.getStatus() + "\n";
+                airportListText += "----------------------------------\n";
             }
 
-            // Mostrar el listado en un Alert con contenido expandible (mejor para listas largas)
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Listado de Aeropuertos");
             alert.setHeaderText("Todos los aeropuertos registrados");
             alert.setContentText("A continuación, se muestra la lista completa de aeropuertos:");
 
-            TextArea textArea = new TextArea(airportListText.toString());
+            TextArea textArea = new TextArea(airportListText);
             textArea.setEditable(false);
             textArea.setWrapText(true);
             textArea.setMaxWidth(Double.MAX_VALUE);
@@ -176,17 +170,14 @@ public class AirportController {
             expContent.add(label, 0, 0);
             expContent.add(textArea, 0, 1);
 
-            // Set content for the expandable part of the dialog.
             alert.getDialogPane().setExpandableContent(expContent);
-            alert.getDialogPane().setExpanded(true); // Opcional: para que inicie expandido
+            alert.getDialogPane().setExpanded(true);
 
             alert.showAndWait();
 
         } catch (ListException e) {
-            showAlert("Error de Lista", "Ocurrió un error al acceder a la lista de aeropuertos: " + e.getMessage());
+            FXUtility.alert("Error de Lista", "Ocurrió un error al acceder a la lista de aeropuertos: " + e.getMessage());
         } catch (Exception e) {
-            // Manejo genérico para cualquier otra excepción
-            // Imprimir el stack trace para depuración
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);

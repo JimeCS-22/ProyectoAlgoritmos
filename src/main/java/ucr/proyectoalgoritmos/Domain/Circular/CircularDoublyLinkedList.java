@@ -1,9 +1,11 @@
 package ucr.proyectoalgoritmos.Domain.Circular; // Adjusted package name
 
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.util.Utility;
 import ucr.proyectoalgoritmos.Domain.list.List;
 import ucr.proyectoalgoritmos.Domain.list.Node;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
 
 public class CircularDoublyLinkedList implements List {
     private Node first; // Pointer to the beginning of the list
@@ -299,5 +301,23 @@ public class CircularDoublyLinkedList implements List {
             aux = aux.next;
         }
         return result;
+    }
+
+    public void set(int index, Object element) throws ListException {
+        if (isEmpty()) {
+            throw new ListException("Circular Doubly Linked List is empty");
+        }
+        if (index < 0 || index >= count) {
+            throw new ListException("Index out of bounds for set operation: " + index + ". Size: " + count);
+        }
+
+        // Recorrer hasta el nodo en el índice especificado
+        Node current = first;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        // Actualizar los datos del nodo encontrado
+        current.data = element;
     }
 }

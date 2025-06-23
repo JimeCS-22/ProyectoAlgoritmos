@@ -1,13 +1,16 @@
 package ucr.proyectoalgoritmos.Domain.flight;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
+import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Flight {
     private String flightNumber;
     private String originAirportCode;
@@ -171,7 +174,7 @@ public class Flight {
 
     // El setter para 'occupancy' es privado porque debe ser gestionado internamente
     // por los métodos addPassenger y removePassenger.
-    private void setOccupancy(int occupancy) {
+    public void setOccupancy(int occupancy) {
         this.occupancy = occupancy;
     }
 
@@ -275,5 +278,79 @@ public class Flight {
                 ", Salida: " + departureTime + ", Cap: " + capacity +
                 ", Estado: " + status + (airplane != null ? ", Avión: " + airplane.getId() : "") +
                 ", Ocupación: " + occupancy + "]"; // Añadido el campo de ocupación para mayor claridad
+    }
+
+    public Flight(String flightNumber, String originAirportCode, String destinationAirportCode,
+                  LocalDateTime departureTime, int capacity, int occupancy, FlightStatus status) { // departureTime es LocalTime aquí
+        if (flightNumber == null || flightNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("El número de vuelo no puede ser nulo o vacío.");
+        }
+        if (originAirportCode == null || originAirportCode.trim().isEmpty()) {
+            throw new IllegalArgumentException("El código del aeropuerto de origen no puede ser nulo o vacío.");
+        }
+        if (destinationAirportCode == null || destinationAirportCode.trim().isEmpty()) {
+            throw new IllegalArgumentException("El código del aeropuerto de destino no puede ser nulo o vacío.");
+        }
+        if (departureTime == null) { // Aquí usas LocalTime
+            throw new IllegalArgumentException("La hora de salida no puede ser nula.");
+        }
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("La capacidad debe ser un número positivo.");
+        }
+        if (occupancy < 0 || occupancy > capacity) {
+            throw new IllegalArgumentException("La ocupación debe ser no negativa y no exceder la capacidad.");
+        }
+        if (status == null) {
+            throw new IllegalArgumentException("El estado del vuelo no puede ser nulo.");
+        }
+
+        this.flightNumber = flightNumber.trim();
+        this.originAirportCode = originAirportCode.trim();
+        this.destinationAirportCode = destinationAirportCode.trim();
+        this.departureTime = departureTime; // Asignamos directamente el LocalTime
+        this.capacity = capacity;
+        this.occupancy = occupancy;
+        this.status = status;
+        this.passengers = new CircularDoublyLinkedList(); // Inicializa la lista de pasajeros
+        this.airplane = null; // Avión no asignado al inicio
+        this.estimatedDurationMinutes = 0; // Duración por defecto, se puede setear después
+    }
+
+    public Flight() {
+        // Inicializa tus listas y valores por defecto para que no sean nulos
+        this.passengers = new CircularDoublyLinkedList();
+        this.status = FlightStatus.SCHEDULED; // O el valor que desees por defecto
+        this.occupancy = 0;
+        this.estimatedDurationMinutes = 0;
+        // Los Strings y LocalDateTime pueden ser null inicialmente y Jackson los rellenará
+    }
+
+    public String getPassengersDisplay() {
+        // Asegúrate de que 'passengers' no sea nulo antes de intentar acceder a él
+        if (this.passengers == null || this.passengers.isEmpty()) {
+            return "0/" + this.capacity; // Asumiendo que 'capacity' es accesible
+        }
+        return this.passengers.size() + "/" + this.capacity; // Asumiendo que 'capacity' es accesible
+    }
+
+
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
+    }
+
+    public void setOriginAirportCode(String originAirportCode) {
+        this.originAirportCode = originAirportCode;
+    }
+
+    public void setDestinationAirportCode(String destinationAirportCode) {
+        this.destinationAirportCode = destinationAirportCode;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setPassengers(CircularDoublyLinkedList passengers) {
+        this.passengers = passengers;
     }
 }

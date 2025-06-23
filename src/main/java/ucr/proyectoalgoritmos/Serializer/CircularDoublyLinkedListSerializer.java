@@ -20,23 +20,29 @@ public class CircularDoublyLinkedListSerializer extends StdSerializer<CircularDo
 
     @Override
     public void serialize(CircularDoublyLinkedList value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartArray(); // Inicia el array JSON
+        gen.writeStartArray(); // Abre el array JSON
         try {
-            for (int i = 0; i < value.size(); i++) {
-                // Escribe cada elemento de la lista.
-                // Jackson intentará serializar el objeto contenido (ej. Passenger).
-                // Si Passenger (o el tipo que guardes) no es directamente serializable,
-                // necesitarás un serializador para Passenger también.
-                gen.writeObject(value.get(i));
+            if (value == null || value.isEmpty()) { // Manejar listas nulas o vacías explícitamente
+                // No hace falta hacer nada, el array ya se cerrará abajo.
+            } else {
+                // Iterar correctamente sobre la lista circular para evitar bucles infinitos
+                // Asegúrate que tu CircularDoublyLinkedList tiene un método get(int index) o un iterador.
+                for (int i = 0; i < value.size(); i++) {
+                    Object item = value.get(i); // Asumo que get(i) es seguro y funciona en CircularDoublyLinkedList
+                    if (item != null) {
+                        gen.writeObject(item); // Deja que Jackson serialice el objeto (Flight en este caso)
+                    } else {
+                        gen.writeNull(); // Escribe 'null' si el elemento es nulo
+                    }
+                }
             }
-        } catch (ucr.proyectoalgoritmos.Domain.list.ListException e) {
-            // Manejar la excepción si ocurre un error al acceder a los elementos de la lista.
-            // En un caso real, podrías querer registrar esto o lanzar una excepción más específica.
+        } catch (ucr.proyectoalgoritmos.Domain.list.ListException e) { // <-- ¡Cuidado con el paquete aquí!
+            // Es mejor lanzar IOException directamente o wrappearla.
             throw new IOException("Error al serializar CircularDoublyLinkedList: " + e.getMessage(), e);
+        } finally {
+            gen.writeEndArray(); // Siempre cierra el array, incluso si hay un error en el bucle
         }
-        gen.writeEndArray(); // Cierra el array JSON
     }
-
 
 
 

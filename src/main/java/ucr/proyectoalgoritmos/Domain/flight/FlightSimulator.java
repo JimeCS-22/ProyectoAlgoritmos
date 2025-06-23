@@ -630,11 +630,7 @@ public class FlightSimulator {
     public void printSimulationSummary() {
         System.out.println("\n--- Resumen de la Simulación ---");
         System.out.println("Vuelos generados: " + flightCounter.get());
-        try {
-            System.out.println("Vuelos programados actualmente: " + flightScheduleManager.getScheduledFlights().size());
-        } catch (ListException e) {
-            System.err.println("Error al obtener el tamaño de vuelos programados: " + e.getMessage());
-        }
+        System.out.println("Vuelos programados actualmente: " + flightScheduleManager.getScheduledFlights().size());
 
         // You can add more summary statistics here if needed
         // e.g., printAirplaneFlightHistory(), passenger counts, etc.

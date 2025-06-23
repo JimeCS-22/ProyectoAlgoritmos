@@ -20,25 +20,24 @@ public class DoublyLinkedListSerializer extends StdSerializer<DoublyLinkedList> 
 
     @Override
     public void serialize(DoublyLinkedList value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        // Asegúrate de que si la lista es nula o vacía, se serialice como un array vacío []
         if (value == null || value.isEmpty()) {
             gen.writeStartArray();
             gen.writeEndArray();
             return;
         }
 
-        gen.writeStartArray(); // Inicia el array JSON
+        gen.writeStartArray();
         try {
             for (int i = 0; i < value.size(); i++) {
                 Object item = value.get(i);
                 if (item != null) {
-                    gen.writeObject(item); // Jackson se encargará de serializar 'item'
+                    gen.writeObject(item);
                 }
             }
         } catch (Exception e) {
-            // Manejo de errores
+
             throw new IOException("Error serializando DoublyLinkedList: " + e.getMessage(), e);
         }
-        gen.writeEndArray(); // Cierra el array JSON
+        gen.writeEndArray();
     }
 }

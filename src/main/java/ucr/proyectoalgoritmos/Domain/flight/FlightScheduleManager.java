@@ -1,7 +1,7 @@
 package ucr.proyectoalgoritmos.Domain.flight;
 
 // Ajustar las importaciones
-import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList; // Usar DoublyLinkedList estándar
+import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
 import ucr.proyectoalgoritmos.Domain.list.ListException; // Importar ListException para errores de lista
@@ -11,20 +11,25 @@ import ucr.proyectoalgoritmos.Domain.route.RouteManager;
 import ucr.proyectoalgoritmos.UtilJson.FlightJson;
 // import ucr.proyectoalgoritmos.Domain.queue.QueueException; // REMOVIDO: Ya no es necesario si Flight usa CircularDoublyLinkedList
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static ucr.proyectoalgoritmos.UtilJson.FlightJson.saveFlightsToJson;
 
 /**
  * Gestiona la programación, creación, asignación y simulación de vuelos.
  * Coordina con AirportManager y RouteManager para validar la información de vuelos.
  */
 public class FlightScheduleManager {
-    private DoublyLinkedList scheduledFlights;
+    private CircularDoublyLinkedList scheduledFlights;
     private AirportManager airportManager;
     private RouteManager routeManager;
     private Map<String, ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList> waitingLists;
     private static FlightScheduleManager instance;
+    private FlightJson flightJson;
+
 
     /**
      * Constructor para FlightScheduleManager.
@@ -40,7 +45,7 @@ public class FlightScheduleManager {
         if (routeManager == null) {
             throw new IllegalArgumentException("RouteManager no puede ser nulo.");
         }
-        this.scheduledFlights = new DoublyLinkedList();
+        this.scheduledFlights = new CircularDoublyLinkedList();
         this.airportManager = airportManager;
         this.routeManager = routeManager;
         this.waitingLists = new HashMap<>();
@@ -51,9 +56,7 @@ public class FlightScheduleManager {
      *
      * @return Una DoublyLinkedList que contiene los vuelos programados.
      */
-    public DoublyLinkedList getScheduledFlights() {
-        return scheduledFlights;
-    }
+
 
     /**
      * **Para propósitos de prueba.**
@@ -332,20 +335,114 @@ public class FlightScheduleManager {
         }
     }
 
+    // Método getInstance (que me proporcionaste)
     public static synchronized FlightScheduleManager getInstance(AirportManager airportManager, RouteManager routeManager) {
         if (instance == null) {
-            // Se crea la instancia solo si aún no existe
             instance = new FlightScheduleManager(airportManager, routeManager);
-            // ¡IMPORTANTE! Cargar los vuelos desde el JSON aquí, cuando el manager se inicializa
-            instance.setScheduledFlights(FlightJson.loadFlightsFromJson());
-            // Si también quisieras persistir las waitingLists, aquí deberías cargarlas también
-            // instance.setWaitingLists(FlightJson.loadWaitingListsFromJson()); // Si tuvieras un método así
+            // La carga inicial debe hacerse aquí, pasando los managers requeridos
+            // *** ¡AQUÍ ESTÁ LA CORRECCIÓN! PASA LOS ARGUMENTOS. ***
+            instance.setScheduledFlights(instance.flightJson.loadFlightsFromJson(airportManager, routeManager));
         }
         return instance;
     }
 
-    public void setScheduledFlights(DoublyLinkedList scheduledFlights) {
+    public void setScheduledFlights(CircularDoublyLinkedList scheduledFlights) { // <-- AQUÍ SE CAMBIA EL TIPO
         this.scheduledFlights = scheduledFlights;
     }
 
+    public void addFlight(Flight newFlight) {
+        try {
+            this.scheduledFlights.add(newFlight);
+        } catch (Exception e) {
+
+            System.err.println("Error al añadir vuelo a la lista de vuelos programados: " + e.getMessage());
+
+        }
+    }
+
+    public CircularDoublyLinkedList getAllFlights() {
+
+        return this.scheduledFlights;
+    }
+
+    public CircularDoublyLinkedList getScheduledFlights() { // <-- CAMBIO AQUÍ TAMBIÉN EL TIPO DE RETORNO
+        return scheduledFlights;
+    }
+
+    public void reloadFlightsFromJson() {
+        // Este método fuerza la relectura del archivo JSON
+        this.scheduledFlights = flightJson.loadFlightsFromJson(this.airportManager, this.routeManager);
+        if (this.scheduledFlights == null) {
+            this.scheduledFlights = new CircularDoublyLinkedList(); // Asegúrate de que no sea nulo
+        }
+        System.out.println("Vuelos recargados desde JSON.");
+    }
+
+    public boolean removeFlight(String flightNumberToDelete) throws ListException {
+
+        if (flightNumberToDelete == null || flightNumberToDelete.trim().isEmpty()) {
+            return false;
+        }
+
+        // Recarga los vuelos para asegurar la sincronización antes de modificar
+        reloadFlightsFromJson();
+
+        // Buscar el vuelo a eliminar
+        Flight flightToRemove = findFlight(flightNumberToDelete);
+
+        if (flightToRemove != null) {
+            // Si el vuelo fue encontrado, intenta eliminarlo de la lista.
+            boolean removed = scheduledFlights.remove(flightToRemove);
+
+            if (removed) {
+                // Si la eliminación fue exitosa, ¡aquí está la corrección!
+                // Debes pasar 'this.scheduledFlights' al método saveFlightsToJson()
+                saveFlightsToJson(this.scheduledFlights); // <-- **CORRECCIÓN AQUÍ**
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public boolean updateFlight(Flight flightToUpdate) throws ListException {
+        if (flightToUpdate == null || flightToUpdate.getFlightNumber().trim().isEmpty()) {
+            // Si el objeto vuelo o su número es nulo/vacío, no hay nada que actualizar.
+            return false;
+        }
+
+        // Paso 1: Asegurarse de que la lista en memoria esté actualizada con el archivo JSON.
+        // Esto es crucial para evitar sobrescribir datos más recientes si otra parte de la aplicación
+        // modificó el JSON mientras esta instancia estaba activa.
+        reloadFlightsFromJson();
+
+        // Paso 2: Buscar el vuelo en la lista actual por su número de vuelo.
+        // Necesitamos encontrar la instancia específica de 'Flight' que tenemos en 'scheduledFlights'.
+        int indexToUpdate = -1;
+        for (int i = 0; i < scheduledFlights.size(); i++) {
+            Object obj = scheduledFlights.get(i); // Obtiene el elemento en la posición i
+            if (obj instanceof Flight) {
+                Flight currentFlightInList = (Flight) obj;
+                // Comparamos por el número de vuelo, que es el identificador único.
+                if (currentFlightInList.getFlightNumber().equalsIgnoreCase(flightToUpdate.getFlightNumber())) {
+                    indexToUpdate = i; // Encontramos la posición
+                    break; // Salimos del bucle
+                }
+            }
+        }
+
+        // Paso 3: Si el vuelo fue encontrado, actualizarlo en la lista.
+        if (indexToUpdate != -1) {
+            // Tu CircularDoublyLinkedList necesita un método `set(int index, Object element)`
+            // para reemplazar un elemento en una posición dada.
+            scheduledFlights.set(indexToUpdate, flightToUpdate); // Reemplaza el vuelo existente con el actualizado
+
+            // Paso 4: Guardar la lista de vuelos modificada en el archivo JSON.
+            saveFlightsToJson(this.scheduledFlights);
+            return true; // La actualización fue exitosa
+        }
+
+        // Si el control llega aquí, significa que el vuelo no fue encontrado en la lista.
+        return false;
+    }
 }
