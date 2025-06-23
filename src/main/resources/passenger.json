@@ -1,79 +1,121 @@
-{
-  "passengers": [
-    {
-      "id": "P001",
-      "name": "Juan Pérez",
-      "nationality": "Mexican"
-    },
-    {
-      "id": "P002",
-      "name": "Ana García",
-      "nationality": "Spanish"
-    },
-    {
-      "id": "P003",
-      "name": "Peter Jones",
-      "nationality": "British"
-    },
-    {
-      "id": "P004",
-      "name": "Maria Rossi",
-      "nationality": "Italian"
-    },
-    {
-      "id": "P005",
-      "name": "Ahmed Khan",
-      "nationality": "Pakistani"
-    },
-    {
-      "id": "P006",
-      "name": "Sophie Dubois",
-      "nationality": "French"
-    },
-    {
-      "id": "P007",
-      "name": "Hiroshi Tanaka",
-      "nationality": "Japanese"
-    },
-    {
-      "id": "P008",
-      "name": "Elena Popova",
-      "nationality": "Russian"
-    },
-    {
-      "id": "P009",
-      "name": "David Lee",
-      "nationality": "Canadian"
-    },
-    {
-      "id": "P010",
-      "name": "Fatima Zahra",
-      "nationality": "Moroccan"
-    },
-    {
-      "id": "P011",
-      "name": "Lucas Silva",
-      "nationality": "Brazilian"
-    },
-    {
-      "id": "P012",
-      "name": "Isabel Vargas",
-      "nationality": "Colombian"
-    },
-    {
-      "id": "P013",
-      "name": "Kim Min-jun",
-      "nationality": "Korean"
-    },
-    {
-      "id": "P014",
-      "name": "Liam Murphy",
-      "nationality": "Irish"
-    },
-    {
-      "id": "P015",
-      "name": "Zoe Chen",
-      "nationality": "Australian"
-    }
-  ]
-}
+[ {
+  "id" : "P001",
+  "name" : "Juan Pérez",
+  "nationality" : "Mexican",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P002",
+  "name" : "Ana García",
+  "nationality" : "Spanish",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P003",
+  "name" : "Peter Jones",
+  "nationality" : "British",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P004",
+  "name" : "Maria Rossi",
+  "nationality" : "Italian",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P005",
+  "name" : "Ahmed Khan",
+  "nationality" : "Pakistani",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P006",
+  "name" : "Sophie Dubois",
+  "nationality" : "French",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P007",
+  "name" : "Hiroshi Tanaka",
+  "nationality" : "Japanese",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P008",
+  "name" : "David Lee",
+  "nationality" : "Canadian",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P009",
+  "name" : "Lucas Silva",
+  "nationality" : "Brazilian",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P010",
+  "name" : "Isabel Vargas",
+  "nationality" : "Colombian",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P011",
+  "name" : "Kim Min-jun",
+  "nationality" : "Korean",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P012",
+  "name" : "Liam Murphy",
+  "nationality" : "Irish",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P013",
+  "name" : "Zulay Chen",
+  "nationality" : "Tailand",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P014",
+  "name" : "Francesco Bartolini",
+  "nationality" : "Italiana",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P015",
+  "name" : "Raúl Camacho",
+  "nationality" : "Mexicana",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+} ]

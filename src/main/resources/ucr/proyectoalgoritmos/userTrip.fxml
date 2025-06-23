@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.UserTripController">
     <children>
-        <ImageView fitHeight="721.0" fitWidth="1195.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="693.0" fitWidth="1195.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@images/degradados.png" />
             </image>

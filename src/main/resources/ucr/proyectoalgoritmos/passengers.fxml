@@ -13,9 +13,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.PassengersController">
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.PassengerController.PassengersController">
     <!-- Fondo degradado principal -->
-    <ImageView fitHeight="720.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <ImageView fitHeight="693.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <image>
             <Image url="@images/degradado2.jpg" />
         </image>
@@ -74,11 +74,16 @@
                             <Font name="Pristina" size="20.0" />
                         </font>
                     </Button>
-                    <Button fx:id="btViewAll" mnemonicParsing="false" onAction="#viewAllPassengersOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 8;" text="Ver Todos los Pasajeros" textFill="WHITE">
-                        <font>
-                            <Font name="Pristina" size="20.0" />
-                        </font>
-                    </Button>
+               <Button fx:id="btSearch" mnemonicParsing="false" onAction="#searchPassengerOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 8;" text="Buscar Pasajero" textFill="WHITE">
+                  <font>
+                     <Font name="Pristina" size="20.0" />
+                  </font>
+               </Button>
+               <Button fx:id="btViewAll" mnemonicParsing="false" onAction="#viewAllPassengersOnAction" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #222a5b; -fx-background-radius: 8;" text="Ver Todos los Pasajeros" textFill="WHITE">
+                  <font>
+                     <Font name="Pristina" size="20.0" />
+                  </font>
+               </Button>
                 </children>
                 <VBox.margin>
                     <Insets bottom="25.0" />

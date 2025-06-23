@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -10,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -18,21 +18,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.PassengerController.CreatePassengerController">
-    <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
+<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.PassengerController.DeletePassengerController">
     <ImageView fitHeight="693.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <image>
             <Image url="@images/degradados.png" />
         </image>
     </ImageView>
 
-    <!-- Contenedor principal de contenido (la "tarjeta" central para el formulario) -->
     <VBox alignment="CENTER" layoutX="327.0" layoutY="100.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="70.0">
         <padding>
             <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
         </padding>
         <children>
-            <!-- Logo de la ballena -->
             <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@images/whale_1841292.png" />
@@ -42,7 +39,6 @@
                 </VBox.margin>
             </ImageView>
 
-            <!-- Título "Whale System" con degradado -->
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whale System" textAlignment="CENTER">
                 <font>
                     <Font name="Pristina" size="40.0" />
@@ -68,8 +64,7 @@
                 </VBox.margin>
             </Text>
 
-            <!-- Título del formulario -->
-            <Label text="Crear Nuevo Pasajero" textFill="#222a5b">
+            <Label text="Eliminar Pasajero" textFill="#222a5b">
                 <font>
                     <Font name="System Bold" size="28.0" />
                 </font>
@@ -78,10 +73,31 @@
                 </VBox.margin>
             </Label>
 
-            <!-- GridPane para organizar los campos de entrada -->
-            <GridPane hgap="15.0" vgap="15.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="439.0" spacing="10.0">
+                <children>
+                    <Label prefHeight="25.0" prefWidth="130.0" text="Buscar por ID:" textFill="#455a64">
+                        <font>
+                            <Font name="System Semibold" size="16.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="tfSearchId" prefHeight="30.0" prefWidth="218.0" promptText="ID del pasajero a eliminar" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;">
+                  <font>
+                     <Font size="14.0" />
+                  </font></TextField>
+                    <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchOnAction" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #5cb85c; -fx-text-fill: white; -fx-background-radius: 8;" text="Buscar">
+                        <font>
+                            <Font name="System Bold" size="14.0" />
+                        </font>
+                    </Button>
+                </children>
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </HBox>
+
+            <GridPane hgap="15.0" prefHeight="120.0" prefWidth="420.0" vgap="15.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
                 </columnConstraints>
                 <rowConstraints>
@@ -95,7 +111,7 @@
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="tfId" prefHeight="40.0" promptText="ID del Pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <TextField fx:id="tfId" disable="true" prefHeight="40.0" promptText="ID del Pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0">
                         <font>
                             <Font size="14.0" />
                         </font>
@@ -106,7 +122,7 @@
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="tfFullName" prefHeight="40.0" promptText="Nombre completo del pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <TextField fx:id="tfName" disable="true" prefHeight="40.0" promptText="Nombre Completo del Pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <font>
                             <Font size="14.0" />
                         </font>
@@ -117,12 +133,15 @@
                             <Font name="System Semibold" size="16.0" />
                         </font>
                     </Label>
-               <ComboBox fx:id="cbNationality" prefHeight="40.0" prefWidth="250.0" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <TextField fx:id="tfNationality" disable="true" prefHeight="40.0" promptText="Nacionalidad del Pasajero" style="-fx-background-radius: 8; -fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
                 </children>
             </GridPane>
 
-            <!-- Botón de Acción -->
-            <Button fx:id="btnEnter" mnemonicParsing="false" onAction="#enterOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #ffb43c; -fx-text-fill: white; -fx-background-radius: 10;" text="Registrar Pasajero">
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteOnAction" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 10;" text="Eliminar Pasajero">
                 <font>
                     <Font name="Pristina" size="24.0" />
                 </font>
@@ -130,6 +149,15 @@
                     <Insets top="30.0" />
                 </VBox.margin>
             </Button>
+
+            <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/check-in.png" />
+                </image>
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </ImageView>
         </children>
     </VBox>
 </AnchorPane>
