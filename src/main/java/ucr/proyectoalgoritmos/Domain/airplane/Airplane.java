@@ -19,6 +19,19 @@ public class Airplane {
     private AirplaneStatus status;
     private LinkedStack flightHistory;
 
+    // The generic setter for locationType.
+    // This allows setting any AirplaneLocationType, including AIRPORT, IN_FLIGHT, or UNKNOWN.
+    // It's a more general setter than setLocationInFlight().
+    // You might want to remove setLocationInFlight() if this one is enough,
+    // or keep both if setLocationInFlight() has specific side effects you want to preserve.
+    public void setLocationType(AirplaneLocationType airplaneLocationType) {
+        if (airplaneLocationType == null) {
+            throw new IllegalArgumentException("El tipo de ubicación del avión no puede ser nulo.");
+        }
+        this.locationType = airplaneLocationType;
+    }
+
+
     /**
      * Enumeración que define los posibles **estados operativos** en los que puede encontrarse un avión.
      */
@@ -139,17 +152,11 @@ public class Airplane {
      * @throws IllegalArgumentException Si el código de aeropuerto proporcionado es nulo o vacío.
      */
     public void setCurrentLocationAirportCode(String currentLocationAirportCode) {
-        // Los mensajes DEBUG son útiles, pero pueden ser ruidosos en producción.
-        // Considera usar un logger para controlarlos mejor.
-        // System.out.println("DEBUG (Airplane): Intentando establecer la ubicación actual a: '" + currentLocationAirportCode + "' para avión ID: " + this.id);
-
         if (currentLocationAirportCode == null || currentLocationAirportCode.trim().isEmpty()) {
-            // System.err.println("ERROR DEBUG (Airplane): Valor nulo o vacío recibido para currentLocationAirportCode en avión ID: " + this.id);
             throw new IllegalArgumentException("El código del aeropuerto actual no puede ser nulo o vacío.");
         }
         this.currentLocationAirportCode = currentLocationAirportCode.trim();
         this.locationType = AirplaneLocationType.AIRPORT; // Al establecer un aeropuerto, el tipo de ubicación es AIRPORT
-        // System.out.println("DEBUG (Airplane): Ubicación actual establecida a: '" + this.currentLocationAirportCode + "' y locationType a AIRPORT para avión ID: " + this.id);
     }
 
     /**
@@ -160,7 +167,6 @@ public class Airplane {
     public void setLocationInFlight() { // NUEVO MÉTODO
         this.locationType = AirplaneLocationType.IN_FLIGHT;
         // No se cambia currentLocationAirportCode aquí; este representa el ÚLTIMO aeropuerto conocido.
-        // System.out.println("DEBUG (Airplane): LocationType establecido a IN_FLIGHT para avión ID: " + this.id);
     }
 
     /**
