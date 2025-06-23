@@ -16,7 +16,7 @@ import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.route.RouteManager;
 import ucr.proyectoalgoritmos.Domain.route.RouteManager.ShortestPathResult;
 
-import java.io.IOException; // Necesario para manejar excepciones de carga de JSON
+import java.io.IOException;
 
 public class RouteController {
 
@@ -58,7 +58,6 @@ public class RouteController {
     public void initialize() {
         airportManager = new AirportManager();
         try {
-            // Se le pasa la ruta del sistema de archivos completa
             airportManager.loadAirportsFromJson(AIRPORTS_JSON_PATH);
             System.out.println("Aeropuertos cargados exitosamente en RouteController.");
         } catch (IOException | ListException e) {
@@ -70,17 +69,24 @@ public class RouteController {
 
         routeManager = RouteManager.getInstance(airportManager);
         try {
-            // Se le pasa la ruta del sistema de archivos completa
             routeManager.loadRoutesFromJson(ROUTES_JSON_PATH);
-            System.out.println("Rutas cargadas exitosamente en RouteController.");
+            if (routeManager.getGraph() != null) {
+                // AQUÍ ES DONDE ESTABA EL ERROR: Cambiado de .size() a .getNumVertices()
+                System.out.println("Número de vértices en el grafo: " + routeManager.getGraph().getNumVertices());
+                System.out.println("¿Grafo contiene 'MEX'? " + routeManager.getGraph().containsVertex("MEX"));
+                System.out.println("¿Grafo contiene 'SJO'? " + routeManager.getGraph().containsVertex("SJO"));
+                System.out.println("¿Existe ruta directa de 'MEX' a 'SJO'? " + routeManager.checkRouteExists("MEX", "SJO"));
+                System.out.println("----------------------------------------------\n");
+            }
+
+
         } catch (IOException e) {
-            System.err.println("Error al cargar rutas en RouteController: " + e.getMessage());
+
             lblRouteStatus.setText("Error al cargar rutas.");
             lblRouteStatus.setStyle("-fx-text-fill: red;");
             e.printStackTrace();
         }
 
-        // Resto de tus inicializaciones normales de la UI
         routeLine.setVisible(false);
         lblEstimatedDuration.setText("N/A");
         lblDistance.setText("N/A");
@@ -109,6 +115,13 @@ public class RouteController {
         }
 
         try {
+
+            if (routeManager.getGraph() == null) {
+                lblRouteStatus.setText("Error interno: Grafo no inicializado.");
+                lblRouteStatus.setStyle("-fx-text-fill: red;");
+                return;
+            }
+
             if (!routeManager.getGraph().containsVertex(originCode)) {
                 lblRouteStatus.setText("El aeropuerto de origen '" + originCode + "' no existe en el grafo.");
                 lblRouteStatus.setStyle("-fx-text-fill: red;");
@@ -140,7 +153,7 @@ public class RouteController {
             lblRouteStatus.setText("Error al buscar ruta: " + e.getMessage());
             lblRouteStatus.setStyle("-fx-text-fill: red;");
             System.err.println("Error en checkFlightOnAction: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 }
