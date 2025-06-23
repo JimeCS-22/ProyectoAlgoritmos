@@ -233,15 +233,6 @@
   "passengerQueueSize" : 0,
   "departuresBoardSize" : 0
 }, {
-  "code" : "SJO",
-  "name" : "Juan SantaMaria Airport",
-  "country" : "Costa Rica",
-  "passengerQueue" : [ ],
-  "status" : "UNDER_MAINTENANCE",
-  "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
-}, {
   "code" : "JEY",
   "name" : "JuanchoE.Yrausquin",
   "country" : "Isla de Saba",

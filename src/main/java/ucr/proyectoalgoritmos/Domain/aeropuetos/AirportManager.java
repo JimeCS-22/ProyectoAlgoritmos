@@ -1,10 +1,10 @@
 package ucr.proyectoalgoritmos.Domain.aeropuetos;
 
-import ucr.proyectoalgoritmos.Domain.FlightManager;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException; // ¡Asegúrate de que esta excepción esté definida en tu proyecto!
-import ucr.proyectoalgoritmos.Domain.list.Node;
 import ucr.proyectoalgoritmos.UtilJson.AirportJson;
+
+import java.io.IOException;
 
 /**
  * La clase `AirportManager` es responsable de **gestionar la colección de aeropuertos**
@@ -274,4 +274,35 @@ public class AirportManager {
             throw new ListException("No se encontró el aeropuerto con código " + updatedAirport.getCode() + " para actualizar.");
         }
     }
+
+    public void loadAirportsFromJson(String airportsJsonPath) throws IOException, ListException {
+        // Llama al método estático de AirportJson para cargar los aeropuertos.
+        // AirportJson.loadAirportsFromJson() ya maneja la ruta del archivo internamente.
+        this.airports = AirportJson.loadAirportsFromJson();
+        System.out.println("Aeropuertos cargados exitosamente a AirportManager desde AirportJson.");
+    }
+
+    public Airport findAirportByCode(String airportCode) {
+        if (airportCode == null || airportCode.isEmpty() || airports == null || airports.isEmpty()) {
+            return null; // Manejar entradas nulas/vacías o lista vacía
+        }
+
+        try {
+            // Recorrer la DoublyLinkedList
+            for (int i = 0; i < airports.size(); i++) {
+                Object obj = airports.get(i);
+                if (obj instanceof Airport) {
+                    Airport currentAirport = (Airport) obj;
+                    // ¡¡¡CAMBIO AQUÍ: USAR getCode() en lugar de getIata()!!!
+                    if (currentAirport != null && currentAirport.getCode() != null && currentAirport.getCode().equalsIgnoreCase(airportCode)) {
+                        return currentAirport; // Aeropuerto encontrado
+                    }
+                }
+            }
+        } catch (ListException e) {
+            System.err.println("Error al acceder a la lista de aeropuertos en findAirportByCode: " + e.getMessage());
+        }
+        return null; // Aeropuerto no encontrado
+    }
+
 }

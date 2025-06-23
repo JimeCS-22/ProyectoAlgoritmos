@@ -4,18 +4,23 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 import ucr.proyectoalgoritmos.graph.DirectedSinglyLinkedListGraph;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.Objects;
+
 
 /**
  * Gestiona la lógica de rutas y la interacción con el grafo subyacente.
  * Actúa como una fachada, delegando operaciones complejas del grafo a RouteGraphService.
  */
 public class RouteManager {
+
     // Instancia de RouteGraphService para manejar las operaciones del grafo.
     private RouteGraphService routeService;
     // Administrador de aeropuertos, si RouteManager necesita interactuar con él directamente.
@@ -30,9 +35,7 @@ public class RouteManager {
      */
     public RouteManager(AirportManager airportManager) {
         this.airportManager = airportManager;
-        // Inicializa RouteGraphService. El '0' aquí es un placeholder para maxVertices
-        // si RouteGraphService permite un constructor con tamaño inicial o se expande dinámicamente.
-        // Si tu grafo necesita un tamaño fijo, asegúrate de pasárselo aquí.
+
         this.routeService = new RouteGraphService(0);
         // Inicializa Gson con formato bonito para depuración.
         this.gson = new GsonBuilder().setPrettyPrinting().create();
@@ -46,6 +49,8 @@ public class RouteManager {
      * @throws IOException Si ocurre un error al leer el archivo.
      */
     public void loadRoutesFromJson(String filePath) throws IOException {
+
+
         try (Reader reader = new FileReader(filePath)) {
             // Usa el Wrapper para deserializar el objeto JSON completo
             RouteListWrapper wrapper = gson.fromJson(reader, RouteListWrapper.class);
@@ -126,4 +131,78 @@ public class RouteManager {
     private RouteManager() {
         throw new UnsupportedOperationException("Use getInstance() instead");
     }
+
+    public static class ShortestPathResult {
+        public SinglyLinkedList path;
+        public double totalDistance;
+        public double totalDuration;
+
+        public ShortestPathResult(SinglyLinkedList path, double totalDistance, double totalDuration) {
+            this.path = path;
+            this.totalDistance = totalDistance;
+            this.totalDuration = totalDuration;
+        }
+
+        @Override
+        public String toString() {
+            String pathStr = "Path: ";
+            if (path != null && !path.isEmpty()) {
+                try {
+                    for (int i = 0; i < path.size(); i++) {
+                        pathStr += path.get(i); // get() devuelve Object, se concatena como String
+                        if (i < path.size() - 1) {
+                            pathStr += " -> ";
+                        }
+                    }
+                } catch (ListException e) {
+                    pathStr += "[Error al iterar el path]";
+                }
+            } else {
+                pathStr += "No path found.";
+            }
+            String distFormatted = String.format("%.2f", totalDistance);
+            String durFormatted = String.format("%.0f", totalDuration);
+
+            return pathStr + ", Distance: " + distFormatted + " km" + ", Duration: " + durFormatted + " min";
+        }
+    }
+
+    public ShortestPathResult findShortestRouteDetails(String originCode, String destinationCode, String criteria) throws ListException { // <-- AQUÍ ESTÁ EL MÉTODO
+        if (originCode == null || originCode.isEmpty() || destinationCode == null || destinationCode.isEmpty()) {
+            throw new IllegalArgumentException("Los códigos de aeropuerto no pueden ser nulos o vacíos.");
+        }
+
+        if (!routeService.containsVertex(originCode)) {
+            throw new IllegalArgumentException("El aeropuerto de origen '" + originCode + "' no existe en el grafo.");
+        }
+        if (!routeService.containsVertex(destinationCode)) {
+            throw new IllegalArgumentException("El aeropuerto de destino '" + destinationCode + "' no existe en el grafo.");
+        }
+
+        double[] allWeights = routeService.getShortestPathDualWeights(originCode, destinationCode, criteria);
+
+        if (allWeights == null) {
+            return null;
+        }
+
+        SinglyLinkedList path = routeService.getPathDualWeight(originCode, destinationCode, criteria);
+
+        double totalCalculatedDistance;
+        double totalCalculatedDuration;
+
+        if (criteria.equalsIgnoreCase("distance")) {
+            totalCalculatedDistance = allWeights[0];
+            totalCalculatedDuration = allWeights[1];
+        } else if (criteria.equalsIgnoreCase("duration")) {
+            totalCalculatedDuration = allWeights[0];
+            totalCalculatedDistance = allWeights[1];
+        } else {
+            throw new IllegalArgumentException("Criterio inválido. Use 'distance' o 'duration'.");
+        }
+
+        return new ShortestPathResult(path, totalCalculatedDistance, totalCalculatedDuration);
+    }
+
+
+
 }

@@ -3,7 +3,6 @@ package ucr.proyectoalgoritmos.route;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.route.RouteManager;
@@ -29,11 +28,9 @@ class RouteManagerTest {
 
     @BeforeEach
     void setUp() throws URISyntaxException, IOException, ListException {
-        // 1. Instantiate a REAL AirportManager
+
         airportManager = new AirportManager();
 
-        // 2. Populate the real AirportManager with the airports that are expected
-        //    for the routes to be loaded successfully.
         airportManager.createAirport("SJO", "Juan Santamaria", "Costa Rica");
         airportManager.createAirport("MIA", "Miami International", "USA");
         airportManager.createAirport("JFK", "John F. Kennedy", "USA");
@@ -50,12 +47,8 @@ class RouteManagerTest {
         airportManager.createAirport("MEX", "Mexico City International", "Mexico");
         airportManager.createAirport("LIR", "Daniel Oduber Quirós", "Costa Rica");
 
-        // 3. Initialize RouteManager with the real AirportManager
-        // RouteManager ahora usará internamente RouteGraphService
         routeManager = new RouteManager(airportManager);
 
-        // 4. Get the path to the test routes.json file from resources
-        // Confirmado que está directamente en src/main/resources
         URL routesUrl = Objects.requireNonNull(RouteManagerTest.class.getClassLoader().getResource("routes.json"),
                 "El archivo 'routes.json' no se encontró en los recursos. Asegúrate de que esté directamente en 'src/main/resources/routes.json'.");
         routesJsonFilePath = Paths.get(routesUrl.toURI()).toString();
@@ -65,7 +58,7 @@ class RouteManagerTest {
     @Test
     @DisplayName("Debe inicializar el grafo correctamente y retornarlo")
     void testGetGraph() {
-        // getGraph() en RouteManager debería delegar a RouteGraphService y devolver su grafo
+
         assertNotNull(routeManager.getGraph(), "El grafo no debería ser nulo después de la inicialización.");
         assertTrue(routeManager.getGraph() instanceof DirectedSinglyLinkedListGraph, "El objeto retornado debería ser una instancia de DirectedSinglyLinkedListGraph.");
     }
@@ -73,7 +66,7 @@ class RouteManagerTest {
     @Test
     @DisplayName("Debe añadir un aeropuerto al grafo si no existe")
     void testAddAirportToGraph() throws ListException {
-        // RouteManager.addAirportToGraph ahora debe delegar a RouteGraphService.addVertex
+
         assertEquals(0, routeManager.getGraph().getNumVertices(), "El grafo debería tener 0 vértices inicialmente.");
 
         routeManager.addAirportToGraph("SJO");
@@ -92,24 +85,18 @@ class RouteManagerTest {
     void testLoadRoutesFromJson_Successful() throws IOException, ListException {
         assertEquals(0, routeManager.getGraph().getNumVertices(), "El grafo debería tener 0 vértices antes de cargar.");
 
-        // Esta llamada activa la lectura del JSON y la adición de vértices/aristas al grafo interno.
         routeManager.loadRoutesFromJson(routesJsonFilePath);
 
         DirectedSinglyLinkedListGraph graph = routeManager.getGraph();
-        // Basado en el JSON de ejemplo, hay 15 aeropuertos únicos (vértices)
-        // y 16 rutas (aristas).
+
         assertTrue(graph.getNumVertices() >= 15, "El grafo debería tener al menos 15 vértices después de cargar.");
 
-        // Verificar que algunos vértices clave existan
         assertTrue(graph.containsVertex("SJO"), "El grafo debería contener SJO.");
         assertTrue(graph.containsVertex("MIA"), "El grafo debería contener MIA.");
         assertTrue(graph.containsVertex("CDG"), "El grafo debería contener CDG.");
         assertTrue(graph.containsVertex("SYD"), "El grafo debería contener SYD.");
         assertTrue(graph.containsVertex("LIR"), "El grafo debería contener LIR.");
 
-        // Verificar que aristas específicas existan (usando las nuevas claves y distancias)
-        // Estas llamadas ahora se resuelven a través de RouteManager.checkRouteExists o similar
-        // que a su vez delega a RouteGraphService.
         assertTrue(graph.hasEdge("SJO", "MIA"), "Debería tener arista SJO->MIA.");
         assertTrue(graph.hasEdge("MIA", "JFK"), "Debería tener arista MIA->JFK.");
         assertTrue(graph.hasEdge("JFK", "CDG"), "Debería tener arista JFK->CDG.");
@@ -152,9 +139,8 @@ class RouteManagerTest {
     @Test
     @DisplayName("Debe retornar Integer.MAX_VALUE si la ruta más corta no se encuentra o los aeropuertos no existen")
     void testCalculateShortestRoute_NotFound() throws IOException, ListException {
-        routeManager.loadRoutesFromJson(routesJsonFilePath); // Cargar algunas rutas primero
+        routeManager.loadRoutesFromJson(routesJsonFilePath);
 
-        // Aquí se prueban los métodos de RouteManager que delegan a RouteGraphService
         assertEquals(Integer.MAX_VALUE, routeManager.calculateShortestRoute("SJO", "XYZ"),
                 "Debería retornar Integer.MAX_VALUE si el aeropuerto de destino no existe en el grafo.");
         assertEquals(Integer.MAX_VALUE, routeManager.calculateShortestRoute("ABC", "MIA"),
@@ -175,9 +161,7 @@ class RouteManagerTest {
     @Test
     @DisplayName("Debe verificar si una ruta directa existe")
     void testCheckRouteExists() throws IOException, ListException {
-        routeManager.loadRoutesFromJson(routesJsonFilePath); // Cargar algunas rutas primero
-
-        // Estas llamadas también delegan a los métodos apropiados en RouteManager
+        routeManager.loadRoutesFromJson(routesJsonFilePath);
         assertTrue(routeManager.checkRouteExists("SJO", "MIA"), "SJO->MIA debería existir.");
         assertTrue(routeManager.checkRouteExists("MIA", "JFK"), "MIA->JFK debería existir.");
         assertTrue(routeManager.checkRouteExists("JFK", "CDG"), "JFK->CDG debería existir.");

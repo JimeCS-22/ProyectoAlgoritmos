@@ -9,6 +9,7 @@ public class Route {
     private String origin_airport_code;
     private String destination_airport_code;
     private int distance;
+    private int duration;
 
     // Constructor por defecto, necesario para GSON
     public Route() {
@@ -21,6 +22,14 @@ public class Route {
         this.distance = distance;
     }
 
+    //Constructor con duracion
+    public Route(String origin_airport_code, String destination_airport_code, int distance, int duration) {
+        this.origin_airport_code = origin_airport_code;
+        this.destination_airport_code = destination_airport_code;
+        this.distance = distance;
+        this.duration = duration;
+    }
+
     // --- Getters ---
     public String getOrigin_airport_code() {
         return origin_airport_code;
@@ -28,6 +37,14 @@ public class Route {
 
     public String getDestination_airport_code() {
         return destination_airport_code;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public int getDistance() {
