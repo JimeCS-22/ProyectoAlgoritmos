@@ -66,7 +66,7 @@
                         </image>
                     </ImageView>
 
-                    <Line fx:id="flightPathLine" endX="150.0" endY="150.0" layoutX="-8.0" layoutY="37.0" startX="50.0" startY="50.0" stroke="#ffb43c" strokeWidth="3.0" />
+                    <Line fx:id="flightPathLine" endX="83.20001220703125" endY="50.000030517578125" layoutX="-28.0" layoutY="350.0" startX="50.0" startY="50.0" stroke="#8db8cf" strokeWidth="3.0" />
 
                     <Label fx:id="lblFlightInfo" layoutX="20.0" layoutY="401.0" text="Vuelo: AM2345 (QRO a MEX)" textFill="#222a5b">
                         <font><Font name="System Bold" size="14.0" /></font>
@@ -97,12 +97,6 @@
                                     </Button>
                                 </children>
                             </HBox>
-
-                            <Button fx:id="btnNextFlight" mnemonicParsing="false" onAction="#processNextFlightManually" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #6c757d; -fx-background-radius: 8;" text="Procesar Siguiente Vuelo Manual" textFill="WHITE">
-                                <font><Font name="Pristina" size="18.0" /></font>
-                                <VBox.margin>
-                                    <Insets top="10.0" /> </VBox.margin>
-                            </Button>
 
                             <Label text="Velocidad de Simulación" textFill="#333333">
                                 <font><Font size="14.0" /></font>
