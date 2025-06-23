@@ -20,11 +20,10 @@ import ucr.proyectoalgoritmos.Domain.flight.FlightSimulator;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
-import ucr.proyectoalgoritmos.Domain.stack.StackException;
 import ucr.proyectoalgoritmos.reportes.ReportGenerator;
 import ucr.proyectoalgoritmos.util.ListConverter;
 
-import java.io.File; // Para manejar rutas de archivo
+import java.io.File; //Maneja rutas de archivo
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,9 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 public class SimulationController implements Initializable {
 
@@ -62,15 +58,9 @@ public class SimulationController implements Initializable {
     private Label lblAltitude;
     @FXML
     private ImageView airplaneIcon;
-    // @FXML // Este botón ya no es necesario si se automatiza el avance de vuelo
-    // private Button btnNextFlight;
-
-    // Ya no necesitamos un @FXML para el botón de reportes si se genera automáticamente.
-    // @FXML
-    // private Button btnGenerateReports;
 
     private FlightSimulator flightSimulator;
-    private ReportGenerator reportGenerator; // Instancia de ReportGenerator
+    private ReportGenerator reportGenerator;
     private Timeline updateTimeline;
     private Timeline movementTimeline;
     private String currentVisualizedFlightNumber = null;
@@ -86,7 +76,7 @@ public class SimulationController implements Initializable {
     private static final int MIN_AIRPLANE_SPEED_KMH = 0;
     private static final int MAX_AIRPLANE_SPEED_KMH = 900;
 
-    private static final long FIXED_UI_FLIGHT_DURATION_SECONDS = 60; // Por ejemplo, 60 segundos
+    private static final long FIXED_UI_FLIGHT_DURATION_SECONDS = 60; //Duración de la animación
 
     private Map<String, Point2D> airportCoordinates = new HashMap<>();
 
@@ -96,15 +86,20 @@ public class SimulationController implements Initializable {
     private static final String REPORTS_OUTPUT_DIR = "C:/data/reports";
 
 
+    /**
+     * Inicializa el controlador de la simulación. Se encarga de instanciar el simulador de vuelos
+     * y el generador de reportes. Configura los controles de la interfaz de usuario como botones
+     * y el slider de velocidad, y prepara las líneas de tiempo para la actualización de datos
+     * y el movimiento del avión.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             flightSimulator = new FlightSimulator();
-            reportGenerator = new ReportGenerator(flightSimulator); // Inicializa el ReportGenerator aquí
+            reportGenerator = new ReportGenerator(flightSimulator);
             isSimulatorInitialized = true;
-            System.out.println("DEBUG INIT: FlightSimulator y ReportGenerator inicializados en el controlador.");
         } catch (ListException | IOException | TreeException e) {
-            System.err.println("ERROR INIT: Fallo al inicializar FlightSimulator: " + e.getMessage());
+            System.err.println("ERROR : Fallo al inicializar FlightSimulator: " + e.getMessage());
             e.printStackTrace();
             isSimulatorInitialized = false;
         }
@@ -146,28 +141,28 @@ public class SimulationController implements Initializable {
         airportCoordinates.put("JFK", new Point2D(600, 50));
         airportCoordinates.put("LAX", new Point2D(50, 50));
 
-        fixedRoutePoints.add(new Point2D(150, 400)); // Punto de inicio (ej: cerca de SJO)
+        fixedRoutePoints.add(new Point2D(150, 400));
         fixedRoutePoints.add(new Point2D(250, 350));
         fixedRoutePoints.add(new Point2D(350, 280));
         fixedRoutePoints.add(new Point2D(450, 200));
         fixedRoutePoints.add(new Point2D(550, 150));
-        fixedRoutePoints.add(new Point2D(650, 100)); // Punto de fin (ej: cerca de JFK/MIA)
+        fixedRoutePoints.add(new Point2D(650, 100));
 
         airplaneIcon.setVisible(false);
         airplaneIcon.setOpacity(0.0);
         flightPathLine.setVisible(false);
     }
 
-    private void updateSimulationSpeed(double newSpeed) {
-        // No hay acción directa aquí, el slider se actualiza en updateLiveFlightData
-    }
-
+    /**
+     * Inicia la simulación al presionar el botón "Iniciar".
+     * Comienza la línea de tiempo para la actualización de datos en vivo y habilita la lógica
+     * para procesar automáticamente el siguiente vuelo programado.
+     */
     @FXML
     public void startSimulation(ActionEvent actionEvent) {
         if (!isSimulationRunning && isSimulatorInitialized) {
-            System.out.println("DEBUG ACTION: Iniciando simulación automática...");
-            flightSimulator.startSimulation(2, 120); // Asegura que la simulación de backend esté activa
-            updateTimeline.play(); // Inicia el ciclo de actualización de la UI
+            flightSimulator.startSimulation(2, 120); //Duración de la simulación
+            updateTimeline.play();
 
             isSimulationRunning = true;
             isSimulationPaused = false;
@@ -176,23 +171,19 @@ public class SimulationController implements Initializable {
             btnPauseSimulation.setDisable(false);
             btnResetSimulation.setDisable(true);
 
-            System.out.println("DEBUG ACTION: Simulación automática iniciada. UI Timeline play().");
-
-            // Intenta avanzar al primer vuelo inmediatamente al iniciar
+            // Avanza al primer vuelo inmediatamente al iniciar
             processNextFlightAutomatically();
-
-        } else if (!isSimulatorInitialized) {
-            System.out.println("DEBUG ACTION: El simulador no se inicializó correctamente. No se puede iniciar.");
-        } else {
-            System.out.println("DEBUG ACTION: La simulación ya está en curso. Ignorando startSimulation.");
         }
     }
 
+    /**
+     * Pausa o reanuda la simulación al presionar el botón correspondiente.
+     * Detiene o reanuda las líneas de tiempo de actualización de datos y movimiento del avión.
+     */
     @FXML
     public void pauseSimulation(ActionEvent actionEvent) {
         if (isSimulationRunning && isSimulatorInitialized) {
             if (!isSimulationPaused) {
-                System.out.println("DEBUG ACTION: Pausando animación de UI...");
                 updateTimeline.stop();
                 if (movementTimeline != null) {
                     movementTimeline.pause();
@@ -202,9 +193,7 @@ public class SimulationController implements Initializable {
 
                 btnStartSimulation.setDisable(true);
                 btnResetSimulation.setDisable(false);
-                System.out.println("DEBUG ACTION: Animación de UI pausada. UI Timeline stop().");
             } else {
-                System.out.println("DEBUG ACTION: Reanudando animación de UI...");
                 updateTimeline.play();
                 if (movementTimeline != null) {
                     movementTimeline.play();
@@ -214,41 +203,36 @@ public class SimulationController implements Initializable {
 
                 btnStartSimulation.setDisable(true);
                 btnResetSimulation.setDisable(true);
-                System.out.println("DEBUG ACTION: Animación de UI reanudada. UI Timeline play().");
             }
-        } else if (!isSimulatorInitialized) {
-            System.out.println("DEBUG ACTION: El simulador no está inicializado. No se puede pausar/reanudar.");
-        } else {
-            System.out.println("DEBUG ACTION: La simulación no está en curso para pausar/reanudar. Ignorando.");
         }
     }
 
-    // Este método reemplaza processNextFlightManually y se llama automáticamente.
+    /**
+     * Procesa automáticamente el siguiente vuelo en la simulación.
+     * Si hay un vuelo programado, lo activa y comienza su movimiento.
+     * Si no hay más vuelos, finaliza la simulación y genera los reportes.
+     */
     private void processNextFlightAutomatically() {
         if (isSimulatorInitialized) {
-            System.out.println("DEBUG ACTION: Intentando avanzar al siguiente vuelo programado automáticamente...");
             try {
                 Flight activatedFlight = flightSimulator.advanceToNextScheduledFlight();
 
                 if (activatedFlight != null) {
-                    System.out.println("DEBUG ACTION: Se ha avanzado al siguiente vuelo programado: " + activatedFlight.getFlightNumber());
                     resetLiveFlightDataLabels();
                     startAirplaneMovement(activatedFlight.getFlightNumber());
                 } else {
                     lblFlightInfo.setText("No hay más vuelos programados. Simulación finalizada.");
-                    System.out.println("DEBUG ACTION: No hay más vuelos programados. Finalizando simulación.");
                     resetLiveFlightDataLabels();
                     speedSlider.setValue(MIN_SIM_SPEED);
                     stopAirplaneMovement();
                     isSimulationRunning = false;
-                    updateTimeline.stop(); // Detener el timeline de actualización de la UI
-                    btnStartSimulation.setDisable(false); // Habilitar el botón de inicio de nuevo
+                    updateTimeline.stop();
+                    btnStartSimulation.setDisable(false);
                     btnPauseSimulation.setDisable(true);
-                    btnResetSimulation.setDisable(false); // Habilitar reset
+                    btnResetSimulation.setDisable(false);
 
-                    // *** AQUÍ ES DONDE SE LLAMA A LA GENERACIÓN DE REPORTES AUTOMÁTICAMENTE ***
+                    // AQUÍ ES DONDE SE LLAMA A LA GENERACIÓN DE REPORTES AUTOMÁTICAMENTE
                     generateReportsAutomatically();
-                    // **************************************************************************
                 }
             } catch (Exception e) {
                 System.err.println("ERROR ACTION: Fallo al avanzar al siguiente vuelo automáticamente: " + e.getMessage());
@@ -259,6 +243,10 @@ public class SimulationController implements Initializable {
         }
     }
 
+    /**
+     * Reinicia la simulación. Detiene cualquier simulación en curso, reinicializa el simulador
+     * y el generador de reportes a su estado inicial, y restablece los controles de la interfaz de usuario.
+     */
     @FXML
     public void resetSimulation(ActionEvent actionEvent) {
         if (isSimulatorInitialized) {
@@ -270,11 +258,10 @@ public class SimulationController implements Initializable {
 
             try {
                 flightSimulator = new FlightSimulator();
-                reportGenerator = new ReportGenerator(flightSimulator); // Reinicializa el ReportGenerator también
+                reportGenerator = new ReportGenerator(flightSimulator);
                 isSimulatorInitialized = true;
-                System.out.println("DEBUG ACTION: FlightSimulator y ReportGenerator reinicializados con éxito.");
             } catch (ListException | IOException | TreeException e) {
-                System.err.println("ERROR ACTION: Fallo al reinicializar FlightSimulator: " + e.getMessage());
+                System.err.println("ERROR : Fallo al reinicializar FlightSimulator: " + e.getMessage());
                 e.printStackTrace();
                 isSimulatorInitialized = false;
                 btnStartSimulation.setDisable(true);
@@ -294,17 +281,18 @@ public class SimulationController implements Initializable {
             speedSlider.setValue(DEFAULT_SIM_SPEED);
 
             resetLiveFlightDataLabels();
-            System.out.println("DEBUG ACTION: Simulación reiniciada y lista para comenzar de nuevo.");
             lblFlightInfo.setText("Simulación lista. Presione 'Iniciar'.");
             airplaneIcon.setOpacity(0.0);
-        } else {
-            System.out.println("DEBUG ACTION: El simulador no está inicializado. No se puede reiniciar.");
         }
     }
 
+    /**
+     * Actualiza los datos en tiempo real del vuelo actualmente en progreso en la interfaz de usuario.
+     * Recupera la información del vuelo del simulador y la muestra en las etiquetas correspondientes.
+     * También ajusta la velocidad del slider y maneja el cambio entre vuelos.
+     */
     private void updateLiveFlightData() {
         if (flightSimulator == null || !isSimulatorInitialized) {
-            System.out.println("DEBUG UI: Simulador no inicializado o nulo. Saliendo de updateLiveFlightData.");
             resetLiveFlightDataLabels();
             lblFlightInfo.setText("Simulador no inicializado.");
             speedSlider.setValue(MIN_SIM_SPEED);
@@ -357,18 +345,15 @@ public class SimulationController implements Initializable {
                     speedSlider.setValue(mappedSpeed);
 
                     if (!flightInProgress.getFlightNumber().equals(currentVisualizedFlightNumber)) {
-                        System.out.println("DEBUG UI: El vuelo visualizado ha cambiado. Iniciando movimiento para " + flightInProgress.getFlightNumber());
                         startAirplaneMovement(flightInProgress.getFlightNumber());
                     }
 
                     // Verifica si el vuelo actual ha terminado
                     if (flightInProgress.getStatus() == Flight.FlightStatus.COMPLETED || progressRatioReachedCompletion()) {
-                        System.out.println("DEBUG UI: Vuelo " + flightInProgress.getFlightNumber() + " completado o finalizando visualización. Intentando el siguiente.");
                         processNextFlightAutomatically(); // Intenta avanzar al siguiente vuelo
                     }
 
                 } else {
-                    System.out.println("DEBUG UI: Vuelo " + flightInProgress.getFlightNumber() + " está en IN_PROGRESS, pero FlightSimulator.getFlightInProgressData() retornó NULL. Esto es inusual, quizás está finalizando.");
                     lblFlightInfo.setText(String.format("Vuelo: %s (%s → %s) (Finalizando...)",
                             flightInProgress.getFlightNumber(), originCode, destinationCode));
                     resetLiveFlightDataLabels();
@@ -378,7 +363,6 @@ public class SimulationController implements Initializable {
                     processNextFlightAutomatically();
                 }
             } else {
-                System.out.println("DEBUG UI: No se encontró ningún vuelo con estado IN_PROGRESS. Intentando activar el siguiente.");
                 lblFlightInfo.setText("No hay vuelos en progreso. Buscando el siguiente...");
                 resetLiveFlightDataLabels();
                 speedSlider.setValue(MIN_SIM_SPEED);
@@ -387,7 +371,7 @@ public class SimulationController implements Initializable {
                 processNextFlightAutomatically();
             }
         } catch (ListException e) {
-            System.err.println("ERROR UI: ListException al obtener vuelos programados: " + e.getMessage());
+            System.err.println("ERROR : ListException al obtener vuelos programados: " + e.getMessage());
             e.printStackTrace();
             lblFlightInfo.setText("ERROR al cargar vuelos.");
             resetLiveFlightDataLabels();
@@ -396,19 +380,26 @@ public class SimulationController implements Initializable {
         }
     }
 
+    /**
+     * Determina si la duración de la animación del vuelo actual ha alcanzado su duración fijada.
+     */
     private boolean progressRatioReachedCompletion() {
         if (currentVisualizedFlightNumber != null) {
             FlightSimulator.FlightData flightData = flightSimulator.getFlightInProgressData(currentVisualizedFlightNumber);
             if (flightData != null) {
                 // Consideramos que el vuelo ha "completado" su visualización
-                // si ha excedido la duración fijada para la UI.
+                // si ha excedido la duración fijada.
                 return flightData.getElapsedTimeSeconds() >= FIXED_UI_FLIGHT_DURATION_SECONDS;
             }
         }
         return false;
     }
 
-
+    /**
+     * Mapea un valor de un rango de entrada a un rango de salida.
+     * Utilizado para ajustar la velocidad del slider(barra que representa la velocidad)
+     * en función de la velocidad real del avión.
+     */
     private double mapValue(double value, double inMin, double inMax, double outMin, double outMax) {
         if (inMax - inMin == 0) {
             return outMin;
@@ -418,6 +409,9 @@ public class SimulationController implements Initializable {
         return mapped;
     }
 
+    /**
+     * Reinicia las etiquetas de datos de vuelo en vivo a sus valores predeterminados (cero).
+     */
     private void resetLiveFlightDataLabels() {
         lblAltitude.setText("0 m");
         lblSpeed.setText("0 km/h");
@@ -425,6 +419,10 @@ public class SimulationController implements Initializable {
         lblElapsedTime.setText("00:00:00");
     }
 
+    /**
+     * Inicia la animación visual del movimiento del avión en la interfaz de usuario para un vuelo específico.
+     * Mueve el icono del avión a lo largo de una ruta fija, actualiza su rotación y lo hace visible.
+     */
     public void startAirplaneMovement(String flightNumber) {
         if (movementTimeline != null) {
             movementTimeline.stop();
@@ -467,15 +465,13 @@ public class SimulationController implements Initializable {
                                 airplaneIcon.setRotate(angle + 90);
                             }
 
-                            // Si el progreso de la UI para este vuelo llega al 100%,
+                            // Si el progreso para este vuelo llega al 100%,
                             // la visualización de este vuelo ha "terminado"
                             if (progressRatio >= 1.0) {
-                                System.out.println("Movimiento del avión para " + currentVisualizedFlightNumber + " completado visualmente.");
                                 stopAirplaneMovement();
                                 processNextFlightAutomatically();
                             }
                         } else {
-                            System.out.println("FlightData para " + currentVisualizedFlightNumber + " no encontrado. Deteniendo movimiento.");
                             stopAirplaneMovement();
                             processNextFlightAutomatically();
                         }
@@ -488,6 +484,10 @@ public class SimulationController implements Initializable {
         movementTimeline.play();
     }
 
+    /**
+     * Detiene la animación visual del movimiento del avión.
+     * Hace que el icono del avión se desvanezca y se oculte, y también oculta la línea de la trayectoria.
+     */
     public void stopAirplaneMovement() {
         if (movementTimeline != null) {
             movementTimeline.stop();
@@ -507,6 +507,9 @@ public class SimulationController implements Initializable {
         currentVisualizedFlightNumber = null;
     }
 
+    /**
+     * Calcula la posición del avión en la ruta fija en función de un ratio de progreso.
+     */
     private Point2D calculatePositionOnFixedRoute(double progressRatio) {
         if (fixedRoutePoints.isEmpty()) {
             return new Point2D(0, 0);
@@ -538,6 +541,8 @@ public class SimulationController implements Initializable {
 
     /**
      * Genera automáticamente los reportes PDF al finalizar la simulación.
+     * Crea el directorio de reportes si no existe y luego invoca los métodos
+     * del ReportGenerator para crear los diferentes tipos de reportes.
      */
     private void generateReportsAutomatically() {
         if (!isSimulatorInitialized) {
@@ -551,14 +556,12 @@ public class SimulationController implements Initializable {
             return;
         }
 
-        System.out.println("DEBUG ACTION: Iniciando generación automática de reportes...");
         lblFlightInfo.setText("Simulación finalizada. Generando reportes...");
 
         // 1. Asegúrate de que el directorio exista.
         File reportsDirectory = new File(REPORTS_OUTPUT_DIR);
         if (!reportsDirectory.exists()) {
             if (reportsDirectory.mkdirs()) {
-                System.out.println("DEBUG ACTION: Directorio de reportes creado: " + reportsDirectory.getAbsolutePath());
             } else {
                 System.err.println("ERROR ACTION: No se pudo crear el directorio de reportes: " + reportsDirectory.getAbsolutePath() + ". Por favor, verifica los permisos.");
                 lblFlightInfo.setText("ERROR: No se pudo crear el directorio " + REPORTS_OUTPUT_DIR);
@@ -574,13 +577,12 @@ public class SimulationController implements Initializable {
             reportGenerator.generateAverageOccupancyReport(reportsDirectory.getAbsolutePath() + File.separator + "Reporte_Ocupacion_Promedio.pdf");
 
             lblFlightInfo.setText("¡Reportes generados exitosamente en: " + REPORTS_OUTPUT_DIR + "!");
-            System.out.println("DEBUG ACTION: Todos los reportes generados exitosamente en: " + REPORTS_OUTPUT_DIR);
 
         } catch (IOException e) {
             System.err.println("ERROR REPORT: Error al generar reportes: " + e.getMessage());
             e.printStackTrace();
             lblFlightInfo.setText("ERROR al generar reportes. Verifique la consola.");
-        } catch (Exception e) { // Captura cualquier otra excepción inesperada
+        } catch (Exception e) {
             System.err.println("ERROR REPORT: Error inesperado al generar reportes: " + e.getMessage());
             e.printStackTrace();
             lblFlightInfo.setText("ERROR inesperado al generar reportes.");
