@@ -11,7 +11,7 @@ import ucr.proyectoalgoritmos.Domain.queue.QueueException;
 import ucr.proyectoalgoritmos.UtilJson.PassengerJson;
 import ucr.proyectoalgoritmos.util.Utility;
 
-/**
+/*
  * Gestiona la colección de pasajeros utilizando un árbol AVL para una búsqueda y gestión eficiente.
  * Proporciona métodos para registrar, buscar, y manejar el historial de vuelos de los pasajeros.
  */
