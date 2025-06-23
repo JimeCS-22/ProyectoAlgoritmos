@@ -272,7 +272,7 @@ public class AirportController {
         airportData.clear();
 
         try {
-            DoublyLinkedList airports = AirportManager.getInstance().getAirportList();
+            DoublyLinkedList airports = AirportManager.getInstance().getAllAirports();
 
             for (int i = 0; i < airports.size(); i++) {
                 airportData.add((Airport) airports.get(i));

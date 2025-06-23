@@ -12,9 +12,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B1",
-  "passengersDisplay" : "100/150",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-22T10:30:00"
+  "scheduledDepartureTime" : "2025-06-22T10:30:00",
+  "passengersDisplay" : "100/150"
 }, {
   "flightNumber" : "10",
   "originAirportCode" : "PTY",
@@ -29,9 +29,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B2",
-  "passengersDisplay" : "100/120",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T14:30:00"
+  "scheduledDepartureTime" : "2025-06-23T14:30:00",
+  "passengersDisplay" : "100/120"
 }, {
   "flightNumber" : "15",
   "originAirportCode" : "LIM",
@@ -46,9 +46,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "D3",
-  "passengersDisplay" : "95/100",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T10:00:00"
+  "scheduledDepartureTime" : "2025-06-23T10:00:00",
+  "passengersDisplay" : "95/100"
 }, {
   "flightNumber" : "92",
   "originAirportCode" : "MIA",
@@ -63,9 +63,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "C1",
-  "passengersDisplay" : "100/200",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T08:00:00"
+  "scheduledDepartureTime" : "2025-06-23T08:00:00",
+  "passengersDisplay" : "100/200"
 }, {
   "flightNumber" : "678",
   "originAirportCode" : "QRO",
@@ -80,9 +80,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "C2",
-  "passengersDisplay" : "15/100",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T10:30:00"
+  "scheduledDepartureTime" : "2025-06-23T10:30:00",
+  "passengersDisplay" : "15/100"
 }, {
   "flightNumber" : "36",
   "originAirportCode" : "QRO",
@@ -97,9 +97,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B1",
-  "passengersDisplay" : "100/100",
   "full" : true,
-  "scheduledDepartureTime" : "2025-06-23T11:40:00"
+  "scheduledDepartureTime" : "2025-06-23T11:40:00",
+  "passengersDisplay" : "100/100"
 }, {
   "flightNumber" : "95",
   "originAirportCode" : "LAX",
@@ -114,9 +114,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "C3",
-  "passengersDisplay" : "100/150",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T06:30:00"
+  "scheduledDepartureTime" : "2025-06-23T06:30:00",
+  "passengersDisplay" : "100/150"
 }, {
   "flightNumber" : "100",
   "originAirportCode" : "SK",
@@ -131,9 +131,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B1",
-  "passengersDisplay" : "150/200",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T07:45:00"
+  "scheduledDepartureTime" : "2025-06-23T07:45:00",
+  "passengersDisplay" : "150/200"
 }, {
   "flightNumber" : "200",
   "originAirportCode" : "LAX",
@@ -148,9 +148,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "A1",
-  "passengersDisplay" : "150/175",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T09:30:00"
+  "scheduledDepartureTime" : "2025-06-23T09:30:00",
+  "passengersDisplay" : "150/175"
 }, {
   "flightNumber" : "75",
   "originAirportCode" : "SJO",
@@ -165,9 +165,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B3",
-  "passengersDisplay" : "200/250",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T08:00:00"
+  "scheduledDepartureTime" : "2025-06-23T08:00:00",
+  "passengersDisplay" : "200/250"
 }, {
   "flightNumber" : "145",
   "originAirportCode" : "CUN",
@@ -182,9 +182,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B3",
-  "passengersDisplay" : "125/150",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T09:15:00"
+  "scheduledDepartureTime" : "2025-06-23T09:15:00",
+  "passengersDisplay" : "125/150"
 }, {
   "flightNumber" : "63",
   "originAirportCode" : "SK",
@@ -199,9 +199,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B3",
-  "passengersDisplay" : "75/100",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T12:00:00"
+  "scheduledDepartureTime" : "2025-06-23T12:00:00",
+  "passengersDisplay" : "75/100"
 }, {
   "flightNumber" : "45",
   "originAirportCode" : "MEX",
@@ -216,9 +216,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B1",
-  "passengersDisplay" : "125/150",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T03:45:00"
+  "scheduledDepartureTime" : "2025-06-23T03:45:00",
+  "passengersDisplay" : "125/150"
 }, {
   "flightNumber" : "45",
   "originAirportCode" : "NRT",
@@ -233,9 +233,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "A2",
-  "passengersDisplay" : "100/100",
   "full" : true,
-  "scheduledDepartureTime" : "2025-06-23T01:00:00"
+  "scheduledDepartureTime" : "2025-06-23T01:00:00",
+  "passengersDisplay" : "100/100"
 }, {
   "flightNumber" : "63",
   "originAirportCode" : "QRO",
@@ -250,9 +250,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B1",
-  "passengersDisplay" : "125/150",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T04:00:00"
+  "scheduledDepartureTime" : "2025-06-23T04:00:00",
+  "passengersDisplay" : "125/150"
 }, {
   "flightNumber" : "435",
   "originAirportCode" : "LAX",
@@ -267,7 +267,24 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B3",
-  "passengersDisplay" : "125/150",
   "full" : false,
-  "scheduledDepartureTime" : "2025-06-23T07:50:00"
+  "scheduledDepartureTime" : "2025-06-23T07:50:00",
+  "passengersDisplay" : "125/150"
+}, {
+  "flightNumber" : "78",
+  "originAirportCode" : "YYZ",
+  "destinationAirportCode" : "PEK",
+  "departureTime" : "2025-06-23T12:00:00",
+  "actualDepartureTime" : null,
+  "actualArrivalTime" : null,
+  "capacity" : 150,
+  "passengers" : [ ],
+  "occupancy" : 100,
+  "status" : "IN_PROGRESS",
+  "airplane" : null,
+  "estimatedDurationMinutes" : 0,
+  "gate" : "C2",
+  "full" : false,
+  "scheduledDepartureTime" : "2025-06-23T12:00:00",
+  "passengersDisplay" : "100/150"
 } ]
