@@ -61,14 +61,14 @@ public class RouteManager {
 
             for (Route route : loadedRoutes) {
                 try {
-                    // Añade los aeropuertos de origen y destino al grafo a través de RouteGraphService
+
                     routeService.addVertex(route.getOrigin_airport_code());
                     routeService.addVertex(route.getDestination_airport_code());
-                    // Añade la arista (ruta) al grafo con su distancia
+
                     routeService.addEdge(route.getOrigin_airport_code(), route.getDestination_airport_code(), route.getDistance());
                 } catch (ListException | IllegalArgumentException e) {
                     System.err.println("Error al procesar ruta: " + route.getOrigin_airport_code() + "->" + route.getDestination_airport_code() + ": " + e.getMessage());
-                    // Puedes decidir si quieres relanzar la excepción o simplemente logearla.
+
                 }
             }
         }
@@ -106,8 +106,6 @@ public class RouteManager {
     }
 
     /**
-     * Verifica si existe una ARISTA DIRECTA (ruta de un solo segmento) entre dos aeropuertos.
-     * Esto difiere de 'calculateShortestRoute' que busca cualquier camino.
      * @param originCode El código del aeropuerto de origen.
      * @param destinationCode El código del aeropuerto de destino.
      * @return true si existe una arista directa, false en caso contrario.
@@ -116,15 +114,6 @@ public class RouteManager {
         // AHORA DELEGA LA VERIFICACIÓN DE RUTA DIRECTA A RouteGraphService.hasDirectRoute()
         return routeService.hasDirectRoute(originCode, destinationCode);
     }
-
-    // Puedes añadir más métodos aquí en RouteManager si los necesitas,
-    // delegando a routeService o a airportManager según corresponda.
-    // Ejemplo:
-    /*
-    public int getOutgoingRouteCount(String airportCode) {
-        return routeService.getOutgoingRouteCount(airportCode);
-    }
-    */
 
 
     public static synchronized RouteManager getInstance(AirportManager airportManager) {

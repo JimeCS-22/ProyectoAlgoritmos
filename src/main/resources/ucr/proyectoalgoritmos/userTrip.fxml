@@ -47,13 +47,11 @@
 
                 <TableView fx:id="flightHistoryTable" prefHeight="400.0" prefWidth="561.0" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn prefWidth="90.0" text="Número de Vuelo" />
-                        <TableColumn prefWidth="90.0" text="Origen" />
-                        <TableColumn prefWidth="90.0" text="Destino" />
-                        <TableColumn prefWidth="100.0" text="Fecha de Salida" />
-                        <TableColumn prefWidth="100.0" text="Fecha de Llegada" />
-                        <TableColumn prefWidth="80.0" text="Aerolínea" />
-                        <TableColumn prefWidth="80.0" text="Estado Final" />
+                        <TableColumn fx:id="flightNumberColumn" prefWidth="90.0" text="Número de Vuelo" />
+                        <TableColumn fx:id="originColumn" prefWidth="90.0" text="Origen" />
+                        <TableColumn fx:id="destinationColumn" prefWidth="90.0" text="Destino" />
+                        <TableColumn fx:id="departureTimeColumn" prefWidth="120.0" text="Hora de Salida" />
+                        <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Estado Final" />
                     </columns>
                 </TableView>
             </children>

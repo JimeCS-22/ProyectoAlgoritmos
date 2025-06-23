@@ -153,7 +153,7 @@ public class CreateFlightController implements Initializable {
         departureTime.clear();
         occupancy.clear();
         capacity.clear();
-        status.setValue(Flight.FlightStatus.SCHEDULED); // Reiniciar al valor por defecto
+        status.setValue(Flight.FlightStatus.SCHEDULED);
     }
 
     @Override
@@ -165,6 +165,6 @@ public class CreateFlightController implements Initializable {
         flightScheduleManager = FlightScheduleManager.getInstance(airportManager, routeManager);
 
         status.getItems().addAll(Arrays.asList(Flight.FlightStatus.values()));
-        status.setValue(Flight.FlightStatus.SCHEDULED); // Establecer un valor por defecto
+        status.setValue(Flight.FlightStatus.SCHEDULED);
     }
 }

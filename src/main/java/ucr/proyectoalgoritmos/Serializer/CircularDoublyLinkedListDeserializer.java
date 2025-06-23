@@ -18,8 +18,8 @@ public class CircularDoublyLinkedListDeserializer extends StdDeserializer<Circul
     private final Class<?> elementType;
 
     public CircularDoublyLinkedListDeserializer() {
-        this(Object.class); // Por defecto, si no se especifica, usa Object.class.
-        // Esto es importante si este deserializador se usa para listas de diferentes tipos.
+        this(Object.class);
+
     }
 
     public CircularDoublyLinkedListDeserializer(Class<?> elementType) {
@@ -32,7 +32,6 @@ public class CircularDoublyLinkedListDeserializer extends StdDeserializer<Circul
         CircularDoublyLinkedList list = new CircularDoublyLinkedList();
         System.out.println("DEBUG DESERIALIZER: Iniciando deserialización de CircularDoublyLinkedList...");
 
-        // Verificamos el token actual. Debería ser START_ARRAY '['
         if (p.getCurrentToken() != JsonToken.START_ARRAY) {
             try {
                 throw (Throwable) ctxt.reportInputMismatch(CircularDoublyLinkedList.class, "Expected START_ARRAY token for CircularDoublyLinkedList, but got %s", p.getCurrentToken());
@@ -44,17 +43,14 @@ public class CircularDoublyLinkedListDeserializer extends StdDeserializer<Circul
         System.out.println("DEBUG DESERIALIZER: JSON Node es un array. Iterando elementos...");
         int elementCount = 0;
 
-        // Avanza al siguiente token para entrar al array
         while (p.nextToken() != JsonToken.END_ARRAY) {
             elementCount++;
-            // Ahora 'p' está posicionado en el inicio de un objeto (o tipo primitivo) dentro del array.
-            // Para leer el elemento, aún podemos usar readValue si elementType está bien.
-            // Opcionalmente, para mayor control, puedes leerlo como JsonNode y luego mapear.
-            JsonNode elementNode = p.readValueAsTree(); // Lee el sub-árbol JSON del elemento actual
+
+            JsonNode elementNode = p.readValueAsTree();
             System.out.println("DEBUG DESERIALIZER: Procesando elemento #" + elementCount + ": " + elementNode.toPrettyString());
 
             try {
-                // Deserializa el JsonNode del elemento al tipo esperado
+
                 Object obj = ctxt.readTreeAsValue(elementNode, elementType);
                 list.add(obj);
                 System.out.println("DEBUG DESERIALIZER: Elemento #" + elementCount + " deserializado y añadido.");

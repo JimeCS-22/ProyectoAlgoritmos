@@ -295,7 +295,7 @@ public class Flight {
         if (destinationAirportCode == null || destinationAirportCode.trim().isEmpty()) {
             throw new IllegalArgumentException("El código del aeropuerto de destino no puede ser nulo o vacío.");
         }
-        if (departureTime == null) { // Aquí usas LocalTime
+        if (departureTime == null) {
             throw new IllegalArgumentException("La hora de salida no puede ser nula.");
         }
         if (capacity <= 0) {
@@ -311,32 +311,32 @@ public class Flight {
         this.flightNumber = flightNumber.trim();
         this.originAirportCode = originAirportCode.trim();
         this.destinationAirportCode = destinationAirportCode.trim();
-        this.departureTime = departureTime; // Asignamos directamente el LocalTime
+        this.departureTime = departureTime;
         this.capacity = capacity;
         this.occupancy = occupancy;
         this.status = status;
-        this.passengers = new CircularDoublyLinkedList(); // Inicializa la lista de pasajeros
-        this.airplane = null; // Avión no asignado al inicio
-        this.estimatedDurationMinutes = 0; // Duración por defecto, se puede setear después
+        this.passengers = new CircularDoublyLinkedList();
+        this.airplane = null;
+        this.estimatedDurationMinutes = 0;
         this.gate = gate != null ? gate.trim() : "N/A";
     }
 
     public Flight() {
-        // Inicializa tus listas y valores por defecto para que no sean nulos
+
         this.passengers = new CircularDoublyLinkedList();
-        this.status = FlightStatus.SCHEDULED; // O el valor que desees por defecto
+        this.status = FlightStatus.SCHEDULED;
         this.occupancy = 0;
         this.estimatedDurationMinutes = 0;
-        // Los Strings y LocalDateTime pueden ser null inicialmente y Jackson los rellenará
-        this.gate = "N/A"; // Valor por defecto
+
+        this.gate = "N/A";
     }
 
     public String getPassengersDisplay() {
-        // Asegúrate de que 'passengers' no sea nulo antes de intentar acceder a él
+
         if (this.passengers == null || this.passengers.isEmpty()) {
-            return "0/" + this.capacity; // Asumiendo que 'capacity' es accesible
+            return "0/" + this.capacity;
         }
-        return this.passengers.size() + "/" + this.capacity; // Asumiendo que 'capacity' es accesible
+        return this.passengers.size() + "/" + this.capacity;
     }
 
 
