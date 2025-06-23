@@ -1,10 +1,11 @@
-package ucr.proyectoalgoritmos.Controller;
+package ucr.proyectoalgoritmos.Controller.UserController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import ucr.proyectoalgoritmos.Controller.HelloController;
 
 import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewStage;
 

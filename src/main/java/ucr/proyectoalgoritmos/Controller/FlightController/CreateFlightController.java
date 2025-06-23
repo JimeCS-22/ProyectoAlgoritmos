@@ -160,7 +160,7 @@ public class CreateFlightController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         airportManager = AirportManager.getInstance();
-        routeManager = RouteManager.getInstance();
+        routeManager = RouteManager.getInstance(airportManager);
 
         flightScheduleManager = FlightScheduleManager.getInstance(airportManager, routeManager);
 

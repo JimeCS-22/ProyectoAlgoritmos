@@ -1,17 +1,43 @@
 [ {
+  "flightNumber" : "8",
+  "originAirportCode" : "QRO",
+  "destinationAirportCode" : "JFK",
+  "departureTime" : "2025-06-22T10:30:00",
+  "capacity" : 150,
+  "passengers" : [ ],
+  "occupancy" : 100,
+  "status" : "COMPLETED",
+  "airplane" : null,
+  "estimatedDurationMinutes" : 0,
+  "gate" : "N/A",
+  "full" : false,
+  "passengersDisplay" : "0/150"
+}, {
   "flightNumber" : "7",
   "originAirportCode" : "JFK",
   "destinationAirportCode" : "ORD",
   "departureTime" : "2025-06-22T11:00:00",
-  "actualDepartureTime" : null,
-  "actualArrivalTime" : null,
   "capacity" : 120,
   "passengers" : [ ],
   "occupancy" : 120,
   "status" : "COMPLETED",
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
+  "gate" : "N/A",
   "full" : true,
-  "scheduledDepartureTime" : "2025-06-22T11:00:00",
-  "passengersDisplay" : "120/120"
+  "passengersDisplay" : "0/120"
+}, {
+  "flightNumber" : "10",
+  "originAirportCode" : "PTY",
+  "destinationAirportCode" : "BOG",
+  "departureTime" : "2025-06-23T14:30:00",
+  "capacity" : 120,
+  "passengers" : [ ],
+  "occupancy" : 100,
+  "status" : "IN_PROGRESS",
+  "airplane" : null,
+  "estimatedDurationMinutes" : 0,
+  "gate" : "N/A",
+  "full" : false,
+  "passengersDisplay" : "0/120"
 } ]

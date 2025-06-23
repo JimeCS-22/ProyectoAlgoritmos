@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.Domain.route.RouteGraphService; // Import RouteGraphService
 import ucr.proyectoalgoritmos.graph.DirectedSinglyLinkedListGraph;
 
 import java.io.FileReader;
@@ -127,13 +126,15 @@ public class RouteManager {
     }
     */
 
-    public RouteManager() {
-    }
 
-    public static synchronized RouteManager getInstance() {
+    public static synchronized RouteManager getInstance(AirportManager airportManager) {
         if (instance == null) {
-            instance = new RouteManager();
+            instance = new RouteManager(airportManager);
         }
         return instance;
+    }
+
+    private RouteManager() {
+        throw new UnsupportedOperationException("Use getInstance() instead");
     }
 }

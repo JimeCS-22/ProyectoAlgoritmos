@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
-import ucr.proyectoalgoritmos.Domain.Circular.ListException;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
@@ -64,7 +63,7 @@ public class FlightsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         AirportManager airportManager = AirportManager.getInstance();
-        RouteManager routeManager = RouteManager.getInstance();
+        RouteManager routeManager = RouteManager.getInstance(airportManager);
 
         flightScheduleManager = FlightScheduleManager.getInstance(airportManager, routeManager);
 

@@ -51,7 +51,7 @@ public class CreatePassengerController {
 
     private void setupNationalitiesComboBox() {
         String[] nationalities = {
-                "Korean", "Argentina", "Española", "Colombiana", "Chilena",
+                "Korean", "Costarricense", "Argentina", "Española", "Colombiana", "Chilena",
                 "Peruana", "Brasileña", "Estadounidense", "Mexicana", "Canadiense", "Italiana",
                 "Francesa", "Alemana", "Japonesa", "China", "India"
         };
