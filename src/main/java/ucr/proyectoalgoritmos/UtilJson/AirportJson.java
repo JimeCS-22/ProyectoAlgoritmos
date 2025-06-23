@@ -37,11 +37,6 @@ public class AirportJson {
         objectMapper.registerModule(module);
     }
 
-    /**
-     * Guarda tu DoublyLinkedList personalizada de aeropuertos a un archivo JSON.
-     * Jackson usará el DoublyLinkedListSerializer registrado.
-     * @param airports La DoublyLinkedList de objetos Airport a guardar.
-     */
     public static void saveAirportsToJson(DoublyLinkedList airports) {
         try {
             objectMapper.writeValue(new File(FILE_PATH), airports);
@@ -55,11 +50,6 @@ public class AirportJson {
         }
     }
 
-    /**
-     * Carga los aeropuertos desde un archivo JSON y los coloca en tu DoublyLinkedList personalizada.
-     * Jackson usará el DoublyLinkedListDeserializer registrado.
-     * @return Una DoublyLinkedList de objetos Airport cargados desde el archivo JSON.
-     */
     public static DoublyLinkedList loadAirportsFromJson() {
         File file = new File(FILE_PATH);
         System.out.println("DEBUG: Intentando cargar aeropuertos desde: " + file.getAbsolutePath());

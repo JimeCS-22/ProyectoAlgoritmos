@@ -23,10 +23,7 @@ public class RouteManager {
     private Gson gson;
     private static RouteManager instance;
 
-    /**
-     * Constructor para RouteManager.
-     * @param airportManager La instancia de AirportManager para gestionar los aeropuertos.
-     */
+
     public RouteManager(AirportManager airportManager) {
         this.airportManager = airportManager;
 
@@ -73,44 +70,25 @@ public class RouteManager {
         }
     }
 
-    /**
-     * Añade un aeropuerto al grafo interno si no existe.
-     * Delega la operación a RouteGraphService.
-     * @param airportCode El código del aeropuerto a añadir.
-     * @throws ListException Si ocurre un error interno en la lista.
-     */
+
     public void addAirportToGraph(String airportCode) throws ListException {
         routeService.addVertex(airportCode);
     }
 
-    /**
-     * Obtiene el grafo dirigido interno que representa las rutas.
-     * @return La instancia de DirectedSinglyLinkedListGraph.
-     */
+
     public DirectedSinglyLinkedListGraph getGraph() {
-        // Accede al grafo a través del getter de RouteGraphService
+
         return routeService.getInternalGraph();
     }
 
-    /**
-     * Calcula la ruta más corta (distancia mínima) entre dos aeropuertos.
-     * Delega la operación a RouteGraphService.
-     * @param startCode El código del aeropuerto de origen.
-     * @param endCode El código del aeropuerto de destino.
-     * @return La distancia de la ruta más corta, o Integer.MAX_VALUE si no hay ruta.
-     * @throws ListException Si ocurre un error interno durante el cálculo.
-     */
+
     public int calculateShortestRoute(String startCode, String endCode) throws ListException {
         return routeService.shortestPath(startCode, endCode);
     }
 
-    /**
-     * @param originCode El código del aeropuerto de origen.
-     * @param destinationCode El código del aeropuerto de destino.
-     * @return true si existe una arista directa, false en caso contrario.
-     */
+
     public boolean checkRouteExists(String originCode, String destinationCode) {
-        // AHORA DELEGA LA VERIFICACIÓN DE RUTA DIRECTA A RouteGraphService.hasDirectRoute()
+
         return routeService.hasDirectRoute(originCode, destinationCode);
     }
 
@@ -143,7 +121,7 @@ public class RouteManager {
             if (path != null && !path.isEmpty()) {
                 try {
                     for (int i = 0; i < path.size(); i++) {
-                        pathStr += path.get(i); // get() devuelve Object, se concatena como String
+                        pathStr += path.get(i);
                         if (i < path.size() - 1) {
                             pathStr += " -> ";
                         }

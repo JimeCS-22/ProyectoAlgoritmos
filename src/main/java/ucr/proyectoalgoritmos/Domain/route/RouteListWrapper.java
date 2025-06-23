@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Domain.route; // O el paquete donde lo hayas puesto
+package ucr.proyectoalgoritmos.Domain.route;
 
 
 import java.util.List;
