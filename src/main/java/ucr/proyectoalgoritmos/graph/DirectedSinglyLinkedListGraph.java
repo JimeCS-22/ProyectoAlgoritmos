@@ -10,22 +10,12 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.util.Random;
 
-/**
- * Representa un grafo dirigido utilizando una lista de adyacencia
- * implementada con {@link SinglyLinkedList}.
- * <p>
- * **Esta clase NO DEBE ser modificada internamente en sus métodos existentes.**
- * **Se asume que SinglyLinkedList NO tiene parámetros de tipo (es decir, usa Object).**
- * </p>
- */
+
 public class DirectedSinglyLinkedListGraph {
     private final Map<String, Integer> airportCodeToIndexMap;
     private String[] indexToAirportCodeArray;
 
-    // ESTRUCTURA PRINCIPAL:
-    // Aquí, SinglyLinkedList no tiene tipo de parámetro, así que almacena Object.
-    // Los elementos serán int[] que deberán ser casteados.
-    private final ArrayList<SinglyLinkedList> adjList; // Declaración sin parámetros de tipo para SinglyLinkedList
+    private final ArrayList<SinglyLinkedList> adjList;
 
     private int numVertices;
     private int numEdges;
@@ -33,17 +23,14 @@ public class DirectedSinglyLinkedListGraph {
 
     public DirectedSinglyLinkedListGraph() {
         this.airportCodeToIndexMap = new HashMap<>();
-        this.indexToAirportCodeArray = new String[25]; // Tamaño inicial, se duplica si es necesario
-        this.adjList = new ArrayList<>(); // Lista de SinglyLinkedList (sin genéricos)
+        this.indexToAirportCodeArray = new String[25];
+        this.adjList = new ArrayList<>();
         this.numVertices = 0;
         this.numEdges = 0;
         this.random = new Random();
     }
 
-    /**
-     * Añade un nuevo vértice al grafo si no existe ya.
-     * Retorna el índice asignado o el existente.
-     */
+
     public int addVertex(String airportCode) {
         if (airportCodeToIndexMap.containsKey(airportCode)) {
             return airportCodeToIndexMap.get(airportCode);
@@ -53,14 +40,11 @@ public class DirectedSinglyLinkedListGraph {
         }
         airportCodeToIndexMap.put(airportCode, numVertices);
         indexToAirportCodeArray[numVertices] = airportCode;
-        adjList.add(new SinglyLinkedList()); // Añadimos una SinglyLinkedList sin tipo
+        adjList.add(new SinglyLinkedList());
         return numVertices++;
     }
 
-    /**
-     * Añade una arista dirigida al grafo con un peso simple (int).
-     * Este método EXISTE y NO DEBE ser modificado INTERNAMENTE.
-     */
+
     public void addEdge(int u, int v, int weight) throws ListException {
         if (u < 0 || u >= numVertices || v < 0 || v >= numVertices) {
             throw new IllegalArgumentException("Índice de vértice inválido para añadir arista: u=" + u + ", v=" + v + ", numVertices=" + numVertices);
@@ -69,10 +53,10 @@ public class DirectedSinglyLinkedListGraph {
             return;
         }
 
-        SinglyLinkedList connections = adjList.get(u); // Obtenemos SinglyLinkedList (Object)
+        SinglyLinkedList connections = adjList.get(u);
         boolean found = false;
         for (int i = 0; i < connections.size(); i++) {
-            int[] edge = (int[]) connections.get(i); // <-- CAST EXPLÍCITO aquí
+            int[] edge = (int[]) connections.get(i);
             if (edge[0] == v) {
                 edge[1] = weight;
                 found = true;
@@ -85,19 +69,15 @@ public class DirectedSinglyLinkedListGraph {
         }
     }
 
-    /**
-     * Modifica el peso de una arista existente.
-     * Este método EXISTE y NO DEBE ser modificado INTERNAMENTE.
-     */
     public boolean modifyEdge(int u, int v, int newWeight) throws ListException {
         if (u < 0 || u >= numVertices || v < 0 || v >= numVertices) {
             throw new IllegalArgumentException("Índice de vértice inválido para modificar arista: u=" + u + ", v=" + v + ", numVertices=" + numVertices);
         }
 
-        SinglyLinkedList connections = adjList.get(u); // Obtenemos SinglyLinkedList (Object)
+        SinglyLinkedList connections = adjList.get(u);
         boolean found = false;
         for (int i = 0; i < connections.size(); i++) {
-            int[] edge = (int[]) connections.get(i); // <-- CAST EXPLÍCITO aquí
+            int[] edge = (int[]) connections.get(i);
             if (edge[0] == v) {
                 edge[1] = newWeight;
                 found = true;
@@ -110,12 +90,6 @@ public class DirectedSinglyLinkedListGraph {
         return true;
     }
 
-
-    /**
-     * Calcula la ruta más corta (basada en el peso 'int' de la arista)
-     * utilizando el algoritmo de Dijkstra.
-     * Este método EXISTE y NO DEBE ser modificado INTERNAMENTE.
-     */
     public int shortestPath(String startAirportCode, String endAirportCode) throws ListException {
         int startIndex = getIndexForAirportCode(startAirportCode);
         int endIndex = getIndexForAirportCode(endAirportCode);
@@ -132,55 +106,68 @@ public class DirectedSinglyLinkedListGraph {
         boolean[] visited = new boolean[numVertices];
         Arrays.fill(visited, false);
 
-        // ¡Cambiado a DijkstraNode!
         PriorityQueue<DijkstraNode> pq = new PriorityQueue<>(numVertices, Comparator.comparingInt(DijkstraNode::getDistance));
 
         distances[startIndex] = 0;
         pq.add(new DijkstraNode(startIndex, 0));
 
+
+
         while (!pq.isEmpty()) {
-            int u = pq.poll().getVertex();
+            DijkstraNode currentNode = pq.poll();
+            int u = currentNode.getVertex();
+            int dist_u = currentNode.getDistance();
 
             if (visited[u]) {
+                System.out.println("DEBUG Dijkstra: Vértice " + getAirportCodeForIndex(u) + " ya visitado. Continuando.");
                 continue;
             }
             visited[u] = true;
 
             if (u == endIndex) {
+                System.out.println("DEBUG Dijkstra: ¡Vértice final " + getAirportCodeForIndex(endIndex) + " alcanzado! Distancia total: " + distances[endIndex]);
                 return distances[endIndex];
             }
 
-            SinglyLinkedList neighbors = adjList.get(u); // Obtenemos SinglyLinkedList (Object)
+            SinglyLinkedList neighbors = adjList.get(u);
             if (neighbors != null) {
+                System.out.println("DEBUG Dijkstra: Procesando vecinos de " + getAirportCodeForIndex(u) + ":");
                 for (int i = 0; i < neighbors.size(); i++) {
-                    int[] edge = (int[]) neighbors.get(i); // <-- CAST EXPLÍCITO aquí
-                    int v = edge[0];
-                    int weight = edge[1];
+                    int[] edge = (int[]) neighbors.get(i);
+                    int v = edge[0]; // Vértice destino
+                    int weight = edge[1]; // Peso de la arista
 
-                    if (!visited[v] && distances[u] != Integer.MAX_VALUE && (long)distances[u] + weight < distances[v]) {
-                        distances[v] = distances[u] + weight;
-                        pq.add(new DijkstraNode(v, distances[v])); // ¡Cambiado a DijkstraNode!
+                    System.out.println("  DEBUG Dijkstra: Vecino " + getAirportCodeForIndex(v) + " (peso " + weight + ")");
+
+                    if (!visited[v] && distances[u] != Integer.MAX_VALUE) {
+
+                        if ((long)distances[u] + weight < distances[v]) {
+                            distances[v] = distances[u] + weight;
+                            pq.add(new DijkstraNode(v, distances[v]));
+                            System.out.println("  DEBUG Dijkstra: Actualizando dist(" + getAirportCodeForIndex(v) + ") a " + distances[v] + ". Añadiendo a PQ.");
+                        } else {
+                            System.out.println("    DEBUG Dijkstra: No se actualiza dist(" + getAirportCodeForIndex(v) + "). Nueva dist " + ((long)distances[u] + weight) + " no es menor que actual " + distances[v] + ".");
+                        }
+                    } else {
+                        System.out.println("    DEBUG Dijkstra: Vecino " + getAirportCodeForIndex(v) + " ya visitado o distancia a " + getAirportCodeForIndex(u) + " es infinita.");
                     }
                 }
             }
         }
+        System.out.println("DEBUG Dijkstra: PQ vacía. Vértice final " + getAirportCodeForIndex(endIndex) + " no alcanzado. Distancia final: " + distances[endIndex]);
         return distances[endIndex];
     }
 
-    /**
-     * Verifica si existe una arista directa entre dos aeropuertos dados sus códigos.
-     * Este método EXISTE y NO DEBE ser modificado INTERNAMENTE.
-     */
     public boolean hasEdge(String uAirportCode, String vAirportCode) throws ListException {
         int u = getIndexForAirportCode(uAirportCode);
         int v = getIndexForAirportCode(vAirportCode);
         if (u == -1 || v == -1) {
             return false;
         }
-        SinglyLinkedList connections = adjList.get(u); // Obtenemos SinglyLinkedList (Object)
+        SinglyLinkedList connections = adjList.get(u);
         if (connections != null) {
             for (int i = 0; i < connections.size(); i++) {
-                int[] edge = (int[]) connections.get(i); // <-- CAST EXPLÍCITO aquí
+                int[] edge = (int[]) connections.get(i);
                 if (edge[0] == v) {
                     return true;
                 }
@@ -189,26 +176,22 @@ public class DirectedSinglyLinkedListGraph {
         return false;
     }
 
-    /**
-     * Genera rutas aleatorias con un solo peso 'int'.
-     * Este método EXISTE y NO DEBE ser modificado INTERNAMENTE.
-     */
     public void generateRandomRoutes(int minRoutesPerAirport, int maxRoutesPerAirport, int minWeight, int maxWeight) throws ListException {
-        SinglyLinkedList allCodes = getAllAirportCodes(); // getAllAirportCodes ya devuelve SinglyLinkedList sin genéricos
+        SinglyLinkedList allCodes = getAllAirportCodes();
         if (allCodes.isEmpty() || allCodes.size() < 2) {
             System.out.println("ADVERTENCIA: No hay suficientes aeropuertos cargados para generar rutas aleatorias.");
             return;
         }
 
         for (int k = 0; k < allCodes.size(); k++) {
-            String originCode = (String) allCodes.get(k); // <-- CAST EXPLÍCITO aquí
+            String originCode = (String) allCodes.get(k);
             int routesToGenerate = random.nextInt(maxRoutesPerAirport - minRoutesPerAirport + 1) + minRoutesPerAirport;
             int generatedCount = 0;
             int attemptCount = 0;
             final int MAX_ATTEMPTS_PER_ROUTE = 50;
 
             while (generatedCount < routesToGenerate && attemptCount < allCodes.size() * MAX_ATTEMPTS_PER_ROUTE) {
-                String destinationCode = (String) allCodes.get(random.nextInt(allCodes.size())); // <-- CAST EXPLÍCITO aquí
+                String destinationCode = (String) allCodes.get(random.nextInt(allCodes.size()));
                 if (!originCode.equals(destinationCode)) {
                     int weight = random.nextInt(maxWeight - minWeight + 1) + minWeight;
                     try {
@@ -223,8 +206,8 @@ public class DirectedSinglyLinkedListGraph {
         }
     }
 
-    // Clase interna para la PriorityQueue (DijkstraNode - Renombrada)
-    private static class DijkstraNode { // <-- RENOMBRADO de Node a DijkstraNode
+
+    private static class DijkstraNode {
         private final int vertex;
         private final int distance;
 
@@ -236,7 +219,6 @@ public class DirectedSinglyLinkedListGraph {
         public int getDistance() { return distance; }
     }
 
-    // --- MÉTODOS AUXILIARES EXISTENTES ---
     public int getNumVertices() { return numVertices; }
     public int getNumEdges() { return numEdges; }
     public int getIndexForAirportCode(String airportCode) { return airportCodeToIndexMap.getOrDefault(airportCode, -1); }
@@ -249,11 +231,11 @@ public class DirectedSinglyLinkedListGraph {
     public int getOutgoingRouteCount(String airportCode) {
         int index = getIndexForAirportCode(airportCode);
         if (index == -1) { return 0; }
-        SinglyLinkedList connections = adjList.get(index); // Obtenemos SinglyLinkedList (Object)
+        SinglyLinkedList connections = adjList.get(index);
         return connections != null ? connections.size() : 0;
     }
     public SinglyLinkedList getAllAirportCodes() throws ListException {
-        SinglyLinkedList codes = new SinglyLinkedList(); // Crea una SinglyLinkedList sin genéricos
+        SinglyLinkedList codes = new SinglyLinkedList();
         for (int i = 0; i < numVertices; i++) {
             if (indexToAirportCodeArray[i] != null) {
                 codes.add(indexToAirportCodeArray[i]);
@@ -268,7 +250,7 @@ public class DirectedSinglyLinkedListGraph {
     }
 
     // ¡NUEVO GETTER AÑADIDO!
-    public ArrayList<SinglyLinkedList> getAdjList() { // <-- Retorna ArrayList de SinglyLinkedList sin genéricos
+    public ArrayList<SinglyLinkedList> getAdjList() {
         return adjList;
     }
 
@@ -278,12 +260,12 @@ public class DirectedSinglyLinkedListGraph {
         for (int i = 0; i < numVertices; i++) {
             String originCode = indexToAirportCodeArray[i];
             result += "[" + i + "] " + originCode + " -> ";
-            SinglyLinkedList connections = adjList.get(i); // Obtenemos SinglyLinkedList (Object)
+            SinglyLinkedList connections = adjList.get(i);
             if (connections != null && !connections.isEmpty()) {
                 try {
                     boolean first = true;
                     for (int j = 0; j < connections.size(); j++) {
-                        int[] edgeArray = (int[]) connections.get(j); // <-- CAST EXPLÍCITO aquí
+                        int[] edgeArray = (int[]) connections.get(j);
                         int destIndex = edgeArray[0];
                         String destCode = indexToAirportCodeArray[destIndex];
                         if (!first) {

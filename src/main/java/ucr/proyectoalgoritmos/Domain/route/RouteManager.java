@@ -14,18 +14,12 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Objects;
 
-
-/**
- * Gestiona la lógica de rutas y la interacción con el grafo subyacente.
- * Actúa como una fachada, delegando operaciones complejas del grafo a RouteGraphService.
- */
 public class RouteManager {
 
-    // Instancia de RouteGraphService para manejar las operaciones del grafo.
     private RouteGraphService routeService;
-    // Administrador de aeropuertos, si RouteManager necesita interactuar con él directamente.
+
     private AirportManager airportManager;
-    // Instancia de GSON para la serialización/deserialización de JSON.
+
     private Gson gson;
     private static RouteManager instance;
 
@@ -41,41 +35,41 @@ public class RouteManager {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-
-
     /**
      * Carga las rutas desde un archivo JSON y las añade al grafo.
      * @param filePath La ruta del archivo JSON que contiene las rutas.
      * @throws IOException Si ocurre un error al leer el archivo.
      */
     public void loadRoutesFromJson(String filePath) throws IOException {
-
-
         try (Reader reader = new FileReader(filePath)) {
-            // Usa el Wrapper para deserializar el objeto JSON completo
             RouteListWrapper wrapper = gson.fromJson(reader, RouteListWrapper.class);
 
-            // Verifica si el wrapper o la lista de rutas son nulos
             if (wrapper == null || wrapper.getRoutes() == null) {
                 System.err.println("Advertencia: No se encontraron rutas en el archivo JSON o el formato es incorrecto.");
                 return;
             }
 
-            // Obtiene la lista real de objetos Route (POJOs)
             List<Route> loadedRoutes = wrapper.getRoutes();
 
             for (Route route : loadedRoutes) {
                 try {
 
+                    routeService.addDualWeightRoute(
+                            route.getOrigin_airport_code(),
+                            route.getDestination_airport_code(),
+                            route.getDistance(),
+                            route.getDuration()
+                    );
                     routeService.addVertex(route.getOrigin_airport_code());
                     routeService.addVertex(route.getDestination_airport_code());
 
-                    routeService.addEdge(route.getOrigin_airport_code(), route.getDestination_airport_code(), route.getDistance());
                 } catch (ListException | IllegalArgumentException e) {
                     System.err.println("Error al procesar ruta: " + route.getOrigin_airport_code() + "->" + route.getDestination_airport_code() + ": " + e.getMessage());
-
                 }
             }
+        } catch (IOException e) {
+            System.err.println("Error al cargar el archivo de rutas desde '" + filePath + "'. Asegúrese de que la ruta es correcta y el archivo existe.");
+            throw e;
         }
     }
 

@@ -1,9 +1,8 @@
 package ucr.proyectoalgoritmos.Domain.route;
 
 import ucr.proyectoalgoritmos.Domain.list.ListException;
-import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList; // Asumo esta es la SinglyLinkedList sin genéricos
+import ucr.proyectoalgoritmos.Domain.list.SinglyLinkedList;
 import ucr.proyectoalgoritmos.graph.DirectedSinglyLinkedListGraph;
-// import ucr.proyectoalgoritmos.Domain.stack.Stack; // Posiblemente ya no necesites esta importación si usas java.util.Deque
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Comparator;
-import java.util.Deque; // Importación para Deque
-import java.util.ArrayDeque; // Importación para ArrayDeque
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 /**
  * Representa y gestiona rutas aéreas, actuando como una fachada para un grafo dirigido.
@@ -117,7 +116,6 @@ public class RouteGraphService {
         }
     }
 
-    // --- INICIO DE NUEVOS MÉTODOS Y LÓGICA PARA DOBLE PESO ---
 
     public void addDualWeightRoute(String originCode, String destinationCode, double distance, double duration) throws ListException, IllegalArgumentException {
         internalGraph.addVertex(originCode);
@@ -129,6 +127,8 @@ public class RouteGraphService {
         internalGraph.addEdge(internalGraph.getIndexForAirportCode(originCode),
                 internalGraph.getIndexForAirportCode(destinationCode),
                 (int) Math.round(distance));
+
+        System.out.println("DEBUG RouteGraphService: Ruta dual añadida: " + originCode + "->" + destinationCode + " (Dist:" + distance + ", Dur:" + duration + ")");
     }
 
     public void removeDualWeightRoute(String originCode, String destinationCode) throws ListException, IllegalArgumentException {
@@ -142,19 +142,9 @@ public class RouteGraphService {
         System.out.println("Ruta con doble peso de " + originCode + " a " + destinationCode + " eliminada (solo de estructura auxiliar).");
     }
 
-    /**
-     * Calcula los pesos (distancia y duración) de la ruta más corta entre dos aeropuertos
-     * basándose en un criterio específico ("distance" o "duration").
-     * Este método es NUEVO e implementa su propio Dijkstra para usar los pesos dobles.
-     *
-     * @param startCode El código del aeropuerto de origen.
-     * @param endCode El código del aeropuerto de destino.
-     * @param criteria El criterio para el camino más corto ("distance" o "duration").
-     * @return Un array double[2] con {peso_total_por_criterio, otro_peso_total_del_camino}, o null si no hay ruta.
-     * @throws ListException Si ocurre un error interno en la lista.
-     * @throws IllegalArgumentException Si el criterio es inválido o los aeropuertos no existen.
-     */
+
     public double[] getShortestPathDualWeights(String startCode, String endCode, String criteria) throws ListException {
+
         int startIndex = internalGraph.getIndexForAirportCode(startCode);
         int endIndex = internalGraph.getIndexForAirportCode(endCode);
 
@@ -173,12 +163,13 @@ public class RouteGraphService {
         Arrays.fill(prev, -1);
         Arrays.fill(visited, false);
 
-        // ¡Cambiado a PathNode_Internal!
         PriorityQueue<PathNode_Internal> pq = new PriorityQueue<>(internalGraph.getNumVertices(),
                 Comparator.comparingDouble(n -> n.currentWeight));
 
         dist[startIndex] = 0;
         pq.add(new PathNode_Internal(startIndex, 0));
+
+
 
         while (!pq.isEmpty()) {
             PathNode_Internal current = pq.poll();
@@ -186,26 +177,31 @@ public class RouteGraphService {
             double currentDist = current.currentWeight;
 
             if (visited[u]) {
+                System.out.println("DEBUG getShortestPathDualWeights: Vértice " + internalGraph.getAirportCodeForIndex(u) + " ya visitado. Continuando.");
                 continue;
             }
             visited[u] = true;
 
             if (u == endIndex) {
+                System.out.println("DEBUG getShortestPathDualWeights: ¡Vértice final " + internalGraph.getAirportCodeForIndex(endIndex) + " alcanzado! Distancia total por criterio: " + dist[endIndex]);
                 break;
             }
 
-            // Ahora adjList no tiene genéricos, así que hay que castear
             ArrayList<SinglyLinkedList> adjList = internalGraph.getAdjList();
             SinglyLinkedList neighbors = adjList.get(u);
             if (neighbors != null) {
+                System.out.println("DEBUG getShortestPathDualWeights: Procesando vecinos de " + internalGraph.getAirportCodeForIndex(u) + ":");
                 for (int i = 0; i < neighbors.size(); i++) {
-                    int[] edgeArray = (int[]) neighbors.get(i); // <-- CAST EXPLÍCITO aquí
+                    int[] edgeArray = (int[]) neighbors.get(i);
                     int v = edgeArray[0];
 
                     String edgeKey = internalGraph.getAirportCodeForIndex(u) + "-" + internalGraph.getAirportCodeForIndex(v);
                     DualEdgeInfo dualInfo = dualWeightEdges.get(edgeKey);
 
+                    System.out.println(" DEBUG getShortestPathDualWeights: Vecino " + internalGraph.getAirportCodeForIndex(v) + " (Key: " + edgeKey + ")");
+
                     if (dualInfo == null) {
+                        System.out.println(" DEBUG getShortestPathDualWeights: ADVERTENCIA: No se encontró DualEdgeInfo para la clave " + edgeKey + ". Saltando arista.");
                         continue;
                     }
 
@@ -215,50 +211,63 @@ public class RouteGraphService {
                     } else if (criteria.equalsIgnoreCase("duration")) {
                         edgeWeightForCriteria = dualInfo.duration;
                     } else {
+                        System.err.println("DEBUG getShortestPathDualWeights: Criterio inválido: " + criteria);
                         throw new IllegalArgumentException("Criterio inválido: " + criteria);
                     }
+
+                    System.out.println(" DEBUG getShortestPathDualWeights: Peso de la arista (" + criteria + "): " + edgeWeightForCriteria);
 
                     if (!visited[v] && currentDist != Double.POSITIVE_INFINITY && currentDist + edgeWeightForCriteria < dist[v]) {
                         dist[v] = currentDist + edgeWeightForCriteria;
                         prev[v] = u;
-                        pq.add(new PathNode_Internal(v, dist[v])); // ¡Cambiado a PathNode_Internal!
+                        pq.add(new PathNode_Internal(v, dist[v]));
+                        System.out.println("    DEBUG getShortestPathDualWeights: Actualizando dist(" + internalGraph.getAirportCodeForIndex(v) + ") a " + dist[v] + ". Añadiendo a PQ. Prev: " + internalGraph.getAirportCodeForIndex(u));
+                    } else {
+                        System.out.println(" DEBUG getShortestPathDualWeights: No se actualiza dist(" + internalGraph.getAirportCodeForIndex(v) + "). Ya visitado o nueva dist " + (currentDist + edgeWeightForCriteria) + " no es menor que actual " + dist[v] + ".");
                     }
                 }
             }
         }
 
         if (dist[endIndex] == Double.POSITIVE_INFINITY) {
+            System.out.println("DEBUG getShortestPathDualWeights: Vértice final " + internalGraph.getAirportCodeForIndex(endIndex) + " no alcanzado. Retornando null.");
             return null;
         }
 
+        // Reconstrucción de la ruta y cálculo de pesos dobles
         double totalDistance = 0;
         double totalDuration = 0;
         int currentVertexIndex = endIndex;
-        // Cambio de Stack a Deque/ArrayDeque
         Deque<Integer> pathStackForTraversal = new ArrayDeque<>();
 
+        System.out.println("DEBUG getShortestPathDualWeights: Reconstruyendo camino...");
         while (currentVertexIndex != -1) {
-            pathStackForTraversal.push(currentVertexIndex); // push para Deque como pila
+            System.out.println("DEBUG getShortestPathDualWeights: Añadiendo a pila de recorrido: " + internalGraph.getAirportCodeForIndex(currentVertexIndex));
+            pathStackForTraversal.push(currentVertexIndex);
             if (currentVertexIndex == startIndex) break;
             currentVertexIndex = prev[currentVertexIndex];
         }
 
         if (pathStackForTraversal.isEmpty() || pathStackForTraversal.peek() != startIndex) {
+            System.out.println("DEBUG getShortestPathDualWeights: Fallo en la reconstrucción del camino.");
             return null;
         }
 
-        int prevVertexIndex = pathStackForTraversal.pop(); // pop para Deque como pila
+        int prevVertexIndex = pathStackForTraversal.pop();
         while (!pathStackForTraversal.isEmpty()) {
-            int nextVertexIndex = pathStackForTraversal.pop(); // pop para Deque como pila
+            int nextVertexIndex = pathStackForTraversal.pop();
 
             String edgeKey = internalGraph.getAirportCodeForIndex(prevVertexIndex) + "-" + internalGraph.getAirportCodeForIndex(nextVertexIndex);
             DualEdgeInfo dualInfo = dualWeightEdges.get(edgeKey);
 
+            System.out.println("DEBUG getShortestPathDualWeights: Procesando arista " + internalGraph.getAirportCodeForIndex(prevVertexIndex) + "->" + internalGraph.getAirportCodeForIndex(nextVertexIndex) + " (Key: " + edgeKey + ")");
+
             if (dualInfo != null) {
                 totalDistance += dualInfo.distance;
                 totalDuration += dualInfo.duration;
+                System.out.println("DEBUG getShortestPathDualWeights: Añadiendo: Dist=" + dualInfo.distance + ", Dur=" + dualInfo.duration + ". Totales: Dist=" + totalDistance + ", Dur=" + totalDuration);
             } else {
-                System.err.println("Error de sincronización: Ruta " + internalGraph.getAirportCodeForIndex(prevVertexIndex) + "->" + internalGraph.getAirportCodeForIndex(nextVertexIndex) + " encontrada por Dijkstra pero sin DualEdgeInfo.");
+                System.err.println("DEBUG getShortestPathDualWeights: ERROR FATAL: Ruta " + internalGraph.getAirportCodeForIndex(prevVertexIndex) + "->" + internalGraph.getAirportCodeForIndex(nextVertexIndex) + " encontrada por Dijkstra pero sin DualEdgeInfo. Esto indica un problema de sincronización de datos.");
             }
             prevVertexIndex = nextVertexIndex;
         }
@@ -267,17 +276,14 @@ public class RouteGraphService {
         if (criteria.equalsIgnoreCase("distance")) {
             result[0] = totalDistance;
             result[1] = totalDuration;
-        } else {
+        } else { // criteria.equalsIgnoreCase("duration")
             result[0] = totalDuration;
             result[1] = totalDistance;
         }
+        System.out.println("DEBUG getShortestPathDualWeights: Resultado final: [" + result[0] + ", " + result[1] + "]");
         return result;
     }
 
-    /**
-     * Obtiene la secuencia de aeropuertos que forman la ruta más corta, basada en un criterio.
-     * Este método es NUEVO. Reconstruye el camino usando el 'prev' array de Dijkstra de doble peso.
-     */
     public SinglyLinkedList getPathDualWeight(String startCode, String endCode, String criteria) throws ListException {
         int startIndex = internalGraph.getIndexForAirportCode(startCode);
         int endIndex = internalGraph.getIndexForAirportCode(endCode);
@@ -372,10 +378,6 @@ public class RouteGraphService {
         return pathList;
     }
 
-    /**
-     * Genera rutas aleatorias con doble peso (distancia y duración).
-     * Este método es NUEVO. Utiliza addDualWeightRoute.
-     */
     public void generateRandomDualWeightRoutes(int minRoutesPerAirport, int maxRoutesPerAirport, double minDistance, double maxDistance) throws ListException {
         SinglyLinkedList allCodes = internalGraph.getAllAirportCodes();
         if (allCodes.isEmpty() || allCodes.size() < 2) {
@@ -421,9 +423,7 @@ public class RouteGraphService {
         }
     }
 
-    /**
-     * Devuelve una representación en String del grafo y sus aristas con pesos dobles.
-     */
+
     public String getGraphDetails() throws ListException {
         String result = "Grafo de Rutas (Vértices: " + internalGraph.getNumVertices() + "):\n";
         SinglyLinkedList allCodes = internalGraph.getAllAirportCodes();
