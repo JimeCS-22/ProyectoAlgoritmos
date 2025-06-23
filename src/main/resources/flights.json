@@ -9,6 +9,7 @@
   "status" : "COMPLETED",
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
+  "gate" : "N/A",
   "full" : false,
   "passengersDisplay" : "0/150"
 }, {
@@ -22,6 +23,21 @@
   "status" : "COMPLETED",
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
+  "gate" : "N/A",
   "full" : true,
+  "passengersDisplay" : "0/120"
+}, {
+  "flightNumber" : "10",
+  "originAirportCode" : "PTY",
+  "destinationAirportCode" : "BOG",
+  "departureTime" : "2025-06-23T14:30:00",
+  "capacity" : 120,
+  "passengers" : [ ],
+  "occupancy" : 100,
+  "status" : "IN_PROGRESS",
+  "airplane" : null,
+  "estimatedDurationMinutes" : 0,
+  "gate" : "N/A",
+  "full" : false,
   "passengersDisplay" : "0/120"
 } ]

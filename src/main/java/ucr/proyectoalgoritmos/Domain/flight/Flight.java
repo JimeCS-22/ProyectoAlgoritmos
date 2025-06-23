@@ -22,6 +22,7 @@ public class Flight {
     private FlightStatus status; // Estado actual del vuelo
     private Airplane airplane; // El avión asignado a este vuelo (puede ser nulo inicialmente)
     private int estimatedDurationMinutes; // Duración estimada del vuelo en minutos
+    private String gate; // Atributo para la puerta de embarque
 
     /**
      * Enumeración que define los posibles **estados operativos** en los que puede encontrarse un vuelo.
@@ -91,6 +92,7 @@ public class Flight {
         this.status = FlightStatus.SCHEDULED; // Estado inicial
         this.airplane = null; // Avión no asignado al inicio
         this.estimatedDurationMinutes = 0; // Duración por defecto, se puede setear después
+        this.gate = "N/A"; // Valor por defecto
     }
 
     // --- Getters ---
@@ -104,6 +106,8 @@ public class Flight {
     public FlightStatus getStatus() { return status; }
     public Airplane getAirplane() { return airplane; }
     public int getEstimatedDurationMinutes() { return estimatedDurationMinutes; }
+    public String getGate() { return gate; }
+
 
     // --- Setters ---
     /**
@@ -314,6 +318,7 @@ public class Flight {
         this.passengers = new CircularDoublyLinkedList(); // Inicializa la lista de pasajeros
         this.airplane = null; // Avión no asignado al inicio
         this.estimatedDurationMinutes = 0; // Duración por defecto, se puede setear después
+        this.gate = gate != null ? gate.trim() : "N/A";
     }
 
     public Flight() {
@@ -323,6 +328,7 @@ public class Flight {
         this.occupancy = 0;
         this.estimatedDurationMinutes = 0;
         // Los Strings y LocalDateTime pueden ser null inicialmente y Jackson los rellenará
+        this.gate = "N/A"; // Valor por defecto
     }
 
     public String getPassengersDisplay() {
@@ -352,5 +358,9 @@ public class Flight {
 
     public void setPassengers(CircularDoublyLinkedList passengers) {
         this.passengers = passengers;
+    }
+
+    public void setGate(String gate) { // Setter para 'gate'
+        this.gate = gate;
     }
 }

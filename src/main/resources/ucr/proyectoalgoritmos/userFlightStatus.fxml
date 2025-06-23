@@ -16,10 +16,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.UserFlightStatusController">
+<AnchorPane prefHeight="689.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.UserController.UserFlightStatusController">
     <children>
         <!-- Imagen de fondo con degradados - Mantiene un toque visual atractivo -->
-        <ImageView fitHeight="693.0" fitWidth="1175.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="714.0" fitWidth="1133.0" layoutX="-5.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@images/degradados.png" />
             </image>
@@ -40,7 +40,7 @@
         </ImageView>
 
         <!-- Contenedor principal para la información del vuelo y la tabla -->
-        <VBox layoutX="25.0" layoutY="151.0" prefHeight="479.0" prefWidth="601.0" spacing="15.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 15;">
+        <VBox layoutX="25.0" layoutY="151.0" prefHeight="499.0" prefWidth="631.0" spacing="15.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 15;">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
@@ -73,7 +73,7 @@
                                     <Font name="System Bold" size="14.0" />
                                 </font>
                             </Label>
-                            <Label fx:id="lblOrigen" text="Querétaro (QRO)" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label fx:id="lblOrigen" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                 <font>
                                     <Font size="14.0" />
                                 </font>
@@ -84,7 +84,7 @@
                                     <Font name="System Bold" size="14.0" />
                                 </font>
                             </Label>
-                            <Label fx:id="lblDestino" text="Ciudad de México (AEMEX)" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label fx:id="lblDestino" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <font>
                                     <Font size="14.0" />
                                 </font>
@@ -95,7 +95,7 @@
                                     <Font name="System Bold" size="14.0" />
                                 </font>
                             </Label>
-                            <Label fx:id="lblNumeroVuelo" text="AM 2345" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <Label fx:id="lblNumeroVuelo" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <font>
                                     <Font name="System Bold" size="16.0" />
                                 </font>
@@ -106,7 +106,7 @@
                                     <Font name="System Bold" size="14.0" />
                                 </font>
                             </Label>
-                            <Label fx:id="lblSalidaProgramada" text="Martes, 01/Abr/2025 - 05:00 Madrugada" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <Label fx:id="lblSalidaProgramada" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                 <font>
                                     <Font size="14.0" />
                                 </font>
@@ -117,7 +117,7 @@
                                     <Font name="System Bold" size="18.0" />
                                 </font>
                             </Label>
-                            <Label fx:id="lblEstadoVuelo" text="A Tiempo" textFill="#28a745" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <Label fx:id="lblEstadoVuelo" textFill="#28a745" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                 <font>
                                     <Font name="System Bold" size="18.0" />
                                 </font>
@@ -128,7 +128,7 @@
 
                 <!-- Botón para actualizar el estado del vuelo -->
                 <HBox alignment="CENTER_RIGHT">
-                    <Button fx:id="btnActualizarEstado" mnemonicParsing="false" onAction="#actualizarEstadoOnAction" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Actualizar Estado" textFill="WHITE">
+                    <Button fx:id="btnBuscarVuelo" mnemonicParsing="false" onAction="#handleSearchFlight" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #ffb43c; -fx-background-radius: 8;" text="Buscar Vuelo" textFill="WHITE">
                         <font>
                             <Font name="Pristina" size="18.0" />
                         </font>
@@ -147,18 +147,18 @@
                 <TableView fx:id="flightStatusTable" prefHeight="180.0" prefWidth="561.0">
                     <columns>
                         <!-- Columnas actualizadas para el estado de vuelo -->
-                        <TableColumn prefWidth="90.0" text="Número de Vuelo" />
-                        <TableColumn prefWidth="90.0" text="Origen" />
-                        <TableColumn prefWidth="90.0" text="Destino" />
-                        <TableColumn prefWidth="120.0" text="Salida Programada" />
-                        <TableColumn prefWidth="90.0" text="Estado" />
-                        <TableColumn prefWidth="70.0" text="Puerta" />
+                        <TableColumn fx:id="colNumeroVuelo" prefWidth="109.0" text="Número de Vuelo" />
+                        <TableColumn fx:id="colOrigen" prefWidth="58.0" text="Origen" />
+                        <TableColumn fx:id="colDestino" prefWidth="79.0" text="Destino" />
+                        <TableColumn fx:id="colSalidaProgramada" prefWidth="197.0" text="Salida Programada" />
+                        <TableColumn fx:id="colEstado" prefWidth="79.0" text="Estado" />
+                        <TableColumn fx:id="colPuerta" prefWidth="68.0" text="Puerta" />
                     </columns>
                 </TableView>
             </children>
         </VBox>
 
-        <ImageView fitHeight="320.0" fitWidth="492.0" layoutX="652.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="288.0" fitWidth="420.0" layoutX="676.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@images/plane.jpeg" />
             </image>

@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Controller;
+package ucr.proyectoalgoritmos.Controller.UserController;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;

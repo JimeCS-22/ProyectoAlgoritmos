@@ -80,14 +80,6 @@
   }
 }, {
   "id" : "P011",
-  "name" : "Kim Min-jun",
-  "nationality" : "Korean",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P012",
   "name" : "Liam Murphy",
   "nationality" : "Irish",
   "flightHistory" : {
@@ -95,7 +87,7 @@
     "empty" : true
   }
 }, {
-  "id" : "P013",
+  "id" : "P012",
   "name" : "Zulay Chen",
   "nationality" : "Tailand",
   "flightHistory" : {
@@ -103,7 +95,7 @@
     "empty" : true
   }
 }, {
-  "id" : "P014",
+  "id" : "P013",
   "name" : "Francesco Bartolini",
   "nationality" : "Italiana",
   "flightHistory" : {
@@ -111,9 +103,17 @@
     "empty" : true
   }
 }, {
-  "id" : "P015",
+  "id" : "P014",
   "name" : "Raúl Camacho",
   "nationality" : "Mexicana",
+  "flightHistory" : {
+    "front" : null,
+    "empty" : true
+  }
+}, {
+  "id" : "P015",
+  "name" : "Ana Alfaro",
+  "nationality" : "Costarricense",
   "flightHistory" : {
     "front" : null,
     "empty" : true

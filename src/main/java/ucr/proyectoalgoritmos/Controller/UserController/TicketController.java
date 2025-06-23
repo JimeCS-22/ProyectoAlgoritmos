@@ -1,4 +1,4 @@
-package ucr.proyectoalgoritmos.Controller;
+package ucr.proyectoalgoritmos.Controller.UserController;
 
 import javafx.scene.image.ImageView;
 
