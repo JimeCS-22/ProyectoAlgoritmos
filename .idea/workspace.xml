@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Listo rutas">
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="ACtualizacion en comentarios del ReportGenerator">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/AirportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/CreateAirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/CreateAirportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/DeleteAirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/AirportController/DeleteAirportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/CreateFlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/CreateFlightController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/FlightsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/FlightsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/airports.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/airports.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/flights.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/flights.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/passenger.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/passenger.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/Airport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/aeropuetos/AirportManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/ListConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/ListConverter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -364,7 +359,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750713390475</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="ACtualizacion en comentarios del ReportGenerator">
+      <option name="closed" value="true" />
+      <created>1750718796369</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1750718796369</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -395,6 +398,7 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" />
     <MESSAGE value="Ya casi listo la simulacion de rutas" />
     <MESSAGE value="Listo rutas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Listo rutas" />
+    <MESSAGE value="ACtualizacion en comentarios del ReportGenerator" />
+    <option name="LAST_COMMIT_MESSAGE" value="ACtualizacion en comentarios del ReportGenerator" />
   </component>
 </project>
