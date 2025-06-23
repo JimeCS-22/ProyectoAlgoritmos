@@ -8,6 +8,7 @@ import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Random;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Flight {
@@ -23,6 +24,13 @@ public class Flight {
     private FlightStatus status; // Current status of the flight
     private Airplane airplane; // The airplane assigned to this flight (can be null initially)
     private int estimatedDurationMinutes; // Estimated flight duration in minutes
+    private String gate;
+
+    // Constantes para las puertas disponibles
+    private static final String[] AVAILABLE_GATES = {
+            "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3", "D1", "D2", "D3"
+    };
+    private static final Random RANDOM = new Random();
 
     /**
      * Enumeration that defines the possible **operational states** a flight can be in.
@@ -59,7 +67,7 @@ public class Flight {
         this.status = FlightStatus.SCHEDULED;
         this.occupancy = 0;
         this.estimatedDurationMinutes = 0;
-        // Other fields like flightNumber, departureTime, etc., will be set by the deserializer.
+        this.gate = assignRandomGate(); // Asigna puerta al crear el vuelo
     }
 
     /**
@@ -106,6 +114,7 @@ public class Flight {
         this.estimatedDurationMinutes = 0; // Default duration, can be set later
         this.actualDepartureTime = null; // Not set until flight takes off
         this.actualArrivalTime = null; // Not set until flight lands
+        this.gate = null;
     }
 
     /**
@@ -156,6 +165,7 @@ public class Flight {
         this.estimatedDurationMinutes = 0; // Default duration, can be set later
         this.actualDepartureTime = null; // Not set until flight takes off
         this.actualArrivalTime = null; // Not set until flight lands
+        this.gate = null;
     }
 
     // --- Getters ---
@@ -368,6 +378,7 @@ public class Flight {
     @Override
     public String toString() {
         return "Flight [Num: " + flightNumber + ", From: " + originAirportCode + ", To: " + destinationAirportCode +
+                ", Gate: " + (gate != null ? gate : "Not assigned") +
                 ", Scheduled: " + (departureTime != null ? departureTime.withNano(0) : "N/A") +
                 (actualDepartureTime != null ? ", Actual Depart: " + actualDepartureTime.withNano(0) : "") +
                 (actualArrivalTime != null ? ", Actual Arrive: " + actualArrivalTime.withNano(0) : "") +
@@ -409,5 +420,45 @@ public class Flight {
         } else {
             this.occupancy = 0;
         }
+    }
+
+    // --- Métodos para puertas de abordaje ---
+
+    /**
+     * Obtiene la puerta de abordaje asignada al vuelo.
+     * Si no hay una puerta asignada, asigna una aleatoria.
+     * @return La puerta de abordaje asignada
+     */
+    public String getGate() {
+        if (gate == null || gate.isEmpty() || gate.equals("N/A")) {
+            this.gate = assignRandomGate(); // Reasigna si no es válida
+        }
+        return gate;
+    }
+
+    /**
+     * Asigna una puerta específica al vuelo.
+     * @param gate La puerta a asignar
+     * @throws IllegalArgumentException Si la puerta es nula o vacía
+     */
+    public void setGate(String gate) {
+        this.gate = (gate == null || gate.trim().isEmpty()) ? assignRandomGate() : gate.trim();
+    }
+
+    /**
+     * Asigna una puerta de abordaje aleatoria al vuelo.
+     *
+     * @return
+     */
+    private String assignRandomGate() {
+        return AVAILABLE_GATES[RANDOM.nextInt(AVAILABLE_GATES.length)];
+    }
+
+    /**
+     * Versión alternativa que asigna una puerta consistentemente basada en el número de vuelo
+     */
+    private void assignConsistentGate() {
+        int hash = Math.abs(this.flightNumber.hashCode());
+        this.gate = AVAILABLE_GATES[hash % AVAILABLE_GATES.length];
     }
 }

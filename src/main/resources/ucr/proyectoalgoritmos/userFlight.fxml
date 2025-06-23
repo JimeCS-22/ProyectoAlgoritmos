@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -29,14 +28,17 @@
                 <Image url="@images/whale_1841292.png" />
             </image>
         </ImageView>
-      <HBox layoutX="25.0" layoutY="122.0" prefHeight="100.0" prefWidth="200.0" />
-        <TextField layoutX="25.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
-        <TextField layoutX="264.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
+      <HBox layoutX="25.0" layoutY="140.0" prefHeight="60.0" prefWidth="232.0">
+         <children>
+            <ComboBox fx:id="cbOrigin" prefHeight="60.0" prefWidth="231.0" />
+         </children></HBox>
+      <ComboBox fx:id="cbSeatType" layoutX="25.0" layoutY="231.0" prefHeight="60.0" prefWidth="232.0" />
+      <ComboBox fx:id="cbDestination" layoutX="263.0" layoutY="140.0" prefHeight="60.0" prefWidth="231.0" />
         <Text layoutX="25.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Origin" />
         <Text layoutX="266.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
-        <DatePicker layoutX="502.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
-        <DatePicker layoutX="742.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
-        <ComboBox layoutX="981.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
+        <DatePicker fx:id="dpDeparture" layoutX="502.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
+        <DatePicker fx:id="dpReturn" layoutX="742.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
+        <ComboBox fx:id="cbPassengers" layoutX="981.0" layoutY="142.0" prefHeight="60.0" prefWidth="232.0" />
         <Text layoutX="742.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return" />
         <Text layoutX="502.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure" />
         <Text layoutX="981.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passengers" />
@@ -45,14 +47,8 @@
                 <Image url="@images/check-in.png" />
             </image>
         </ImageView>
-        <Button fx:id="btCheckIn" layoutX="742.0" layoutY="231.0" mnemonicParsing="false" onAction="#checkInOnAction" prefHeight="60.0" prefWidth="232.0" style="-fx-background-color: #ffb43c;" text="Check-in">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Button>
-      <ComboBox layoutX="25.0" layoutY="231.0" prefHeight="60.0" prefWidth="232.0" />
       <Text layoutX="25.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seat Type" />
-      <ComboBox layoutX="264.0" layoutY="231.0" prefHeight="60.0" prefWidth="232.0" />
+      <ComboBox fx:id="cbBaggage" layoutX="264.0" layoutY="231.0" prefHeight="60.0" prefWidth="232.0" />
       <Text layoutX="266.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baggage" />
       <ButtonBar layoutX="500.0" layoutY="231.0" prefHeight="60.0" prefWidth="225.0">
         <buttons>
@@ -61,10 +57,10 @@
                   <Font size="15.0" />
                </font>
             </Text>
-          <Button ellipsisString="" mnemonicParsing="false" prefHeight="25.0" text="Add" />
+          <Button fx:id="btAddPet" ellipsisString="" mnemonicParsing="false" onAction="#addPetOnAction" prefHeight="25.0" text="Add" />
         </buttons>
       </ButtonBar>
-      <Button fx:id="btReservation" layoutX="981.0" layoutY="231.0" mnemonicParsing="false" onAction="#reservationOnAction" prefHeight="60.0" prefWidth="232.0" style="-fx-background-color: #ffb43c;" text="Complete reservation">
+      <Button fx:id="btReservation" layoutX="924.0" layoutY="231.0" mnemonicParsing="false" onAction="#reservationOnAction" prefHeight="60.0" prefWidth="232.0" style="-fx-background-color: #ffb43c;" text="Complete reservation">
          <font>
             <Font size="18.0" />
          </font>

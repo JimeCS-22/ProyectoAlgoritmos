@@ -59,6 +59,7 @@ public class UserFlightStatusController implements Initializable {
         configureTableColumns();
         initializeDataStructures();
         loadFlightData();
+        flightStatusTable.refresh();
 //        promptForFlightNumber();
     }
 
@@ -123,6 +124,8 @@ public class UserFlightStatusController implements Initializable {
             currentFlight = flightScheduleManager.findFlight(currentFlightNumber);
 
             if (currentFlight != null) {
+                // Forzar asignación de puerta
+                String gate = currentFlight.getGate();
                 displayFlightInfo(currentFlight);
             } else {
                 showFlightNotFoundMessage();
@@ -146,6 +149,8 @@ public class UserFlightStatusController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd/MMM/yyyy - HH:mm");
         lblSalidaProgramada.setText(flight.getDepartureTime().format(formatter));
 
+        // Mostrar la puerta de abordaje
+        lblEstadoVuelo.setText(flight.getStatus().toString() + " - Puerta: " + flight.getGate());
         setFlightStatusLabel(flight.getStatus());
     }
 
@@ -210,6 +215,8 @@ public class UserFlightStatusController implements Initializable {
             for (int i = 0; i < flights.size(); i++) {
                 Flight flight = (Flight) flights.get(i);
                 if (currentFlight == null || !flight.getFlightNumber().equals(currentFlight.getFlightNumber())) {
+                    // Forzar la asignación de puerta llamando a getGate()
+                    String gate = flight.getGate(); // Esto asignará una puerta si no tiene
                     allFlights.add(flight);
                 }
             }
@@ -217,7 +224,6 @@ public class UserFlightStatusController implements Initializable {
             otherFlightsObservableList.setAll(allFlights);
         } catch (ListException e) {
             FXUtility.alert("Error de Carga", "No se pudieron cargar otros vuelos: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
