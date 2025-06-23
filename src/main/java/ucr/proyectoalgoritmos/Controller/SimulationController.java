@@ -1,57 +1,495 @@
 package ucr.proyectoalgoritmos.Controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
-public class SimulationController {
+import ucr.proyectoalgoritmos.Domain.TreeException;
+import ucr.proyectoalgoritmos.Domain.flight.FlightSimulator;
+import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.flight.Flight;
+import ucr.proyectoalgoritmos.Domain.stack.StackException;
+import ucr.proyectoalgoritmos.util.ListConverter;
 
-    @javafx.fxml.FXML
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+// Para manejar el tiempo
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit; // Asegúrate de que esto esté importado
+
+public class SimulationController implements Initializable {
+
+    @FXML
     private AnchorPane simulationPanel;
-    @javafx.fxml.FXML
+    @FXML
     private Slider speedSlider;
-    @javafx.fxml.FXML
+    @FXML
     private Line flightPathLine;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblHeading;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblSpeed;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnPauseSimulation;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblFlightInfo;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnResetSimulation;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblElapsedTime;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnStartSimulation;
-    @javafx.fxml.FXML
+    @FXML
     private Label lblAltitude;
-    @javafx.fxml.FXML
+    @FXML
     private ImageView airplaneIcon;
+    @FXML
+    private Button btnNextFlight;
 
-//    @Deprecated
-//    public void initialize(URL location, ResourceBundle resources) {
-//        // Para un GIF dividido en frames (frame0.png, frame1.png, etc.)
-//        GifPlayer gifPlayer = new GifPlayer("/ucr/proyectoalgoritmos/images/plane-gif.gif", 24, 40);
-//        gifImageView.setImage(gifPlayer.getView().getImage());
-//    }
+    private FlightSimulator flightSimulator;
+    private Timeline updateTimeline;
+    private Timeline movementTimeline;
+    private String currentVisualizedFlightNumber = null;
 
+    private boolean isSimulationRunning = false;
+    private boolean isSimulationPaused = false;
+    private boolean isSimulatorInitialized = false;
 
-    @javafx.fxml.FXML
-    public void pauseSimulation(ActionEvent actionEvent) {
+    private static final double MIN_SIM_SPEED = 0.5;
+    private static final double MAX_SIM_SPEED = 5.0;
+    private static final double DEFAULT_SIM_SPEED = 1.0;
+
+    private static final int MIN_AIRPLANE_SPEED_KMH = 0;
+    private static final int MAX_AIRPLANE_SPEED_KMH = 900;
+
+    private static final long FIXED_UI_FLIGHT_DURATION_SECONDS = 60; // Por ejemplo, 60 segundos
+
+    private Map<String, Point2D> airportCoordinates = new HashMap<>();
+
+    private List<Point2D> fixedRoutePoints = new ArrayList<>();
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            flightSimulator = new FlightSimulator();
+            isSimulatorInitialized = true;
+            System.out.println("DEBUG INIT: FlightSimulator inicializado en el controlador.");
+        } catch (ListException | IOException | TreeException e) {
+            System.err.println("ERROR INIT: Fallo al inicializar FlightSimulator: " + e.getMessage());
+            e.printStackTrace();
+            isSimulatorInitialized = false;
+        }
+
+        if (!isSimulatorInitialized) {
+            btnStartSimulation.setDisable(true);
+            btnPauseSimulation.setDisable(true);
+            btnResetSimulation.setDisable(true);
+            btnNextFlight.setDisable(true);
+            speedSlider.setDisable(true);
+            lblFlightInfo.setText("ERROR: Simulador no disponible. Revise la consola.");
+            return;
+        }
+
+        btnStartSimulation.setDisable(false);
+        btnPauseSimulation.setDisable(true);
+        btnResetSimulation.setDisable(true);
+        btnNextFlight.setDisable(false);
+
+        speedSlider.setMin(MIN_SIM_SPEED);
+        speedSlider.setMax(MAX_SIM_SPEED);
+        speedSlider.setValue(DEFAULT_SIM_SPEED);
+        speedSlider.setBlockIncrement(0.5);
+        speedSlider.setMajorTickUnit(1.0);
+        speedSlider.setMinorTickCount(1);
+        speedSlider.setShowTickLabels(true);
+        speedSlider.setShowTickMarks(true);
+        speedSlider.setMouseTransparent(true);
+        speedSlider.setFocusTraversable(false);
+
+        resetLiveFlightDataLabels();
+
+        updateTimeline = new Timeline(new KeyFrame(Duration.millis(120), event -> {
+            // System.out.println("DEBUG UI CYCLE: Ejecutando updateLiveFlightData()."); // Deshabilitado para reducir spam en consola
+            updateLiveFlightData();
+        }));
+        updateTimeline.setCycleCount(Timeline.INDEFINITE);
+
+        airportCoordinates.put("SJO", new Point2D(150, 400));
+        airportCoordinates.put("LIR", new Point2D(80, 250));
+        airportCoordinates.put("MIA", new Point2D(450, 100));
+        airportCoordinates.put("JFK", new Point2D(600, 50));
+        airportCoordinates.put("LAX", new Point2D(50, 50));
+
+        fixedRoutePoints.add(new Point2D(150, 400)); // Punto de inicio (ej: cerca de SJO)
+        fixedRoutePoints.add(new Point2D(250, 350));
+        fixedRoutePoints.add(new Point2D(350, 280));
+        fixedRoutePoints.add(new Point2D(450, 200));
+        fixedRoutePoints.add(new Point2D(550, 150));
+        fixedRoutePoints.add(new Point2D(650, 100)); // Punto de fin (ej: cerca de JFK/MIA)
+
+        airplaneIcon.setVisible(false);
+        airplaneIcon.setOpacity(0.0);
+        flightPathLine.setVisible(false);
     }
 
-    @javafx.fxml.FXML
-    public void resetSimulation(ActionEvent actionEvent) {
+    private void updateSimulationSpeed(double newSpeed) {
+        // No hay acción directa aquí.
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void startSimulation(ActionEvent actionEvent) {
+        if (!isSimulationRunning && isSimulatorInitialized) {
+            System.out.println("DEBUG ACTION: Iniciando simulación automática...");
+            flightSimulator.startSimulation(2, 120);
+            updateTimeline.play();
+
+            isSimulationRunning = true;
+            isSimulationPaused = false;
+
+            btnStartSimulation.setDisable(true);
+            btnPauseSimulation.setDisable(false);
+            btnResetSimulation.setDisable(true);
+            System.out.println("DEBUG ACTION: Simulación automática iniciada. UI Timeline play().");
+        } else if (!isSimulatorInitialized) {
+            System.out.println("DEBUG ACTION: El simulador no se inicializó correctamente. No se puede iniciar.");
+        } else {
+            System.out.println("DEBUG ACTION: La simulación ya está en curso. Ignorando startSimulation.");
+        }
+    }
+
+    @FXML
+    public void pauseSimulation(ActionEvent actionEvent) {
+        if (isSimulationRunning && isSimulatorInitialized) {
+            if (!isSimulationPaused) {
+                System.out.println("DEBUG ACTION: Pausando animación de UI...");
+                updateTimeline.stop();
+                if (movementTimeline != null) {
+                    movementTimeline.pause();
+                }
+                isSimulationPaused = true;
+                btnPauseSimulation.setText("Reanudar");
+
+                btnStartSimulation.setDisable(true);
+                btnResetSimulation.setDisable(false);
+                System.out.println("DEBUG ACTION: Animación de UI pausada. UI Timeline stop().");
+            } else {
+                System.out.println("DEBUG ACTION: Reanudando animación de UI...");
+                updateTimeline.play();
+                if (movementTimeline != null) {
+                    movementTimeline.play();
+                }
+                isSimulationPaused = false;
+                btnPauseSimulation.setText("Pausar");
+
+                btnStartSimulation.setDisable(true);
+                btnResetSimulation.setDisable(true);
+                System.out.println("DEBUG ACTION: Animación de UI reanudada. UI Timeline play().");
+            }
+        } else if (!isSimulatorInitialized) {
+            System.out.println("DEBUG ACTION: El simulador no está inicializado. No se puede pausar/reanudar.");
+        } else {
+            System.out.println("DEBUG ACTION: La simulación no está en curso para pausar/reanudar. Ignorando.");
+        }
+    }
+
+    @FXML
+    public void processNextFlightManually(ActionEvent actionEvent) {
+        if (isSimulatorInitialized) {
+            System.out.println("DEBUG ACTION: Intentando avanzar al siguiente vuelo programado manualmente...");
+            try {
+                Flight activatedFlight = flightSimulator.advanceToNextScheduledFlight();
+
+                if (activatedFlight != null) {
+                    System.out.println("DEBUG ACTION: Se ha avanzado al siguiente vuelo programado: " + activatedFlight.getFlightNumber());
+                    resetLiveFlightDataLabels();
+                    updateLiveFlightData();
+                    startAirplaneMovement(activatedFlight.getFlightNumber());
+                } else {
+                    lblFlightInfo.setText("No hay más vuelos programados para avanzar.");
+                    resetLiveFlightDataLabels();
+                    speedSlider.setValue(MIN_SIM_SPEED);
+                    stopAirplaneMovement();
+                }
+            } catch (Exception e) {
+                System.err.println("ERROR ACTION: Fallo al avanzar al siguiente vuelo manualmente: " + e.getMessage());
+                e.printStackTrace();
+                lblFlightInfo.setText("ERROR: No se pudo avanzar al siguiente vuelo.");
+                stopAirplaneMovement();
+            }
+        }
+    }
+
+    @FXML
+    public void resetSimulation(ActionEvent actionEvent) {
+        if (isSimulatorInitialized) {
+            if (isSimulationRunning || isSimulationPaused) {
+                flightSimulator.shutdownSimulation();
+            }
+            updateTimeline.stop();
+            stopAirplaneMovement();
+
+            try {
+                flightSimulator = new FlightSimulator();
+                isSimulatorInitialized = true;
+                System.out.println("DEBUG ACTION: FlightSimulator reinicializado con éxito.");
+            } catch (ListException | IOException | TreeException e) {
+                System.err.println("ERROR ACTION: Fallo al reinicializar FlightSimulator: " + e.getMessage());
+                e.printStackTrace();
+                isSimulatorInitialized = false;
+                btnStartSimulation.setDisable(true);
+                btnPauseSimulation.setDisable(true);
+                btnResetSimulation.setDisable(true);
+                btnNextFlight.setDisable(true);
+                speedSlider.setDisable(true);
+                lblFlightInfo.setText("ERROR: Reinicialización fallida.");
+                return;
+            }
+
+            isSimulationRunning = false;
+            isSimulationPaused = false;
+
+            btnStartSimulation.setDisable(false);
+            btnPauseSimulation.setDisable(true);
+            btnResetSimulation.setDisable(true);
+            btnNextFlight.setDisable(false);
+            speedSlider.setValue(DEFAULT_SIM_SPEED);
+
+            resetLiveFlightDataLabels();
+            System.out.println("DEBUG ACTION: Simulación reiniciada y lista para comenzar de nuevo.");
+            lblFlightInfo.setText("Simulación lista. Presione 'Iniciar' o 'Siguiente Vuelo'.");
+            airplaneIcon.setOpacity(0.0);
+        } else {
+            System.out.println("DEBUG ACTION: El simulador no está inicializado. No se puede reiniciar.");
+        }
+    }
+
+    private void updateLiveFlightData() {
+        if (flightSimulator == null || !isSimulatorInitialized) {
+            System.out.println("DEBUG UI: Simulador no inicializado o nulo. Saliendo de updateLiveFlightData.");
+            resetLiveFlightDataLabels();
+            lblFlightInfo.setText("Simulador no inicializado.");
+            speedSlider.setValue(MIN_SIM_SPEED);
+            stopAirplaneMovement();
+            return;
+        }
+
+        try {
+            DoublyLinkedList scheduledFlightsList = ListConverter.convertToDoublyLinkedList(
+                    flightSimulator.getFlightScheduleManager().getScheduledFlights()
+            );
+
+            Flight flightInProgress = null;
+            if (scheduledFlightsList != null && !scheduledFlightsList.isEmpty()) {
+                for (int i = 0; i < scheduledFlightsList.size(); i++) {
+                    Flight currentFlight = (Flight) scheduledFlightsList.get(i);
+                    if (currentFlight.getStatus() == Flight.FlightStatus.IN_PROGRESS) {
+                        flightInProgress = currentFlight;
+                        System.out.println("DEBUG UI: Vuelo en progreso encontrado: " + currentFlight.getFlightNumber() + ", estado: " + currentFlight.getStatus());
+                        break;
+                    }
+                }
+            }
+
+            if (flightInProgress != null) {
+                String originCode = flightInProgress.getOriginAirportCode();
+                String destinationCode = flightInProgress.getDestinationAirportCode();
+
+                FlightSimulator.FlightData data = flightSimulator.getFlightInProgressData(flightInProgress.getFlightNumber());
+
+                if (data != null) {
+                    lblFlightInfo.setText(String.format("Vuelo: %s (%s → %s)",
+                            flightInProgress.getFlightNumber(),
+                            originCode,
+                            destinationCode));
+
+                    lblAltitude.setText(String.format("%,d m", data.getCurrentAltitude()));
+                    lblSpeed.setText(String.format("%,d km/h", data.getCurrentSpeed()));
+                    lblHeading.setText(String.format("%d°", (data.getCurrentHeading() + 360) % 360));
+
+                    // --- CORRECCIÓN AQUÍ ---
+                    // Asegurarse de que el tiempo transcurrido no sea negativo para la visualización.
+                    long elapsedSeconds = Math.max(0, data.getElapsedTimeSeconds()); // Asegura que sea 0 o positivo
+
+                    long hours = elapsedSeconds / 3600;
+                    long minutes = (elapsedSeconds % 3600) / 60;
+                    long seconds = elapsedSeconds % 60;
+                    lblElapsedTime.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+
+
+                    double mappedSpeed = mapValue(data.getCurrentSpeed(),
+                            MIN_AIRPLANE_SPEED_KMH, MAX_AIRPLANE_SPEED_KMH,
+                            MIN_SIM_SPEED, MAX_SIM_SPEED);
+                    speedSlider.setValue(mappedSpeed);
+
+                    if (!flightInProgress.getFlightNumber().equals(currentVisualizedFlightNumber)) {
+                        System.out.println("DEBUG UI: El vuelo visualizado ha cambiado. Iniciando movimiento para " + flightInProgress.getFlightNumber());
+                        startAirplaneMovement(flightInProgress.getFlightNumber());
+                    }
+
+                } else {
+                    System.out.println("DEBUG UI: Vuelo " + flightInProgress.getFlightNumber() + " está en IN_PROGRESS, pero FlightSimulator.getFlightInProgressData() retornó NULL. Esto es inusual, quizás está finalizando.");
+                    lblFlightInfo.setText(String.format("Vuelo: %s (%s → %s) (Finalizando...)",
+                            flightInProgress.getFlightNumber(), originCode, destinationCode));
+                    resetLiveFlightDataLabels();
+                    speedSlider.setValue(MIN_SIM_SPEED);
+                    stopAirplaneMovement();
+                }
+            } else {
+                System.out.println("DEBUG UI: No se encontró ningún vuelo con estado IN_PROGRESS. Limpiando UI.");
+                lblFlightInfo.setText("No hay vuelos en progreso.");
+                resetLiveFlightDataLabels();
+                speedSlider.setValue(MIN_SIM_SPEED);
+                stopAirplaneMovement();
+            }
+        } catch (ListException e) {
+            System.err.println("ERROR UI: ListException al obtener vuelos programados: " + e.getMessage());
+            e.printStackTrace();
+            lblFlightInfo.setText("ERROR al cargar vuelos.");
+            resetLiveFlightDataLabels();
+            speedSlider.setValue(MIN_SIM_SPEED);
+            stopAirplaneMovement();
+        }
+    }
+
+    private double mapValue(double value, double inMin, double inMax, double outMin, double outMax) {
+        if (inMax - inMin == 0) {
+            return outMin;
+        }
+        value = Math.max(inMin, Math.min(inMax, value));
+        double mapped = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        return mapped;
+    }
+
+    private void resetLiveFlightDataLabels() {
+        lblAltitude.setText("0 m");
+        lblSpeed.setText("0 km/h");
+        lblHeading.setText("0°");
+        lblElapsedTime.setText("00:00:00");
+    }
+
+    public void startAirplaneMovement(String flightNumber) {
+        if (movementTimeline != null) {
+            movementTimeline.stop();
+        }
+
+        this.currentVisualizedFlightNumber = flightNumber;
+        airplaneIcon.setVisible(true);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), airplaneIcon);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+        fadeIn.play();
+
+        flightPathLine.setVisible(true);
+
+        movementTimeline = new Timeline(
+                new KeyFrame(Duration.millis(30), event -> {
+                    if (currentVisualizedFlightNumber != null) {
+                        FlightSimulator.FlightData flightData = flightSimulator.getFlightInProgressData(currentVisualizedFlightNumber);
+
+                        if (flightData != null) {
+                            double progressRatio = (double) flightData.getElapsedTimeSeconds() / FIXED_UI_FLIGHT_DURATION_SECONDS;
+                            progressRatio = Math.min(1.0, progressRatio);
+
+                            Point2D newPosition = calculatePositionOnFixedRoute(progressRatio);
+
+                            airplaneIcon.setLayoutX(newPosition.getX() - airplaneIcon.getFitWidth() / 2);
+                            airplaneIcon.setLayoutY(newPosition.getY() - airplaneIcon.getFitHeight() / 2);
+
+                            if (fixedRoutePoints.size() > 1) {
+                                int currentSegmentIndex = (int) (progressRatio * (fixedRoutePoints.size() - 1));
+                                currentSegmentIndex = Math.min(currentSegmentIndex, fixedRoutePoints.size() - 2);
+                                currentSegmentIndex = Math.max(0, currentSegmentIndex);
+
+                                Point2D p1 = fixedRoutePoints.get(currentSegmentIndex);
+                                Point2D p2 = fixedRoutePoints.get(currentSegmentIndex + 1);
+
+                                double angle = Math.toDegrees(Math.atan2(p2.getY() - p1.getY(), p2.getX() - p1.getX()));
+                                airplaneIcon.setRotate(angle + 90);
+                            }
+
+                            if (progressRatio >= 1.0) {
+                                System.out.println("Movimiento del avión para " + currentVisualizedFlightNumber + " completado.");
+                                stopAirplaneMovement();
+                            }
+                        } else {
+                            System.out.println("FlightData para " + currentVisualizedFlightNumber + " no encontrado. Deteniendo movimiento.");
+                            stopAirplaneMovement();
+                        }
+                    } else {
+                        stopAirplaneMovement();
+                    }
+                })
+        );
+        movementTimeline.setCycleCount(Timeline.INDEFINITE);
+        movementTimeline.play();
+    }
+
+    public void stopAirplaneMovement() {
+        if (movementTimeline != null) {
+            movementTimeline.stop();
+            movementTimeline = null;
+        }
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), airplaneIcon);
+        fadeOut.setFromValue(airplaneIcon.getOpacity());
+        fadeOut.setToValue(0.0);
+        fadeOut.setOnFinished(event -> {
+            airplaneIcon.setVisible(false);
+            airplaneIcon.setOpacity(0.0);
+            flightPathLine.setVisible(false);
+        });
+        fadeOut.play();
+
+        currentVisualizedFlightNumber = null;
+    }
+
+    private Point2D calculatePositionOnFixedRoute(double progressRatio) {
+        if (fixedRoutePoints.isEmpty()) {
+            return new Point2D(0, 0);
+        }
+        if (fixedRoutePoints.size() == 1) {
+            return fixedRoutePoints.get(0);
+        }
+
+        progressRatio = Math.max(0.0, Math.min(1.0, progressRatio));
+
+        double segmentLength = 1.0 / (fixedRoutePoints.size() - 1);
+
+        int currentSegmentIndex = (int) Math.floor(progressRatio / segmentLength);
+
+        currentSegmentIndex = Math.min(currentSegmentIndex, fixedRoutePoints.size() - 2);
+        currentSegmentIndex = Math.max(0, currentSegmentIndex);
+
+
+        Point2D startPoint = fixedRoutePoints.get(currentSegmentIndex);
+        Point2D endPoint = fixedRoutePoints.get(currentSegmentIndex + 1);
+
+        double segmentProgress = (progressRatio - (currentSegmentIndex * segmentLength)) / segmentLength;
+        segmentProgress = Math.max(0.0, Math.min(1.0, segmentProgress));
+
+
+        double x = startPoint.getX() + (endPoint.getX() - startPoint.getX()) * segmentProgress;
+        double y = startPoint.getY() + (endPoint.getY() - startPoint.getY()) * segmentProgress;
+
+        return new Point2D(x, y);
     }
 }

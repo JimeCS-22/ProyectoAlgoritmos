@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="HASTA QUE AL FIN">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/util/ListConverter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/CreateFlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/CreateFlightController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/FlightsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/FlightController/FlightsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/UtilJson/FlightJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/UtilJson/FlightJson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/SimulationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/SimulationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/airplane/Airplane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightSimulator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/flights.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/flights.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/simulation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/simulation.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +37,12 @@
     &quot;assignee&quot;: &quot;TEALZN&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/JimeCS-22/ProyectoAlgoritmos.git&quot;,
-    &quot;accountId&quot;: &quot;058a3909-7402-424c-9ffc-7061ec0a45a9&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/JimeCS-22/ProyectoAlgoritmos.git",
+    "accountId": "9fb43fba-24fa-4582-9d69-18688c67828b"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -49,90 +51,90 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.FlightSimulator.executor": "Run",
-    "Application.FlightSimulatorConsoleTest.executor": "Run",
-    "Application.HelloApplication.executor": "Run",
-    "JUnit.AirplaneTest.executor": "Run",
-    "JUnit.AirplaneTest.testAddFlightToHistory.executor": "Run",
-    "JUnit.AirplaneTest.testAddFlightToHistoryNull.executor": "Run",
-    "JUnit.AirplaneTest.testConstructorAndGetters.executor": "Run",
-    "JUnit.AirplaneTest.testConstructorInvalidCapacity.executor": "Run",
-    "JUnit.AirplaneTest.testConstructorInvalidId.executor": "Run",
-    "JUnit.AirplaneTest.testConstructorInvalidLocation.executor": "Run",
-    "JUnit.AirplaneTest.testEqualsAndHashCodeDifferentId.executor": "Run",
-    "JUnit.AirplaneTest.testEqualsAndHashCodeSameId.executor": "Run",
-    "JUnit.AirplaneTest.testEqualsEdgeCases.executor": "Run",
-    "JUnit.AirplaneTest.testSetCurrentLocationAirportCode.executor": "Run",
-    "JUnit.AirplaneTest.testSetCurrentLocationAirportCodeInvalid.executor": "Run",
-    "JUnit.AirplaneTest.testSetStatus.executor": "Run",
-    "JUnit.AirplaneTest.testSetStatusNull.executor": "Run",
-    "JUnit.AirplaneTest.testToString.executor": "Run",
-    "JUnit.AirportManagerTest.testActivateDeactivateAirport.executor": "Run",
-    "JUnit.AirportManagerTest.testCreateAirport.executor": "Run",
-    "JUnit.AirportManagerTest.testDeleteAirport.executor": "Run",
-    "JUnit.AirportManagerTest.testFindAirport.executor": "Run",
-    "JUnit.AirportManagerTest.testGetAirportCount.executor": "Run",
-    "JUnit.AirportManagerTest.testGetAirportName.executor": "Run",
-    "JUnit.AirportManagerTest.testListAirports.executor": "Run",
-    "JUnit.DataLoaderTest.executor": "Run",
-    "JUnit.DataLoaderTest.test.executor": "Run",
-    "JUnit.DijkstraTest.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testAddPassengerToFullFlight.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testAddSamePassengerTwice.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testConstructorInitialization.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testConstructorNullAirportManager.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testConstructorNullRouteManager.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testCreateFlightDuplicateNumber.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testCreateFlightInvalidDestinationAirport.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testCreateFlightInvalidOriginAirport.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testCreateFlightNoExistingRoute.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testCreateFlightSuccess.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testDisplayFlightsByStatus.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testDisplayFlightsByStatusEmpty.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testFindFlightEmptyList.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testFindFlightExisting.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testFindFlightNonExisting.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testRemovePassengerFromWaitingListAfterBooking.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testSimulateFlightAlreadyProcessed.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testSimulateFlightNoAirplaneAssigned.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testSimulateFlightNonExistent.executor": "Run",
-    "JUnit.FlightScheduleManagerTest.testSimulateFlightSuccess.executor": "Run",
-    "JUnit.PassengerDataTest.executor": "Run",
-    "JUnit.PassengerDataTest.test.executor": "Run",
-    "JUnit.PassengerDataTest.testLoadPassengersFromJson_FileNotFound.executor": "Run",
-    "JUnit.PassengerDataTest.testLoadPassengersFromJson_InvalidJsonFormat.executor": "Run",
-    "JUnit.PassengerDataTest.testLoadPassengersFromJson_SuccessfulLoading.executor": "Run",
-    "JUnit.PassengerManagerTest.executor": "Run",
-    "JUnit.PassengerManagerTest.testAddFlightToPassengerHistory.executor": "Run",
-    "JUnit.PassengerManagerTest.testAddFlightToPassengerHistoryNullFlight.executor": "Run",
-    "JUnit.PassengerManagerTest.testAddFlightToPassengerHistoryPassengerNotFound.executor": "Run",
-    "JUnit.PassengerManagerTest.testGetAllPassengerIds.executor": "Run",
-    "JUnit.PassengerManagerTest.testGetAllPassengers.executor": "Run",
-    "JUnit.PassengerManagerTest.testGetPassengerCount.executor": "Run",
-    "JUnit.PassengerManagerTest.testGetPassengerFlightHistory.executor": "Run",
-    "JUnit.PassengerManagerTest.testGetPassengerFlightHistoryNotFound.executor": "Run",
-    "JUnit.PassengerManagerTest.testProcessTicketPurchase.executor": "Run",
-    "JUnit.PassengerManagerTest.testProcessTicketPurchaseNulls.executor": "Run",
-    "JUnit.PassengerManagerTest.testRegisterAndSearchPassenger.executor": "Run",
-    "JUnit.PassengerManagerTest.testRegisterDuplicatePassenger.executor": "Run",
-    "JUnit.PassengerManagerTest.testSearchNonExistentPassenger.executor": "Run",
-    "JUnit.RouteManagerTest.executor": "Run",
-    "JUnit.RouteManagerTest.testAddAirportToGraph.executor": "Run",
-    "JUnit.RouteManagerTest.testGetGraph.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/jimen/ProyectoAlgoritmos/src/main/resources",
-    "two.files.diff.last.used.file": "C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/airports.json"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.FlightSimulator.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FlightSimulatorConsoleTest.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testAddFlightToHistory.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testAddFlightToHistoryNull.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testConstructorAndGetters.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testConstructorInvalidCapacity.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testConstructorInvalidId.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testConstructorInvalidLocation.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testEqualsAndHashCodeDifferentId.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testEqualsAndHashCodeSameId.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testEqualsEdgeCases.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testSetCurrentLocationAirportCode.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testSetCurrentLocationAirportCodeInvalid.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testSetStatus.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testSetStatusNull.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirplaneTest.testToString.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirportManagerTest.testActivateDeactivateAirport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirportManagerTest.testCreateAirport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirportManagerTest.testDeleteAirport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirportManagerTest.testFindAirport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirportManagerTest.testGetAirportCount.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirportManagerTest.testGetAirportName.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AirportManagerTest.testListAirports.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataLoaderTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataLoaderTest.test.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DijkstraTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testAddPassengerToFullFlight.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testAddSamePassengerTwice.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testConstructorInitialization.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testConstructorNullAirportManager.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testConstructorNullRouteManager.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testCreateFlightDuplicateNumber.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testCreateFlightInvalidDestinationAirport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testCreateFlightInvalidOriginAirport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testCreateFlightNoExistingRoute.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testCreateFlightSuccess.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testDisplayFlightsByStatus.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testDisplayFlightsByStatusEmpty.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testFindFlightEmptyList.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testFindFlightExisting.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testFindFlightNonExisting.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testRemovePassengerFromWaitingListAfterBooking.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testSimulateFlightAlreadyProcessed.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testSimulateFlightNoAirplaneAssigned.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testSimulateFlightNonExistent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FlightScheduleManagerTest.testSimulateFlightSuccess.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerDataTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerDataTest.test.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerDataTest.testLoadPassengersFromJson_FileNotFound.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerDataTest.testLoadPassengersFromJson_InvalidJsonFormat.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerDataTest.testLoadPassengersFromJson_SuccessfulLoading.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testAddFlightToPassengerHistory.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testAddFlightToPassengerHistoryNullFlight.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testAddFlightToPassengerHistoryPassengerNotFound.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testGetAllPassengerIds.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testGetAllPassengers.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testGetPassengerCount.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testGetPassengerFlightHistory.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testGetPassengerFlightHistoryNotFound.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testProcessTicketPurchase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testProcessTicketPurchaseNulls.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testRegisterAndSearchPassenger.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testRegisterDuplicatePassenger.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PassengerManagerTest.testSearchNonExistentPassenger.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RouteManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RouteManagerTest.testAddAirportToGraph.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RouteManagerTest.testGetGraph.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jimen/ProyectoAlgoritmos/src/main/resources&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/jimen/OneDrive/Escritorio/UCR/Estructuras/ProyectoAlgoritmos/src/main/resources/airports.json&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jimen\ProyectoAlgoritmos\src\main\resources" />
