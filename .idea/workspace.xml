@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="HASTA QUE AL FIN">
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Simulador listo, el unico que no funcina bien es el boton de reiniciar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/SimulationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/SimulationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/simulation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ucr/proyectoalgoritmos/simulation.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -336,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750644991509</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Simulador listo, el unico que no funcina bien es el boton de reiniciar">
+      <option name="closed" value="true" />
+      <created>1750699876934</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1750699876934</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -365,6 +371,7 @@
     <MESSAGE value="HASTA QUE AL FIN" />
     <MESSAGE value="Vuelos anteriores listos" />
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" />
+    <MESSAGE value="Simulador listo, el unico que no funcina bien es el boton de reiniciar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Simulador listo, el unico que no funcina bien es el boton de reiniciar" />
   </component>
 </project>
