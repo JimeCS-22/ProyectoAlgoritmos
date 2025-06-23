@@ -40,13 +40,13 @@ public class FlightsController implements Initializable {
     private Button btDelete;
 
     @FXML
-    private TableColumn<Flight, String> flightNumberColumn; // Tipo de Flight, tipo de dato de la columna
+    private TableColumn<Flight, String> flightNumberColumn;
     @FXML
     private TableColumn<Flight, String> originCodeColumn;
     @FXML
     private TableColumn<Flight, String> destinationCodeColumn;
     @FXML
-    private TableColumn<Flight, LocalDateTime> departureTimeColumn; // O String si prefieres formatearlo en el getter
+    private TableColumn<Flight, LocalDateTime> departureTimeColumn;
     @FXML
     private TableColumn<Flight, Integer> capacityColumn;
     @FXML
@@ -62,15 +62,12 @@ public class FlightsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Obtener instancias válidas de AirportManager y RouteManager
-        // Asumo que AirportManager y RouteManager también tienen métodos getInstance()
-        AirportManager airportManager = AirportManager.getInstance(); // O la forma correcta de obtenerlo
-        RouteManager routeManager = RouteManager.getInstance(); // O la forma correcta de obtenerlo
 
-        // Ahora pasa las instancias no nulas a FlightScheduleManager.getInstance()
+        AirportManager airportManager = AirportManager.getInstance();
+        RouteManager routeManager = RouteManager.getInstance();
+
         flightScheduleManager = FlightScheduleManager.getInstance(airportManager, routeManager);
 
-        // 1. Configurar las columnas de la TableView
         flightNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
         originCodeColumn.setCellValueFactory(new PropertyValueFactory<>("originAirportCode"));
         destinationCodeColumn.setCellValueFactory(new PropertyValueFactory<>("destinationAirportCode"));
@@ -79,18 +76,16 @@ public class FlightsController implements Initializable {
         occupancyColumn.setCellValueFactory(new PropertyValueFactory<>("occupancy"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Usar el getter personalizado que sugerí para los pasajeros
         passengersColumn.setCellValueFactory(new PropertyValueFactory<>("passengersDisplay"));
 
-        // 2. Cargar los datos iniciales de los vuelos
         updateTableView();
     }
 
     private void updateTableView() {
-        CircularDoublyLinkedList currentFlights = flightScheduleManager.getScheduledFlights(); // Obtener la lista de vuelos
+        CircularDoublyLinkedList currentFlights = flightScheduleManager.getScheduledFlights();
         if (currentFlights != null) {
             flightObservableList = FXCollections.observableArrayList();
-            // Convertir CircularDoublyLinkedList a ObservableList
+
             try {
                 for (int i = 0; i < currentFlights.size(); i++) {
                     flightObservableList.add((Flight) currentFlights.get(i));
@@ -103,8 +98,8 @@ public class FlightsController implements Initializable {
                 e.printStackTrace();
             }
 
-            tableView.setItems(flightObservableList); // Asignar la ObservableList a la TableView
-            tableView.refresh(); // Forzar la actualización visual
+            tableView.setItems(flightObservableList);
+            tableView.refresh();
         }
     }
 
@@ -124,11 +119,10 @@ public class FlightsController implements Initializable {
                 Flight foundFlight = flightScheduleManager.findFlight(flightNumberToSearch);
 
                 if (foundFlight != null) {
-                    // Obtener los nombres de los aeropuertos usando AirportManager
+
                     String originAirportName = "N/A";
                     String destinationAirportName = "N/A";
 
-                    // Solo si tienes un AirportManager ya inicializado y tiene un método findAirport
                     if (airportManager != null) {
                         Airport origin = airportManager.findAirport(foundFlight.getOriginAirportCode());
                         if (origin != null) {
@@ -142,7 +136,7 @@ public class FlightsController implements Initializable {
 
                     String flightInfo = String.format(
                             "Número de Vuelo: %s\n" +
-                                    "Origen: %s (%s)\n" + // Código y Nombre
+                                    "Origen: %s (%s)\n" +
                                     "Destino: %s (%s)\n" +
                                     "Hora de Salida: %s\n" +
                                     "Capacidad: %d\n" +
@@ -150,10 +144,10 @@ public class FlightsController implements Initializable {
                                     "Estado: %s\n" +
                                     "Pasajeros: %s",
                             foundFlight.getFlightNumber(),
-                            foundFlight.getOriginAirportCode(), // Código de origen
-                            originAirportName, // Nombre de origen obtenido del AirportManager
-                            foundFlight.getDestinationAirportCode(), // Código de destino
-                            destinationAirportName, // Nombre de destino obtenido del AirportManager
+                            foundFlight.getOriginAirportCode(),
+                            originAirportName,
+                            foundFlight.getDestinationAirportCode(),
+                            destinationAirportName,
                             foundFlight.getDepartureTime().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                             foundFlight.getCapacity(),
                             foundFlight.getOccupancy(),
@@ -173,10 +167,6 @@ public class FlightsController implements Initializable {
         }
     }
 
-    /**
-     * Método auxiliar para mostrar alertas de error (como en tu ejemplo de AirportManager).
-     * Nota: Para alertas de información o advertencia, puedes usar directamente FXUtility.alert.
-     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -194,8 +184,6 @@ public class FlightsController implements Initializable {
     @javafx.fxml.FXML
     public void updateFlightOnAction(ActionEvent actionEvent) {
 
-
-        // 1. Pedir el número de vuelo al usuario
         TextInputDialog idInputDialog = FXUtility.dialog("Actualizar Vuelo", "Ingrese el NÚMERO DE VUELO del vuelo a actualizar:");
         idInputDialog.setContentText("Número de Vuelo:");
 
@@ -221,10 +209,6 @@ public class FlightsController implements Initializable {
             return;
         }
 
-        // Vuelo encontrado, ahora pedimos los nuevos datos
-        // NOTA: El número de vuelo no se puede cambiar ya que es el identificador único.
-
-        // Diálogo para Código de Origen
         TextInputDialog originDialog = FXUtility.dialog("Actualizar Vuelo", "Ingrese el NUEVO CÓDIGO DE ORIGEN (actual: " + flightToUpdate.getOriginAirportCode() + "):");
         originDialog.setContentText("Código Origen:");
         originDialog.getEditor().setText(flightToUpdate.getOriginAirportCode()); // Precargar valor actual
@@ -235,7 +219,6 @@ public class FlightsController implements Initializable {
         }
         String newOriginCode = originResult.get().trim();
 
-        // Diálogo para Código de Destino
         TextInputDialog destinationDialog = FXUtility.dialog("Actualizar Vuelo", "Ingrese el NUEVO CÓDIGO DE DESTINO (actual: " + flightToUpdate.getDestinationAirportCode() + "):");
         destinationDialog.setContentText("Código Destino:");
         destinationDialog.getEditor().setText(flightToUpdate.getDestinationAirportCode());
@@ -246,12 +229,10 @@ public class FlightsController implements Initializable {
         }
         String newDestinationCode = destinationResult.get().trim();
 
-        // --- INICIO DEL CAMBIO PARA PEDIR SOLO LA HORA ---
-        // Diálogo para Hora de Salida (solo la hora, la fecha se mantiene)
         LocalDateTime currentDepartureDateTime = flightToUpdate.getDepartureTime();
-        // Formateador para solo la hora
+
         DateTimeFormatter timeOnlyFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        // Formateador para solo la fecha (para mostrar en el mensaje)
+
         DateTimeFormatter dateOnlyFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         TextInputDialog timeDialog = FXUtility.dialog(
@@ -267,11 +248,11 @@ public class FlightsController implements Initializable {
             FXUtility.alert("Actualización Cancelada", "La hora de salida no puede estar vacía. Actualización cancelada.");
             return;
         }
-        String newTimeString = timeResult.get().trim(); // Esto será solo la hora, ej. "08:30"
+        String newTimeString = timeResult.get().trim();
 
         LocalDateTime newDepartureTime;
         try {
-            // Parsear la nueva hora y combinarla con la fecha *original* del vuelo
+
             LocalTime newLocalTime = LocalTime.parse(newTimeString, timeOnlyFormatter);
             newDepartureTime = LocalDateTime.of(currentDepartureDateTime.toLocalDate(), newLocalTime);
 
@@ -279,10 +260,7 @@ public class FlightsController implements Initializable {
             FXUtility.alert("Formato de Hora Inválido", "Por favor, ingrese la hora en formato HH:MM (ej. 08:30).");
             return;
         }
-        // --- FIN DEL CAMBIO PARA PEDIR SOLO LA HORA ---
 
-
-        // Diálogo para Capacidad
         TextInputDialog capacityDialog = FXUtility.dialog("Actualizar Vuelo", "Ingrese la NUEVA CAPACIDAD (actual: " + flightToUpdate.getCapacity() + "):");
         capacityDialog.setContentText("Capacidad:");
         capacityDialog.getEditor().setText(String.valueOf(flightToUpdate.getCapacity()));
@@ -303,7 +281,6 @@ public class FlightsController implements Initializable {
             return;
         }
 
-        // Diálogo para Ocupación
         TextInputDialog occupancyDialog = FXUtility.dialog("Actualizar Vuelo", "Ingrese la NUEVA OCUPACIÓN (actual: " + flightToUpdate.getOccupancy() + "):");
         occupancyDialog.setContentText("Ocupación:");
         occupancyDialog.getEditor().setText(String.valueOf(flightToUpdate.getOccupancy()));
@@ -324,7 +301,6 @@ public class FlightsController implements Initializable {
             return;
         }
 
-        // Diálogo para Estado (usaremos un ChoiceDialog para esto)
         ChoiceDialog<Flight.FlightStatus> statusDialog = new ChoiceDialog<>(flightToUpdate.getStatus(), Flight.FlightStatus.values());
         statusDialog.setTitle("Actualizar Vuelo");
         statusDialog.setHeaderText("Seleccione el NUEVO ESTADO del vuelo (actual: " + flightToUpdate.getStatus() + "):");
@@ -336,7 +312,6 @@ public class FlightsController implements Initializable {
         }
         Flight.FlightStatus newStatus = statusResult.get();
 
-        // 2. Construir el mensaje de confirmación de los NUEVOS datos
         String confirmationMessage = String.format(
                 "¿Está seguro de que desea actualizar el vuelo %s con los siguientes datos?\n\n" +
                         "Código Origen: %s (antes: %s)\n" +
@@ -361,21 +336,21 @@ public class FlightsController implements Initializable {
         );
 
         if ("YES".equals(confirmationResponse)) {
-            // 3. Actualizar el objeto Flight encontrado con los nuevos datos
+
             flightToUpdate.setOriginAirportCode(newOriginCode);
             flightToUpdate.setDestinationAirportCode(newDestinationCode);
-            flightToUpdate.setDepartureTime(newDepartureTime); // Aquí se establece el LocalDateTime con la fecha original y la nueva hora
+            flightToUpdate.setDepartureTime(newDepartureTime);
             flightToUpdate.setCapacity(newCapacity);
             flightToUpdate.setOccupancy(newOccupancy);
             flightToUpdate.setStatus(newStatus);
 
             try {
-                // 4. Llamar al método updateFlight de FlightScheduleManager
-                boolean updated = flightScheduleManager.updateFlight(flightToUpdate); // Pasamos el objeto ya modificado
+
+                boolean updated = flightScheduleManager.updateFlight(flightToUpdate);
 
                 if (updated) {
                     FXUtility.alert("Éxito", "Vuelo '" + flightNumberToUpdate + "' actualizado correctamente.");
-                    updateTableView(); // Actualizar la tabla después de la actualización
+                    updateTableView();
                 } else {
                     FXUtility.alert("Error de Actualización", "No se pudo actualizar el vuelo '" + flightNumberToUpdate + "'. Verifique los datos o si el vuelo aún existe.");
                 }
@@ -393,9 +368,8 @@ public class FlightsController implements Initializable {
     @javafx.fxml.FXML
     public void deleteFlightOnAction(ActionEvent actionEvent) {
 
-        // 1. Pedir el número de vuelo al usuario usando tu FXUtility.dialog
         TextInputDialog inputDialog = FXUtility.dialog("Eliminar Vuelo", "Ingrese el número de vuelo a eliminar:");
-        // Asegúrate de establecer el texto del contenido si tu método dialog no lo hace
+
         inputDialog.setContentText("Número de Vuelo:");
 
         Optional<String> result = inputDialog.showAndWait();
@@ -403,24 +377,22 @@ public class FlightsController implements Initializable {
         if (result.isPresent() && !result.get().trim().isEmpty()) {
             String flightNumberToDelete = result.get().trim();
 
-            // 2. Buscar el vuelo para mostrar detalles en la confirmación
             Flight flightFoundForConfirmation = null;
             try {
                 flightFoundForConfirmation = flightScheduleManager.findFlight(flightNumberToDelete);
             } catch (ucr.proyectoalgoritmos.Domain.list.ListException e) {
-                // Usa tu método FXUtility.alert
+
                 FXUtility.alert("Error de Búsqueda", "Ocurrió un error al buscar el vuelo para confirmación: " + e.getMessage());
                 e.printStackTrace();
                 return;
             }
 
             if (flightFoundForConfirmation == null) {
-                // Usa tu método FXUtility.alert
+
                 FXUtility.alert("Vuelo No Encontrado", "No se encontró ningún vuelo con el número: '" + flightNumberToDelete + "'. No se puede eliminar.");
                 return;
             }
 
-            // Construir el mensaje de confirmación con detalles del vuelo
             String confirmationMessage = String.format(
                     "¿Está seguro de que desea eliminar el siguiente vuelo?\n\n" +
                             "Número de Vuelo: %s\n" +
@@ -437,23 +409,22 @@ public class FlightsController implements Initializable {
                     flightFoundForConfirmation.getStatus()
             );
 
-            // 3. Confirmación de eliminación usando tu FXUtility.alertYesNo
             String confirmationResponse = FXUtility.alertYesNo(
                     "Confirmar Eliminación de Vuelo",
-                    "Confirmación de Eliminación", // Título para la alerta de confirmación
-                    confirmationMessage // Texto de contenido para la alerta de confirmación
+                    "Confirmación de Eliminación",
+                    confirmationMessage
             );
 
-            if ("YES".equals(confirmationResponse)) { // Compara con la cadena "YES"
+            if ("YES".equals(confirmationResponse)) {
                 try {
                     boolean deleted = flightScheduleManager.removeFlight(flightNumberToDelete);
 
                     if (deleted) {
-                        // Usa tu método FXUtility.alert
+
                         FXUtility.alert("Éxito", "Vuelo '" + flightNumberToDelete + "' eliminado correctamente.");
-                        updateTableView(); // Actualizar la tabla después de la eliminación
+                        updateTableView();
                     } else {
-                        // Esto debería ser raro si ya confirmamos que el vuelo existe, pero como fallback
+
                         FXUtility.alert("Error de Eliminación", "No se pudo eliminar el vuelo '" + flightNumberToDelete + "'. Verifique que aún exista.");
                     }
                 } catch (Exception e) {
@@ -461,11 +432,11 @@ public class FlightsController implements Initializable {
                     e.printStackTrace();
                 }
             } else {
-                // Usa tu método FXUtility.alert
+
                 FXUtility.alert("Eliminación Cancelada", "La eliminación del vuelo ha sido cancelada.");
             }
         } else {
-            // Usa tu método FXUtility.alert
+
             FXUtility.alert("Cancelado", "La operación de eliminación de vuelo fue cancelada o el número de vuelo estaba vacío.");
         }
 

@@ -29,21 +29,13 @@ public class FlightJson {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         SimpleModule customListModule = new SimpleModule();
-
-        // **ESTA LÍNEA ES LA CLAVE PARA ELIMINAR EL "Unrecognized Type: [null]"**
         customListModule.addDeserializer(CircularDoublyLinkedList.class, new CircularDoublyLinkedListDeserializer(Flight.class)); // <-- PASAR Flight.class AQUÍ
         customListModule.addSerializer(CircularDoublyLinkedList.class, new CircularDoublyLinkedListSerializer());
-
-        // Si usas DoublyLinkedList para otros tipos de datos, mantén estas líneas,
-        // pero asegúrate de que DoublyLinkedListDeserializer también reciba su elementType (ej. Airport.class)
-        // customListModule.addSerializer(DoublyLinkedList.class, new DoublyLinkedListSerializer());
-        // customListModule.addDeserializer(DoublyLinkedList.class, new DoublyLinkedListDeserializer(Airport.class)); // Ejemplo, si DoublyLinkedList guarda Airports
 
         objectMapper.registerModule(customListModule);
     }
 
-    // Cambiar el tipo de parámetro a CircularDoublyLinkedList
-    public static void saveFlightsToJson(CircularDoublyLinkedList flights) { // <--- CAMBIO AQUÍ
+    public static void saveFlightsToJson(CircularDoublyLinkedList flights) {
         try {
             File file = new File(FILE_PATH);
             File parentDir = file.getParentFile();
@@ -51,7 +43,7 @@ public class FlightJson {
                 parentDir.mkdirs();
             }
 
-            objectMapper.writeValue(file, flights); // Esto usará CircularDoublyLinkedListSerializer
+            objectMapper.writeValue(file, flights);
             System.out.println("Vuelos guardados en " + FILE_PATH);
         } catch (IOException e) {
             System.err.println("Error al guardar vuelos en JSON: " + e.getMessage());
@@ -64,28 +56,27 @@ public class FlightJson {
         }
     }
 
-    // Cambiar el tipo de retorno a CircularDoublyLinkedList
-    public static CircularDoublyLinkedList loadFlightsFromJson(AirportManager airportManager, RouteManager routeManager) { // <--- CAMBIO AQUÍ
+    public static CircularDoublyLinkedList loadFlightsFromJson(AirportManager airportManager, RouteManager routeManager) {
         File file = new File(FILE_PATH);
         if (!file.exists() || file.length() == 0) {
-            System.out.println("El archivo JSON de vuelos no existe o está vacío. Retornando una nueva CircularDoublyLinkedList.");
-            return new CircularDoublyLinkedList(); // <--- CAMBIO AQUÍ
+
+            return new CircularDoublyLinkedList();
         }
 
         try {
-            CircularDoublyLinkedList flights = objectMapper.readValue(file, CircularDoublyLinkedList.class); // <--- CAMBIO AQUÍ
-            System.out.println("Vuelos cargados desde " + FILE_PATH);
+            CircularDoublyLinkedList flights = objectMapper.readValue(file, CircularDoublyLinkedList.class);
+
             return flights;
         } catch (IOException e) {
             System.err.println("Error al cargar vuelos desde JSON: " + e.getMessage());
             e.printStackTrace();
             FXUtility.alert("Error de Carga", "No se pudo cargar la lista de vuelos.");
-            return new CircularDoublyLinkedList(); // <--- CAMBIO AQUÍ
+            return new CircularDoublyLinkedList();
         } catch (Exception e) {
             System.err.println("Error inesperado durante la carga de JSON de vuelos: " + e.getMessage());
             e.printStackTrace();
             FXUtility.alert("Error Inesperado", "Ocurrió un error inesperado al cargar los vuelos.");
-            return new CircularDoublyLinkedList(); // <--- CAMBIO AQUÍ
+            return new CircularDoublyLinkedList();
         }
     }
 

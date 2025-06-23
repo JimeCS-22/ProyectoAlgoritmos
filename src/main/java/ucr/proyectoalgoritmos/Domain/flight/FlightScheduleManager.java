@@ -373,7 +373,7 @@ public class FlightScheduleManager {
         // Este método fuerza la relectura del archivo JSON
         this.scheduledFlights = flightJson.loadFlightsFromJson(this.airportManager, this.routeManager);
         if (this.scheduledFlights == null) {
-            this.scheduledFlights = new CircularDoublyLinkedList(); // Asegúrate de que no sea nulo
+            this.scheduledFlights = new CircularDoublyLinkedList();
         }
         System.out.println("Vuelos recargados desde JSON.");
     }
@@ -384,20 +384,17 @@ public class FlightScheduleManager {
             return false;
         }
 
-        // Recarga los vuelos para asegurar la sincronización antes de modificar
         reloadFlightsFromJson();
 
-        // Buscar el vuelo a eliminar
         Flight flightToRemove = findFlight(flightNumberToDelete);
 
         if (flightToRemove != null) {
-            // Si el vuelo fue encontrado, intenta eliminarlo de la lista.
+
             boolean removed = scheduledFlights.remove(flightToRemove);
 
             if (removed) {
-                // Si la eliminación fue exitosa, ¡aquí está la corrección!
-                // Debes pasar 'this.scheduledFlights' al método saveFlightsToJson()
-                saveFlightsToJson(this.scheduledFlights); // <-- **CORRECCIÓN AQUÍ**
+
+                saveFlightsToJson(this.scheduledFlights);
                 return true;
             }
         }
@@ -407,42 +404,33 @@ public class FlightScheduleManager {
 
     public boolean updateFlight(Flight flightToUpdate) throws ListException {
         if (flightToUpdate == null || flightToUpdate.getFlightNumber().trim().isEmpty()) {
-            // Si el objeto vuelo o su número es nulo/vacío, no hay nada que actualizar.
+
             return false;
         }
 
-        // Paso 1: Asegurarse de que la lista en memoria esté actualizada con el archivo JSON.
-        // Esto es crucial para evitar sobrescribir datos más recientes si otra parte de la aplicación
-        // modificó el JSON mientras esta instancia estaba activa.
         reloadFlightsFromJson();
 
-        // Paso 2: Buscar el vuelo en la lista actual por su número de vuelo.
-        // Necesitamos encontrar la instancia específica de 'Flight' que tenemos en 'scheduledFlights'.
         int indexToUpdate = -1;
         for (int i = 0; i < scheduledFlights.size(); i++) {
-            Object obj = scheduledFlights.get(i); // Obtiene el elemento en la posición i
+            Object obj = scheduledFlights.get(i);
             if (obj instanceof Flight) {
                 Flight currentFlightInList = (Flight) obj;
-                // Comparamos por el número de vuelo, que es el identificador único.
+
                 if (currentFlightInList.getFlightNumber().equalsIgnoreCase(flightToUpdate.getFlightNumber())) {
-                    indexToUpdate = i; // Encontramos la posición
-                    break; // Salimos del bucle
+                    indexToUpdate = i;
+                    break;
                 }
             }
         }
 
-        // Paso 3: Si el vuelo fue encontrado, actualizarlo en la lista.
         if (indexToUpdate != -1) {
-            // Tu CircularDoublyLinkedList necesita un método `set(int index, Object element)`
-            // para reemplazar un elemento en una posición dada.
-            scheduledFlights.set(indexToUpdate, flightToUpdate); // Reemplaza el vuelo existente con el actualizado
 
-            // Paso 4: Guardar la lista de vuelos modificada en el archivo JSON.
+            scheduledFlights.set(indexToUpdate, flightToUpdate);
+
             saveFlightsToJson(this.scheduledFlights);
-            return true; // La actualización fue exitosa
+            return true;
         }
 
-        // Si el control llega aquí, significa que el vuelo no fue encontrado en la lista.
         return false;
     }
 }
