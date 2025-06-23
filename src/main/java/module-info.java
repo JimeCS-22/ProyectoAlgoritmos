@@ -42,4 +42,7 @@ module ucr.proyectoalgoritmos {
     opens ucr.proyectoalgoritmos.Controller.AirportController to javafx.fxml;
     exports ucr.proyectoalgoritmos.Controller.FlightController;
     opens ucr.proyectoalgoritmos.Controller.FlightController to javafx.fxml; // Exporta tu paquete de UtilJson
+    exports ucr.proyectoalgoritmos.Controller.PassengerController;
+    opens ucr.proyectoalgoritmos.Controller.PassengerController to javafx.fxml;
+
 }

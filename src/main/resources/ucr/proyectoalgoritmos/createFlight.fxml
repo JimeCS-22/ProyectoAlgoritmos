@@ -20,7 +20,7 @@
 
 <AnchorPane prefHeight="674.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucr.proyectoalgoritmos.Controller.FlightController.CreateFlightController">
     <!-- Imagen de fondo principal, consistente con la página de bienvenida y login -->
-    <ImageView fitHeight="758.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <ImageView fitHeight="693.0" fitWidth="1145.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <image>
             <Image url="@images/degradados.png" />
         </image>

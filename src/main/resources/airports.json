@@ -165,7 +165,7 @@
   "name" : "Sydney Airport",
   "country" : "Australia",
   "passengerQueue" : [ ],
-  "status" : "ACTIVE",
+  "status" : "CLOSED",
   "departuresBoard" : [ ],
   "passengerQueueSize" : 0,
   "departuresBoardSize" : 0
@@ -265,6 +265,15 @@
   "country" : "Republica Dominicada",
   "passengerQueue" : [ ],
   "status" : "CLOSED",
+  "departuresBoard" : [ ],
+  "passengerQueueSize" : 0,
+  "departuresBoardSize" : 0
+}, {
+  "code" : "SK",
+  "name" : "Korean Airport",
+  "country" : "South Korea",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
   "departuresBoard" : [ ],
   "passengerQueueSize" : 0,
   "departuresBoardSize" : 0

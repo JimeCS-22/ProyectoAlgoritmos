@@ -49,7 +49,9 @@ public class AVL {
 
     public DoublyLinkedList inOrderList() throws ListException {
         DoublyLinkedList list = new DoublyLinkedList();
+        System.out.println("Generando lista in-order. Tamaño AVL: " + size);
         inOrderList(this.root, list);
+        System.out.println("Elementos en lista: " + list.size());
         return list;
     }
 
@@ -79,35 +81,21 @@ public class AVL {
     // Changed to take a generic Comparable element to be more flexible,
     // or keep Passenger if AVL is strictly for Passengers and you want strong typing.
     // For now, keeping Passenger as per your original intent but note the generic alternative.
-    public void insert(Passenger newPassenger) throws TreeException {
-        if (newPassenger == null) {
-            throw new TreeException("No se puede insertar un pasajero nulo.");
-        }
-        if (!(newPassenger instanceof Comparable)) {
-            throw new TreeException("El pasajero debe implementar Comparable para ser insertado en el AVL.");
+    public void insert(Comparable element) throws TreeException {
+        if (element == null) {
+            throw new TreeException("No se puede insertar un elemento nulo.");
         }
 
-        // Before attempting insertion, check if it already exists.
-        // This is crucial for your PassengerManager's duplicate check.
-        if (search(newPassenger) != null) {
-            // If the element already exists, throw an exception here.
-            // Your PassengerManager handles this, but it's good for the AVL to be explicit too.
-            throw new TreeException("El elemento (pasajero con ID " + newPassenger.getId() + ") ya existe y no puede ser duplicado.");
-        }
-
-        // The size increment MUST happen when a NEW node is actually created.
-        // The recursive insert method will now handle size increment.
-        this.root = insert(this.root, newPassenger);
+        this.root = insert(this.root, element);
     }
 
     private AVLNode insert(AVLNode node, Comparable element) throws TreeException {
-        // 1. Normal BST insertion
         if (node == null) {
-            size++; // Increment size ONLY when a new node is created
-            return new AVLNode(element); // New node, height 0
+            size++;
+            return new AVLNode(element);
         }
 
-        int cmp = element.compareTo((Comparable) node.data);
+        int cmp = element.compareTo(node.data);
 
         if (cmp < 0) {
             node.left = insert(node.left, element);
@@ -355,4 +343,66 @@ public class AVL {
         this.root = null;
         this.size = 0;
     }
+
+    /**
+     * Obtiene el elemento en la posición especificada según el recorrido in-order.
+     * @param index el índice del elemento a obtener (basado en 0)
+     * @return el elemento en la posición especificada
+     * @throws ListException si el índice está fuera de rango (index < 0 || index >= size())
+     */
+    public Object get(int index) throws ListException {
+        if (index < 0 || index >= size) {
+            throw new ListException("Índice fuera de rango: " + index);
+        }
+
+        // Usamos un contador para llevar la cuenta del índice actual en el recorrido in-order
+        int[] currentIndex = {0};
+        return getInOrder(root, index, currentIndex);
+    }
+
+    /**
+     * Método auxiliar recursivo para realizar el recorrido in-order y encontrar el elemento en el índice especificado.
+     * @param node el nodo actual
+     * @param targetIndex el índice que estamos buscando
+     * @param currentIndex arreglo de un elemento para mantener el índice actual (simula paso por referencia)
+     * @return el elemento en el índice objetivo
+     */
+    private Object getInOrder(AVLNode node, int targetIndex, int[] currentIndex) {
+        if (node == null) {
+            return null;
+        }
+
+        // Recorrer el subárbol izquierdo primero
+        Object leftResult = getInOrder(node.left, targetIndex, currentIndex);
+        if (leftResult != null) {
+            return leftResult;
+        }
+
+        // Verificar si el nodo actual es el que buscamos
+        if (currentIndex[0] == targetIndex) {
+            return node.data;
+        }
+        currentIndex[0]++;
+
+        // Finalmente recorrer el subárbol derecho
+        return getInOrder(node.right, targetIndex, currentIndex);
+    }
+
+    /**
+     * Método para cargar desde una lista (útil para deserialización)
+     */
+    public void loadFromList(DoublyLinkedList list) throws ListException, TreeException {
+        this.clear();
+        System.out.println("Cargando AVL desde lista con " + list.size() + " elementos");
+
+        for (int i = 0; i < list.size(); i++) {
+            Object element = list.get(i);
+            if (element instanceof Comparable) {
+                this.insert((Comparable) element);
+            } else {
+                System.err.println("Elemento no comparable en posición " + i);
+            }
+        }
+    }
+
 }
