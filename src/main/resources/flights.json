@@ -1,6 +1,6 @@
 [ {
   "flightNumber" : "8",
-  "originAirportCode" : "QRO",
+  "originAirportCode" : "MIA",
   "destinationAirportCode" : "JFK",
   "departureTime" : "2025-06-22T10:30:00",
   "actualDepartureTime" : null,
@@ -12,26 +12,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B1",
-  "scheduledDepartureTime" : "2025-06-22T10:30:00",
+  "full" : false,
   "passengersDisplay" : "100/150",
-  "full" : false
-}, {
-  "flightNumber" : "7",
-  "originAirportCode" : "JFK",
-  "destinationAirportCode" : "ORD",
-  "departureTime" : "2025-06-22T11:00:00",
-  "actualDepartureTime" : null,
-  "actualArrivalTime" : null,
-  "capacity" : 120,
-  "passengers" : [ ],
-  "occupancy" : 120,
-  "status" : "COMPLETED",
-  "airplane" : null,
-  "estimatedDurationMinutes" : 0,
-  "gate" : "A3",
-  "scheduledDepartureTime" : "2025-06-22T11:00:00",
-  "passengersDisplay" : "120/120",
-  "full" : true
+  "scheduledDepartureTime" : "2025-06-22T10:30:00"
 }, {
   "flightNumber" : "10",
   "originAirportCode" : "PTY",
@@ -46,9 +29,9 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "B2",
-  "scheduledDepartureTime" : "2025-06-23T14:30:00",
+  "full" : false,
   "passengersDisplay" : "100/120",
-  "full" : false
+  "scheduledDepartureTime" : "2025-06-23T14:30:00"
 }, {
   "flightNumber" : "15",
   "originAirportCode" : "LIM",
@@ -63,7 +46,58 @@
   "airplane" : null,
   "estimatedDurationMinutes" : 0,
   "gate" : "D3",
-  "scheduledDepartureTime" : "2025-06-23T10:00:00",
+  "full" : false,
   "passengersDisplay" : "95/100",
-  "full" : false
+  "scheduledDepartureTime" : "2025-06-23T10:00:00"
+}, {
+  "flightNumber" : "92",
+  "originAirportCode" : "MIA",
+  "destinationAirportCode" : "SJO",
+  "departureTime" : "2025-06-23T08:00:00",
+  "actualDepartureTime" : null,
+  "actualArrivalTime" : null,
+  "capacity" : 200,
+  "passengers" : [ ],
+  "occupancy" : 100,
+  "status" : "COMPLETED",
+  "airplane" : null,
+  "estimatedDurationMinutes" : 0,
+  "gate" : "C1",
+  "full" : false,
+  "passengersDisplay" : "100/200",
+  "scheduledDepartureTime" : "2025-06-23T08:00:00"
+}, {
+  "flightNumber" : "678",
+  "originAirportCode" : "QRO",
+  "destinationAirportCode" : "MIA",
+  "departureTime" : "2025-06-23T10:30:00",
+  "actualDepartureTime" : null,
+  "actualArrivalTime" : null,
+  "capacity" : 100,
+  "passengers" : [ ],
+  "occupancy" : 15,
+  "status" : "SCHEDULED",
+  "airplane" : null,
+  "estimatedDurationMinutes" : 0,
+  "gate" : "C2",
+  "full" : false,
+  "passengersDisplay" : "15/100",
+  "scheduledDepartureTime" : "2025-06-23T10:30:00"
+}, {
+  "flightNumber" : "36",
+  "originAirportCode" : "QRO",
+  "destinationAirportCode" : "LAX",
+  "departureTime" : "2025-06-23T11:40:00",
+  "actualDepartureTime" : null,
+  "actualArrivalTime" : null,
+  "capacity" : 100,
+  "passengers" : [ ],
+  "occupancy" : 100,
+  "status" : "COMPLETED",
+  "airplane" : null,
+  "estimatedDurationMinutes" : 0,
+  "gate" : "B1",
+  "full" : true,
+  "passengersDisplay" : "100/100",
+  "scheduledDepartureTime" : "2025-06-23T11:40:00"
 } ]

@@ -28,6 +28,12 @@ public class CreateAirportController {
     private ComboBox<Airport.AirportStatus> status;
     private AirportManager airportManager;
 
+    private AirportController airportController;
+
+    public void setAirportController(AirportController airportController) {
+        this.airportController = airportController;
+    }
+
     @FXML
     public void initialize() {
         status.getItems().setAll(Airport.AirportStatus.values());

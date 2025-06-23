@@ -5,8 +5,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "LIR",
   "name" : "Daniel Oduber Quirós International Airport",
@@ -14,8 +14,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "MEX",
   "name" : "Mexico City International Airport",
@@ -23,8 +23,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "CUN",
   "name" : "Cancún International Airport",
@@ -32,8 +32,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "PTY",
   "name" : "Tocumen International Airport",
@@ -41,8 +41,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "BOG",
   "name" : "El Dorado International Airport",
@@ -50,8 +50,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "LIM",
   "name" : "Jorge Chávez International Airport",
@@ -59,8 +59,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "EZE",
   "name" : "Ministro Pistarini International Airport",
@@ -68,8 +68,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "GRU",
   "name" : "São Paulo/Guarulhos International Airport",
@@ -77,8 +77,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "MIA",
   "name" : "Miami International Airport",
@@ -86,8 +86,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "LAX",
   "name" : "Los Angeles International Airport",
@@ -95,8 +95,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "JFK",
   "name" : "John F. Kennedy International Airport",
@@ -104,8 +104,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "ORD",
   "name" : "O'Hare International Airport",
@@ -113,8 +113,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "LHR",
   "name" : "London Heathrow Airport",
@@ -122,8 +122,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "CDG",
   "name" : "Charles de Gaulle Airport",
@@ -131,8 +131,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "FRA",
   "name" : "Frankfurt Airport",
@@ -140,8 +140,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "DXB",
   "name" : "Dubai International Airport",
@@ -149,8 +149,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "NRT",
   "name" : "Narita International Airport",
@@ -158,8 +158,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "SYD",
   "name" : "Sydney Airport",
@@ -167,8 +167,8 @@
   "passengerQueue" : [ ],
   "status" : "CLOSED",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "MAD",
   "name" : "Adolfo Suárez Madrid–Barajas Airport",
@@ -176,8 +176,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "AMS",
   "name" : "Amsterdam Airport Schiphol",
@@ -185,8 +185,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "YYZ",
   "name" : "Toronto Pearson International Airport",
@@ -194,8 +194,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "PEK",
   "name" : "Beijing Capital International Airport",
@@ -203,8 +203,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "DEL",
   "name" : "Indira Gandhi International Airport",
@@ -212,8 +212,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "CPH",
   "name" : "Copenhagen Airport",
@@ -221,8 +221,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "QRO",
   "name" : "Querétaro Intercontinental Airport",
@@ -230,8 +230,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "JEY",
   "name" : "JuanchoE.Yrausquin",
@@ -239,8 +239,8 @@
   "passengerQueue" : [ ],
   "status" : "CLOSED",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "FR",
   "name" : "Francia Airport",
@@ -248,8 +248,8 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "RD",
   "name" : "Republica Dominicana Airport",
@@ -257,8 +257,8 @@
   "passengerQueue" : [ ],
   "status" : "CLOSED",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 }, {
   "code" : "SK",
   "name" : "Korean Airport",
@@ -266,6 +266,24 @@
   "passengerQueue" : [ ],
   "status" : "ACTIVE",
   "departuresBoard" : [ ],
-  "passengerQueueSize" : 0,
-  "departuresBoardSize" : 0
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
+}, {
+  "code" : "76",
+  "name" : "Aeropuerto Internacional Arturo Merino Benítez",
+  "country" : "Chile",
+  "passengerQueue" : [ ],
+  "status" : "ACTIVE",
+  "departuresBoard" : [ ],
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
+}, {
+  "code" : "O.R.",
+  "name" : "Aeropuerto Internacional O.R.",
+  "country" : "Sudafrica",
+  "passengerQueue" : [ ],
+  "status" : "CLOSED",
+  "departuresBoard" : [ ],
+  "departuresBoardSize" : 0,
+  "passengerQueueSize" : 0
 } ]

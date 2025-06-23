@@ -5,9 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.UtilJson.AirportJson;
 import ucr.proyectoalgoritmos.util.FXUtility;
 
 import java.util.Optional;
@@ -36,6 +38,12 @@ public class DeleteAirportController {
     private AirportManager airportManager;
     private Airport selectedAirport;
 
+    private AirportController airportController;
+
+    public void setAirportController(AirportController airportController) {
+        this.airportController = airportController;
+    }
+
     @FXML
     public void initialize() {
         airportManager = AirportManager.getInstance();
@@ -57,12 +65,10 @@ public class DeleteAirportController {
         try {
             selectedAirport = airportManager.getAirportByName(searchName);
             if (selectedAirport != null) {
-
                 airportCode.setText(selectedAirport.getCode());
                 name.setText(selectedAirport.getName());
                 country.setText(selectedAirport.getCountry());
                 status.setValue(selectedAirport.getStatus());
-
                 departuresBoard.setText("Vuelos: " + selectedAirport.getDeparturesBoard().size());
                 passengerQueue.setText("Pasajeros: " + selectedAirport.getPassengerQueue().size());
 
@@ -98,23 +104,28 @@ public class DeleteAirportController {
 
         if (confirmationResult.equals("YES")) {
             try {
-
+                // *** CAMBIO CLAVE: Llama a deleteAirport con el código del aeropuerto ***
                 boolean deleted = airportManager.deleteAirport(selectedAirport.getCode());
                 if (deleted) {
                     FXUtility.alert("Éxito", "Aeropuerto eliminado exitosamente.");
 
-                    clearFields();
-                    disableFields(true);
-                    Enter.setDisable(true);
-                    nameToSearch.setDisable(false);
-                    SearchButton.setDisable(false);
-                    nameToSearch.clear();
-                    selectedAirport = null;
+                    // Notificar al controlador principal que refresque la tabla
+                    if (airportController != null) {
+                        airportController.refreshAirportTable();
+                    }
+
+                    // Cerrar la ventana actual después de una eliminación exitosa
+                    Stage stage = (Stage) Enter.getScene().getWindow();
+                    stage.close();
+
                 } else {
                     FXUtility.alert("Error", "No se pudo eliminar el aeropuerto. Es posible que ya no exista.");
                 }
             } catch (ListException e) {
                 FXUtility.alert("Error de Eliminación", "Ocurrió un error al eliminar el aeropuerto: " + e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) { // Capturar cualquier otra excepción del guardado (si deleteAirport la propaga)
+                FXUtility.alert("Error de Persistencia", "Ocurrió un error al guardar los cambios en el archivo: " + e.getMessage());
                 e.printStackTrace();
             }
         } else {
@@ -129,11 +140,9 @@ public class DeleteAirportController {
         status.setValue(null);
         departuresBoard.clear();
         passengerQueue.clear();
-
     }
 
     private void disableFields(boolean disable) {
-
         airportCode.setDisable(disable);
         name.setDisable(disable);
         country.setDisable(disable);
