@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Ya casi listo la simulacion de rutas">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/RouteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Controller/RouteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteGraphService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteGraphService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/route/RouteManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/graph/DirectedSinglyLinkedListGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/graph/DirectedSinglyLinkedListGraph.java" afterDir="false" />
+    <list default="true" id="cc6d8bfc-ecea-45ed-bc7e-5d4afb44908b" name="Changes" comment="Sin comentarios">
+      <change beforePath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ucr/proyectoalgoritmos/Domain/flight/FlightScheduleManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -352,7 +348,31 @@
       <option name="project" value="LOCAL" />
       <updated>1750710477377</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Listo rutas">
+      <option name="closed" value="true" />
+      <created>1750713390475</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1750713390475</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Actualizacion de la tabla">
+      <option name="closed" value="true" />
+      <created>1750718618937</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1750718618937</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Sin comentarios">
+      <option name="closed" value="true" />
+      <created>1750721719353</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1750721719353</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -382,6 +402,9 @@
     <MESSAGE value="Vuelos anteriores listos" />
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/ucr/proyectoalgoritmos/Domain/flight/Flight.java" />
     <MESSAGE value="Ya casi listo la simulacion de rutas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ya casi listo la simulacion de rutas" />
+    <MESSAGE value="Listo rutas" />
+    <MESSAGE value="Actualizacion de la tabla" />
+    <MESSAGE value="Sin comentarios" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sin comentarios" />
   </component>
 </project>

@@ -20,14 +20,12 @@ public class PassengerJson {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
-        // Configuración básica
+
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        // Configuración especial para Passenger
         objectMapper.addMixIn(Passenger.class, PassengerMixin.class);
 
-        // Registro de serializadores (usando tu deserializador actual)
         SimpleModule module = new SimpleModule();
         module.addSerializer(DoublyLinkedList.class, new DoublyLinkedListSerializer());
         module.addDeserializer(DoublyLinkedList.class,
@@ -35,7 +33,6 @@ public class PassengerJson {
         objectMapper.registerModule(module);
     }
 
-    // MixIn para configurar cómo se deserializa Passenger
     private abstract static class PassengerMixin {
         @com.fasterxml.jackson.annotation.JsonCreator
         public PassengerMixin(
@@ -47,13 +44,13 @@ public class PassengerJson {
 
     public static AVL loadPassengersFromJson() {
         try {
-            // Cargar la lista directamente
+
             DoublyLinkedList passengerList = objectMapper.readValue(
                     new File(FILE_PATH),
                     DoublyLinkedList.class
             );
 
-            // Cargar al AVL
+
             AVL passengersAVL = new AVL();
             for (int i = 0; i < passengerList.size(); i++) {
                 passengersAVL.insert((Passenger) passengerList.get(i));

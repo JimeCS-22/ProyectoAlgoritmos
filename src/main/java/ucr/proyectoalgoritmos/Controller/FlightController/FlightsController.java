@@ -4,9 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
@@ -15,6 +20,7 @@ import ucr.proyectoalgoritmos.Domain.flight.FlightScheduleManager;
 import ucr.proyectoalgoritmos.Domain.route.RouteManager;
 import ucr.proyectoalgoritmos.util.FXUtility;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -102,6 +108,10 @@ public class FlightsController implements Initializable {
         }
     }
 
+    public void refreshFlightsTable() {
+        updateTableView();
+    }
+
 
     @javafx.fxml.FXML
     public void searchFlightOnAction(ActionEvent actionEvent) {
@@ -176,8 +186,26 @@ public class FlightsController implements Initializable {
 
     @javafx.fxml.FXML
     public void createFlightOnAction(ActionEvent actionEvent) {
-        loadViewInNewStage("/ucr/proyectoalgoritmos/createFlight.fxml", "Create New Flight");
-        updateTableView();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ucr/proyectoalgoritmos/createFlight.fxml"));
+            Parent root = fxmlLoader.load();
+
+            CreateFlightController createFlightController = fxmlLoader.getController();
+
+            createFlightController.setFlightsController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Crear Nuevo Vuelo");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            refreshFlightsTable();
+
+        } catch (IOException e) {
+            FXUtility.alert("Error", "No se pudo cargar la vista 'Crear Vuelo': " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @javafx.fxml.FXML

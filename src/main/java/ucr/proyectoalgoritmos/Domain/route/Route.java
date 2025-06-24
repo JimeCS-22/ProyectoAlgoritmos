@@ -30,7 +30,6 @@ public class Route {
         this.duration = duration;
     }
 
-    // --- Getters ---
     public String getOrigin_airport_code() {
         return origin_airport_code;
     }
@@ -51,7 +50,7 @@ public class Route {
         return distance;
     }
 
-    // --- Setters (opcionales para deserialización si Gson puede acceder directamente a los campos) ---
+
     public void setOrigin_airport_code(String origin_airport_code) {
         this.origin_airport_code = origin_airport_code;
     }

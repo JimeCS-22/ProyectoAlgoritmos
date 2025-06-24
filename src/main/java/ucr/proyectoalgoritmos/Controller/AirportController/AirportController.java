@@ -4,6 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -12,6 +15,8 @@ import static ucr.proyectoalgoritmos.Controller.HelloController.loadViewInNewSta
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.Airport;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
@@ -20,6 +25,7 @@ import ucr.proyectoalgoritmos.graph.AdjacencyMatrixGraph;
 import ucr.proyectoalgoritmos.graph.GraphException;
 import ucr.proyectoalgoritmos.util.FXUtility;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
@@ -85,7 +91,27 @@ public class AirportController {
 
     @FXML
     public void createAirportOnAction(ActionEvent actionEvent) {
-        loadViewInNewStage("/ucr/proyectoalgoritmos/createAirport.fxml", "Create New Airport");
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ucr/proyectoalgoritmos/createAirport.fxml"));
+            Parent root = fxmlLoader.load();
+
+            CreateAirportController createAirportController = fxmlLoader.getController();
+
+            createAirportController.setAirportController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Create New Airport");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            refreshAirportTable();
+
+        } catch (IOException e) {
+            FXUtility.alert("Error", "No se pudo cargar la vista 'Crear Aeropuerto': " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -212,21 +238,41 @@ public class AirportController {
     public void updateAirportOnAction(ActionEvent actionEvent) {
 
         loadViewInNewStage("/ucr/proyectoalgoritmos/updateAirport.fxml", "Update Airport");
+        refreshAirportTable();
 
     }
 
     @FXML
     public void deleteAirportOnAction(ActionEvent actionEvent) {
 
-        loadViewInNewStage("/ucr/proyectoalgoritmos/DeleteAirport.fxml", "Delete Airport");
+        try{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ucr/proyectoalgoritmos/DeleteAirport.fxml"));
+        Parent root = fxmlLoader.load();
+
+        DeleteAirportController deleteAirportController = fxmlLoader.getController();
+        deleteAirportController.setAirportController(this); // Pasar referencia
+
+        Stage stage = new Stage();
+        stage.setTitle("Eliminar Aeropuerto");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+
+        refreshAirportTable();
+
+    } catch (IOException e) {
+        FXUtility.alert("Error", "No se pudo cargar la vista 'Eliminar Aeropuerto': " + e.getMessage());
+        e.printStackTrace();
+    }
+
 
     }
 
     private void loadAirportsIntoTable() {
-        airportData.clear(); // Limpia los datos existentes en la tabla
+        airportData.clear();
 
         try {
-            DoublyLinkedList airports = AirportManager.getInstance().getAirportList();
+            DoublyLinkedList airports = AirportManager.getInstance().getAllAirports();
 
             for (int i = 0; i < airports.size(); i++) {
                 airportData.add((Airport) airports.get(i));

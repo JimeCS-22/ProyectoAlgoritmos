@@ -1,6 +1,5 @@
-package ucr.proyectoalgoritmos.reportes; // O el paquete que corresponda
+package ucr.proyectoalgoritmos.reportes;
 
-// Importaciones de iText 7
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -10,24 +9,22 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.layout.properties.UnitValue; // Para configurar ancho de tabla con porcentaje
+import com.itextpdf.layout.properties.UnitValue;
 
-// Importaciones de tus clases de dominio
 import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.flight.Flight;
 import ucr.proyectoalgoritmos.Domain.flight.FlightSimulator;
-import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList; // Asumo que esta clase existe
-import ucr.proyectoalgoritmos.Domain.list.ListException; // Asumo que esta excepción existe
-import ucr.proyectoalgoritmos.Domain.passenger.Passenger; // Asumo que Passenger está en Domain.person
-import ucr.proyectoalgoritmos.Domain.airplane.Airplane; // Asumo que Airplane está en Domain.airplane
+import ucr.proyectoalgoritmos.Domain.list.DoublyLinkedList;
+import ucr.proyectoalgoritmos.Domain.list.ListException;
+import ucr.proyectoalgoritmos.Domain.passenger.Passenger;
+import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
 import ucr.proyectoalgoritmos.util.ListConverter;
-
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap; // Para mantener el orden después de ordenar
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -37,320 +34,260 @@ public class ReportGenerator {
 
     public ReportGenerator(FlightSimulator flightSimulator) {
         this.flightSimulator = flightSimulator;
-        // La creación del directorio "reports" la manejaremos en la aplicación principal
-        // o en los tests, para dar más flexibilidad en la ruta.
     }
 
     /**
      * Genera un reporte en PDF de los Top 5 aeropuertos con más vuelos salientes.
-     * @param filePath Ruta completa donde se guardará el archivo PDF (ej. "reports/Top5AirportsReport.pdf")
-     * @throws IOException Si ocurre un error al escribir el PDF.
      */
     public void generateTop5AirportsReport(String filePath) throws IOException {
         try (PdfWriter writer = new PdfWriter(filePath);
              PdfDocument pdf = new PdfDocument(writer);
              Document document = new Document(pdf)) {
 
-            document.add(new Paragraph("Reporte: Top 5 Aeropuertos con más Vuelos Salientes")
-                    .setFontSize(18)
-                    .setBold()
-                    .setTextAlignment(TextAlignment.CENTER)
-                    .setMarginBottom(20));
+            addReportTitle(document, "Reporte: Top 5 Aeropuertos con más Vuelos Salientes");
 
-            Map<String, Integer> outgoingFlightsCount = new HashMap<>();
-            try {
-                // Asumo que getScheduledFlights() devuelve CircularDoublyLinkedList
-                CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
-                DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights); // Usando tu ListConverter
+            Map<String, Integer> outgoingFlightsCount = countOutgoingFlights();
 
-                if (allFlights != null && !allFlights.isEmpty()) {
-                    for (int i = 0; i < allFlights.size(); i++) {
-                        Flight flight = (Flight) allFlights.get(i); // Se hace un cast a Flight
-                        if (flight != null && flight.getOriginAirportCode() != null) {
-                            outgoingFlightsCount.put(flight.getOriginAirportCode(),
-                                    outgoingFlightsCount.getOrDefault(flight.getOriginAirportCode(), 0) + 1);
-                        }
-                    }
-                }
-            } catch (ListException e) {
-                System.err.println("Error ListException al obtener vuelos para el reporte de aeropuertos: " + e.getMessage());
-                document.add(new Paragraph("Error al cargar datos de vuelos: " + e.getMessage()).setFontColor(DeviceRgb.RED));
-            } catch (Exception e) {
-                System.err.println("Error general al obtener vuelos para el reporte de aeropuertos: " + e.getMessage());
-                document.add(new Paragraph("Error inesperado al cargar datos: " + e.getMessage()).setFontColor(DeviceRgb.RED));
-            }
-
-            Map<String, Integer> top5Airports = outgoingFlightsCount.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(5)
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            Map.Entry::getValue,
-                            (e1, e2) -> e1, LinkedHashMap::new));
+            Map<String, Integer> top5Airports = sortAndLimitResults(outgoingFlightsCount, 5);
 
             if (top5Airports.isEmpty()) {
-                document.add(new Paragraph("No hay datos disponibles para este reporte.")
-                        .setTextAlignment(TextAlignment.CENTER)
-                        .setMarginTop(20));
+                addNoDataMessage(document);
             } else {
-                Table table = new Table(UnitValue.createPercentArray(new float[]{1, 3, 2}));
-                table.setWidth(UnitValue.createPercentValue(80));
-                table.setMarginLeft(document.getLeftMargin());
-                table.setMarginRight(document.getRightMargin());
-
-                table.addHeaderCell(createCell("Rank", true));
-                table.addHeaderCell(createCell("Aeropuerto", true));
-                table.addHeaderCell(createCell("Vuelos Salientes", true));
-
-                int rank = 1;
-                for (Map.Entry<String, Integer> entry : top5Airports.entrySet()) {
-                    table.addCell(createCell(String.valueOf(rank++), false));
-                    table.addCell(createCell(entry.getKey(), false));
-                    table.addCell(createCell(String.valueOf(entry.getValue()), false));
-                }
-                document.add(table);
+                addResultsTable(document, top5Airports, "Aeropuerto", "Vuelos Salientes");
             }
-
-            System.out.println("Reporte de Top 5 Aeropuertos generado en: " + filePath);
         }
     }
 
     /**
      * Genera un reporte en PDF de las rutas más utilizadas.
-     * @param filePath Ruta completa donde se guardará el archivo PDF (ej. "reports/MostUsedRoutesReport.pdf")
-     * @throws IOException Si ocurre un error al escribir el PDF.
      */
     public void generateMostUsedRoutesReport(String filePath) throws IOException {
         try (PdfWriter writer = new PdfWriter(filePath);
              PdfDocument pdf = new PdfDocument(writer);
              Document document = new Document(pdf)) {
 
-            document.add(new Paragraph("Reporte: Rutas Más Utilizadas")
-                    .setFontSize(18)
-                    .setBold()
-                    .setTextAlignment(TextAlignment.CENTER)
-                    .setMarginBottom(20));
+            addReportTitle(document, "Reporte: Rutas Más Utilizadas");
 
-            Map<String, Integer> routeCounts = new HashMap<>();
-            try {
-                CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
-                DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights);
+            Map<String, Integer> routeCounts = countRouteUsage();
 
-                if (allFlights != null && !allFlights.isEmpty()) {
-                    for (int i = 0; i < allFlights.size(); i++) {
-                        Flight flight = (Flight) allFlights.get(i);
-                        if (flight != null && flight.getOriginAirportCode() != null && flight.getDestinationAirportCode() != null) {
-                            String route = flight.getOriginAirportCode() + " - " + flight.getDestinationAirportCode();
-                            routeCounts.put(route, routeCounts.getOrDefault(route, 0) + 1);
-                        }
-                    }
-                }
-            } catch (ListException e) {
-                System.err.println("Error ListException al obtener vuelos para el reporte de rutas: " + e.getMessage());
-                document.add(new Paragraph("Error al cargar datos de rutas: " + e.getMessage()).setFontColor(DeviceRgb.RED));
-            } catch (Exception e) {
-                System.err.println("Error general al obtener vuelos para el reporte de rutas: " + e.getMessage());
-                document.add(new Paragraph("Error inesperado al cargar datos: " + e.getMessage()).setFontColor(DeviceRgb.RED));
-            }
-
-            Map<String, Integer> topRoutes = routeCounts.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(10)
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            Map.Entry::getValue,
-                            (e1, e2) -> e1, LinkedHashMap::new));
+            Map<String, Integer> topRoutes = sortAndLimitResults(routeCounts, 10);
 
             if (topRoutes.isEmpty()) {
-                document.add(new Paragraph("No hay datos disponibles para este reporte.")
-                        .setTextAlignment(TextAlignment.CENTER)
-                        .setMarginTop(20));
+                addNoDataMessage(document);
             } else {
-                Table table = new Table(UnitValue.createPercentArray(new float[]{1, 4, 1.5f}));
-                table.setWidth(UnitValue.createPercentValue(80));
-                table.setMarginLeft(document.getLeftMargin());
-                table.setMarginRight(document.getRightMargin());
-
-                table.addHeaderCell(createCell("Rank", true));
-                table.addHeaderCell(createCell("Ruta", true));
-                table.addHeaderCell(createCell("Usos", true));
-
-                int rank = 1;
-                for (Map.Entry<String, Integer> entry : topRoutes.entrySet()) {
-                    table.addCell(createCell(String.valueOf(rank++), false));
-                    table.addCell(createCell(entry.getKey(), false));
-                    table.addCell(createCell(String.valueOf(entry.getValue()), false));
-                }
-                document.add(table);
+                addResultsTable(document, topRoutes, "Ruta", "Usos");
             }
-
-            System.out.println("Reporte de Rutas Más Utilizadas generado en: " + filePath);
         }
     }
 
     /**
      * Genera un reporte en PDF de los pasajeros con más vuelos realizados.
-     * @param filePath Ruta completa donde se guardará el archivo PDF (ej. "reports/TopPassengersReport.pdf")
-     * @throws IOException Si ocurre un error al escribir el PDF.
      */
     public void generateTopPassengersReport(String filePath) throws IOException {
         try (PdfWriter writer = new PdfWriter(filePath);
              PdfDocument pdf = new PdfDocument(writer);
              Document document = new Document(pdf)) {
 
-            document.add(new Paragraph("Reporte: Pasajeros con Más Vuelos Realizados")
-                    .setFontSize(18)
-                    .setBold()
-                    .setTextAlignment(TextAlignment.CENTER)
-                    .setMarginBottom(20));
+            addReportTitle(document, "Reporte: Pasajeros con Más Vuelos Realizados");
 
-            Map<String, Integer> passengerFlightCounts = new HashMap<>();
+            Map<String, Integer> passengerFlightCounts = countPassengerFlights();
 
-            try {
-                CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
-                DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights);
-
-                if (allFlights != null && !allFlights.isEmpty()) {
-                    for (int i = 0; i < allFlights.size(); i++) {
-                        Flight flight = (Flight) allFlights.get(i);
-                        if (flight != null && flight.getPassengers() != null) {
-                            CircularDoublyLinkedList rawPassengers = flight.getPassengers();
-                            DoublyLinkedList passengers = ListConverter.convertToDoublyLinkedList(rawPassengers);
-
-                            if (passengers != null && !passengers.isEmpty()) {
-                                for (int j = 0; j < passengers.size(); j++) {
-                                    Passenger passenger = (Passenger) passengers.get(j);
-                                    if (passenger != null && passenger.getId() != null) {
-                                        passengerFlightCounts.put(passenger.getId(),
-                                                passengerFlightCounts.getOrDefault(passenger.getId(), 0) + 1);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (ListException e) {
-                System.err.println("Error ListException al obtener pasajeros para el reporte: " + e.getMessage());
-                document.add(new Paragraph("Error al cargar datos de pasajeros: " + e.getMessage()).setFontColor(DeviceRgb.RED));
-            } catch (Exception e) {
-                System.err.println("Error general al obtener pasajeros para el reporte: " + e.getMessage());
-                document.add(new Paragraph("Error inesperado al cargar datos: " + e.getMessage()).setFontColor(DeviceRgb.RED));
-            }
-
-            Map<String, Integer> topPassengers = passengerFlightCounts.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(10)
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            Map.Entry::getValue,
-                            (e1, e2) -> e1, LinkedHashMap::new));
+            Map<String, Integer> topPassengers = sortAndLimitResults(passengerFlightCounts, 10);
 
             if (topPassengers.isEmpty()) {
-                document.add(new Paragraph("No hay datos disponibles para este reporte.")
-                        .setTextAlignment(TextAlignment.CENTER)
-                        .setMarginTop(20));
+                addNoDataMessage(document);
             } else {
-                Table table = new Table(UnitValue.createPercentArray(new float[]{1, 3, 2}));
-                table.setWidth(UnitValue.createPercentValue(80));
-                table.setMarginLeft(document.getLeftMargin());
-                table.setMarginRight(document.getRightMargin());
-
-                table.addHeaderCell(createCell("Rank", true));
-                table.addHeaderCell(createCell("Pasajero ID", true));
-                table.addHeaderCell(createCell("Vuelos Realizados", true));
-
-                int rank = 1;
-                for (Map.Entry<String, Integer> entry : topPassengers.entrySet()) {
-                    table.addCell(createCell(String.valueOf(rank++), false));
-                    table.addCell(createCell(entry.getKey(), false));
-                    table.addCell(createCell(String.valueOf(entry.getValue()), false));
-                }
-                document.add(table);
+                addResultsTable(document, topPassengers, "Pasajero ID", "Vuelos Realizados");
             }
-
-            System.out.println("Reporte de Pasajeros con Más Vuelos generado en: " + filePath);
         }
     }
 
     /**
      * Genera un reporte en PDF del porcentaje de ocupación promedio por vuelo.
-     * @param filePath Ruta completa donde se guardará el archivo PDF (ej. "reports/AverageOccupancyReport.pdf")
-     * @throws IOException Si ocurre un error al escribir el PDF.
      */
     public void generateAverageOccupancyReport(String filePath) throws IOException {
         try (PdfWriter writer = new PdfWriter(filePath);
              PdfDocument pdf = new PdfDocument(writer);
              Document document = new Document(pdf)) {
 
-            document.add(new Paragraph("Reporte: Porcentaje de Ocupación Promedio por Vuelo")
-                    .setFontSize(18)
-                    .setBold()
-                    .setTextAlignment(TextAlignment.CENTER)
-                    .setMarginBottom(20));
+            addReportTitle(document, "Reporte: Porcentaje de Ocupación Promedio por Vuelo");
 
-            double totalOccupancyPercentage = 0;
-            int flightCount = 0;
+            OccupancyData occupancyData = calculateOccupancyData();
 
-            try {
-                CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
-                DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights);
+            if (occupancyData.flightCount == 0) {
+                addNoDataMessage(document);
+            } else {
+                addOccupancyResults(document, occupancyData);
+            }
+        }
+    }
 
-                if (allFlights != null && !allFlights.isEmpty()) {
-                    for (int i = 0; i < allFlights.size(); i++) {
-                        Flight flight = (Flight) allFlights.get(i);
-                        if (flight != null && flight.getPassengers() != null && flight.getAirplane() != null) {
-                            CircularDoublyLinkedList rawPassengers = flight.getPassengers();
-                            DoublyLinkedList passengers = ListConverter.convertToDoublyLinkedList(rawPassengers);
+    /**
+     * Métodos auxiliares para la generación de reportes
+     */
 
-                            if (passengers != null) {
-                                int currentPassengers = passengers.size();
-                                // Asumo que tu clase Airplane tiene un método getCapacity()
-                                Airplane airplane = (Airplane) flight.getAirplane(); // Necesario el cast si Airplane no está como un tipo fijo
-                                int maxCapacity = airplane.getCapacity();
+    private Map<String, Integer> countOutgoingFlights() {
+        Map<String, Integer> outgoingFlightsCount = new HashMap<>();
+        try {
+            CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
+            DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights);
 
-                                if (maxCapacity > 0) {
-                                    double occupancy = (double) currentPassengers / maxCapacity * 100;
-                                    totalOccupancyPercentage += occupancy;
-                                    flightCount++;
+            if (allFlights != null && !allFlights.isEmpty()) {
+                for (int i = 0; i < allFlights.size(); i++) {
+                    Flight flight = (Flight) allFlights.get(i);
+                    if (flight != null && flight.getOriginAirportCode() != null) {
+                        outgoingFlightsCount.put(flight.getOriginAirportCode(),
+                                outgoingFlightsCount.getOrDefault(flight.getOriginAirportCode(), 0) + 1);
+                    }
+                }
+            }
+        } catch (ListException e) {
+            throw new RuntimeException("Error al contar vuelos salientes");
+        }
+        return outgoingFlightsCount;
+    }
+
+    private Map<String, Integer> countRouteUsage() {
+        Map<String, Integer> routeCounts = new HashMap<>();
+        try {
+            CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
+            DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights);
+
+            if (allFlights != null && !allFlights.isEmpty()) {
+                for (int i = 0; i < allFlights.size(); i++) {
+                    Flight flight = (Flight) allFlights.get(i);
+                    if (flight != null && flight.getOriginAirportCode() != null && flight.getDestinationAirportCode() != null) {
+                        String route = flight.getOriginAirportCode() + " - " + flight.getDestinationAirportCode();
+                        routeCounts.put(route, routeCounts.getOrDefault(route, 0) + 1);
+                    }
+                }
+            }
+        } catch (ListException e) {
+            throw new RuntimeException("Error al contar rutas");
+        }
+        return routeCounts;
+    }
+
+    private Map<String, Integer> countPassengerFlights() {
+        Map<String, Integer> passengerFlightCounts = new HashMap<>();
+        try {
+            CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
+            DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights);
+
+            if (allFlights != null && !allFlights.isEmpty()) {
+                for (int i = 0; i < allFlights.size(); i++) {
+                    Flight flight = (Flight) allFlights.get(i);
+                    if (flight != null && flight.getPassengers() != null) {
+                        CircularDoublyLinkedList rawPassengers = flight.getPassengers();
+                        DoublyLinkedList passengers = ListConverter.convertToDoublyLinkedList(rawPassengers);
+
+                        if (passengers != null && !passengers.isEmpty()) {
+                            for (int j = 0; j < passengers.size(); j++) {
+                                Passenger passenger = (Passenger) passengers.get(j);
+                                if (passenger != null && passenger.getId() != null) {
+                                    passengerFlightCounts.put(passenger.getId(),
+                                            passengerFlightCounts.getOrDefault(passenger.getId(), 0) + 1);
                                 }
                             }
                         }
                     }
                 }
-            } catch (ListException e) {
-                System.err.println("Error ListException al obtener datos de ocupación para el reporte: " + e.getMessage());
-                document.add(new Paragraph("Error al cargar datos de ocupación: " + e.getMessage()).setFontColor(DeviceRgb.RED));
-            } catch (Exception e) {
-                System.err.println("Error general al obtener datos de ocupación para el reporte: " + e.getMessage());
-                document.add(new Paragraph("Error inesperado al cargar datos: " + e.getMessage()).setFontColor(DeviceRgb.RED));
             }
-
-            double averageOccupancy = (flightCount > 0) ? (totalOccupancyPercentage / flightCount) : 0;
-
-            if (flightCount == 0) {
-                document.add(new Paragraph("No hay datos de vuelos para calcular la ocupación.")
-                        .setTextAlignment(TextAlignment.CENTER)
-                        .setMarginTop(20));
-            } else {
-                document.add(new Paragraph(String.format("Número Total de Vuelos Analizados: %d", flightCount))
-                        .setMarginLeft(document.getLeftMargin() + 10));
-                document.add(new Paragraph(String.format("Porcentaje de Ocupación Promedio: %.2f%%", averageOccupancy))
-                        .setMarginLeft(document.getLeftMargin() + 10));
-            }
-
-            System.out.println("Reporte de Ocupación Promedio generado en: " + filePath);
+        } catch (ListException e) {
+            throw new RuntimeException("Error al contar vuelos de pasajeros");
         }
+        return passengerFlightCounts;
     }
 
-    /**
-     * Método auxiliar para crear celdas de tabla con formato.
-     * @param content El texto de la celda.
-     * @param isHeader Si es una celda de encabezado (negrita, centrado).
-     * @return La celda de iText.
-     */
+    private OccupancyData calculateOccupancyData() {
+        double totalOccupancyPercentage = 0;
+        int flightCount = 0;
+
+        try {
+            CircularDoublyLinkedList rawFlights = flightSimulator.getFlightScheduleManager().getScheduledFlights();
+            DoublyLinkedList allFlights = ListConverter.convertToDoublyLinkedList(rawFlights);
+
+            if (allFlights != null && !allFlights.isEmpty()) {
+                for (int i = 0; i < allFlights.size(); i++) {
+                    Flight flight = (Flight) allFlights.get(i);
+                    if (flight != null && flight.getPassengers() != null && flight.getAirplane() != null) {
+                        CircularDoublyLinkedList rawPassengers = flight.getPassengers();
+                        DoublyLinkedList passengers = ListConverter.convertToDoublyLinkedList(rawPassengers);
+
+                        if (passengers != null) {
+                            int currentPassengers = passengers.size();
+                            Airplane airplane = (Airplane) flight.getAirplane();
+                            int maxCapacity = airplane.getCapacity();
+
+                            if (maxCapacity > 0) {
+                                double occupancy = (double) currentPassengers / maxCapacity * 100;
+                                totalOccupancyPercentage += occupancy;
+                                flightCount++;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (ListException e) {
+            throw new RuntimeException("Error al calcular ocupación");
+        }
+
+        return new OccupancyData(totalOccupancyPercentage, flightCount);
+    }
+
+    private Map<String, Integer> sortAndLimitResults(Map<String, Integer> data, int limit) {
+        return data.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(limit)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1, LinkedHashMap::new));
+    }
+
+    private void addReportTitle(Document document, String title) {
+        document.add(new Paragraph(title)
+                .setFontSize(18)
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginBottom(20));
+    }
+
+    private void addNoDataMessage(Document document) {
+        document.add(new Paragraph("No hay datos disponibles para este reporte.")
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginTop(20));
+    }
+
+    private void addResultsTable(Document document, Map<String, Integer> data, String column1, String column2) {
+        Table table = new Table(UnitValue.createPercentArray(new float[]{1, 3, 2}));
+        table.setWidth(UnitValue.createPercentValue(80));
+        table.setMarginLeft(document.getLeftMargin());
+        table.setMarginRight(document.getRightMargin());
+
+        table.addHeaderCell(createCell("Rank", true));
+        table.addHeaderCell(createCell(column1, true));
+        table.addHeaderCell(createCell(column2, true));
+
+        int rank = 1;
+        for (Map.Entry<String, Integer> entry : data.entrySet()) {
+            table.addCell(createCell(String.valueOf(rank++), false));
+            table.addCell(createCell(entry.getKey(), false));
+            table.addCell(createCell(String.valueOf(entry.getValue()), false));
+        }
+        document.add(table);
+    }
+
+    private void addOccupancyResults(Document document, OccupancyData data) {
+        double averageOccupancy = (data.flightCount > 0) ? (data.totalOccupancyPercentage / data.flightCount) : 0;
+
+        document.add(new Paragraph(String.format("Número Total de Vuelos Analizados: %d", data.flightCount))
+                .setMarginLeft(document.getLeftMargin() + 10));
+        document.add(new Paragraph(String.format("Porcentaje de Ocupación Promedio: %.2f%%", averageOccupancy))
+                .setMarginLeft(document.getLeftMargin() + 10));
+    }
+
     private Cell createCell(String content, boolean isHeader) {
         Paragraph p = new Paragraph(content);
         if (isHeader) {
@@ -360,7 +297,17 @@ public class ReportGenerator {
             p.setTextAlignment(TextAlignment.LEFT);
         }
         Cell cell = new Cell().add(p);
-        cell.setBorder(Border.NO_BORDER); // Puedes cambiar esto para añadir bordes si lo deseas
+        cell.setBorder(Border.NO_BORDER);
         return cell;
+    }
+
+    private static class OccupancyData {
+        double totalOccupancyPercentage;
+        int flightCount;
+
+        OccupancyData(double totalOccupancyPercentage, int flightCount) {
+            this.totalOccupancyPercentage = totalOccupancyPercentage;
+            this.flightCount = flightCount;
+        }
     }
 }

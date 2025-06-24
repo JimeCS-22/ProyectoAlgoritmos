@@ -49,6 +49,12 @@ public class CreateFlightController implements Initializable {
     private RouteManager routeManager;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
+    private FlightsController flightsController;
+
+    public void setFlightsController(FlightsController flightsController) {
+        this.flightsController = flightsController;
+    }
+
 
     @FXML
     public void enterOnAction(ActionEvent event) {

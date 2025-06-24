@@ -32,36 +32,19 @@ public class Flight {
     };
     private static final Random RANDOM = new Random();
 
-    /**
-     * Enumeration that defines the possible **operational states** a flight can be in.
-     */
     public enum FlightStatus {
-        /**
-         * The flight is planned but has not yet departed.
-         */
+
         SCHEDULED,
-        /**
-         * The flight is in progress, currently flying.
-         */
+
         IN_PROGRESS,
-        /**
-         * The flight has arrived at its destination.
-         */
+
         COMPLETED,
-        /**
-         * The flight has been canceled.
-         */
+
         CANCELLED,
-        /**
-         * The flight has been assigned to an aircraft and is ready for operations.
-         */
+
         ASSIGNED
     }
 
-    /**
-     * Default constructor for deserialization purposes (e.g., by Jackson).
-     * Initializes lists and default values to prevent NullPointerExceptions.
-     */
     public Flight() {
         this.passengers = new CircularDoublyLinkedList();
         this.status = FlightStatus.SCHEDULED;
@@ -70,19 +53,6 @@ public class Flight {
         this.gate = assignRandomGate(); // Asigna puerta al crear el vuelo
     }
 
-    /**
-     * Constructor to create a new flight instance.
-     * A newly created flight is set to **SCHEDULED** status by default.
-     *
-     * @param flightNumber The unique identification number of the flight.
-     * @param originAirportCode The IATA code of the origin airport.
-     * @param destinationAirportCode The IATA code of the destination airport.
-     * @param departureTime The scheduled departure date and time of the flight.
-     * @param capacity The initial passenger capacity of the flight. This can be updated
-     * if an airplane with a different capacity is assigned.
-     * @throws IllegalArgumentException If any of the required parameters are null, empty, or invalid.
-     * @throws ListException If an error occurs while initializing the passenger list.
-     */
     public Flight(String flightNumber, String originAirportCode, String destinationAirportCode,
                   LocalDateTime departureTime, int capacity) throws ListException {
         // Validations in the constructor to ensure data integrity.
@@ -107,28 +77,16 @@ public class Flight {
         this.destinationAirportCode = destinationAirportCode.trim();
         this.departureTime = departureTime;
         this.capacity = capacity;
-        this.passengers = new CircularDoublyLinkedList(); // Initialize the passenger list
-        this.occupancy = 0; // Initial occupancy is 0
-        this.status = FlightStatus.SCHEDULED; // Initial status
-        this.airplane = null; // No airplane assigned initially
-        this.estimatedDurationMinutes = 0; // Default duration, can be set later
-        this.actualDepartureTime = null; // Not set until flight takes off
-        this.actualArrivalTime = null; // Not set until flight lands
+        this.passengers = new CircularDoublyLinkedList();
+        this.occupancy = 0;
+        this.status = FlightStatus.SCHEDULED;
+        this.airplane = null;
+        this.estimatedDurationMinutes = 0;
+        this.actualDepartureTime = null;
+        this.actualArrivalTime = null;
         this.gate = null;
     }
 
-    /**
-     * Constructor for loading flight data, potentially with existing occupancy and status.
-     *
-     * @param flightNumber The unique identification number of the flight.
-     * @param originAirportCode The IATA code of the origin airport.
-     * @param destinationAirportCode The IATA code of the destination airport.
-     * @param departureTime The scheduled departure date and time of the flight.
-     * @param capacity The total passenger capacity of the flight.
-     * @param occupancy The current number of passengers on the flight.
-     * @param status The current status of the flight.
-     * @throws IllegalArgumentException If any parameter is null, empty, or invalid.
-     */
     public Flight(String flightNumber, String originAirportCode, String destinationAirportCode,
                   LocalDateTime departureTime, int capacity, int occupancy, FlightStatus status) {
         if (flightNumber == null || flightNumber.trim().isEmpty()) {
@@ -160,11 +118,11 @@ public class Flight {
         this.capacity = capacity;
         this.occupancy = occupancy;
         this.status = status;
-        this.passengers = new CircularDoublyLinkedList(); // Initialize the passenger list
-        this.airplane = null; // Airplane not assigned initially
-        this.estimatedDurationMinutes = 0; // Default duration, can be set later
-        this.actualDepartureTime = null; // Not set until flight takes off
-        this.actualArrivalTime = null; // Not set until flight lands
+        this.passengers = new CircularDoublyLinkedList();
+        this.airplane = null;
+        this.estimatedDurationMinutes = 0;
+        this.actualDepartureTime = null;
+        this.actualArrivalTime = null;
         this.gate = null;
     }
 
@@ -184,37 +142,21 @@ public class Flight {
     public int getEstimatedDurationMinutes() { return estimatedDurationMinutes; }
 
     // --- Setters ---
-    /**
-     * Sets a new scheduled departure time for the flight.
-     * @param departureTime The new scheduled departure date and time.
-     */
-    public void setDepartureTime(LocalDateTime departureTime) {
+       public void setDepartureTime(LocalDateTime departureTime) {
         if (departureTime == null) {
             throw new IllegalArgumentException("Departure time cannot be null.");
         }
         this.departureTime = departureTime;
     }
 
-    /**
-     * Sets the actual time the flight took off.
-     * @param actualDepartureTime The actual departure time.
-     */
     public void setActualDepartureTime(LocalDateTime actualDepartureTime) {
         this.actualDepartureTime = actualDepartureTime;
     }
 
-    /**
-     * Sets the actual time the flight landed.
-     * @param actualArrivalTime The actual arrival time.
-     */
     public void setActualArrivalTime(LocalDateTime actualArrivalTime) {
         this.actualArrivalTime = actualArrivalTime;
     }
 
-    /**
-     * Sets a new status for the flight.
-     * @param status The new flight status.
-     */
     public void setStatus(FlightStatus status) {
         if (status == null) {
             throw new IllegalArgumentException("Flight status cannot be null.");
@@ -222,27 +164,15 @@ public class Flight {
         this.status = status;
     }
 
-    /**
-     * Assigns an airplane to this flight. When an airplane is assigned, the flight's capacity
-     * is updated to match the airplane's capacity.
-     * It validates that the current flight occupancy does not exceed the new airplane's capacity.
-     * @param airplane The {@link Airplane} object to assign to the flight. Can be null to unassign.
-     * @throws IllegalArgumentException If current occupancy exceeds the airplane's capacity
-     * or if the provided airplane is null and the flight already has passengers.
-     */
     public void setAirplane(Airplane airplane) {
         if (airplane == null) {
-            // Decide how to handle capacity when no airplane is assigned.
-            // For now, it maintains the last set capacity.
+
             this.airplane = null;
-            // Optionally: if passengers exist, consider throwing an error or clearing them.
-            // if (this.occupancy > 0) {
-            //     throw new IllegalArgumentException("Cannot unassign airplane from flight " + this.flightNumber + " while passengers are boarded.");
-            // }
+
             return;
         }
 
-        // Key validation: Current occupancy must not exceed the capacity of the assigned airplane.
+
         if (this.occupancy > airplane.getCapacity()) {
             throw new IllegalArgumentException(
                     "Cannot assign airplane '" + airplane.getId() +
@@ -252,13 +182,9 @@ public class Flight {
             );
         }
         this.airplane = airplane;
-        this.capacity = airplane.getCapacity(); // Update the flight's capacity to that of the assigned airplane
+        this.capacity = airplane.getCapacity();
     }
 
-    /**
-     * Sets the estimated duration of the flight in minutes.
-     * @param estimatedDurationMinutes The duration in minutes.
-     */
     public void setEstimatedDurationMinutes(int estimatedDurationMinutes) {
         if (estimatedDurationMinutes < 0) {
             throw new IllegalArgumentException("Estimated duration cannot be negative.");
@@ -266,11 +192,6 @@ public class Flight {
         this.estimatedDurationMinutes = estimatedDurationMinutes;
     }
 
-    /**
-     * Sets the current occupancy of the flight. This method should be used cautiously;
-     * `addPassenger` and `removePassenger` are preferred for managing occupancy directly.
-     * @param occupancy The new occupancy value.
-     */
     public void setOccupancy(int occupancy) {
         if (occupancy < 0) {
             throw new IllegalArgumentException("Occupancy cannot be negative.");
@@ -281,12 +202,6 @@ public class Flight {
         this.occupancy = occupancy;
     }
 
-    /**
-     * Adds a passenger to the flight.
-     * @param passenger The {@link Passenger} object to add.
-     * @throws IllegalArgumentException If the passenger is null.
-     * @throws ListException If the flight is full or the passenger is already on the flight.
-     */
     public void addPassenger(Passenger passenger) throws ListException {
         if (passenger == null) {
             throw new IllegalArgumentException("Passenger cannot be null.");
@@ -294,7 +209,7 @@ public class Flight {
         if (occupancy >= capacity) {
             throw new ListException("Flight " + this.flightNumber + " is full. Could not add passenger " + passenger.getId() + ".");
         }
-        // Assumes Passenger.equals() is correctly implemented (by passenger ID)
+
         if (this.passengers.contains(passenger)) {
             throw new ListException("Passenger " + passenger.getId() + " is already on flight " + this.flightNumber + ".");
         }
@@ -303,12 +218,7 @@ public class Flight {
         this.occupancy++;
     }
 
-    /**
-     * Removes a passenger from the flight.
-     * @param passenger The {@link Passenger} object to remove.
-     * @throws IllegalArgumentException If the passenger is null.
-     * @throws ListException If the flight has no passengers or the passenger is not on the flight.
-     */
+
     public void removePassenger(Passenger passenger) throws ListException {
         if (passenger == null) {
             throw new IllegalArgumentException("Passenger cannot be null.");
@@ -316,7 +226,7 @@ public class Flight {
         if (this.passengers.isEmpty()) {
             throw new ListException("Flight " + this.flightNumber + " has no passengers to remove.");
         }
-        // Assumes Passenger.equals() is correctly implemented (by passenger ID)
+
         if (this.passengers.contains(passenger)) {
             this.passengers.remove(passenger);
             this.occupancy--;
@@ -325,30 +235,15 @@ public class Flight {
         }
     }
 
-    /**
-     * Empties the flight's passenger list and resets occupancy to zero.
-     * @throws ListException If an error occurs while clearing the passenger list.
-     */
     public void clearPassengers() throws ListException {
         this.passengers.clear();
         this.occupancy = 0;
     }
 
-    /**
-     * Checks if the flight has reached its maximum capacity.
-     * @return {@code true} if occupancy is equal to or greater than capacity, {@code false} otherwise.
-     */
     public boolean isFull() {
         return occupancy >= capacity;
     }
 
-    /**
-     * Compares this Flight object with another object to determine if they are equal.
-     * Two flights are considered equal if they have the same {@code flightNumber}.
-     *
-     * @param o The object to compare with this Flight.
-     * @return {@code true} if the objects are equal (same flight number), {@code false} otherwise.
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -357,24 +252,13 @@ public class Flight {
         return Objects.equals(flightNumber, flight.flightNumber);
     }
 
-    /**
-     * Returns a hash code value for this Flight object.
-     * This method must be consistent with {@code equals()}: if two objects
-     * are equal according to {@code equals()}, they must have the same {@code hashCode()} value.
-     * It is generated based on the flight's {@code flightNumber}.
-     *
-     * @return An integer hash code value.
-     */
+
     @Override
     public int hashCode() {
         return Objects.hash(flightNumber);
     }
 
-    /**
-     * Provides a string representation of the flight's information.
-     * Useful for debugging and console display.
-     * @return A formatted string with flight details.
-     */
+
     @Override
     public String toString() {
         return "Flight [Num: " + flightNumber + ", From: " + originAirportCode + ", To: " + destinationAirportCode +
@@ -387,16 +271,12 @@ public class Flight {
                 ", Est. Duration: " + estimatedDurationMinutes + " min]";
     }
 
-    /**
-     * Returns a string representing the current passenger occupancy in the format "occupancy/capacity".
-     * @return A string showing current passengers versus total capacity.
-     */
     public String getPassengersDisplay() {
         return this.occupancy + "/" + this.capacity;
     }
 
-    // Setters for direct field assignment, mainly for deserialization or specific logic where direct assignment is needed.
-    // Use with caution, as they bypass some validation logic present in the primary constructors or other methods.
+
+
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
     }
@@ -416,7 +296,7 @@ public class Flight {
     public void setPassengers(CircularDoublyLinkedList passengers) {
         this.passengers = passengers;
         if (passengers != null) {
-            this.occupancy = passengers.size(); // Update occupancy when setting the passenger list directly
+            this.occupancy = passengers.size();
         } else {
             this.occupancy = 0;
         }
@@ -427,7 +307,6 @@ public class Flight {
     /**
      * Obtiene la puerta de abordaje asignada al vuelo.
      * Si no hay una puerta asignada, asigna una aleatoria.
-     * @return La puerta de abordaje asignada
      */
     public String getGate() {
         if (gate == null || gate.isEmpty() || gate.equals("N/A")) {
@@ -438,8 +317,6 @@ public class Flight {
 
     /**
      * Asigna una puerta específica al vuelo.
-     * @param gate La puerta a asignar
-     * @throws IllegalArgumentException Si la puerta es nula o vacía
      */
     public void setGate(String gate) {
         this.gate = (gate == null || gate.trim().isEmpty()) ? assignRandomGate() : gate.trim();
@@ -447,8 +324,6 @@ public class Flight {
 
     /**
      * Asigna una puerta de abordaje aleatoria al vuelo.
-     *
-     * @return
      */
     private String assignRandomGate() {
         return AVAILABLE_GATES[RANDOM.nextInt(AVAILABLE_GATES.length)];

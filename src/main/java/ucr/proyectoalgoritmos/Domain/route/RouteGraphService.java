@@ -13,22 +13,11 @@ import java.util.Comparator;
 import java.util.Deque;
 import java.util.ArrayDeque;
 
-/**
- * Representa y gestiona rutas aéreas, actuando como una fachada para un grafo dirigido.
- * Permite la manipulación de rutas utilizando códigos de aeropuerto en lugar de índices internos.
- * <p>
- * **Esta clase contiene una estructura paralela para gestionar los pesos dobles (distancia/duración)
- * de las aristas, sin modificar el DirectedSinglyLinkedListGraph existente.**
- * **Se asume que SinglyLinkedList NO tiene parámetros de tipo (es decir, usa Object).**
- * </p>
- */
+
 public class RouteGraphService {
     private DirectedSinglyLinkedListGraph internalGraph;
     private Map<String, DualEdgeInfo> dualWeightEdges;
 
-    /**
-     * Clase interna para almacenar los pesos dobles de una arista.
-     */
     public static class DualEdgeInfo {
         public double distance;
         public double duration;
@@ -234,7 +223,6 @@ public class RouteGraphService {
             return null;
         }
 
-        // Reconstrucción de la ruta y cálculo de pesos dobles
         double totalDistance = 0;
         double totalDuration = 0;
         int currentVertexIndex = endIndex;
@@ -276,7 +264,7 @@ public class RouteGraphService {
         if (criteria.equalsIgnoreCase("distance")) {
             result[0] = totalDistance;
             result[1] = totalDuration;
-        } else { // criteria.equalsIgnoreCase("duration")
+        } else {
             result[0] = totalDuration;
             result[1] = totalDistance;
         }
@@ -326,12 +314,11 @@ public class RouteGraphService {
                 break;
             }
 
-            // Ahora adjList no tiene genéricos, así que hay que castear
             ArrayList<SinglyLinkedList> adjList = internalGraph.getAdjList();
             SinglyLinkedList neighbors = adjList.get(u);
             if (neighbors != null) {
                 for (int i = 0; i < neighbors.size(); i++) {
-                    int[] edgeArray = (int[]) neighbors.get(i); // <-- CAST EXPLÍCITO aquí
+                    int[] edgeArray = (int[]) neighbors.get(i);
                     int v = edgeArray[0];
 
                     String edgeKey = internalGraph.getAirportCodeForIndex(u) + "-" + internalGraph.getAirportCodeForIndex(v);
@@ -353,7 +340,7 @@ public class RouteGraphService {
                     if (!visited[v] && currentDist != Double.POSITIVE_INFINITY && currentDist + edgeWeightForCriteria < dist[v]) {
                         dist[v] = currentDist + edgeWeightForCriteria;
                         prev[v] = u;
-                        pq.add(new PathNode_Internal(v, dist[v])); // ¡Cambiado a PathNode_Internal!
+                        pq.add(new PathNode_Internal(v, dist[v]));
                     }
                 }
             }
@@ -364,16 +351,15 @@ public class RouteGraphService {
         }
 
         int currentVertex = endIndex;
-        // Cambio de Stack a Deque/ArrayDeque
         Deque<String> pathStack = new ArrayDeque<>();
         while (currentVertex != -1) {
-            pathStack.push(internalGraph.getAirportCodeForIndex(currentVertex)); // push para Deque como pila
+            pathStack.push(internalGraph.getAirportCodeForIndex(currentVertex));
             if (currentVertex == startIndex) break;
             currentVertex = prev[currentVertex];
         }
 
         while (!pathStack.isEmpty()) {
-            pathList.add(pathStack.pop()); // pop para Deque como pila
+            pathList.add(pathStack.pop());
         }
         return pathList;
     }
@@ -388,14 +374,14 @@ public class RouteGraphService {
         java.util.Random random = new java.util.Random();
 
         for (int k = 0; k < allCodes.size(); k++) {
-            String originCode = (String) allCodes.get(k); // <-- CAST EXPLÍCITO aquí
+            String originCode = (String) allCodes.get(k);
             int routesToGenerate = random.nextInt(maxRoutesPerAirport - minRoutesPerAirport + 1) + minRoutesPerAirport;
             int generatedCount = 0;
             int attemptCount = 0;
             final int MAX_ATTEMPTS_PER_ROUTE = 50;
 
             while (generatedCount < routesToGenerate && attemptCount < allCodes.size() * MAX_ATTEMPTS_PER_ROUTE) {
-                String destinationCode = (String) allCodes.get(random.nextInt(allCodes.size())); // <-- CAST EXPLÍCITO aquí
+                String destinationCode = (String) allCodes.get(random.nextInt(allCodes.size()));
                 if (!originCode.equals(destinationCode)) {
                     double distance = minDistance + (maxDistance - minDistance) * random.nextDouble();
                     double duration = (distance / 5.0) + (random.nextDouble() * (distance / 10.0));
@@ -404,7 +390,7 @@ public class RouteGraphService {
                         addDualWeightRoute(originCode, destinationCode, distance, duration);
                         generatedCount++;
                     } catch (IllegalArgumentException | ListException e) {
-                        // Puede fallar si ya existe o por otras razones, se ignora y se intenta de nuevo.
+
                     }
                 }
                 attemptCount++;
@@ -412,8 +398,7 @@ public class RouteGraphService {
         }
     }
 
-    // Clase interna para la PriorityQueue (PathNode_Internal - Renombrada)
-    private static class PathNode_Internal { // <-- RENOMBRADO de PathNode a PathNode_Internal
+    private static class PathNode_Internal {
         public int vertexIndex;
         public double currentWeight;
 
@@ -429,17 +414,17 @@ public class RouteGraphService {
         SinglyLinkedList allCodes = internalGraph.getAllAirportCodes();
 
         for (int i = 0; i < allCodes.size(); i++) {
-            String originCode = (String) allCodes.get(i); // <-- CAST EXPLÍCITO aquí
+            String originCode = (String) allCodes.get(i);
             result += "[" + i + "] " + originCode + " -> ";
 
             int originIndex = internalGraph.getIndexForAirportCode(originCode);
             if (originIndex != -1 && originIndex < internalGraph.getAdjList().size()) {
-                ArrayList<SinglyLinkedList> adjList = internalGraph.getAdjList(); // getAdjList retorna ArrayList<SinglyLinkedList>
+                ArrayList<SinglyLinkedList> adjList = internalGraph.getAdjList();
                 SinglyLinkedList connections = adjList.get(originIndex);
                 if (connections != null && !connections.isEmpty()) {
                     boolean first = true;
                     for (int j = 0; j < connections.size(); j++) {
-                        int[] edgeArray = (int[]) connections.get(j); // <-- CAST EXPLÍCITO aquí
+                        int[] edgeArray = (int[]) connections.get(j);
                         int destIndex = edgeArray[0];
                         String destCode = internalGraph.getAirportCodeForIndex(destIndex);
                         String edgeKey = originCode + "-" + destCode;
