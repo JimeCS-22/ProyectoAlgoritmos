@@ -276,7 +276,7 @@ public class PassengersController {
         }
     }
 
-    private void loadPassengersIntoTable() {
+    public void loadPassengersIntoTable() {
         passengerData.clear();
 
         try {
@@ -289,6 +289,8 @@ public class PassengersController {
             showErrorAlert("Error al cargar pasajeros", e);
         }
     }
+
+
 
     private Alert createExpandableAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

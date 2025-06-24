@@ -67,4 +67,13 @@ public class FXUtility {
             return "YES";
         else return "NO";
     }
+
+    public static String prompt(String title, String message) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(title);
+        dialog.setHeaderText(null); // No header
+        dialog.setContentText(message);
+        Optional<String> result = dialog.showAndWait();
+        return result.orElse(null);
+    }
 }

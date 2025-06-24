@@ -22,6 +22,7 @@ import ucr.proyectoalgoritmos.util.FXUtility;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class UserFlightController implements Initializable {
@@ -51,6 +52,10 @@ public class UserFlightController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeManagers();
         setupUIComponents();
+
+        // Configuración inicial del dpReturn
+        dpReturn.setDisable(true);  // Deshabilitado por defecto
+        dpReturn.setValue(null);    // Sin valor seleccionado
     }
 
     private void initializeManagers() {
@@ -61,6 +66,7 @@ public class UserFlightController implements Initializable {
             passengerManager = PassengerManager.getInstance();
         } catch (Exception e) {
             FXUtility.alert("Error Inicial", "No se pudieron inicializar los managers: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -74,10 +80,14 @@ public class UserFlightController implements Initializable {
     }
 
     private void setupRoundTripToggle() {
+        // Deshabilitar dpReturn inicialmente
+        dpReturn.setDisable(true);
+
+        // Listener para habilitar/deshabilitar según el checkbox
         chkRoundTrip.selectedProperty().addListener((obs, oldVal, newVal) -> {
             dpReturn.setDisable(!newVal);
             if (!newVal) {
-                dpReturn.setValue(null);
+                dpReturn.setValue(null); // Limpiar la fecha si se deselecciona
             }
         });
     }
@@ -85,9 +95,15 @@ public class UserFlightController implements Initializable {
     private void loadAirportsIntoComboBoxes() {
         try {
             ObservableList<String> airportOptions = FXCollections.observableArrayList();
-            for (int i = 0; i < airportManager.getAllAirports().size(); i++) {
-                Airport airport = (Airport) airportManager.getAllAirports().get(i);
-                airportOptions.add(formatAirportOption(airport));
+            DoublyLinkedList allAirports = airportManager.getAllAirports();
+
+            if (allAirports != null && !allAirports.isEmpty()) {
+                for (int i = 0; i < allAirports.size(); i++) {
+                    Airport airport = (Airport) allAirports.get(i);
+                    airportOptions.add(formatAirportOption(airport));
+                }
+            } else {
+                FXUtility.alert("Advertencia", "No se pudieron cargar los aeropuertos. La lista está vacía.");
             }
 
             cbOrigin.setItems(airportOptions);
@@ -101,6 +117,7 @@ public class UserFlightController implements Initializable {
             }
         } catch (ListException e) {
             FXUtility.alert("Error de Carga", "Error al cargar aeropuertos: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -120,40 +137,42 @@ public class UserFlightController implements Initializable {
 
     private void loadPassengersComboBox() {
         try {
-            // Obtener lista de todos los pasajeros desde PassengerManager
             DoublyLinkedList allPassengers = passengerManager.getAllPassengers();
             ObservableList<String> passengersOptions = FXCollections.observableArrayList();
 
-            // Agregar opción por defecto
-            passengersOptions.add("Nuevo pasajero");
+            passengersOptions.add("NUEVO PASAJERO...");
 
-            // Agregar pasajeros almacenados
-            for (int i = 0; i < allPassengers.size(); i++) {
-                Passenger p = (Passenger) allPassengers.get(i);
-                passengersOptions.add(p.getId() + " - " + p.getName());
+            if (allPassengers != null && !allPassengers.isEmpty()) {
+                for (int i = 0; i < allPassengers.size(); i++) {
+                    Passenger p = (Passenger) allPassengers.get(i);
+                    passengersOptions.add(p.getId() + " - " + p.getName());
+                }
             }
 
             cbPassengers.setItems(passengersOptions);
             cbPassengers.getSelectionModel().selectFirst();
         } catch (ListException | TreeException e) {
-            FXUtility.alert("Error", "No se pudieron cargar los pasajeros: " + e.getMessage());
-            // Opción por defecto si hay error
-            ObservableList<String> defaultOptions = FXCollections.observableArrayList("Nuevo pasajero");
+            FXUtility.alert("Error de Carga", "No se pudieron cargar los pasajeros existentes: " + e.getMessage());
+            e.printStackTrace();
+            ObservableList<String> defaultOptions = FXCollections.observableArrayList("NUEVO PASAJERO...");
             cbPassengers.setItems(defaultOptions);
             cbPassengers.getSelectionModel().selectFirst();
         }
     }
 
     private void loadSeatTypeComboBox() {
-        ObservableList<String> seatTypes = FXCollections.observableArrayList("Economy", "Premium Economy", "Business", "First Class");
+        ObservableList<String> seatTypes = FXCollections.observableArrayList(
+                "Economy", "Premium Economy", "Business", "First Class");
         cbSeatType.setItems(seatTypes);
         cbSeatType.getSelectionModel().selectFirst();
     }
 
     private void loadBaggageComboBox() {
         ObservableList<String> baggageOptions = FXCollections.observableArrayList(
-                "Solo equipaje de mano", "1 Maleta documentada",
-                "2 Maletas documentadas", "3+ Maletas documentadas");
+                "Solo equipaje de mano",
+                "1 Maleta documentada",
+                "2 Maletas documentadas",
+                "3+ Maletas documentadas");
         cbBaggage.setItems(baggageOptions);
         cbBaggage.getSelectionModel().selectFirst();
     }
@@ -172,15 +191,13 @@ public class UserFlightController implements Initializable {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 LocalDate departureDate = dpDeparture.getValue();
-                setDisable(empty ||
-                        date.isBefore(LocalDate.now()) ||
+                setDisable(empty || date.isBefore(LocalDate.now()) ||
                         (departureDate != null && date.isBefore(departureDate)));
             }
         });
 
         dpDeparture.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null && dpReturn.getValue() != null &&
-                    dpReturn.getValue().isBefore(newVal)) {
+            if (newVal != null && dpReturn.getValue() != null && dpReturn.getValue().isBefore(newVal)) {
                 dpReturn.setValue(null);
             }
         });
@@ -189,33 +206,29 @@ public class UserFlightController implements Initializable {
     @FXML
     private void handleCompleteReservation(ActionEvent event) {
         try {
-            // 1. Validar datos del formulario
             if (!validateReservation()) return;
 
-            // 2. Obtener vuelo seleccionado
-            Flight selectedFlight = getSelectedFlight();
-            if (selectedFlight == null) {
-                FXUtility.alert("Error", "No se ha seleccionado ningún vuelo");
-                return;
-            }
-
-            // 3. Obtener o crear pasajero
             Passenger passenger = getOrCreatePassenger();
-            if (passenger == null) {
-                FXUtility.alert("Error", "No se pudo obtener o crear el pasajero");
+            if (passenger == null) return;
+
+            String originCode = extractAirportCode(cbOrigin.getValue());
+            String destinationCode = extractAirportCode(cbDestination.getValue());
+            LocalDate departureDate = dpDeparture.getValue();
+
+            CircularDoublyLinkedList availableFlights = findAvailableFlights(
+                    originCode, destinationCode, departureDate);
+
+            if (availableFlights.isEmpty()) {
+                showAlternativeFlights(originCode);
                 return;
             }
 
-            // 4. Procesar la reservación
-            passengerManager.processTicketPurchase(passenger, selectedFlight);
-
-            // 5. Actualizar historial del pasajero
+            Flight selectedFlight = (Flight) availableFlights.get(0);
+            flightScheduleManager.processTicketPurchase(passenger, selectedFlight);
             passengerManager.addFlightToPassengerHistory(passenger.getId(), selectedFlight);
 
-            // 6. Limpiar formulario
+            showReservationSummary(selectedFlight, passenger);
             resetForm();
-
-            FXUtility.alert("Éxito", "Reserva completada exitosamente");
 
         } catch (Exception e) {
             FXUtility.alert("Error", "Error al completar reserva: " + e.getMessage());
@@ -224,117 +237,139 @@ public class UserFlightController implements Initializable {
 
     private Passenger getOrCreatePassenger() throws TreeException {
         String selectedPassenger = cbPassengers.getValue();
-        if (selectedPassenger == null || selectedPassenger.equals("Nuevo pasajero")) {
-            // Lógica para crear nuevo pasajero
-            // Aquí deberías abrir un diálogo o ventana para registrar los datos del nuevo pasajero
-            FXUtility.alert("Información", "Por favor implementar lógica para crear nuevo pasajero");
-            return null;
+
+        if (selectedPassenger == null || selectedPassenger.equals("NUEVO PASAJERO...")) {
+            // Crear nuevo pasajero
+            String newPassengerId = FXUtility.prompt("Nuevo Pasajero", "Ingrese el ID del pasajero:");
+            if (newPassengerId == null || newPassengerId.trim().isEmpty()) {
+                FXUtility.alert("Error", "El ID del pasajero no puede estar vacío");
+                return null;
+            }
+
+            String newPassengerName = FXUtility.prompt("Nuevo Pasajero", "Ingrese el nombre completo:");
+            if (newPassengerName == null || newPassengerName.trim().isEmpty()) {
+                FXUtility.alert("Error", "El nombre del pasajero no puede estar vacío");
+                return null;
+            }
+
+            String nationality = FXUtility.prompt("Nuevo Pasajero", "Ingrese la nacionalidad:");
+            if (nationality == null || nationality.trim().isEmpty()) {
+                FXUtility.alert("Error", "La nacionalidad no puede estar vacía");
+                return null;
+            }
+
+            try {
+                passengerManager.registerPassenger(newPassengerId, newPassengerName, nationality);
+                loadPassengersComboBox(); // Actualizar la lista de pasajeros
+                return passengerManager.searchPassenger(newPassengerId);
+            } catch (Exception e) {
+                FXUtility.alert("Error", "No se pudo registrar el pasajero: " + e.getMessage());
+                return null;
+            }
         } else {
-            // Extraer ID del pasajero seleccionado
-            String passengerId = selectedPassenger.split(" - ")[0];
+            // Pasajero existente
+            String passengerId = selectedPassenger.split(" - ")[0].trim();
             return passengerManager.searchPassenger(passengerId);
         }
     }
 
     private boolean validateReservation() {
-        if (cbPassengers.getValue() == null) {
-            FXUtility.alert("Error", "Debe seleccionar un pasajero");
-            return false;
-        }
-        if (!validateSearchForm()) {
-            return false;
-        }
-        // Agregar otras validaciones necesarias
-        return true;
-    }
-
-    private boolean validateSearchForm() {
-        if (cbOrigin.getValue() == null || cbDestination.getValue() == null) {
-            FXUtility.alert("Error", "Debe seleccionar aeropuerto de origen y destino");
+        // Validar campos obligatorios
+        if (cbOrigin.getValue() == null || cbDestination.getValue() == null ||
+                dpDeparture.getValue() == null || cbPassengers.getValue() == null) {
+            FXUtility.alert("Error", "Debe completar todos los campos obligatorios");
             return false;
         }
 
-        if (extractAirportCode(cbOrigin.getValue()).equals(extractAirportCode(cbDestination.getValue()))) {
+        // Validar origen y destino diferentes
+        String originCode = extractAirportCode(cbOrigin.getValue());
+        String destinationCode = extractAirportCode(cbDestination.getValue());
+
+        if (originCode.equals(destinationCode)) {
             FXUtility.alert("Error", "El aeropuerto de origen y destino no pueden ser iguales");
             return false;
         }
 
-        if (dpDeparture.getValue() == null) {
-            FXUtility.alert("Error", "Debe seleccionar una fecha de salida");
-            return false;
-        }
-
+        // Validar fecha de retorno si es viaje redondo
         if (chkRoundTrip.isSelected() && dpReturn.getValue() == null) {
-            FXUtility.alert("Error", "Para viaje redondo debe seleccionar fecha de retorno");
+            FXUtility.alert("Error", "Debe seleccionar una fecha de retorno para viaje redondo");
             return false;
         }
 
         return true;
     }
 
-    private CircularDoublyLinkedList findAvailableFlights(
-            String originCode,
-            String destinationCode,
-            LocalDate date
-    ) throws ListException {
+    private void showAlternativeFlights(String originCode) throws ListException {
+        StringBuilder message = new StringBuilder();
+        message.append("No hay vuelos disponibles para la ruta seleccionada.\n\n");
+        message.append("Vuelos disponibles desde ").append(originCode).append(":\n");
+
+        CircularDoublyLinkedList allFlights = flightScheduleManager.getScheduledFlights();
+        boolean foundFlights = false;
+
+        for (int i = 0; i < allFlights.size(); i++) {
+            Flight flight = (Flight) allFlights.get(i);
+            if (flight.getOriginAirportCode().equals(originCode) &&
+                    flight.getStatus() == Flight.FlightStatus.SCHEDULED) {
+
+                message.append("- ").append(flight.getDestinationAirportCode())
+                        .append(" (").append(airportManager.getAirportName(flight.getDestinationAirportCode()))
+                        .append(") - ").append(flight.getDepartureTime().toLocalDate())
+                        .append("\n");
+                foundFlights = true;
+            }
+        }
+
+        if (!foundFlights) {
+            message.append("No hay vuelos disponibles desde este aeropuerto");
+        }
+
+        FXUtility.alert("Vuelos Disponibles", message.toString());
+    }
+
+    private void showReservationSummary(Flight flight, Passenger passenger) {
+        StringBuilder summary = new StringBuilder();
+        summary.append("¡Reserva completada con éxito!\n\n");
+        summary.append("Detalles del vuelo:\n");
+        summary.append("- Número: ").append(flight.getFlightNumber()).append("\n");
+        summary.append("- Origen: ").append(airportManager.getAirportName(flight.getOriginAirportCode())).append("\n");
+        summary.append("- Destino: ").append(airportManager.getAirportName(flight.getDestinationAirportCode())).append("\n");
+        summary.append("- Fecha: ").append(flight.getDepartureTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))).append("\n");
+        summary.append("- Puerta: ").append(flight.getGate()).append("\n\n");
+        summary.append("Detalles del pasajero:\n");
+        summary.append("- Nombre: ").append(passenger.getName()).append("\n");
+        summary.append("- ID: ").append(passenger.getId()).append("\n");
+        summary.append("- Asiento: ").append(cbSeatType.getValue()).append("\n");
+        summary.append("- Equipaje: ").append(cbBaggage.getValue()).append("\n");
+
+        FXUtility.alert("Reserva Exitosa", summary.toString());
+    }
+
+
+    private CircularDoublyLinkedList findAvailableFlights(String originCode, String destinationCode, LocalDate date)
+            throws ListException {
+
         CircularDoublyLinkedList result = new CircularDoublyLinkedList();
         CircularDoublyLinkedList allFlights = flightScheduleManager.getScheduledFlights();
 
         for (int i = 0; i < allFlights.size(); i++) {
             Flight flight = (Flight) allFlights.get(i);
+
+            // Filtramos por:
+            // 1. Aeropuertos de origen/destino
+            // 2. Fecha de salida
+            // 3. Estado SCHEDULED
+            // 4. Que no esté lleno
             if (flight.getOriginAirportCode().equals(originCode) &&
                     flight.getDestinationAirportCode().equals(destinationCode) &&
                     flight.getDepartureTime().toLocalDate().equals(date) &&
-                    flight.getStatus() == Flight.FlightStatus.SCHEDULED) {
+                    flight.getStatus() == Flight.FlightStatus.SCHEDULED &&
+                    !flight.isFull()) {
+
                 result.add(flight);
             }
         }
-
         return result;
-    }
-
-    private String getAvailableDestinations(String originCode) throws ListException {
-        StringBuilder destinations = new StringBuilder();
-        CircularDoublyLinkedList allFlights = flightScheduleManager.getScheduledFlights();
-
-        for (int i = 0; i < allFlights.size(); i++) {
-            Flight flight = (Flight) allFlights.get(i);
-            if (flight.getOriginAirportCode().equals(originCode) &&
-                    flight.getStatus() == Flight.FlightStatus.SCHEDULED) {
-                String destInfo = String.format("%s - %s\n",
-                        flight.getDestinationAirportCode(),
-                        airportManager.getAirportName(flight.getDestinationAirportCode()));
-
-                if (!destinations.toString().contains(destInfo)) {
-                    destinations.append(destInfo);
-                }
-            }
-        }
-
-        return destinations.toString();
-    }
-
-    private void showFlightOptions(CircularDoublyLinkedList flights) throws ListException {
-        StringBuilder flightsInfo = new StringBuilder("Vuelos disponibles:\n\n");
-
-        for (int i = 0; i < flights.size(); i++) {
-            Flight flight = (Flight) flights.get(i);
-            flightsInfo.append(String.format(
-                    "✈️ Vuelo %s - %s a %s\n" +
-                            "🕒 Salida: %s\n" +
-                            "💺 Asientos disponibles: %d/%d\n" +
-                            "🚪 Puerta: %s\n\n",
-                    flight.getFlightNumber(),
-                    flight.getOriginAirportCode(),
-                    flight.getDestinationAirportCode(),
-                    flight.getDepartureTime().toString(),
-                    flight.getCapacity() - flight.getOccupancy(),
-                    flight.getCapacity(),
-                    flight.getGate()
-            ));
-        }
-
-        FXUtility.alert("Vuelos Disponibles", flightsInfo.toString());
     }
 
     @FXML
@@ -355,28 +390,12 @@ public class UserFlightController implements Initializable {
         if (cbDestination.getItems().size() > 1) {
             cbDestination.getSelectionModel().select(1);
         }
+        dpDeparture.setValue(null);
+        dpReturn.setDisable(true);
+        dpReturn.setValue(null);
+        chkRoundTrip.setSelected(false);
         cbPassengers.getSelectionModel().selectFirst();
         cbSeatType.getSelectionModel().selectFirst();
         cbBaggage.getSelectionModel().selectFirst();
-        dpDeparture.setValue(null);
-        dpReturn.setValue(null);
-        chkRoundTrip.setSelected(false);
-    }
-
-    // Método auxiliar para obtener el vuelo seleccionado (simulado)
-    private Flight getSelectedFlight() {
-        // En una implementación real, esto obtendría el vuelo seleccionado de una tabla o lista
-        // Aquí simulamos un vuelo de ejemplo, con el número de vuelo quemado y una capacidad quemada
-        try {
-            return new Flight(
-                    "FL123",
-                    extractAirportCode(cbOrigin.getValue()),
-                    extractAirportCode(cbDestination.getValue()),
-                    dpDeparture.getValue().atStartOfDay(),
-                    150
-            );
-        } catch (Exception e) {
-            return null;
-        }
     }
 }
