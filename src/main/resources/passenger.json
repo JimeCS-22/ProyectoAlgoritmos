@@ -1,127 +1,63 @@
 [ {
   "id" : "P001",
-  "name" : "Juan Pérez",
-  "nationality" : "Mexican",
+  "name" : "Alice Smith",
+  "nationality" : "USA",
   "flightHistory" : {
     "front" : null,
     "empty" : true
   }
 }, {
   "id" : "P002",
-  "name" : "Ana García",
-  "nationality" : "Spanish",
+  "name" : "Bob Johnson",
+  "nationality" : "Canada",
   "flightHistory" : {
     "front" : null,
     "empty" : true
   }
 }, {
   "id" : "P003",
-  "name" : "Peter Jones",
-  "nationality" : "British",
+  "name" : "Diana Miller",
+  "nationality" : "UK",
   "flightHistory" : {
     "front" : null,
     "empty" : true
   }
 }, {
   "id" : "P004",
-  "name" : "Maria Rossi",
-  "nationality" : "Italian",
+  "name" : "Frank White",
+  "nationality" : "France",
   "flightHistory" : {
     "front" : null,
     "empty" : true
   }
 }, {
   "id" : "P005",
-  "name" : "Ahmed Khan",
-  "nationality" : "Pakistani",
+  "name" : "Grace Hall",
+  "nationality" : "Brazil",
   "flightHistory" : {
     "front" : null,
     "empty" : true
   }
 }, {
   "id" : "P006",
-  "name" : "Sophie Dubois",
-  "nationality" : "French",
+  "name" : "Henry King",
+  "nationality" : "India",
   "flightHistory" : {
     "front" : null,
     "empty" : true
   }
 }, {
   "id" : "P007",
-  "name" : "Hiroshi Tanaka",
-  "nationality" : "Japanese",
+  "name" : "Ivy Lee",
+  "nationality" : "South Korea",
   "flightHistory" : {
     "front" : null,
     "empty" : true
   }
 }, {
   "id" : "P008",
-  "name" : "David Lee",
-  "nationality" : "Canadian",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P009",
-  "name" : "Lucas Silva",
-  "nationality" : "Brazilian",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P010",
-  "name" : "Isabel Vargas",
-  "nationality" : "Colombian",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P011",
-  "name" : "Liam Murphy",
-  "nationality" : "Irish",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P012",
-  "name" : "Zulay Chen",
-  "nationality" : "Tailand",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P013",
-  "name" : "Francesco Bartolini",
-  "nationality" : "Italiana",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P014",
-  "name" : "Raúl Camacho",
-  "nationality" : "Mexicana",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P015",
-  "name" : "Ana Alfaro",
-  "nationality" : "Costarricense",
-  "flightHistory" : {
-    "front" : null,
-    "empty" : true
-  }
-}, {
-  "id" : "P016",
-  "name" : "Francesca Sevilla",
-  "nationality" : "Costarricense",
+  "name" : "Jack Green",
+  "nationality" : "Australia",
   "flightHistory" : {
     "front" : null,
     "empty" : true

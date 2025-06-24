@@ -366,7 +366,7 @@ public class UserFlightController implements Initializable {
     // Método auxiliar para obtener el vuelo seleccionado (simulado)
     private Flight getSelectedFlight() {
         // En una implementación real, esto obtendría el vuelo seleccionado de una tabla o lista
-        // Aquí simulamos un vuelo de ejemplo
+        // Aquí simulamos un vuelo de ejemplo, con el número de vuelo quemado y una capacidad quemada
         try {
             return new Flight(
                     "FL123",
