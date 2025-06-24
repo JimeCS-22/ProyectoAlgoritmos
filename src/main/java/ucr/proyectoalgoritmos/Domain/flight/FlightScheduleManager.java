@@ -1,6 +1,5 @@
 package ucr.proyectoalgoritmos.Domain.flight;
 
-// Ajustar las importaciones
 import ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList;
 import ucr.proyectoalgoritmos.Domain.aeropuetos.AirportManager;
 import ucr.proyectoalgoritmos.Domain.airplane.Airplane;
@@ -30,14 +29,6 @@ public class FlightScheduleManager {
     private static FlightScheduleManager instance;
     private FlightJson flightJson;
 
-
-    /**
-     * Constructor para FlightScheduleManager.
-     *
-     * @param airportManager Instancia de AirportManager para validar aeropuertos.
-     * @param routeManager Instancia de RouteManager para validar rutas.
-     * @throws IllegalArgumentException Si alguno de los managers es nulo.
-     */
     public FlightScheduleManager(AirportManager airportManager, RouteManager routeManager) {
         if (airportManager == null) {
             throw new IllegalArgumentException("AirportManager no puede ser nulo.");
@@ -52,18 +43,7 @@ public class FlightScheduleManager {
     }
 
     /**
-     * Obtiene la lista de vuelos programados.
-     *
-     * @return Una DoublyLinkedList que contiene los vuelos programados.
-     */
-
-
-    /**
      * **Para propósitos de prueba.**
-     * Proporciona acceso al mapa interno de listas de espera.
-     * En un entorno de producción, es preferible no exponer esta estructura directamente.
-     *
-     * @return El mapa de listas de espera.
      */
     public Map<String, ucr.proyectoalgoritmos.Domain.Circular.CircularDoublyLinkedList> getWaitingListsForTest() {
         return waitingLists;
@@ -72,17 +52,6 @@ public class FlightScheduleManager {
     /**
      * Crea un nuevo vuelo y lo añade a la lista de vuelos programados.
      * Realiza validaciones de número de vuelo, existencia de aeropuertos y rutas.
-     *
-     * @param number El número único de vuelo (ej. "AA123").
-     * @param originCode El código IATA del aeropuerto de origen.
-     * @param destinationCode El código IATA del aeropuerto de destino.
-     * @param departureTime La fecha y hora de salida programada del vuelo.
-     * @param estimatedDurationMinutes Duración estimada del vuelo en minutos.
-     * @param capacity La capacidad de pasajeros del vuelo.
-     * @return El objeto Flight recién creado y añadido.
-     * @throws ListException Si el número de vuelo ya está en uso, los aeropuertos no son válidos
-     * o no existe una ruta válida.
-     * @throws IllegalArgumentException Si algún parámetro de entrada es nulo o inválido.
      */
     public Flight createFlight(String number, String originCode, String destinationCode,
                                LocalDateTime departureTime, int estimatedDurationMinutes, int capacity) throws ListException, IllegalArgumentException {
@@ -116,11 +85,6 @@ public class FlightScheduleManager {
     /**
      * Procesa la compra de un billete para un pasajero en un vuelo específico.
      * Maneja la adición de pasajeros a vuelos y la gestión de listas de espera.
-     *
-     * @param passenger El objeto {@link Passenger} que desea comprar un billete.
-     * @param flight El objeto {@link Flight} en el que se desea reservar.
-     * @throws IllegalArgumentException Si el vuelo o el pasajero son nulos.
-     * @throws ListException Si ocurre un error al añadir el pasajero o con la lista de espera.
      */
     public void processTicketPurchase(Passenger passenger, Flight flight) throws IllegalArgumentException, ListException {
         if (flight == null) {
@@ -165,9 +129,6 @@ public class FlightScheduleManager {
 
     /**
      * Método auxiliar para añadir un pasajero a la lista de espera de una ruta específica.
-     * @param passenger Pasajero a añadir.
-     * @param flight Vuelo para el que se está en lista de espera.
-     * @throws ListException Si ocurre un error con la lista de espera.
      */
     private void addToWaitingList(Passenger passenger, Flight flight) throws ListException {
         String routeKey = flight.getOriginAirportCode() + "-" + flight.getDestinationAirportCode();
@@ -185,10 +146,6 @@ public class FlightScheduleManager {
 
     /**
      * Busca un vuelo programado por su número de vuelo.
-     *
-     * @param flightNumber El número de vuelo a buscar.
-     * @return El objeto {@link Flight} si se encuentra, o {@code null} si no existe.
-     * @throws ListException Si ocurre un error al acceder a la lista de vuelos.
      */
     public Flight findFlight(String flightNumber) throws ListException {
         if (scheduledFlights.isEmpty()) {
@@ -205,8 +162,6 @@ public class FlightScheduleManager {
 
     /**
      * Muestra todos los vuelos programados, categorizados por su estado.
-     *
-     * @throws ListException Si ocurre un error al acceder a la lista de vuelos.
      */
     public void displayFlightsByStatus() throws ListException {
         if (scheduledFlights.isEmpty()) {
@@ -282,10 +237,6 @@ public class FlightScheduleManager {
         assignedAirplane.setStatus(Airplane.AirplaneStatus.IN_FLIGHT); // Actualizar estado del avión
         System.out.println("Vuelo " + flightNumber + ": Despegando de " + flight.getOriginAirportCode() + " con avión " + assignedAirplane.getId() + ".");
 
-        // Simulación de tiempo de vuelo (simplificado)
-        // Aquí podrías añadir Thread.sleep() para pausas en la simulación
-        // o un cálculo más complejo basado en estimatedDurationMinutes
-
         // Paso 2: Vuelo completado
         flight.setStatus(Flight.FlightStatus.COMPLETED);
         assignedAirplane.setCurrentLocationAirportCode(flight.getDestinationAirportCode()); // Actualizar ubicación del avión
@@ -313,8 +264,6 @@ public class FlightScheduleManager {
 
     /**
      * Muestra las listas de espera actuales para todas las rutas.
-     *
-     * @throws ListException Si ocurre un error al acceder a las listas de espera.
      */
     public void displayWaitingLists() throws ListException {
         if (waitingLists.isEmpty()) {
@@ -335,18 +284,16 @@ public class FlightScheduleManager {
         }
     }
 
-    // Método getInstance (que me proporcionaste)
+
     public static synchronized FlightScheduleManager getInstance(AirportManager airportManager, RouteManager routeManager) {
         if (instance == null) {
             instance = new FlightScheduleManager(airportManager, routeManager);
-            // La carga inicial debe hacerse aquí, pasando los managers requeridos
-            // *** ¡AQUÍ ESTÁ LA CORRECCIÓN! PASA LOS ARGUMENTOS. ***
             instance.setScheduledFlights(instance.flightJson.loadFlightsFromJson(airportManager, routeManager));
         }
         return instance;
     }
 
-    public void setScheduledFlights(CircularDoublyLinkedList scheduledFlights) { // <-- AQUÍ SE CAMBIA EL TIPO
+    public void setScheduledFlights(CircularDoublyLinkedList scheduledFlights) {
         this.scheduledFlights = scheduledFlights;
     }
 
